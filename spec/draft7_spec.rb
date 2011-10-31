@@ -410,7 +410,7 @@ describe URITemplate::Draft7 do
     it "should work with empty chains" do
       
       chain = URITemplate::Draft7::Section.try_convert("…")
-      chain.send(:tokens).should have(1).item
+      chain.send(:tokens).should have(2).item
       
       chain.should === 'foobar'
       
@@ -418,11 +418,25 @@ describe URITemplate::Draft7 do
       
       combo.should_not === 'foobar'
       
-      combo.should === 'foobar/xy'
+      combo.should === '/xy'
       
       rechain = URITemplate::Draft7::Section.new(chain.send(:tokens))
       
       rechain.to_s.should == "…"
+      
+    end
+    
+    it "should work with multiple empty chains" do
+      
+      chain = URITemplate::Draft7::Section.try_convert("…")
+      
+      combo = chain >> '……'
+      
+      combo.should == chain
+      
+      combo2 = chain >> "…"
+      
+      combo2.should be_nil
       
     end
     
