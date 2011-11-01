@@ -703,6 +703,12 @@ __REGEXP__
       return nil
     else
       result = extract_matchdata(m)
+      if m.pre_match and m.pre_match.size > 0
+        result.unshift( [:prefix, m.pre_match] )
+      end
+      if m.post_match and m.post_match.size > 0
+        result.push( [:suffix, m.post_match] )
+      end
       if post_processing.include? :convert_values
         result.map!{|k,v| [k, Utils.pair_array_to_hash(v)] }
       end
@@ -766,8 +772,8 @@ __REGEXP__
   #     end
   #     return "not found"
   #   end
-  #   route( 'app_a/do_something' ) #=> "app_a: do_something with {}"
-  #   route( 'app_b/1337/something_else' ) #=> "app_b: something_else with {\"x\"=>\"1337\"}"
+  #   route( 'app_a/do_something' ) #=> "app_a: do_something with {:suffix=>\"do_something\"}"
+  #   route( 'app_b/1337/something_else' ) #=> "app_b: something_else with {\"x\"=>\"1337\", :suffix=>\"something_else\"}"
   #   route( 'bla' ) #=> 'not found'
   # 
   class Section < self
@@ -796,25 +802,35 @@ __REGEXP__
     # @example
     #   sect = URITemplate::Draft7::Section.new('/prefix…')
     #   sect >> '……' #=> sect
+    #
+    # @example Just ellipsis has a special syntax to allow empty matches.
+    #   sect = URITemplate::Draft7::Section.new('…')
+    #   combo = sect >> '…'
+    #   combo.pattern #=> ""
+    #   combo === "" #=> true
+    #   combo === "/foo" #=> false
     # 
     # @return Section
     def >>(other)
       o = self.class.try_convert(other)
       if o.kind_of? Section
-        if !self.right_bound? and !o.left_bound?
-          #if self.tokens.size == 1
-          #  return o
-          #end
-          tkns = self.tokens[0..-2] + o.tokens[1..-1]
-          unless tkns.first.kind_of? Terminal
-            tkns.unshift(LeftBound.new)
+        if !self.right_bound?
+          if o.pattern == ELLIPSIS
+            return self.class.new("", o.options)
+          elsif !o.left_bound?
+            #if self.tokens.size == 1
+            #  return o
+            #end
+            tkns = self.tokens[0..-2] + o.tokens[1..-1]
+            unless tkns.first.kind_of? Terminal
+              tkns.unshift(LeftBound.new)
+            end
+            unless tkns.last.kind_of? Terminal
+              tkns.push(RightBound.new)
+            end
+            return self.class.new(tkns, o.options)
           end
-          unless tkns.last.kind_of? Terminal
-            tkns.push(RightBound.new)
-          end
-          return self.class.new(tkns, o.options)
         end
-      else
         raise ArgumentError, "Expected something that could be converted to a URITemplate section, but got #{other.inspect}"
       end
     end
@@ -824,8 +840,7 @@ __REGEXP__
     def tokenize!
       pat = pattern
       if pat == ELLIPSIS # just ellipsis
-        lb = true
-        rb = false
+        return [LeftBound.new, Open.new]
       else
         lb = (pat[0] != ELLIPSIS)
         rb = (pat[-1] != ELLIPSIS)

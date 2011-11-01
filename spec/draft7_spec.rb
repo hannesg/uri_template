@@ -436,7 +436,8 @@ describe URITemplate::Draft7 do
       
       combo2 = chain >> "…"
       
-      combo2.should be_nil
+      combo2.should === ""
+      combo2.should_not === "a"
       
     end
     
