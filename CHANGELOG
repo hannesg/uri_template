@@ -1,0 +1,6 @@
+# 0.0.2 -  1.11.2011
+* BUGFIX: Concatenating empty sections no more leads to catch-all templates, when an emtpy template was appreciated.
++ The extracted variables now contains the keys :suffix and :prefix if the match didn't consume the whole uri.
+
+# 0.0.1 - 30.10.2011
+Initial version
