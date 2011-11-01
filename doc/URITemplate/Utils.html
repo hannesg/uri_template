@@ -299,14 +299,14 @@ opposite of #pct.
       <pre class="lines">
 
 
-46
-47
-48
-49
-50</pre>
+62
+63
+64
+65
+66</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/utils.rb', line 46</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/utils.rb', line 62</span>
 
 <span class='kw'>def</span> <span class='id dpct'>dpct</span><span class='lparen'>(</span><span class='id s'>s</span><span class='rparen'>)</span>
   <span class='id s'>s</span><span class='period'>.</span><span class='id to_s'>to_s</span><span class='period'>.</span><span class='id encode'>encode</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>ASCII</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id gsub'>gsub</span><span class='lparen'>(</span><span class='const'>PCT</span><span class='rparen'>)</span><span class='lbrace'>{</span>
@@ -376,20 +376,20 @@ Unconvertable if the object could not be converted.
       <pre class="lines">
 
 
-62
-63
-64
-65
-66
-67
-68
-69
-70
-71
-72</pre>
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/utils.rb', line 62</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/utils.rb', line 78</span>
 
 <span class='kw'>def</span> <span class='id object_to_param'>object_to_param</span><span class='lparen'>(</span><span class='id object'>object</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='id object'>object</span><span class='period'>.</span><span class='id respond_to?'>respond_to?</span> <span class='symbol'>:to_param</span>
@@ -459,13 +459,13 @@ doesn&#8217;t allow duplicate keys.
       <pre class="lines">
 
 
-83
-84
-85
-86</pre>
+99
+100
+101
+102</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/utils.rb', line 83</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/utils.rb', line 99</span>
 
 <span class='kw'>def</span> <span class='id pair_array?'>pair_array?</span><span class='lparen'>(</span><span class='id a'>a</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='kw'>false</span> <span class='kw'>unless</span> <span class='id a'>a</span><span class='period'>.</span><span class='id kind_of?'>kind_of?</span> <span class='const'>Array</span>
@@ -513,16 +513,16 @@ returns the value. You can test whether a value will be converted with
       <pre class="lines">
 
 
-95
-96
-97
-98
-99
-100
-101</pre>
+111
+112
+113
+114
+115
+116
+117</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/utils.rb', line 95</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/utils.rb', line 111</span>
 
 <span class='kw'>def</span> <span class='id pair_array_to_hash'>pair_array_to_hash</span><span class='lparen'>(</span><span class='id a'>a</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='id pair_array?'>pair_array?</span><span class='lparen'>(</span><span class='id a'>a</span><span class='rparen'>)</span>
@@ -610,14 +610,14 @@ A regexp matching all characters, which need to be encoded.
       <pre class="lines">
 
 
-33
-34
-35
-36
-37</pre>
+49
+50
+51
+52
+53</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/utils.rb', line 33</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/utils.rb', line 49</span>
 
 <span class='kw'>def</span> <span class='id pct'>pct</span><span class='lparen'>(</span><span class='id s'>s</span><span class='comma'>,</span> <span class='id m'>m</span><span class='op'>=</span><span class='const'>NOT_SIMPLE_CHARS</span><span class='rparen'>)</span>
   <span class='id s'>s</span><span class='period'>.</span><span class='id to_s'>to_s</span><span class='period'>.</span><span class='id encode'>encode</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>UTF-8</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id gsub'>gsub</span><span class='lparen'>(</span><span class='id m'>m</span><span class='rparen'>)</span><span class='lbrace'>{</span>
@@ -634,7 +634,7 @@ A regexp matching all characters, which need to be encoded.
 </div>
     
     <div id="footer">
-  Generated on Sun Oct 30 21:19:34 2011 by 
+  Generated on Tue Nov  1 12:06:03 2011 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.7.3 (ruby-1.9.2).
 </div>
