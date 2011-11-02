@@ -718,14 +718,6 @@ __REGEXP__
       return nil
     else
       result = extract_matchdata(m)
-      if m.pre_match and m.pre_match.size > 0
-        result.unshift( [:prefix, m.pre_match] )
-      end
-      if m.post_match and m.post_match.size > 0
-        puts m.post_match.inspect
-        puts m.inspect
-        result.push( [:suffix, m.post_match] )
-      end
       if post_processing.include? :convert_values
         result.map!{|k,v| [k, Utils.pair_array_to_hash(v)] }
       end
