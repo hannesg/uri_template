@@ -43,30 +43,6 @@ describe URITemplate do
   
   end
   
-  describe 'section resolving' do
-    
-    
-    it 'should create template sections' do
-    
-      URITemplate::Section.new('{x}').should == URITemplate::Draft7::Section.new('{x}')
-      
-    end
-    
-    it 'should be able to select a template version' do
-    
-      URITemplate::Section.new(:draft7,'{x}').should == URITemplate::Draft7::Section.new('{x}')
-      URITemplate::Section.new('{x}',:draft7).should == URITemplate::Draft7::Section.new('{x}')
-    
-    end
-    
-    it 'should raise when given an invalid version' do
-    
-      lambda{ URITemplate::Section.new(:foo,'{x}') }.should raise_error(ArgumentError)
-    
-    end
-  
-  end
-  
   describe "docs" do
   
     gem 'yard'
@@ -80,7 +56,7 @@ describe URITemplate do
           code = tag.text.gsub(/(.*)\s*#=>(.*)(\n|$)/){
             "(#{$1}).should == #{$2}\n"
           }
-          it "#{object.to_s} in #{object.file} should have valid example #{(i+1).to_s}" do
+          it "#{object.to_s} in #{object.file}:#{object.line} should have valid example #{(i+1).to_s}" do
             lambda{ eval code }.should_not raise_error
           end
         end
@@ -91,9 +67,23 @@ describe URITemplate do
   
   describe "utils" do
   
-    it "should raise when an object is not convertable" do
+    it "should raise on basic object" do
     
       lambda{ URITemplate::Utils.object_to_param(BasicObject.new) }.should raise_error(URITemplate::Unconvertable)
+    
+    end
+    
+    it "should raise when an object is not convertable to string" do
+    
+      obj = Object.new
+      
+      class << obj
+      
+        undef to_s
+      
+      end
+    
+      lambda{ URITemplate::Utils.object_to_param(obj) }.should raise_error(URITemplate::Unconvertable)
     
     end
   

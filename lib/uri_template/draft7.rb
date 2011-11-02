@@ -34,7 +34,7 @@ class URITemplate::Draft7
   Utils = URITemplate::Utils
   
   # @private
-  LITERAL = /^([^"'%<>\\^`{|}\s]|%\h\h)+/
+  LITERAL = /^([^"'%<>\\^`{|}\s\p{Cc}]|%\h\h)+/
   
   # @private
   CHARACTER_CLASSES = {
@@ -60,19 +60,19 @@ class URITemplate::Draft7
   }
   
   # Specifies that no processing should be done upon extraction.
-  # @see extract
+  # @see #extract
   NO_PROCESSING = []
   
   # Specifies that the extracted values should be processed.
-  # @see extract
+  # @see #extract
   CONVERT_VALUES = [:convert_values]
   
   # Specifies that the extracted variable list should be processed.
-  # @see extract
+  # @see #extract
   CONVERT_RESULT = [:convert_result]
   
   # Default processing. Means: convert values and the list itself.
-  # @see extract
+  # @see #extract
   DEFAULT_PROCESSING = CONVERT_VALUES + CONVERT_RESULT
   
   # @private
@@ -99,11 +99,15 @@ __REGEXP__
 (?<varchar> [a-zA-Z_]|%[0-9a-fA-F]{2}){0}
 (?<varname> \g<varchar>(?:\g<varchar>|\.)*){0}
 (?<varspec> \g<varname>\*?(?::\d+)?){0}
-^(([^"'%<>^`{|}\s]|%\h\h)+|\{\g<operator>(?<vars>\g<varspec>(?:,\g<varspec>)*)\})*$
+^(([^"'%<>^`{|}\s\p{Cc}]|%\h\h)+|\{\g<operator>(?<vars>\g<varspec>(?:,\g<varspec>)*)\})*$
 __REGEXP__
   
   # @private
-  class Literal
+  class Token
+  end
+  
+  # @private
+  class Literal < Token
   
     attr_reader :string
   
@@ -113,6 +117,10 @@ __REGEXP__
     
     def size
       0
+    end
+    
+    def level
+      1
     end
     
     def expand(*_)
@@ -128,58 +136,9 @@ __REGEXP__
     end
     
   end
-  
+
   # @private
-  class Terminal
-    def expand(*_)
-      ''
-    end
-    
-    def size
-      0
-    end
-  end
-  
-  # @private
-  class LeftBound < Terminal
-    
-    def to_r_source(*_)
-      '^'
-    end
-    
-    def to_s
-      ''
-    end
-    
-  end
-  
-  # @private
-  class RightBound < Terminal
-    
-    def to_r_source(*_)
-      '$'
-    end
-    
-    def to_s
-      ''
-    end
-    
-  end
-  
-  # @private
-  class Open < Terminal
-    
-    def to_r_source(*_)
-      ''
-    end
-    
-    def to_s
-      "\u2026"
-    end
-  end
-  
-  # @private
-  class Expression
+  class Expression < Token
     
     attr_reader :variables, :max_length
     
@@ -192,6 +151,7 @@ __REGEXP__
     PAIR_CONNECTOR = '='.freeze
     PAIR_IF_EMPTY = true
     LIST_CONNECTOR = ','.freeze
+    BASE_LEVEL = 1
     
     CHARACTER_CLASS = CHARACTER_CLASSES[:unreserved]
     
@@ -200,6 +160,18 @@ __REGEXP__
     
     def size
       @variables.size
+    end
+    
+    def level
+      if @variables.none?{|_,expand,ml| expand || (ml > 0) }
+        if @variables.size == 1
+          return self.class::BASE_LEVEL
+        else
+          return 3
+        end
+      else
+        return 4
+      end
     end
     
     def expand( vars, options )
@@ -243,7 +215,7 @@ __REGEXP__
           value = "(?:\\g<#{self.class::CHARACTER_CLASS[:class_name]}>|,)#{(max_length > 0)?'{,'+max_length.to_s+'}':'*'}"
           if expand
             #if self.class::PAIR_IF_EMPTY
-            pair = "\\g<c_vn_>(?:#{Regexp.escape(self.class::PAIR_CONNECTOR)}#{value})?"
+            pair = "(?:\\g<c_vn_>#{Regexp.escape(self.class::PAIR_CONNECTOR)})?#{value}"
             
             if first
               source << "(?<v#{base_counter + i}>(?:#{pair})(?:#{Regexp.escape(self.class::SEPARATOR)}#{pair})*)"
@@ -274,7 +246,7 @@ __REGEXP__
             # could be list or map, too
             value = "\\g<#{self.class::CHARACTER_CLASS[:class_name]}>#{(max_length > 0)?'{,'+max_length.to_s+'}':'*'}"
             
-            pair = "\\g<c_vn_>(?:#{Regexp.escape(self.class::PAIR_CONNECTOR)}#{value})?"
+            pair = "(?:\\g<c_vn_>#{Regexp.escape(self.class::PAIR_CONNECTOR)})?#{value}"
             
             value = "#{pair}(?:#{Regexp.escape(self.class::SEPARATOR)}#{pair})*"
           elsif last
@@ -323,12 +295,12 @@ __REGEXP__
             found_value = true
             splitted << [ match['name'][0..-2], decode(match['value'] + rest , false) ]
           else
-            splitted << [ decode(match['value'] + rest , false), nil ]
+            splitted << [ match['value'] + rest, nil ]
           end
           rest = match.post_match
         end
         if !found_value
-          return [ [ name, splitted.map{|n,v| v || n } ] ]
+          return [ [ name, splitted.map{|n,v| decode(n , false) } ] ]
         else
           return [ [ name, splitted ] ]
         end
@@ -433,6 +405,7 @@ __REGEXP__
     
       CHARACTER_CLASS = CHARACTER_CLASSES[:unreserved_reserved_pct]
       OPERATOR = '+'.freeze
+      BASE_LEVEL = 2
     
     end
     
@@ -441,6 +414,7 @@ __REGEXP__
       CHARACTER_CLASS = CHARACTER_CLASSES[:unreserved_reserved_pct]
       PREFIX = '#'.freeze
       OPERATOR = '#'.freeze
+      BASE_LEVEL = 2
     
     end
     
@@ -449,6 +423,7 @@ __REGEXP__
       SEPARATOR = '.'.freeze
       PREFIX = '.'.freeze
       OPERATOR = '.'.freeze
+      BASE_LEVEL = 3
     
     end
     
@@ -457,6 +432,7 @@ __REGEXP__
       SEPARATOR = '/'.freeze
       PREFIX = '/'.freeze
       OPERATOR = '/'.freeze
+      BASE_LEVEL = 3
     
     end
     
@@ -467,6 +443,7 @@ __REGEXP__
       NAMED = true
       PAIR_IF_EMPTY = false
       OPERATOR = ';'.freeze
+      BASE_LEVEL = 3
     
     end
     
@@ -476,6 +453,7 @@ __REGEXP__
       PREFIX = '?'.freeze
       NAMED = true
       OPERATOR = '?'.freeze
+      BASE_LEVEL = 3
     
     end
     
@@ -485,6 +463,7 @@ __REGEXP__
       PREFIX = '&'.freeze
       NAMED = true
       OPERATOR = '&'.freeze
+      BASE_LEVEL = 3
     
     end
     
@@ -559,6 +538,7 @@ __REGEXP__
   
     # Tries to convert the given param in to a instance of {Draft7}
     # It basically passes thru instances of that class, parses strings and return nil on everything else.
+    #
     # @example
     #   URITemplate::Draft7.try_convert( Object.new ) #=> nil
     #   tpl = URITemplate::Draft7.new('{foo}')
@@ -566,6 +546,7 @@ __REGEXP__
     #   URITemplate::Draft7.try_convert('{foo}') #=> tpl
     #   # This pattern is invalid, so it wont be parsed:
     #   URITemplate::Draft7.try_convert('{foo') #=> nil
+    #
     def try_convert(x)
       if x.kind_of? self
         return x
@@ -573,6 +554,19 @@ __REGEXP__
         return new(x)
       else
         return nil
+      end
+    end
+    
+    
+    # Like {.try_convert}, but raises an ArgumentError, when the conversion failed.
+    # 
+    # @raise ArgumentError
+    def convert(x)
+      o = self.try_convert(x)
+      if o.nil?
+        raise ArgumentError, "Expected to receive something that can be converted to an #{self.class}, but got: #{x.inspect}."
+      else
+        return o
       end
     end
     
@@ -663,28 +657,49 @@ __REGEXP__
   def to_r
     classes = CHARACTER_CLASSES.map{|_,v| v[:class]+"{0}\n" }
     bc = 0
-    @regexp ||= Regexp.new(classes.join + tokens.map{|part|
+    @regexp ||= Regexp.new(classes.join + '\A' + tokens.map{|part|
       r = part.to_r_source(bc)
       bc += part.size
       r
-    }.join, Regexp::EXTENDED)
+    }.join + '\z' , Regexp::EXTENDED)
   end
   
   
   # Extracts variables from a uri ( given as string ) or an instance of MatchData ( which was matched by the regexp of this template.
-  # The actual result depends on the value of @p post_processing.
+  # The actual result depends on the value of post_processing.
   # This argument specifies whether pair arrays should be converted to hashes.
   # 
-  # @example
+  # @example Default Processing
   #   URITemplate::Draft7.new('{var}').extract('value') #=> {'var'=>'value'}
   #   URITemplate::Draft7.new('{&args*}').extract('&a=1&b=2') #=> {'args'=>{'a'=>'1','b'=>'2'}}
   #   URITemplate::Draft7.new('{&arg,arg}').extract('&arg=1&arg=2') #=> {'arg'=>'2'}
   #
-  # @example
+  # @example No Processing
   #   URITemplate::Draft7.new('{var}').extract('value', URITemplate::Draft7::NO_PROCESSING) #=> [['var','value']]
   #   URITemplate::Draft7.new('{&args*}').extract('&a=1&b=2', URITemplate::Draft7::NO_PROCESSING) #=> [['args',[['a','1'],['b','2']]]]
   #   URITemplate::Draft7.new('{&arg,arg}').extract('&arg=1&arg=2', URITemplate::Draft7::NO_PROCESSING) #=> [['arg','1'],['arg','2']]
   #
+  # @raise Encoding::InvalidByteSequenceError when the given uri was not properly encoded.
+  # @raise Encoding::UndefinedConversionError when the given uri could not be converted to utf-8.
+  # @raise Encoding::CompatibilityError when the given uri could not be converted to utf-8.
+  #
+  # @param [String,MatchData] Uri_or_MatchData A uri or a matchdata from which the variables should be extracted.
+  # @param [Array] Processing Specifies which processing should be done.
+  # 
+  # @note
+  #   Don't expect that an extraction can fully recover the expanded variables. Extract rather generates a variable list which should expand to the uri from which it were extracted. In general the following equation should hold true:
+  #     a_tpl.expand( a_tpl.extract( an_uri ) ) == an_uri
+  #
+  # @example Extraction cruces
+  #   two_lists = URITemplate::Draft7.new('{listA*,listB*}')
+  #   uri = two_lists.expand('listA'=>[1,2],'listB'=>[3,4]) #=> "1,2,3,4"
+  #   variables = two_lists.extract( uri ) #=> {'listA'=>["1","2","3","4"],'listB'=>nil}
+  #   # However, like said in the note:
+  #   two_lists.expand( variables ) == uri #=> true
+  #
+  # @note
+  #   The current implementation drops duplicated variables instead of checking them.
+  #   
   #   
   def extract(uri_or_match, post_processing = DEFAULT_PROCESSING )
     if uri_or_match.kind_of? String
@@ -703,12 +718,6 @@ __REGEXP__
       return nil
     else
       result = extract_matchdata(m)
-      if m.pre_match and m.pre_match.size > 0
-        result.unshift( [:prefix, m.pre_match] )
-      end
-      if m.post_match and m.post_match.size > 0
-        result.push( [:suffix, m.post_match] )
-      end
       if post_processing.include? :convert_values
         result.map!{|k,v| [k, Utils.pair_array_to_hash(v)] }
       end
@@ -738,118 +747,6 @@ __REGEXP__
   end
   
   alias to_s pattern
-
-  # Sections are a custom extension to the uri template spec.
-  # A template section ( in comparison to a template ) can be unbounded on its ends. Therefore they don't necessarily match a whole uri and can be concatenated.
-  # Unboundedness is denoted with unicode character \u2026 ( … ).
-  # 
-  # @example
-  #   prefix = URITemplate::Draft7::Section.new('/prefix…')
-  #   template = URITemplate::Draft7.new('/prefix')
-  #   prefix === '/prefix/something completly different' #=> true
-  #   template === '/prefix/something completly different' #=> false
-  #   prefix.to_r.match('/prefix/something completly different').post_match #=> '/something completly different'
-  # 
-  # @example
-  #   prefix = URITemplate::Draft7::Section.new('/prefix…')
-  #   tpl = prefix >> '…/end'
-  #   tpl.pattern #=> '/prefix/end'
-  # 
-  # This behavior is usefull for building routers:
-  # 
-  # @example
-  #   
-  #   def route( uri )
-  #     prefixes = [
-  #       [ 'app_a/…' , lambda{|vars, rest| "app_a: #{rest} with #{vars.inspect}" } ],
-  #       [ 'app_b/{x}/…', lambda{|vars, rest| "app_b: #{rest} with #{vars.inspect}" } ]
-  #     ]
-  #     prefixes.each do |tpl, lb|
-  #       tpl = URITemplate::Draft7::Section.new(tpl)
-  #       tpl.match(uri) do |match_data|
-  #         return lb.call(tpl.extract(match_data), match_data.post_match)
-  #       end
-  #     end
-  #     return "not found"
-  #   end
-  #   route( 'app_a/do_something' ) #=> "app_a: do_something with {:suffix=>\"do_something\"}"
-  #   route( 'app_b/1337/something_else' ) #=> "app_b: something_else with {\"x\"=>\"1337\", :suffix=>\"something_else\"}"
-  #   route( 'bla' ) #=> 'not found'
-  # 
-  class Section < self
-  
-    include URITemplate::Section
-  
-    # The ellipsis character.
-    ELLIPSIS = "\u2026".freeze
-    
-    # Is this section left bounded?
-    def left_bound?
-      tokens.first.kind_of? LeftBound
-    end
-    
-    # Is this section right bounded?
-    def right_bound?
-      tokens.last.kind_of? RightBound
-    end
-    
-    # Concatenates this section with anything that can be coerced into a section.
-    # 
-    # @example
-    #   sect = URITemplate::Draft7::Section.new('/prefix…')
-    #   sect >> '…/mid…' >> '…/end' #=> URITemplate::Draft7::Section.new('/prefix/mid/end')
-    #
-    # @example
-    #   sect = URITemplate::Draft7::Section.new('/prefix…')
-    #   sect >> '……' #=> sect
-    #
-    # @example Just ellipsis has a special syntax to allow empty matches.
-    #   sect = URITemplate::Draft7::Section.new('…')
-    #   combo = sect >> '…'
-    #   combo.pattern #=> ""
-    #   combo === "" #=> true
-    #   combo === "/foo" #=> false
-    # 
-    # @return Section
-    def >>(other)
-      o = self.class.try_convert(other)
-      if o.kind_of? Section
-        if !self.right_bound?
-          if o.pattern == ELLIPSIS
-            return self.class.new("", o.options)
-          elsif !o.left_bound?
-            #if self.tokens.size == 1
-            #  return o
-            #end
-            tkns = self.tokens[0..-2] + o.tokens[1..-1]
-            unless tkns.first.kind_of? Terminal
-              tkns.unshift(LeftBound.new)
-            end
-            unless tkns.last.kind_of? Terminal
-              tkns.push(RightBound.new)
-            end
-            return self.class.new(tkns, o.options)
-          end
-        end
-        raise ArgumentError, "Expected something that could be converted to a URITemplate section, but got #{other.inspect}"
-      end
-    end
-    
-    protected
-    # @private
-    def tokenize!
-      pat = pattern
-      if pat == ELLIPSIS # just ellipsis
-        return [LeftBound.new, Open.new]
-      else
-        lb = (pat[0] != ELLIPSIS)
-        rb = (pat[-1] != ELLIPSIS)
-      end
-      pat = pat[ (lb ? 0 : 1)..(rb ? -1 : -2) ]
-      [lb ? LeftBound.new : Open.new] + Tokenizer.new(pat).to_a + [rb ? RightBound.new : Open.new]
-    end
-  
-  end
   
   # Compares two template patterns.
   def ==(tpl)
@@ -868,10 +765,140 @@ __REGEXP__
   # @return MatchData, Object 
   def_delegators :to_r, :match
 
+  # The type of this template.
+  #
+  # @example
+  #   tpl1 = URITemplate::Draft7.new('/foo')
+  #   tpl2 = URITemplate.new( tpl1.pattern, tpl1.type )
+  #   tpl1 == tpl2 #=> true
+  #
+  # @see {URITemplate#type}
+  def type
+    :draft7
+  end
+  
+  # Returns the level of this template according to the draft ( http://tools.ietf.org/html/draft-gregorio-uritemplate-07#section-1.2 ). Higher level means higher complexity.
+  # Basically this is defined as:
+  # 
+  # * Level 1: no operators, one variable per expansion, no variable modifiers
+  # * Level 2: '+' and '#' operators, one variable per expansion, no variable modifiers
+  # * Level 3: all operators, multiple variables per expansion, no variable modifiers
+  # * Level 4: all operators, multiple variables per expansion, all variable modifiers
+  #
+  # @example
+  #   URITemplate::Draft7.new('/foo/').level #=> 1
+  #   URITemplate::Draft7.new('/foo{bar}').level #=> 1
+  #   URITemplate::Draft7.new('/foo{#bar}').level #=> 2
+  #   URITemplate::Draft7.new('/foo{.bar}').level #=> 3
+  #   URITemplate::Draft7.new('/foo{bar,baz}').level #=> 3
+  #   URITemplate::Draft7.new('/foo{bar:20}').level #=> 4
+  #   URITemplate::Draft7.new('/foo{bar*}').level #=> 4
+  #
+  # Templates of lower levels might be convertible to other formats while templates of higher levels might be incompatible. Level 1 for example should be convertible to any other format since it just contains simple expansions.
+  #
+  def level
+    tokens.map(&:level).max
+  end
+  
+  # Tries to conatenate two templates, as if they were path segments.
+  # Removes double slashes or insert one if they are missing.
+  #
+  # @example
+  #   tpl = URITemplate::Draft7.new('/xy/')
+  #   (tpl / '/z/' ).pattern #=> '/xy/z/'
+  #   (tpl / 'z/' ).pattern #=> '/xy/z/'
+  #   (tpl / '{/z}' ).pattern #=> '/xy{/z}'
+  #   (tpl / 'a' / 'b' ).pattern #=> '/xy/a/b'
+  #
+  def /(o)
+    other = self.class.convert(o)
+    
+    if other.absolute?
+      raise ArgumentError, "Expected to receive a relative template but got an absoulte one: #{other.inspect}. If you think this is a bug, please report it."
+    end
+    
+    if other.pattern == ''
+      return self
+    end
+    # Merge!
+    # Analyze the last token of this an the first token of the next and try to merge them
+    if self.tokens.last.kind_of?(Literal)
+      if self.tokens.last.string[-1] == '/' # the last token ends with an /
+        if other.tokens.first.kind_of? Literal
+          # both seems to be paths, merge them!
+          if other.tokens.first.string[0] == '/'
+            # strip one '/'
+            return self.class.new( self.tokens[0..-2] + [ Literal.new(self.tokens.last.string + other.tokens.first.string[1..-1]) ] + other.tokens[1..-1] )
+          else
+            # no problem, but we can merge them
+            return self.class.new( self.tokens[0..-2] + [ Literal.new(self.tokens.last.string + other.tokens.first.string) ] + other.tokens[1..-1] )
+          end
+        elsif other.tokens.first.kind_of? Expression::Path
+          # this will automatically insert '/'
+          # so we can strip one '/'
+          return self.class.new( self.tokens[0..-2] + [ Literal.new(self.tokens.last.string[0..-2]) ] + other.tokens )
+        end
+      end
+    end
+    if other.tokens.first.kind_of?(Expression::Path) or (other.tokens.first.kind_of?(Literal) and other.tokens.first.string[0] == '/')
+      return self.class.new( self.tokens + other.tokens )
+    else
+      return self.class.new( self.tokens + [Literal.new('/')] + other.tokens )
+    end
+  end
+  
+  
+  #
+  # should be relative:
+  #  xxx ...
+  #  {xxx}x ...
+  # 
+  #  should not be relative:
+  #  {proto}:// ...
+  #  http:// ...
+  #  http{ssl}:// ...
+  #
+  def absolute?
+    read_chars = ""
+    
+    tokens.each do |token|
+      if token.kind_of? Expression
+        if token.class::OPERATOR == ''
+          read_chars << "x"
+        else
+          return false
+        end
+      elsif token.kind_of? Literal
+        read_chars << token.string
+      end
+      if read_chars =~ /^[a-z]+:\/\//i
+        return true
+      elsif read_chars =~ /(?<!:|\/)\/(?!\/)/
+        return false
+      end
+    end
+    
+    return false
+  end
+  
+  # Returns the number of static characters in this template.
+  # This method is useful for routing, since it's often pointful to use the url with fewer variable characters.
+  # For example 'static' and 'sta{var}' both match 'static', but in most cases 'static' should be prefered over 'sta{var}' since it's more specific.
+  #
+  # @example
+  #   URITemplate::Draft7.new('/xy/').static_characters #=> 4
+  #   URITemplate::Draft7.new('{foo}').static_characters #=> 0
+  #   URITemplate::Draft7.new('a{foo}b').static_characters #=> 2
+  #
+  # @return Numeric
+  def static_characters
+    @static_characters ||= tokens.select{|t| t.kind_of?(Literal) }.map{|t| t.string.size }.inject(0,:+)
+  end
+
 protected
   # @private
   def tokenize!
-    [LeftBound.new] + Tokenizer.new(pattern).to_a + [RightBound.new]
+    Tokenizer.new(pattern).to_a
   end
   
   def tokens

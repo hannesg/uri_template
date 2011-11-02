@@ -18,6 +18,7 @@
 # A base module for all implementations of a uri template.
 module URITemplate
 
+  autoload :Utils, 'uri_template/utils'
   autoload :Draft7, 'uri_template/draft7'
   
   # A hash with all available implementations.
@@ -39,6 +40,7 @@ module URITemplate
   #   URITemplate.resolve_class("template",:draft7) #=> [ URITemplate::Draft7, ["template"] ]
   # 
   # @raise ArgumentError when no class was found.
+  #
   def self.resolve_class(*args)
     symbols, rest = args.partition{|x| x.kind_of? Symbol }
     version = symbols.fetch(0, :default)
@@ -66,45 +68,18 @@ module URITemplate
   module Invalid
   end
   
-  # A base module for all implementation of a template section.
-  # Sections are a custom extension to the uri template spec.
-  # A template section ( in comparison to a template ) can be unbounded on its ends. Therefore they don't necessarily match a whole uri and can be concatenated.
-  module Section
-  
-    include URITemplate
-  
-    # Same as {URITemplate.new} but for sections
-    def self.new(*args)
-      klass, rest = URITemplate.resolve_class(*args)
-      return klass::Section.new(*rest)
-    end
-    
-    # @abstract
-    # Concatenates this section with an other section.
-    def >>(other)
-      raise "Please implement #>> on #{self.class.inspect}"
-    end
-    
-    # @abstract
-    # Is this section left bounded?
-    def left_bound?
-      raise "Please implement #left_bound? on #{self.class.inspect}"
-    end
-  
-    # @abstract
-    # Is this section right bounded?
-    def right_bound?
-      raise "Please implement #right_bound? on #{self.class.inspect}"
-    end
-  
-  end
-  
   # @abstract
   # Expands this uri template with the given variables.
   # The variables should be converted to strings using {Utils#object_to_param}.
-  # @raise Unconvertable if a variable could not be converted.
+  # @raise {Unconvertable} if a variable could not be converted to a string.
   def expand(variables={})
-    raise "Please implement #expand on #{self.class.inspect}"
+    raise "Please implement #expand on #{self.class.inspect}."
+  end
+  
+  # @abstract
+  # Returns the type of this template. The type is a symbol which can be used in {.resolve_class} to resolve the type of this template.
+  def type
+    raise "Please implement #type on #{self.class.inspect}."
   end
 
 end
