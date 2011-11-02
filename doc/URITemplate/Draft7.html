@@ -126,11 +126,7 @@ href="http://tools.ietf.org/html/draft-gregorio-uritemplate-07">tools.ietf.org/h
 <div class="tags">
   
 
-</div><div id="subclasses">
-  <h2>Direct Known Subclasses</h2>
-  <p class="children"><span class='object_link'><a href="Draft7/Section.html" title="URITemplate::Draft7::Section (class)">Section</a></span></p>
-</div>
-<h2>Defined Under Namespace</h2>
+</div><h2>Defined Under Namespace</h2>
 <p class="children">
    
     
@@ -138,7 +134,7 @@ href="http://tools.ietf.org/html/draft-gregorio-uritemplate-07">tools.ietf.org/h
     
    
     
-      <strong class="classes">Classes:</strong> <span class='object_link'><a href="Draft7/Invalid.html" title="URITemplate::Draft7::Invalid (class)">Invalid</a></span>, <span class='object_link'><a href="Draft7/Section.html" title="URITemplate::Draft7::Section (class)">Section</a></span>
+      <strong class="classes">Classes:</strong> <span class='object_link'><a href="Draft7/Invalid.html" title="URITemplate::Draft7::Invalid (class)">Invalid</a></span>
     
   
 </p>
@@ -163,7 +159,7 @@ Specifies that no processing should be done upon extraction.
   <h3>See Also:</h3>
   <ul class="see">
     
-      <li>extract</li>
+      <li><span class='object_link'><a href="#extract-instance_method" title="URITemplate::Draft7#extract (method)">#extract</a></span></li>
     
   </ul>
 
@@ -187,7 +183,7 @@ Specifies that the extracted values should be processed.
   <h3>See Also:</h3>
   <ul class="see">
     
-      <li>extract</li>
+      <li><span class='object_link'><a href="#extract-instance_method" title="URITemplate::Draft7#extract (method)">#extract</a></span></li>
     
   </ul>
 
@@ -211,7 +207,7 @@ Specifies that the extracted variable list should be processed.
   <h3>See Also:</h3>
   <ul class="see">
     
-      <li>extract</li>
+      <li><span class='object_link'><a href="#extract-instance_method" title="URITemplate::Draft7#extract (method)">#extract</a></span></li>
     
   </ul>
 
@@ -235,7 +231,7 @@ Default processing. Means: convert values and the list itself.
   <h3>See Also:</h3>
   <ul class="see">
     
-      <li>extract</li>
+      <li><span class='object_link'><a href="#extract-instance_method" title="URITemplate::Draft7#extract (method)">#extract</a></span></li>
     
   </ul>
 
@@ -341,6 +337,30 @@ Returns the pattern for this template.
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="#%2F-instance_method" title="#/ (instance method)">- (Object) <strong>/</strong>(o) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+Tries to conatenate two templates, as if they were path segments.
+</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#%3D%3D-instance_method" title="#== (instance method)">- (Object) <strong>==</strong>(tpl) </a>
     
 
@@ -380,6 +400,30 @@ Compares two template patterns.
   
     <span class="summary_desc"><div class='inline'><p>
 Alias for to_r.=== .
+</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#absolute%3F-instance_method" title="#absolute? (instance method)">- (Boolean) <strong>absolute?</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+should be relative:.
 </p>
 </div></span>
   
@@ -429,7 +473,7 @@ Expands the template with the given variables.
     <span class="summary_desc"><div class='inline'><p>
 Extracts variables from a uri ( given as string ) or an instance of
 MatchData ( which was matched by the regexp of this template. The actual
-result depends on the value of @p post_processing. This argument specifies
+result depends on the value of post_processing. This argument specifies
 whether pair arrays should be converted to hashes..
 </p>
 </div></span>
@@ -490,6 +534,32 @@ A new instance of Draft7.
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="#level-instance_method" title="#level (instance method)">- (Object) <strong>level</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+Returns the level of this template according to the draft ( <a
+href="http://tools.ietf.org/html/draft-gregorio-uritemplate-07#section-1.2">tools.ietf.org/html/draft-gregorio-uritemplate-07#section-1.2</a>
+).
+</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#match-instance_method" title="#match (instance method)">- (Object) <strong>match</strong>(uri) </a>
     
 
@@ -505,6 +575,30 @@ A new instance of Draft7.
   
     <span class="summary_desc"><div class='inline'><p>
 Alias for to_r.match .
+</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#static_characters-instance_method" title="#static_characters (instance method)">- (Object) <strong>static_characters</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+Returns the number of static characters in this template.
 </p>
 </div></span>
   
@@ -530,6 +624,30 @@ Alias for to_r.match .
     <span class="summary_desc"><div class='inline'><p>
 Compiles this template into a regular expression which can be used to test
 whether a given uri matches this template.
+</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#type-instance_method" title="#type (instance method)">- (Object) <strong>type</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+The type of this template.
 </p>
 </div></span>
   
@@ -572,7 +690,7 @@ Returns an array containing all variables.
   
   
   <h3 class="inherited">Methods included from <span class='object_link'><a href="Draft7/ClassMethods.html" title="URITemplate::Draft7::ClassMethods (module)">ClassMethods</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="Draft7/ClassMethods.html#try_convert-instance_method" title="URITemplate::Draft7::ClassMethods#try_convert (method)">try_convert</a></span>, <span class='object_link'><a href="Draft7/ClassMethods.html#valid%3F-instance_method" title="URITemplate::Draft7::ClassMethods#valid? (method)">valid?</a></span></p>
+  <p class="inherited"><span class='object_link'><a href="Draft7/ClassMethods.html#convert-instance_method" title="URITemplate::Draft7::ClassMethods#convert (method)">convert</a></span>, <span class='object_link'><a href="Draft7/ClassMethods.html#try_convert-instance_method" title="URITemplate::Draft7::ClassMethods#try_convert (method)">try_convert</a></span>, <span class='object_link'><a href="Draft7/ClassMethods.html#valid%3F-instance_method" title="URITemplate::Draft7::ClassMethods#valid? (method)">valid?</a></span></p>
 
   
   
@@ -673,6 +791,12 @@ a customizable set of options
       <pre class="lines">
 
 
+593
+594
+595
+596
+597
+598
 599
 600
 601
@@ -681,16 +805,10 @@ a customizable set of options
 604
 605
 606
-607
-608
-609
-610
-611
-612
-613</pre>
+607</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 599</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 593</span>
 
 <span class='kw'>def</span> <span class='id initialize'>initialize</span><span class='lparen'>(</span><span class='id pattern_or_tokens'>pattern_or_tokens</span><span class='comma'>,</span><span class='id options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='ivar'>@options</span> <span class='op'>=</span> <span class='id options'>options</span><span class='period'>.</span><span class='id dup'>dup</span><span class='period'>.</span><span class='id freeze'>freeze</span>
@@ -745,12 +863,12 @@ Returns the value of attribute options
       <pre class="lines">
 
 
-594
-595
-596</pre>
+588
+589
+590</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 594</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 588</span>
 
 <span class='kw'>def</span> <span class='id options'>options</span>
   <span class='ivar'>@options</span>
@@ -792,12 +910,12 @@ Returns the pattern for this template.
       <pre class="lines">
 
 
-736
-737
-738</pre>
+745
+746
+747</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 736</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 745</span>
 
 <span class='kw'>def</span> <span class='id pattern'>pattern</span>
   <span class='ivar'>@pattern</span> <span class='op'>||=</span> <span class='id tokens'>tokens</span><span class='period'>.</span><span class='id map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:to_s</span><span class='rparen'>)</span><span class='period'>.</span><span class='id join'>join</span>
@@ -815,7 +933,126 @@ Returns the pattern for this template.
     
     
       <div class="method_details first">
-  <p class="signature first" id="==-instance_method">
+  <p class="signature first" id="/-instance_method">
+  
+    - (<tt>Object</tt>) <strong>/</strong>(o) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Tries to conatenate two templates, as if they were path segments. Removes
+double slashes or insert one if they are missing.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="examples">
+    <h3>Examples:</h3>
+    
+      <h4><div class='inline'></div></h4>
+      <pre class="example code"><span class='id tpl'>tpl</span> <span class='op'>=</span> <span class='const'>URITemplate</span><span class='op'>::</span><span class='const'>Draft7</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>/xy/</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
+<span class='lparen'>(</span><span class='id tpl'>tpl</span> <span class='op'>/</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>/z/</span><span class='tstring_end'>'</span></span> <span class='rparen'>)</span><span class='period'>.</span><span class='id pattern'>pattern</span> <span class='comment'>#=&gt; '/xy/z/'
+</span><span class='lparen'>(</span><span class='id tpl'>tpl</span> <span class='op'>/</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>z/</span><span class='tstring_end'>'</span></span> <span class='rparen'>)</span><span class='period'>.</span><span class='id pattern'>pattern</span> <span class='comment'>#=&gt; '/xy/z/'
+</span><span class='lparen'>(</span><span class='id tpl'>tpl</span> <span class='op'>/</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>{/z}</span><span class='tstring_end'>'</span></span> <span class='rparen'>)</span><span class='period'>.</span><span class='id pattern'>pattern</span> <span class='comment'>#=&gt; '/xy{/z}'
+</span><span class='lparen'>(</span><span class='id tpl'>tpl</span> <span class='op'>/</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>a</span><span class='tstring_end'>'</span></span> <span class='op'>/</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>b</span><span class='tstring_end'>'</span></span> <span class='rparen'>)</span><span class='period'>.</span><span class='id pattern'>pattern</span> <span class='comment'>#=&gt; '/xy/a/b'</span></pre>
+    
+  </div>
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+813
+814
+815
+816
+817
+818
+819
+820
+821
+822
+823
+824
+825
+826
+827
+828
+829
+830
+831
+832
+833
+834
+835
+836
+837
+838
+839
+840
+841
+842
+843
+844
+845
+846
+847
+848</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 813</span>
+
+<span class='kw'>def</span> <span class='op'>/</span><span class='lparen'>(</span><span class='id o'>o</span><span class='rparen'>)</span>
+  <span class='id other'>other</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id class'>class</span><span class='period'>.</span><span class='id convert'>convert</span><span class='lparen'>(</span><span class='id o'>o</span><span class='rparen'>)</span>
+  
+  <span class='kw'>if</span> <span class='id other'>other</span><span class='period'>.</span><span class='id absolute?'>absolute?</span>
+    <span class='id raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Expected to receive a relative template but got an absoulte one: </span><span class='embexpr_beg'>#{</span><span class='id other'>other</span><span class='period'>.</span><span class='id inspect'>inspect</span><span class='rbrace'>}</span><span class='tstring_content'>. If you think this is a bug, please report it.</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>end</span>
+  
+  <span class='kw'>if</span> <span class='id other'>other</span><span class='period'>.</span><span class='id pattern'>pattern</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_end'>'</span></span>
+    <span class='kw'>return</span> <span class='kw'>self</span>
+  <span class='kw'>end</span>
+  <span class='comment'># Merge!
+</span>  <span class='comment'># Analyze the last token of this an the first token of the next and try to merge them
+</span>  <span class='kw'>if</span> <span class='kw'>self</span><span class='period'>.</span><span class='id tokens'>tokens</span><span class='period'>.</span><span class='id last'>last</span><span class='period'>.</span><span class='id kind_of?'>kind_of?</span><span class='lparen'>(</span><span class='const'>Literal</span><span class='rparen'>)</span>
+    <span class='kw'>if</span> <span class='kw'>self</span><span class='period'>.</span><span class='id tokens'>tokens</span><span class='period'>.</span><span class='id last'>last</span><span class='period'>.</span><span class='id string'>string</span><span class='lbracket'>[</span><span class='op'>-</span><span class='int'>1</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>/</span><span class='tstring_end'>'</span></span> <span class='comment'># the last token ends with an /
+</span>      <span class='kw'>if</span> <span class='id other'>other</span><span class='period'>.</span><span class='id tokens'>tokens</span><span class='period'>.</span><span class='id first'>first</span><span class='period'>.</span><span class='id kind_of?'>kind_of?</span> <span class='const'>Literal</span>
+        <span class='comment'># both seems to be paths, merge them!
+</span>        <span class='kw'>if</span> <span class='id other'>other</span><span class='period'>.</span><span class='id tokens'>tokens</span><span class='period'>.</span><span class='id first'>first</span><span class='period'>.</span><span class='id string'>string</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>/</span><span class='tstring_end'>'</span></span>
+          <span class='comment'># strip one '/'
+</span>          <span class='kw'>return</span> <span class='kw'>self</span><span class='period'>.</span><span class='id class'>class</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span> <span class='kw'>self</span><span class='period'>.</span><span class='id tokens'>tokens</span><span class='lbracket'>[</span><span class='int'>0</span><span class='op'>..</span><span class='op'>-</span><span class='int'>2</span><span class='rbracket'>]</span> <span class='op'>+</span> <span class='lbracket'>[</span> <span class='const'>Literal</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='kw'>self</span><span class='period'>.</span><span class='id tokens'>tokens</span><span class='period'>.</span><span class='id last'>last</span><span class='period'>.</span><span class='id string'>string</span> <span class='op'>+</span> <span class='id other'>other</span><span class='period'>.</span><span class='id tokens'>tokens</span><span class='period'>.</span><span class='id first'>first</span><span class='period'>.</span><span class='id string'>string</span><span class='lbracket'>[</span><span class='int'>1</span><span class='op'>..</span><span class='op'>-</span><span class='int'>1</span><span class='rbracket'>]</span><span class='rparen'>)</span> <span class='rbracket'>]</span> <span class='op'>+</span> <span class='id other'>other</span><span class='period'>.</span><span class='id tokens'>tokens</span><span class='lbracket'>[</span><span class='int'>1</span><span class='op'>..</span><span class='op'>-</span><span class='int'>1</span><span class='rbracket'>]</span> <span class='rparen'>)</span>
+        <span class='kw'>else</span>
+          <span class='comment'># no problem, but we can merge them
+</span>          <span class='kw'>return</span> <span class='kw'>self</span><span class='period'>.</span><span class='id class'>class</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span> <span class='kw'>self</span><span class='period'>.</span><span class='id tokens'>tokens</span><span class='lbracket'>[</span><span class='int'>0</span><span class='op'>..</span><span class='op'>-</span><span class='int'>2</span><span class='rbracket'>]</span> <span class='op'>+</span> <span class='lbracket'>[</span> <span class='const'>Literal</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='kw'>self</span><span class='period'>.</span><span class='id tokens'>tokens</span><span class='period'>.</span><span class='id last'>last</span><span class='period'>.</span><span class='id string'>string</span> <span class='op'>+</span> <span class='id other'>other</span><span class='period'>.</span><span class='id tokens'>tokens</span><span class='period'>.</span><span class='id first'>first</span><span class='period'>.</span><span class='id string'>string</span><span class='rparen'>)</span> <span class='rbracket'>]</span> <span class='op'>+</span> <span class='id other'>other</span><span class='period'>.</span><span class='id tokens'>tokens</span><span class='lbracket'>[</span><span class='int'>1</span><span class='op'>..</span><span class='op'>-</span><span class='int'>1</span><span class='rbracket'>]</span> <span class='rparen'>)</span>
+        <span class='kw'>end</span>
+      <span class='kw'>elsif</span> <span class='id other'>other</span><span class='period'>.</span><span class='id tokens'>tokens</span><span class='period'>.</span><span class='id first'>first</span><span class='period'>.</span><span class='id kind_of?'>kind_of?</span> <span class='const'>Expression</span><span class='op'>::</span><span class='const'>Path</span>
+        <span class='comment'># this will automatically insert '/'
+</span>        <span class='comment'># so we can strip one '/'
+</span>        <span class='kw'>return</span> <span class='kw'>self</span><span class='period'>.</span><span class='id class'>class</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span> <span class='kw'>self</span><span class='period'>.</span><span class='id tokens'>tokens</span><span class='lbracket'>[</span><span class='int'>0</span><span class='op'>..</span><span class='op'>-</span><span class='int'>2</span><span class='rbracket'>]</span> <span class='op'>+</span> <span class='lbracket'>[</span> <span class='const'>Literal</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='kw'>self</span><span class='period'>.</span><span class='id tokens'>tokens</span><span class='period'>.</span><span class='id last'>last</span><span class='period'>.</span><span class='id string'>string</span><span class='lbracket'>[</span><span class='int'>0</span><span class='op'>..</span><span class='op'>-</span><span class='int'>2</span><span class='rbracket'>]</span><span class='rparen'>)</span> <span class='rbracket'>]</span> <span class='op'>+</span> <span class='id other'>other</span><span class='period'>.</span><span class='id tokens'>tokens</span> <span class='rparen'>)</span>
+      <span class='kw'>end</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+  <span class='kw'>if</span> <span class='id other'>other</span><span class='period'>.</span><span class='id tokens'>tokens</span><span class='period'>.</span><span class='id first'>first</span><span class='period'>.</span><span class='id kind_of?'>kind_of?</span><span class='lparen'>(</span><span class='const'>Expression</span><span class='op'>::</span><span class='const'>Path</span><span class='rparen'>)</span> <span class='kw'>or</span> <span class='lparen'>(</span><span class='id other'>other</span><span class='period'>.</span><span class='id tokens'>tokens</span><span class='period'>.</span><span class='id first'>first</span><span class='period'>.</span><span class='id kind_of?'>kind_of?</span><span class='lparen'>(</span><span class='const'>Literal</span><span class='rparen'>)</span> <span class='kw'>and</span> <span class='id other'>other</span><span class='period'>.</span><span class='id tokens'>tokens</span><span class='period'>.</span><span class='id first'>first</span><span class='period'>.</span><span class='id string'>string</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>/</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
+    <span class='kw'>return</span> <span class='kw'>self</span><span class='period'>.</span><span class='id class'>class</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span> <span class='kw'>self</span><span class='period'>.</span><span class='id tokens'>tokens</span> <span class='op'>+</span> <span class='id other'>other</span><span class='period'>.</span><span class='id tokens'>tokens</span> <span class='rparen'>)</span>
+  <span class='kw'>else</span>
+    <span class='kw'>return</span> <span class='kw'>self</span><span class='period'>.</span><span class='id class'>class</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span> <span class='kw'>self</span><span class='period'>.</span><span class='id tokens'>tokens</span> <span class='op'>+</span> <span class='lbracket'>[</span><span class='const'>Literal</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>/</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='rbracket'>]</span> <span class='op'>+</span> <span class='id other'>other</span><span class='period'>.</span><span class='id tokens'>tokens</span> <span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="==-instance_method">
   
     - (<tt>Object</tt>) <strong>==</strong>(tpl) 
   
@@ -839,13 +1076,13 @@ Compares two template patterns.
       <pre class="lines">
 
 
-855
-856
-857
-858</pre>
+752
+753
+754
+755</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 855</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 752</span>
 
 <span class='kw'>def</span> <span class='op'>==</span><span class='lparen'>(</span><span class='id tpl'>tpl</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='kw'>false</span> <span class='kw'>if</span> <span class='kw'>self</span><span class='period'>.</span><span class='id class'>class</span> <span class='op'>!=</span> <span class='id tpl'>tpl</span><span class='period'>.</span><span class='id class'>class</span>
@@ -902,12 +1139,111 @@ TrueClass, FalseClass
       <pre class="lines">
 
 
-863</pre>
+760</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 863</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 760</span>
 
 <span class='id def_delegators'>def_delegators</span> <span class='symbol'>:to_r</span><span class='comma'>,</span> <span class='symbol'>:===</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="absolute?-instance_method">
+  
+    - (<tt>Boolean</tt>) <strong>absolute?</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+should be relative:
+</p>
+<pre class="code">
+ xxx ...
+ {xxx}x ...
+
+ should not be relative:
+ {proto}:// ...
+ http:// ...
+ http{ssl}:// ...</pre>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+861
+862
+863
+864
+865
+866
+867
+868
+869
+870
+871
+872
+873
+874
+875
+876
+877
+878
+879
+880
+881
+882</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 861</span>
+
+<span class='kw'>def</span> <span class='id absolute?'>absolute?</span>
+  <span class='id read_chars'>read_chars</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span>
+  
+  <span class='id tokens'>tokens</span><span class='period'>.</span><span class='id each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id token'>token</span><span class='op'>|</span>
+    <span class='kw'>if</span> <span class='id token'>token</span><span class='period'>.</span><span class='id kind_of?'>kind_of?</span> <span class='const'>Expression</span>
+      <span class='kw'>if</span> <span class='id token'>token</span><span class='period'>.</span><span class='id class'>class</span><span class='op'>::</span><span class='const'>OPERATOR</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_end'>'</span></span>
+        <span class='id read_chars'>read_chars</span> <span class='op'>&lt;&lt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>x</span><span class='tstring_end'>&quot;</span></span>
+      <span class='kw'>else</span>
+        <span class='kw'>return</span> <span class='kw'>false</span>
+      <span class='kw'>end</span>
+    <span class='kw'>elsif</span> <span class='id token'>token</span><span class='period'>.</span><span class='id kind_of?'>kind_of?</span> <span class='const'>Literal</span>
+      <span class='id read_chars'>read_chars</span> <span class='op'>&lt;&lt;</span> <span class='id token'>token</span><span class='period'>.</span><span class='id string'>string</span>
+    <span class='kw'>end</span>
+    <span class='kw'>if</span> <span class='id read_chars'>read_chars</span> <span class='op'>=~</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^[a-z]+:\/\/</span><span class='regexp_end'>/i</span></span>
+      <span class='kw'>return</span> <span class='kw'>true</span>
+    <span class='kw'>elsif</span> <span class='id read_chars'>read_chars</span> <span class='op'>=~</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>(?&lt;!:|\/)\/(?!\/)</span><span class='regexp_end'>/</span></span>
+      <span class='kw'>return</span> <span class='kw'>false</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+  
+  <span class='kw'>return</span> <span class='kw'>false</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -1013,14 +1349,14 @@ String
       <pre class="lines">
 
 
-628
-629
-630
-631
-632</pre>
+622
+623
+624
+625
+626</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 628</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 622</span>
 
 <span class='kw'>def</span> <span class='id expand'>expand</span><span class='lparen'>(</span><span class='id variables'>variables</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='id tokens'>tokens</span><span class='period'>.</span><span class='id map'>map</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id part'>part</span><span class='op'>|</span>
@@ -1041,10 +1377,33 @@ String
   
 </p><div class="docstring">
   <div class="discussion">
-    <p>
+    
+  <div class="note notetag">
+    <strong>Note:</strong> 
+    <div class='inline'><p>
+Don&#8217;t expect that an extraction can fully recover the expanded
+variables. Extract rather generates a variable list which should expand to
+the uri from which it were extracted. In general the following equation
+should hold true:
+</p>
+<pre class="code">
+  <span class='id a_tpl'>a_tpl</span><span class='period'>.</span><span class='id expand'>expand</span><span class='lparen'>(</span> <span class='id a_tpl'>a_tpl</span><span class='period'>.</span><span class='id extract'>extract</span><span class='lparen'>(</span> <span class='id an_uri'>an_uri</span> <span class='rparen'>)</span> <span class='rparen'>)</span> <span class='op'>==</span> <span class='id an_uri'>an_uri</span></pre>
+</div>
+  </div>
+
+  <div class="note notetag">
+    <strong>Note:</strong> 
+    <div class='inline'><p>
+The current implementation drops duplicated variables instead of checking
+them.
+</p>
+</div>
+  </div>
+
+<p>
 Extracts variables from a uri ( given as string ) or an instance of
 MatchData ( which was matched by the regexp of this template. The actual
-result depends on the value of @p post_processing. This argument specifies
+result depends on the value of post_processing. This argument specifies
 whether pair arrays should be converted to hashes.
 </p>
 
@@ -1056,18 +1415,124 @@ whether pair arrays should be converted to hashes.
   <div class="examples">
     <h3>Examples:</h3>
     
-      <h4><div class='inline'></div></h4>
+      <h4><div class='inline'><p>
+Default Processing
+</p>
+</div></h4>
       <pre class="example code"><span class='const'>URITemplate</span><span class='op'>::</span><span class='const'>Draft7</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>{var}</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id extract'>extract</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>value</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span> <span class='comment'>#=&gt; {'var'=&gt;'value'}
 </span><span class='const'>URITemplate</span><span class='op'>::</span><span class='const'>Draft7</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>{&amp;args*}</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id extract'>extract</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>&amp;a=1&amp;b=2</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span> <span class='comment'>#=&gt; {'args'=&gt;{'a'=&gt;'1','b'=&gt;'2'}}
 </span><span class='const'>URITemplate</span><span class='op'>::</span><span class='const'>Draft7</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>{&amp;arg,arg}</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id extract'>extract</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>&amp;arg=1&amp;arg=2</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span> <span class='comment'>#=&gt; {'arg'=&gt;'2'}</span></pre>
     
-      <h4><div class='inline'></div></h4>
+      <h4><div class='inline'><p>
+No Processing
+</p>
+</div></h4>
       <pre class="example code"><span class='const'>URITemplate</span><span class='op'>::</span><span class='const'>Draft7</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>{var}</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id extract'>extract</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>value</span><span class='tstring_end'>'</span></span><span class='comma'>,</span> <span class='const'>URITemplate</span><span class='op'>::</span><span class='const'>Draft7</span><span class='op'>::</span><span class='const'>NO_PROCESSING</span><span class='rparen'>)</span> <span class='comment'>#=&gt; [['var','value']]
 </span><span class='const'>URITemplate</span><span class='op'>::</span><span class='const'>Draft7</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>{&amp;args*}</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id extract'>extract</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>&amp;a=1&amp;b=2</span><span class='tstring_end'>'</span></span><span class='comma'>,</span> <span class='const'>URITemplate</span><span class='op'>::</span><span class='const'>Draft7</span><span class='op'>::</span><span class='const'>NO_PROCESSING</span><span class='rparen'>)</span> <span class='comment'>#=&gt; [['args',[['a','1'],['b','2']]]]
 </span><span class='const'>URITemplate</span><span class='op'>::</span><span class='const'>Draft7</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>{&amp;arg,arg}</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id extract'>extract</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>&amp;arg=1&amp;arg=2</span><span class='tstring_end'>'</span></span><span class='comma'>,</span> <span class='const'>URITemplate</span><span class='op'>::</span><span class='const'>Draft7</span><span class='op'>::</span><span class='const'>NO_PROCESSING</span><span class='rparen'>)</span> <span class='comment'>#=&gt; [['arg','1'],['arg','2']]</span></pre>
     
+      <h4><div class='inline'><p>
+Extraction cruces
+</p>
+</div></h4>
+      <pre class="example code"><span class='id two_lists'>two_lists</span> <span class='op'>=</span> <span class='const'>URITemplate</span><span class='op'>::</span><span class='const'>Draft7</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>{listA*,listB*}</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
+<span class='id uri'>uri</span> <span class='op'>=</span> <span class='id two_lists'>two_lists</span><span class='period'>.</span><span class='id expand'>expand</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>listA</span><span class='tstring_end'>'</span></span><span class='op'>=&gt;</span><span class='lbracket'>[</span><span class='int'>1</span><span class='comma'>,</span><span class='int'>2</span><span class='rbracket'>]</span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>listB</span><span class='tstring_end'>'</span></span><span class='op'>=&gt;</span><span class='lbracket'>[</span><span class='int'>3</span><span class='comma'>,</span><span class='int'>4</span><span class='rbracket'>]</span><span class='rparen'>)</span> <span class='comment'>#=&gt; &quot;1,2,3,4&quot;
+</span><span class='id variables'>variables</span> <span class='op'>=</span> <span class='id two_lists'>two_lists</span><span class='period'>.</span><span class='id extract'>extract</span><span class='lparen'>(</span> <span class='id uri'>uri</span> <span class='rparen'>)</span> <span class='comment'>#=&gt; {'listA'=&gt;[&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;],'listB'=&gt;nil}
+</span><span class='comment'># However, like said in the note:
+</span><span class='id two_lists'>two_lists</span><span class='period'>.</span><span class='id expand'>expand</span><span class='lparen'>(</span> <span class='id variables'>variables</span> <span class='rparen'>)</span> <span class='op'>==</span> <span class='id uri'>uri</span> <span class='comment'>#=&gt; true</span></pre>
+    
   </div>
+<h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>Uri_or_MatchData</span>
+      
+      
+        <span class='type'>(<tt>String</tt>, <tt>MatchData</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+A uri or a matchdata from which the variables should be extracted.
+</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>Processing</span>
+      
+      
+        <span class='type'>(<tt>Array</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+Specifies which processing should be done.
+</p>
+</div>
+      
+    </li>
+  
+</ul>
 
+<h3>Raises:</h3>
+<ul class="raise">
+  
+    <li>
+      
+      
+        <span class='type'></span>
+      
+      
+      
+        
+        <div class='inline'><p>
+Encoding::InvalidByteSequenceError when the given uri was not properly
+encoded.
+</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+      
+        <span class='type'></span>
+      
+      
+      
+        
+        <div class='inline'><p>
+Encoding::UndefinedConversionError when the given uri could not be
+converted to utf-8.
+</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+      
+        <span class='type'></span>
+      
+      
+      
+        
+        <div class='inline'><p>
+Encoding::CompatibilityError when the given uri could not be converted to
+utf-8.
+</p>
+</div>
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -1075,21 +1540,6 @@ whether pair arrays should be converted to hashes.
       <pre class="lines">
 
 
-689
-690
-691
-692
-693
-694
-695
-696
-697
-698
-699
-700
-701
-702
-703
 704
 705
 706
@@ -1112,10 +1562,19 @@ whether pair arrays should be converted to hashes.
 723
 724
 725
-726</pre>
+726
+727
+728
+729
+730
+731
+732
+733
+734
+735</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 689</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 704</span>
 
 <span class='kw'>def</span> <span class='id extract'>extract</span><span class='lparen'>(</span><span class='id uri_or_match'>uri_or_match</span><span class='comma'>,</span> <span class='id post_processing'>post_processing</span> <span class='op'>=</span> <span class='const'>DEFAULT_PROCESSING</span> <span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='id uri_or_match'>uri_or_match</span><span class='period'>.</span><span class='id kind_of?'>kind_of?</span> <span class='const'>String</span>
@@ -1134,12 +1593,6 @@ whether pair arrays should be converted to hashes.
     <span class='kw'>return</span> <span class='kw'>nil</span>
   <span class='kw'>else</span>
     <span class='id result'>result</span> <span class='op'>=</span> <span class='id extract_matchdata'>extract_matchdata</span><span class='lparen'>(</span><span class='id m'>m</span><span class='rparen'>)</span>
-    <span class='kw'>if</span> <span class='id m'>m</span><span class='period'>.</span><span class='id pre_match'>pre_match</span> <span class='kw'>and</span> <span class='id m'>m</span><span class='period'>.</span><span class='id pre_match'>pre_match</span><span class='period'>.</span><span class='id size'>size</span> <span class='op'>&gt;</span> <span class='int'>0</span>
-      <span class='id result'>result</span><span class='period'>.</span><span class='id unshift'>unshift</span><span class='lparen'>(</span> <span class='lbracket'>[</span><span class='symbol'>:prefix</span><span class='comma'>,</span> <span class='id m'>m</span><span class='period'>.</span><span class='id pre_match'>pre_match</span><span class='rbracket'>]</span> <span class='rparen'>)</span>
-    <span class='kw'>end</span>
-    <span class='kw'>if</span> <span class='id m'>m</span><span class='period'>.</span><span class='id post_match'>post_match</span> <span class='kw'>and</span> <span class='id m'>m</span><span class='period'>.</span><span class='id post_match'>post_match</span><span class='period'>.</span><span class='id size'>size</span> <span class='op'>&gt;</span> <span class='int'>0</span>
-      <span class='id result'>result</span><span class='period'>.</span><span class='id push'>push</span><span class='lparen'>(</span> <span class='lbracket'>[</span><span class='symbol'>:suffix</span><span class='comma'>,</span> <span class='id m'>m</span><span class='period'>.</span><span class='id post_match'>post_match</span><span class='rbracket'>]</span> <span class='rparen'>)</span>
-    <span class='kw'>end</span>
     <span class='kw'>if</span> <span class='id post_processing'>post_processing</span><span class='period'>.</span><span class='id include?'>include?</span> <span class='symbol'>:convert_values</span>
       <span class='id result'>result</span><span class='period'>.</span><span class='id map!'>map!</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id k'>k</span><span class='comma'>,</span><span class='id v'>v</span><span class='op'>|</span> <span class='lbracket'>[</span><span class='id k'>k</span><span class='comma'>,</span> <span class='const'>Utils</span><span class='period'>.</span><span class='id pair_array_to_hash'>pair_array_to_hash</span><span class='lparen'>(</span><span class='id v'>v</span><span class='rparen'>)</span><span class='rbracket'>]</span> <span class='rbrace'>}</span>
     <span class='kw'>end</span>
@@ -1193,15 +1646,98 @@ Extracts variables without any proccessing. This is equivalent to
       <pre class="lines">
 
 
-731
-732
-733</pre>
+740
+741
+742</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 731</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 740</span>
 
 <span class='kw'>def</span> <span class='id extract_simple'>extract_simple</span><span class='lparen'>(</span><span class='id uri_or_match'>uri_or_match</span><span class='rparen'>)</span>
   <span class='id extract'>extract</span><span class='lparen'>(</span> <span class='id uri_or_match'>uri_or_match</span><span class='comma'>,</span> <span class='const'>NO_PROCESSING</span> <span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="level-instance_method">
+  
+    - (<tt>Object</tt>) <strong>level</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Returns the level of this template according to the draft ( <a
+href="http://tools.ietf.org/html/draft-gregorio-uritemplate-07#section-1.2">tools.ietf.org/html/draft-gregorio-uritemplate-07#section-1.2</a>
+). Higher level means higher complexity. Basically this is defined as:
+</p>
+<ul>
+<li><p>
+Level 1: no operators, one variable per expansion, no variable modifiers
+</p>
+</li>
+<li><p>
+Level 2: &#8217;+&#8217; and &#8217;#&#8217; operators, one variable per
+expansion, no variable modifiers
+</p>
+</li>
+<li><p>
+Level 3: all operators, multiple variables per expansion, no variable
+modifiers
+</p>
+</li>
+<li><p>
+Level 4: all operators, multiple variables per expansion, all variable
+modifiers
+</p>
+</li>
+</ul>
+<p>
+Templates of lower levels might be convertible to other formats while
+templates of higher levels might be incompatible. Level 1 for example
+should be convertible to any other format since it just contains simple
+expansions.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="examples">
+    <h3>Examples:</h3>
+    
+      <h4><div class='inline'></div></h4>
+      <pre class="example code"><span class='const'>URITemplate</span><span class='op'>::</span><span class='const'>Draft7</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>/foo/</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id level'>level</span> <span class='comment'>#=&gt; 1
+</span><span class='const'>URITemplate</span><span class='op'>::</span><span class='const'>Draft7</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>/foo{bar}</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id level'>level</span> <span class='comment'>#=&gt; 1
+</span><span class='const'>URITemplate</span><span class='op'>::</span><span class='const'>Draft7</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>/foo{#bar}</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id level'>level</span> <span class='comment'>#=&gt; 2
+</span><span class='const'>URITemplate</span><span class='op'>::</span><span class='const'>Draft7</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>/foo{.bar}</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id level'>level</span> <span class='comment'>#=&gt; 3
+</span><span class='const'>URITemplate</span><span class='op'>::</span><span class='const'>Draft7</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>/foo{bar,baz}</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id level'>level</span> <span class='comment'>#=&gt; 3
+</span><span class='const'>URITemplate</span><span class='op'>::</span><span class='const'>Draft7</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>/foo{bar:20}</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id level'>level</span> <span class='comment'>#=&gt; 4
+</span><span class='const'>URITemplate</span><span class='op'>::</span><span class='const'>Draft7</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>/foo{bar*}</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id level'>level</span> <span class='comment'>#=&gt; 4</span></pre>
+    
+  </div>
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+799
+800
+801</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 799</span>
+
+<span class='kw'>def</span> <span class='id level'>level</span>
+  <span class='id tokens'>tokens</span><span class='period'>.</span><span class='id map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:level</span><span class='rparen'>)</span><span class='period'>.</span><span class='id max'>max</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1273,12 +1809,86 @@ MatchData, Object
       <pre class="lines">
 
 
-869</pre>
+766</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 869</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 766</span>
 
 <span class='id def_delegators'>def_delegators</span> <span class='symbol'>:to_r</span><span class='comma'>,</span> <span class='symbol'>:match</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="static_characters-instance_method">
+  
+    - (<tt>Object</tt>) <strong>static_characters</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Returns the number of static characters in this template. This method is
+useful for routing, since it&#8217;s often pointful to use the url with
+fewer variable characters. For example &#8216;static&#8217; and
+&#8216;stavar&#8217; both match &#8216;static&#8217;, but in most cases
+&#8216;static&#8217; should be prefered over &#8216;stavar&#8217; since
+it&#8217;s more specific.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="examples">
+    <h3>Examples:</h3>
+    
+      <h4><div class='inline'></div></h4>
+      <pre class="example code"><span class='const'>URITemplate</span><span class='op'>::</span><span class='const'>Draft7</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>/xy/</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id static_characters'>static_characters</span> <span class='comment'>#=&gt; 4
+</span><span class='const'>URITemplate</span><span class='op'>::</span><span class='const'>Draft7</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>{foo}</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id static_characters'>static_characters</span> <span class='comment'>#=&gt; 0
+</span><span class='const'>URITemplate</span><span class='op'>::</span><span class='const'>Draft7</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>a{foo}b</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id static_characters'>static_characters</span> <span class='comment'>#=&gt; 2</span></pre>
+    
+  </div>
+
+<h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'></span>
+      
+      
+      
+        
+        <div class='inline'><p>
+Numeric
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+894
+895
+896</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 894</span>
+
+<span class='kw'>def</span> <span class='id static_characters'>static_characters</span>
+  <span class='ivar'>@static_characters</span> <span class='op'>||=</span> <span class='id tokens'>tokens</span><span class='period'>.</span><span class='id select'>select</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id t'>t</span><span class='op'>|</span> <span class='id t'>t</span><span class='period'>.</span><span class='id kind_of?'>kind_of?</span><span class='lparen'>(</span><span class='const'>Literal</span><span class='rparen'>)</span> <span class='rbrace'>}</span><span class='period'>.</span><span class='id map'>map</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id t'>t</span><span class='op'>|</span> <span class='id t'>t</span><span class='period'>.</span><span class='id string'>string</span><span class='period'>.</span><span class='id size'>size</span> <span class='rbrace'>}</span><span class='period'>.</span><span class='id inject'>inject</span><span class='lparen'>(</span><span class='int'>0</span><span class='comma'>,</span><span class='symbol'>:+</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -1341,27 +1951,84 @@ Regexp
       <pre class="lines">
 
 
+657
+658
+659
+660
+661
+662
 663
 664
-665
-666
-667
-668
-669
-670
-671</pre>
+665</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 663</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 657</span>
 
 <span class='kw'>def</span> <span class='id to_r'>to_r</span>
   <span class='id classes'>classes</span> <span class='op'>=</span> <span class='const'>CHARACTER_CLASSES</span><span class='period'>.</span><span class='id map'>map</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id _'>_</span><span class='comma'>,</span><span class='id v'>v</span><span class='op'>|</span> <span class='id v'>v</span><span class='lbracket'>[</span><span class='symbol'>:class</span><span class='rbracket'>]</span><span class='op'>+</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>{0}\n</span><span class='tstring_end'>&quot;</span></span> <span class='rbrace'>}</span>
   <span class='id bc'>bc</span> <span class='op'>=</span> <span class='int'>0</span>
-  <span class='ivar'>@regexp</span> <span class='op'>||=</span> <span class='const'>Regexp</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='id classes'>classes</span><span class='period'>.</span><span class='id join'>join</span> <span class='op'>+</span> <span class='id tokens'>tokens</span><span class='period'>.</span><span class='id map'>map</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id part'>part</span><span class='op'>|</span>
+  <span class='ivar'>@regexp</span> <span class='op'>||=</span> <span class='const'>Regexp</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='id classes'>classes</span><span class='period'>.</span><span class='id join'>join</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>\A</span><span class='tstring_end'>'</span></span> <span class='op'>+</span> <span class='id tokens'>tokens</span><span class='period'>.</span><span class='id map'>map</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id part'>part</span><span class='op'>|</span>
     <span class='id r'>r</span> <span class='op'>=</span> <span class='id part'>part</span><span class='period'>.</span><span class='id to_r_source'>to_r_source</span><span class='lparen'>(</span><span class='id bc'>bc</span><span class='rparen'>)</span>
     <span class='id bc'>bc</span> <span class='op'>+=</span> <span class='id part'>part</span><span class='period'>.</span><span class='id size'>size</span>
     <span class='id r'>r</span>
-  <span class='rbrace'>}</span><span class='period'>.</span><span class='id join'>join</span><span class='comma'>,</span> <span class='const'>Regexp</span><span class='op'>::</span><span class='const'>EXTENDED</span><span class='rparen'>)</span>
+  <span class='rbrace'>}</span><span class='period'>.</span><span class='id join'>join</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>\z</span><span class='tstring_end'>'</span></span> <span class='comma'>,</span> <span class='const'>Regexp</span><span class='op'>::</span><span class='const'>EXTENDED</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="type-instance_method">
+  
+    - (<tt>Object</tt>) <strong>type</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+The type of this template.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="examples">
+    <h3>Examples:</h3>
+    
+      <h4><div class='inline'></div></h4>
+      <pre class="example code"><span class='id tpl1'>tpl1</span> <span class='op'>=</span> <span class='const'>URITemplate</span><span class='op'>::</span><span class='const'>Draft7</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>/foo</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
+<span class='id tpl2'>tpl2</span> <span class='op'>=</span> <span class='const'>URITemplate</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span> <span class='id tpl1'>tpl1</span><span class='period'>.</span><span class='id pattern'>pattern</span><span class='comma'>,</span> <span class='id tpl1'>tpl1</span><span class='period'>.</span><span class='id type'>type</span> <span class='rparen'>)</span>
+<span class='id tpl1'>tpl1</span> <span class='op'>==</span> <span class='id tpl2'>tpl2</span> <span class='comment'>#=&gt; true</span></pre>
+    
+  </div>
+
+
+  <h3>See Also:</h3>
+  <ul class="see">
+    
+      <li>URITemplate::Draft7.{URITemplate{URITemplate#type}</li>
+    
+  </ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+776
+777
+778</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 776</span>
+
+<span class='kw'>def</span> <span class='id type'>type</span>
+  <span class='symbol'>:draft7</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1422,22 +2089,22 @@ Array
       <pre class="lines">
 
 
+634
+635
+636
+637
+638
+639
 640
 641
 642
 643
 644
 645
-646
-647
-648
-649
-650
-651
-652</pre>
+646</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 640</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 634</span>
 
 <span class='kw'>def</span> <span class='id variables'>variables</span>
   <span class='ivar'>@variables</span> <span class='op'>||=</span> <span class='kw'>begin</span>
@@ -1462,7 +2129,7 @@ Array
 </div>
     
     <div id="footer">
-  Generated on Tue Nov  1 12:06:03 2011 by 
+  Generated on Wed Nov  2 16:39:06 2011 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.7.3 (ruby-1.9.2).
 </div>
