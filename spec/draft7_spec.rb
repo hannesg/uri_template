@@ -270,10 +270,40 @@ extraction_results = {"{var}"=>[["var", "value"]],
  "http://{+host}{/segments*}/{file}{.ext*}{?args*}" => [ ['host','www.myhost.com'],['segments',['path','to']],['file','file'],['ext',['ext']],['args',[['a','b']]]]
 }
 
-
-
+expansion_levels = {"{var}"=>1,
+ "O{empty}X"=>1,
+ "{x,y}"=>3,
+ "{var:3}"=>4,
+ "{list*}"=>4,
+ "{+var}"=>2,
+ "{+x,hello,y}"=>3,
+ "{+path:6}/here"=>4,
+ "{+list*}"=>4,
+ "{#var}"=>2,
+ "{#x,hello,y}"=>3,
+ "{#path:6}/here"=>4,
+ "{#list*}"=>4,
+ "{.who}"=>3,
+ "{.who,who}"=>3,
+ "X{.list*}"=>4,
+ "{/who}"=>3,
+ "{/who,who}"=>3
+}
 
 describe URITemplate::Draft7 do
+
+  describe "levels" do
+
+  expansion_levels.each{|pattern, exp|
+  
+    it "should expand #{pattern.inspect} to #{exp.inspect}" do
+      p = URITemplate::Draft7.new(pattern)
+      p.level.should == exp
+    end
+    
+  }
+  
+  end
 
   describe "basic expansion" do
 
@@ -318,9 +348,6 @@ describe URITemplate::Draft7 do
       p.should === ''
       p.should_not === 'x'
       
-      rep = URITemplate::Draft7::Section.new(p.send(:tokens))
-      rep.to_s.should == ""
-      
     end
     
     it "should raise on no template" do
@@ -352,11 +379,35 @@ describe URITemplate::Draft7 do
     
     end
     
+    it "should extract from matchdata" do
+    
+      tpl = URITemplate::Draft7.new('{var}')
+      
+      tpl.extract( tpl.match('value') ).should == {'var'=>'value'}
+    
+    end
+    
+    it "should raise when extracting from foreign matchdata" do
+    
+      tpl = URITemplate::Draft7.new('{var}')
+      
+      lambda{ tpl.extract( /.*/.match('value') ) }.should raise_error(ArgumentError)
+    
+    end
+    
     it "should not extract newlines" do
     
       tpl = URITemplate::Draft7.new('{x}')
-      tpl.extract("\n").should_not == {'x'=>"\n"}
+      tpl.extract("\n").should be_nil
       tpl.extract("%0A").should == {'x'=>"\n"}
+    
+    end
+    
+    it "should accept pct-variablenames" do
+    
+      tpl = URITemplate::Draft7.new('{?vars*}')
+      tpl.extract("?v%0Aa=x").should == {'vars'=>{'v%0Aa'=>"x"}}
+      tpl.extract("?v%0Aa&b=c").should == {'vars'=>{'v%0Aa'=>nil,'b'=>'c'}}
     
     end
     
@@ -405,97 +456,50 @@ describe URITemplate::Draft7 do
   
   end
   
-  describe "chaining" do
+  describe "path concatenation" do
   
-    it "should work with empty chains" do
+    it "should insert slashes when needed" do
+    
+      p = URITemplate::Draft7.new('/foo/bar')
       
-      chain = URITemplate::Draft7::Section.try_convert("…")
-      chain.send(:tokens).should have(2).item
+      (p / 'baz').should == URITemplate::Draft7.new('/foo/bar/baz')
       
-      chain.should === 'foobar'
-      
-      combo = chain >> '…/xy'
-      
-      combo.should_not === 'foobar'
-      
-      combo.should === '/xy'
-      
-      rechain = URITemplate::Draft7::Section.new(chain.send(:tokens))
-      
-      rechain.to_s.should == "…"
-      
+      (p / '{baz}').should == URITemplate::Draft7.new('/foo/bar/{baz}')
+    
     end
     
-    it "should work with multiple empty chains" do
+    it "should not insert slashes when they aren't needed" do
+    
+      p = URITemplate::Draft7.new('/foo/bar')
       
-      chain = URITemplate::Draft7::Section.try_convert("…")
+      (p / '').should == URITemplate::Draft7.new('/foo/bar')
       
-      combo = chain >> '……'
-      
-      combo.should == chain
-      
-      combo2 = chain >> "…"
-      
-      combo2.should === ""
-      combo2.should_not === "a"
-      
+      (p / '{/baz}').should == URITemplate::Draft7.new('/foo/bar{/baz}')
+    
     end
     
-    it "should work" do
-      
-      chain = URITemplate::Draft7::Section.try_convert("/bla…")
-      
-      combination = chain >> "…/file{?args*}"
-      
-      combination.to_s.should == "/bla/file{?args*}"
-      
-    end
+    it "should strip slashes when they would double" do
     
-    it "should support expansions" do
-    
-      chain = URITemplate::Draft7::Section.try_convert("/bla/{foo}/…")
-      chain.expand('foo'=>'bar').should == '/bla/bar/'
+      p = URITemplate::Draft7.new('/foo/bar/')
+      
+      (p / '/baz').should == URITemplate::Draft7.new('/foo/bar/baz')
+      
+      (p / '{/baz}').should == URITemplate::Draft7.new('/foo/bar{/baz}')
     
     end
   
-  end
+    it "should raise on absolute templates" do
+    
+      p = URITemplate::Draft7.new('/foo/bar/')
+      
+      lambda{ p / 'http://' }.should raise_error
+      
+      lambda{ p / '{proto}://' }.should raise_error
+      
+      lambda{ p / 'http{secure}://' }.should raise_error
+    
+    end
   
-  describe "fuzzing" do
-  
-    module ValidExpressionFuzzer
-      
-      VARCHAR = ('a'..'z').to_a + ('A'..'Z').to_a + ['_']
-      
-      VARCHAR2 = VARCHAR + ['.']
-      
-      def self.fuzz
-        '{' + URITemplate::Draft7::OPERATORS.keys.sample + (1+rand(10)).times.map{ fuzz_var }.join(',') + '}'
-      end
-      
-      def self.fuzz_var
-        ( [ VARCHAR.sample ] + rand(20).times.map{ VARCHAR2.sample } ).join
-      end
-    
-    end
-    
-    module ValidLiteralFuzzer
-      
-      def self.fuzz
-        rand(50).times.map{ (65 + rand(25)).chr }.join
-      end
-      
-    end
-    
-    10.times do
-    
-      str = rand(10).times.map{ ValidExpressionFuzzer.fuzz + ValidLiteralFuzzer.fuzz }.join
-      it "should handle #{str.inspect} correctly" do
-        t = URITemplate::Draft7.new(URITemplate::Draft7.try_convert(str).send(:tokens))
-        t.to_s.should == str
-      end
-      
-    end
-    
   end
 
 end
