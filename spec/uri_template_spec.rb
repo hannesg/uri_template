@@ -40,6 +40,16 @@ describe URITemplate do
       lambda{ URITemplate.new(:foo,'{x}') }.should raise_error(ArgumentError)
     
     end
+    
+    it 'should coerce two strings' do
+    
+      result = URITemplate.coerce('foo','bar')
+      result[0].should be_kind_of(URITemplate)
+      result[1].should be_kind_of(URITemplate)
+      result[2].should be_true
+      result[3].should be_true
+    
+    end
   
   end
   
