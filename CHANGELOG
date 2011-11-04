@@ -1,3 +1,6 @@
+# 0.1.1 -  4.11.2011
++ added a bunch of useful helper methods
+
 # 0.1.0 -  2.11.2011
 - Removed Sections. They made too many headaches.
 + Made draft7 template concatenateable. This should replace sections.

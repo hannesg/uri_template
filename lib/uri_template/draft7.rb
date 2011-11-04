@@ -749,9 +749,12 @@ __REGEXP__
   alias to_s pattern
   
   # Compares two template patterns.
-  def ==(tpl)
-    return false if self.class != tpl.class
-    return self.pattern == tpl.pattern
+  def ==(o)
+    this, other, this_converted, other_converted = URITemplate.coerce( self, o )
+    if this_converted
+      return this == other
+    end
+    return this.pattern == other.pattern
   end
   
   # @method ===(uri)
@@ -811,7 +814,10 @@ __REGEXP__
   #   (tpl / 'a' / 'b' ).pattern #=> '/xy/a/b'
   #
   def /(o)
-    other = self.class.convert(o)
+    this, other, this_converted, other_converted = URITemplate.coerce( self, o )
+    if this_converted
+      return this / other
+    end
     
     if other.absolute?
       raise ArgumentError, "Expected to receive a relative template but got an absoulte one: #{other.inspect}. If you think this is a bug, please report it."

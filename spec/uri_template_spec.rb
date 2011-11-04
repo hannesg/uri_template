@@ -19,6 +19,28 @@ require 'uri_template'
 
 describe URITemplate do
 
+  class BadURITemplate
+  
+    include URITemplate
+    
+    attr_reader :pattern
+    
+    def self.try_convert(x)
+      if x.kind_of? String
+        return new(x)
+      elsif x.kind_of? self
+        return x
+      else
+        return nil
+      end
+    end
+    
+    def initialize(pattern)
+      @pattern = pattern
+    end
+  
+  end
+
   describe 'resolving' do
     
     
@@ -38,6 +60,51 @@ describe URITemplate do
     it 'should raise when given an invalid version' do
     
       lambda{ URITemplate.new(:foo,'{x}') }.should raise_error(ArgumentError)
+    
+    end
+    
+    it 'should coerce two strings' do
+    
+      result = URITemplate.coerce('foo','bar')
+      result[0].should be_kind_of(URITemplate)
+      result[1].should be_kind_of(URITemplate)
+      result[2].should be_true
+      result[3].should be_true
+    
+    end
+    
+    it 'should raise when arguments could not be coerced' do
+    
+      lambda{
+      
+        URITemplate.coerce(Object.new,Object.new)
+      
+      }.should raise_error(ArgumentError)
+    
+    end
+    
+    it 'should raise when arguments could not be coerced' do
+    
+      lambda{
+      
+        URITemplate.coerce(BadURITemplate.new('x'),URITemplate.new('y'))
+      
+      }.should raise_error(ArgumentError)
+    
+    end
+    
+    it 'should raise argument errors when convert fails' do
+    
+      lambda{
+        URITemplate.convert(Object.new)
+      }.should raise_error(ArgumentError)
+    
+    end
+    
+    it 'should not raise argument errors when convert succeds' do
+  
+      URITemplate.convert('tpl').should be_kind_of(URITemplate)
+      URITemplate.convert(URITemplate::Draft7.new('foo')).should be_kind_of(URITemplate)
     
     end
   

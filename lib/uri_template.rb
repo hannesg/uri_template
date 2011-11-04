@@ -64,6 +64,78 @@ module URITemplate
     return klass.new(*rest)
   end
   
+  # Tries to convert the given argument into an {URITemplate}.
+  # Returns nil if this fails.
+  #
+  # @return [nil|{URITemplate}]
+  def self.try_convert(x)
+    if x.kind_of? URITemplate
+      return x
+    elsif x.kind_of? String
+      return URITemplate.new(x)
+    else
+      return nil
+    end
+  end
+  
+  # Same as {.try_convert} but raises an ArgumentError when the given argument could not be converted.
+  # 
+  # @raise ArgumentError if the argument is unconvertable
+  # @return {URITemplate}
+  def self.convert(x)
+    o = self.try_convert(x)
+    if o.nil?
+      raise ArgumentError, "Expected to receive something that can be converted to an URITemplate, but got #{x.inspect}"
+    end
+    return o
+  end
+  
+  # Tries to coerce two URITemplates into a common representation.
+  # Returns an array with two {URITemplate}s and two booleans indicating which of the two were converted or raises an {ArgumentError}.
+  #
+  # @example
+  #   URITemplate.coerce( URITemplate.new(:draft7,'{x}'), '{y}' ) #=> [URITemplate.new(:draft7,'{x}'), URITemplate.new(:draft7,'{y}'), false, true]
+  def self.coerce(a,b)
+    if a.kind_of? URITemplate
+      if a.class == b.class
+        return [a,b,false,false]
+      end
+      b_as_a = a.class.try_convert(b)
+      if b_as_a
+        return [a,b_as_a,false,true]
+      end
+    end
+    if b.kind_of? URITemplate
+      a_as_b = b.class.try_convert(a)
+      if a_as_b
+        return [a_as_b, b, true, false]
+      end
+    end
+    bc = self.try_convert(b)
+    if bc.kind_of? URITemplate
+      a_as_b = bc.class.try_convert(a)
+      if a_as_b
+        return [a_as_b, bc, true, true]
+      end
+    end
+    raise ArgumentError, "Expected at least on URITemplate, but got #{a.inspect} and #{b.inspect}" unless a.kind_of? URITemplate or b.kind_of? URITemplate
+    raise ArgumentError, "Cannot coerce #{a.inspect} and #{b.inspect} into a common representation."
+  end
+  
+  # Applies a method to a URITemplate with another URITemplate as argument.
+  # This is a useful shorthand since both URITemplates are automatically coerced.
+  #
+  # @example
+  #   tpl = URITemplate.new('foo')
+  #   URITemplate.apply( tpl, :/, 'bar' ).pattern #=> 'foo/bar'
+  #   URITemplate.apply( 'baz', :/, tpl ).pattern #=> 'baz/foo'
+  #   URITemplate.apply( 'bla', :/, 'blub' ).pattern #=> 'bla/blub'
+  # 
+  def self.apply(a, method, b, *args)
+    a,b,_,_ = self.coerce(a,b)
+    a.send(method,b,*args)
+  end
+  
   # A base class for all errors which will be raised upon invalid syntax.
   module Invalid
   end
