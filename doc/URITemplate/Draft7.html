@@ -361,7 +361,7 @@ Tries to conatenate two templates, as if they were path segments.
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#%3D%3D-instance_method" title="#== (instance method)">- (Object) <strong>==</strong>(tpl) </a>
+      <a href="#%3D%3D-instance_method" title="#== (instance method)">- (Object) <strong>==</strong>(o) </a>
     
 
     
@@ -701,7 +701,7 @@ Returns an array containing all variables.
   
   
   <h3 class="inherited">Methods included from <span class='object_link'><a href="../URITemplate.html" title="URITemplate (module)">URITemplate</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="../URITemplate.html#new-class_method" title="URITemplate.new (method)">new</a></span>, <span class='object_link'><a href="../URITemplate.html#resolve_class-class_method" title="URITemplate.resolve_class (method)">resolve_class</a></span></p>
+  <p class="inherited"><span class='object_link'><a href="../URITemplate.html#apply-class_method" title="URITemplate.apply (method)">apply</a></span>, <span class='object_link'><a href="../URITemplate.html#coerce-class_method" title="URITemplate.coerce (method)">coerce</a></span>, <span class='object_link'><a href="../URITemplate.html#convert-class_method" title="URITemplate.convert (method)">convert</a></span>, <span class='object_link'><a href="../URITemplate.html#new-class_method" title="URITemplate.new (method)">new</a></span>, <span class='object_link'><a href="../URITemplate.html#resolve_class-class_method" title="URITemplate.resolve_class (method)">resolve_class</a></span>, <span class='object_link'><a href="../URITemplate.html#try_convert-class_method" title="URITemplate.try_convert (method)">try_convert</a></span></p>
 <div id="constructor_details" class="method_details_list">
   <h2>Constructor Details</h2>
   
@@ -970,9 +970,6 @@ double slashes or insert one if they are missing.
       <pre class="lines">
 
 
-813
-814
-815
 816
 817
 818
@@ -1005,13 +1002,22 @@ double slashes or insert one if they are missing.
 845
 846
 847
-848</pre>
+848
+849
+850
+851
+852
+853
+854</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 813</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 816</span>
 
 <span class='kw'>def</span> <span class='op'>/</span><span class='lparen'>(</span><span class='id o'>o</span><span class='rparen'>)</span>
-  <span class='id other'>other</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id class'>class</span><span class='period'>.</span><span class='id convert'>convert</span><span class='lparen'>(</span><span class='id o'>o</span><span class='rparen'>)</span>
+  <span class='id this'>this</span><span class='comma'>,</span> <span class='id other'>other</span><span class='comma'>,</span> <span class='id this_converted'>this_converted</span><span class='comma'>,</span> <span class='id other_converted'>other_converted</span> <span class='op'>=</span> <span class='const'>URITemplate</span><span class='period'>.</span><span class='id coerce'>coerce</span><span class='lparen'>(</span> <span class='kw'>self</span><span class='comma'>,</span> <span class='id o'>o</span> <span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='id this_converted'>this_converted</span>
+    <span class='kw'>return</span> <span class='id this'>this</span> <span class='op'>/</span> <span class='id other'>other</span>
+  <span class='kw'>end</span>
   
   <span class='kw'>if</span> <span class='id other'>other</span><span class='period'>.</span><span class='id absolute?'>absolute?</span>
     <span class='id raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Expected to receive a relative template but got an absoulte one: </span><span class='embexpr_beg'>#{</span><span class='id other'>other</span><span class='period'>.</span><span class='id inspect'>inspect</span><span class='rbrace'>}</span><span class='tstring_content'>. If you think this is a bug, please report it.</span><span class='tstring_end'>&quot;</span></span>
@@ -1054,7 +1060,7 @@ double slashes or insert one if they are missing.
       <div class="method_details ">
   <p class="signature " id="==-instance_method">
   
-    - (<tt>Object</tt>) <strong>==</strong>(tpl) 
+    - (<tt>Object</tt>) <strong>==</strong>(o) 
   
 
   
@@ -1079,14 +1085,20 @@ Compares two template patterns.
 752
 753
 754
-755</pre>
+755
+756
+757
+758</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 752</span>
 
-<span class='kw'>def</span> <span class='op'>==</span><span class='lparen'>(</span><span class='id tpl'>tpl</span><span class='rparen'>)</span>
-  <span class='kw'>return</span> <span class='kw'>false</span> <span class='kw'>if</span> <span class='kw'>self</span><span class='period'>.</span><span class='id class'>class</span> <span class='op'>!=</span> <span class='id tpl'>tpl</span><span class='period'>.</span><span class='id class'>class</span>
-  <span class='kw'>return</span> <span class='kw'>self</span><span class='period'>.</span><span class='id pattern'>pattern</span> <span class='op'>==</span> <span class='id tpl'>tpl</span><span class='period'>.</span><span class='id pattern'>pattern</span>
+<span class='kw'>def</span> <span class='op'>==</span><span class='lparen'>(</span><span class='id o'>o</span><span class='rparen'>)</span>
+  <span class='id this'>this</span><span class='comma'>,</span> <span class='id other'>other</span><span class='comma'>,</span> <span class='id this_converted'>this_converted</span><span class='comma'>,</span> <span class='id other_converted'>other_converted</span> <span class='op'>=</span> <span class='const'>URITemplate</span><span class='period'>.</span><span class='id coerce'>coerce</span><span class='lparen'>(</span> <span class='kw'>self</span><span class='comma'>,</span> <span class='id o'>o</span> <span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='id this_converted'>this_converted</span>
+    <span class='kw'>return</span> <span class='id this'>this</span> <span class='op'>==</span> <span class='id other'>other</span>
+  <span class='kw'>end</span>
+  <span class='kw'>return</span> <span class='id this'>this</span><span class='period'>.</span><span class='id pattern'>pattern</span> <span class='op'>==</span> <span class='id other'>other</span><span class='period'>.</span><span class='id pattern'>pattern</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1139,10 +1151,10 @@ TrueClass, FalseClass
       <pre class="lines">
 
 
-760</pre>
+763</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 760</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 763</span>
 
 <span class='id def_delegators'>def_delegators</span> <span class='symbol'>:to_r</span><span class='comma'>,</span> <span class='symbol'>:===</span></pre>
     </td>
@@ -1196,12 +1208,6 @@ should be relative:
       <pre class="lines">
 
 
-861
-862
-863
-864
-865
-866
 867
 868
 869
@@ -1217,10 +1223,16 @@ should be relative:
 879
 880
 881
-882</pre>
+882
+883
+884
+885
+886
+887
+888</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 861</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 867</span>
 
 <span class='kw'>def</span> <span class='id absolute?'>absolute?</span>
   <span class='id read_chars'>read_chars</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span>
@@ -1729,12 +1741,12 @@ expansions.
       <pre class="lines">
 
 
-799
-800
-801</pre>
+802
+803
+804</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 799</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 802</span>
 
 <span class='kw'>def</span> <span class='id level'>level</span>
   <span class='id tokens'>tokens</span><span class='period'>.</span><span class='id map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:level</span><span class='rparen'>)</span><span class='period'>.</span><span class='id max'>max</span>
@@ -1809,10 +1821,10 @@ MatchData, Object
       <pre class="lines">
 
 
-766</pre>
+769</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 766</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 769</span>
 
 <span class='id def_delegators'>def_delegators</span> <span class='symbol'>:to_r</span><span class='comma'>,</span> <span class='symbol'>:match</span></pre>
     </td>
@@ -1879,12 +1891,12 @@ Numeric
       <pre class="lines">
 
 
-894
-895
-896</pre>
+900
+901
+902</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 894</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 900</span>
 
 <span class='kw'>def</span> <span class='id static_characters'>static_characters</span>
   <span class='ivar'>@static_characters</span> <span class='op'>||=</span> <span class='id tokens'>tokens</span><span class='period'>.</span><span class='id select'>select</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id t'>t</span><span class='op'>|</span> <span class='id t'>t</span><span class='period'>.</span><span class='id kind_of?'>kind_of?</span><span class='lparen'>(</span><span class='const'>Literal</span><span class='rparen'>)</span> <span class='rbrace'>}</span><span class='period'>.</span><span class='id map'>map</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id t'>t</span><span class='op'>|</span> <span class='id t'>t</span><span class='period'>.</span><span class='id string'>string</span><span class='period'>.</span><span class='id size'>size</span> <span class='rbrace'>}</span><span class='period'>.</span><span class='id inject'>inject</span><span class='lparen'>(</span><span class='int'>0</span><span class='comma'>,</span><span class='symbol'>:+</span><span class='rparen'>)</span>
@@ -2020,12 +2032,12 @@ The type of this template.
       <pre class="lines">
 
 
-776
-777
-778</pre>
+779
+780
+781</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 776</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 779</span>
 
 <span class='kw'>def</span> <span class='id type'>type</span>
   <span class='symbol'>:draft7</span>
@@ -2129,7 +2141,7 @@ Array
 </div>
     
     <div id="footer">
-  Generated on Wed Nov  2 16:39:06 2011 by 
+  Generated on Fri Nov  4 15:41:30 2011 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.7.3 (ruby-1.9.2).
 </div>

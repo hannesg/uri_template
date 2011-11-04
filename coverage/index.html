@@ -23,27 +23,27 @@
       <img src="./assets/0.5.3/loading.gif" alt="loading"/>
     </div>
     <div id="wrapper" style="display:none;">
-      <div class="timestamp">Generated <abbr class="timeago" title="2011-11-02T16:38:38+01:00">2011-11-02T16:38:38+01:00</abbr></div>
+      <div class="timestamp">Generated <abbr class="timeago" title="2011-11-04T15:41:14+01:00">2011-11-04T15:41:14+01:00</abbr></div>
       <ul class="group_tabs"></ul>
 
       <div id="content">
         <div class="file_list_container" id="AllFiles">
   <h2>
     <span class="group_name">All Files</span>
-    (<span class="covered_percent"><span class="green">98.53%</span></span>
+    (<span class="covered_percent"><span class="green">97.53%</span></span>
      covered at
      <span class="covered_strength">
        <span class="green">
-         58.1
+         57.72
        </span>
     </span> hits/line)
   </h2>
   <a name="AllFiles"></a>
   <div>
     <b>5</b> files in total.
-    <b>544</b> relevant lines. 
-    <span class="green"><b>536</b> lines covered</span> and
-    <span class="red"><b>8</b> lines missed </span>
+    <b>607</b> relevant lines. 
+    <span class="green"><b>592</b> lines covered</span> and
+    <span class="red"><b>15</b> lines missed </span>
   </div>
   <table class="file_list">
     <thead>
@@ -61,22 +61,22 @@
       
       <tr>
         <td class="strong"><a href="#d4275a0f3994093bbcd2c3b31275f5d09a924c13" class="src_link" title="lib/uri_template.rb">lib/uri_template.rb</a></td>
-        <td class="yellow strong">88.24 %</td>
-        <td>85</td>
-        <td>17</td>
-        <td>15</td>
+        <td class="green strong">95.83 %</td>
+        <td>157</td>
+        <td>48</td>
+        <td>46</td>
         <td>2</td>
-        <td>4.5</td>
+        <td>7.1</td>
       </tr>
       
       <tr>
         <td class="strong"><a href="#b51222c87eeada8f9c7a5548d3fd2877b85a0b26" class="src_link" title="lib/uri_template/draft7.rb">lib/uri_template/draft7.rb</a></td>
-        <td class="green strong">98.39 %</td>
-        <td>925</td>
-        <td>373</td>
-        <td>367</td>
-        <td>6</td>
-        <td>80.5</td>
+        <td class="green strong">97.08 %</td>
+        <td>931</td>
+        <td>377</td>
+        <td>366</td>
+        <td>11</td>
+        <td>80.6</td>
       </tr>
       
       <tr>
@@ -101,12 +101,12 @@
       
       <tr>
         <td class="strong"><a href="#5df27f43cdf5ed62c4a0aa01f7e40b401889b6c4" class="src_link" title="spec/uri_template_spec.rb">spec/uri_template_spec.rb</a></td>
-        <td class="green strong">100.0 %</td>
-        <td>92</td>
-        <td>29</td>
-        <td>29</td>
-        <td>0</td>
-        <td>10.9</td>
+        <td class="green strong">96.49 %</td>
+        <td>159</td>
+        <td>57</td>
+        <td>55</td>
+        <td>2</td>
+        <td>6.3</td>
       </tr>
       
     </tbody>
@@ -128,10 +128,10 @@
         <div class="source_table" id="d4275a0f3994093bbcd2c3b31275f5d09a924c13">
   <div class="header">
     <h3>lib/uri_template.rb</h3>
-    <h4><span class="yellow">88.24 %</span> covered</h4>
+    <h4><span class="green">95.83 %</span> covered</h4>
     <div>
-      <b>17</b> relevant lines. 
-      <span class="green"><b>15</b> lines covered</span> and
+      <b>48</b> relevant lines. 
+      <span class="green"><b>46</b> lines covered</span> and
       <span class="red"><b>2</b> lines missed.</span>
     </div>
   </div>
@@ -403,26 +403,26 @@
           <code class="ruby">  def self.resolve_class(*args)</code>
         </li>
       
-        <li class="covered" data-hits="25" data-linenumber="45">
-          <span class="hits">25</span>
+        <li class="covered" data-hits="44" data-linenumber="45">
+          <span class="hits">44</span>
           
           <code class="ruby">    symbols, rest = args.partition{|x| x.kind_of? Symbol }</code>
         </li>
       
-        <li class="covered" data-hits="10" data-linenumber="46">
-          <span class="hits">10</span>
+        <li class="covered" data-hits="18" data-linenumber="46">
+          <span class="hits">18</span>
           
           <code class="ruby">    version = symbols.fetch(0, :default)</code>
         </li>
       
-        <li class="covered" data-hits="10" data-linenumber="47">
-          <span class="hits">10</span>
+        <li class="covered" data-hits="18" data-linenumber="47">
+          <span class="hits">18</span>
           
           <code class="ruby">    raise ArgumentError, &quot;Unknown template version #{version.inspect}, defined versions: #{VERSIONS.keys.inspect}&quot; unless VERSIONS.key?(version)</code>
         </li>
       
-        <li class="covered" data-hits="9" data-linenumber="48">
-          <span class="hits">9</span>
+        <li class="covered" data-hits="17" data-linenumber="48">
+          <span class="hits">17</span>
           
           <code class="ruby">    return self.const_get(VERSIONS[version]), rest</code>
         </li>
@@ -511,14 +511,14 @@
           <code class="ruby">  def self.new(*args)</code>
         </li>
       
-        <li class="covered" data-hits="7" data-linenumber="63">
-          <span class="hits">7</span>
+        <li class="covered" data-hits="15" data-linenumber="63">
+          <span class="hits">15</span>
           
           <code class="ruby">    klass, rest = resolve_class(*args)</code>
         </li>
       
-        <li class="covered" data-hits="6" data-linenumber="64">
-          <span class="hits">6</span>
+        <li class="covered" data-hits="14" data-linenumber="64">
+          <span class="hits">14</span>
           
           <code class="ruby">    return klass.new(*rest)</code>
         </li>
@@ -538,112 +538,544 @@
         <li class="never" data-hits="" data-linenumber="67">
           
           
-          <code class="ruby">  # A base class for all errors which will be raised upon invalid syntax.</code>
+          <code class="ruby">  # Tries to convert the given argument into an {URITemplate}.</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="68">
-          <span class="hits">1</span>
+        <li class="never" data-hits="" data-linenumber="68">
           
-          <code class="ruby">  module Invalid</code>
+          
+          <code class="ruby">  # Returns nil if this fails.</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="69">
           
           
-          <code class="ruby">  end</code>
+          <code class="ruby">  #</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="70">
           
           
-          <code class="ruby">  </code>
+          <code class="ruby">  # @return [nil|{URITemplate}]</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="71">
-          
-          
-          <code class="ruby">  # @abstract</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="72">
-          
-          
-          <code class="ruby">  # Expands this uri template with the given variables.</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="73">
-          
-          
-          <code class="ruby">  # The variables should be converted to strings using {Utils#object_to_param}.</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="74">
-          
-          
-          <code class="ruby">  # @raise {Unconvertable} if a variable could not be converted to a string.</code>
-        </li>
-      
-        <li class="covered" data-hits="1" data-linenumber="75">
+        <li class="covered" data-hits="1" data-linenumber="71">
           <span class="hits">1</span>
           
-          <code class="ruby">  def expand(variables={})</code>
+          <code class="ruby">  def self.try_convert(x)</code>
         </li>
       
-        <li class="missed" data-hits="0" data-linenumber="76">
+        <li class="covered" data-hits="7" data-linenumber="72">
+          <span class="hits">7</span>
+          
+          <code class="ruby">    if x.kind_of? URITemplate</code>
+        </li>
+      
+        <li class="covered" data-hits="2" data-linenumber="73">
+          <span class="hits">2</span>
+          
+          <code class="ruby">      return x</code>
+        </li>
+      
+        <li class="covered" data-hits="5" data-linenumber="74">
+          <span class="hits">5</span>
+          
+          <code class="ruby">    elsif x.kind_of? String</code>
+        </li>
+      
+        <li class="covered" data-hits="3" data-linenumber="75">
+          <span class="hits">3</span>
+          
+          <code class="ruby">      return URITemplate.new(x)</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="76">
           
           
-          <code class="ruby">    raise &quot;Please implement #expand on #{self.class.inspect}.&quot;</code>
+          <code class="ruby">    else</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="77">
           
           
-          <code class="ruby">  end</code>
+          <code class="ruby">      return nil</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="78">
           
           
-          <code class="ruby">  </code>
+          <code class="ruby">    end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="79">
           
           
-          <code class="ruby">  # @abstract</code>
+          <code class="ruby">  end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="80">
           
           
-          <code class="ruby">  # Returns the type of this template. The type is a symbol which can be used in {.resolve_class} to resolve the type of this template.</code>
+          <code class="ruby">  </code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="81">
-          <span class="hits">1</span>
+        <li class="never" data-hits="" data-linenumber="81">
           
-          <code class="ruby">  def type</code>
+          
+          <code class="ruby">  # Same as {.try_convert} but raises an ArgumentError when the given argument could not be converted.</code>
         </li>
       
-        <li class="missed" data-hits="0" data-linenumber="82">
+        <li class="never" data-hits="" data-linenumber="82">
           
           
-          <code class="ruby">    raise &quot;Please implement #type on #{self.class.inspect}.&quot;</code>
+          <code class="ruby">  # </code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="83">
           
           
-          <code class="ruby">  end</code>
+          <code class="ruby">  # @raise ArgumentError if the argument is unconvertable</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="84">
           
           
+          <code class="ruby">  # @return {URITemplate}</code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="85">
+          <span class="hits">1</span>
+          
+          <code class="ruby">  def self.convert(x)</code>
+        </li>
+      
+        <li class="covered" data-hits="3" data-linenumber="86">
+          <span class="hits">3</span>
+          
+          <code class="ruby">    o = self.try_convert(x)</code>
+        </li>
+      
+        <li class="covered" data-hits="3" data-linenumber="87">
+          <span class="hits">3</span>
+          
+          <code class="ruby">    if o.nil?</code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="88">
+          <span class="hits">1</span>
+          
+          <code class="ruby">      raise ArgumentError, &quot;Expected to receive something that can be converted to an URITemplate, but got #{x.inspect}&quot;</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="89">
+          
+          
+          <code class="ruby">    end</code>
+        </li>
+      
+        <li class="covered" data-hits="2" data-linenumber="90">
+          <span class="hits">2</span>
+          
+          <code class="ruby">    return o</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="91">
+          
+          
+          <code class="ruby">  end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="92">
+          
+          
+          <code class="ruby">  </code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="93">
+          
+          
+          <code class="ruby">  # Tries to coerce two URITemplates into a common representation.</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="94">
+          
+          
+          <code class="ruby">  # Returns an array with two {URITemplate}s and two booleans indicating which of the two were converted or raises an {ArgumentError}.</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="95">
+          
+          
+          <code class="ruby">  #</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="96">
+          
+          
+          <code class="ruby">  # @example</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="97">
+          
+          
+          <code class="ruby">  #   URITemplate.coerce( URITemplate.new(:draft7,'{x}'), '{y}' ) #=&gt; [URITemplate.new(:draft7,'{x}'), URITemplate.new(:draft7,'{y}'), false, true]</code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="98">
+          <span class="hits">1</span>
+          
+          <code class="ruby">  def self.coerce(a,b)</code>
+        </li>
+      
+        <li class="covered" data-hits="38" data-linenumber="99">
+          <span class="hits">38</span>
+          
+          <code class="ruby">    if a.kind_of? URITemplate</code>
+        </li>
+      
+        <li class="covered" data-hits="34" data-linenumber="100">
+          <span class="hits">34</span>
+          
+          <code class="ruby">      if a.class == b.class</code>
+        </li>
+      
+        <li class="covered" data-hits="17" data-linenumber="101">
+          <span class="hits">17</span>
+          
+          <code class="ruby">        return [a,b,false,false]</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="102">
+          
+          
+          <code class="ruby">      end</code>
+        </li>
+      
+        <li class="covered" data-hits="17" data-linenumber="103">
+          <span class="hits">17</span>
+          
+          <code class="ruby">      b_as_a = a.class.try_convert(b)</code>
+        </li>
+      
+        <li class="covered" data-hits="17" data-linenumber="104">
+          <span class="hits">17</span>
+          
+          <code class="ruby">      if b_as_a</code>
+        </li>
+      
+        <li class="covered" data-hits="16" data-linenumber="105">
+          <span class="hits">16</span>
+          
+          <code class="ruby">        return [a,b_as_a,false,true]</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="106">
+          
+          
+          <code class="ruby">      end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="107">
+          
+          
+          <code class="ruby">    end</code>
+        </li>
+      
+        <li class="covered" data-hits="5" data-linenumber="108">
+          <span class="hits">5</span>
+          
+          <code class="ruby">    if b.kind_of? URITemplate</code>
+        </li>
+      
+        <li class="covered" data-hits="2" data-linenumber="109">
+          <span class="hits">2</span>
+          
+          <code class="ruby">      a_as_b = b.class.try_convert(a)</code>
+        </li>
+      
+        <li class="covered" data-hits="2" data-linenumber="110">
+          <span class="hits">2</span>
+          
+          <code class="ruby">      if a_as_b</code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="111">
+          <span class="hits">1</span>
+          
+          <code class="ruby">        return [a_as_b, b, true, false]</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="112">
+          
+          
+          <code class="ruby">      end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="113">
+          
+          
+          <code class="ruby">    end</code>
+        </li>
+      
+        <li class="covered" data-hits="4" data-linenumber="114">
+          <span class="hits">4</span>
+          
+          <code class="ruby">    bc = self.try_convert(b)</code>
+        </li>
+      
+        <li class="covered" data-hits="4" data-linenumber="115">
+          <span class="hits">4</span>
+          
+          <code class="ruby">    if bc.kind_of? URITemplate</code>
+        </li>
+      
+        <li class="covered" data-hits="3" data-linenumber="116">
+          <span class="hits">3</span>
+          
+          <code class="ruby">      a_as_b = bc.class.try_convert(a)</code>
+        </li>
+      
+        <li class="covered" data-hits="3" data-linenumber="117">
+          <span class="hits">3</span>
+          
+          <code class="ruby">      if a_as_b</code>
+        </li>
+      
+        <li class="covered" data-hits="2" data-linenumber="118">
+          <span class="hits">2</span>
+          
+          <code class="ruby">        return [a_as_b, bc, true, true]</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="119">
+          
+          
+          <code class="ruby">      end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="120">
+          
+          
+          <code class="ruby">    end</code>
+        </li>
+      
+        <li class="covered" data-hits="2" data-linenumber="121">
+          <span class="hits">2</span>
+          
+          <code class="ruby">    raise ArgumentError, &quot;Expected at least on URITemplate, but got #{a.inspect} and #{b.inspect}&quot; unless a.kind_of? URITemplate or b.kind_of? URITemplate</code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="122">
+          <span class="hits">1</span>
+          
+          <code class="ruby">    raise ArgumentError, &quot;Cannot coerce #{a.inspect} and #{b.inspect} into a common representation.&quot;</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="123">
+          
+          
+          <code class="ruby">  end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="124">
+          
+          
+          <code class="ruby">  </code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="125">
+          
+          
+          <code class="ruby">  # Applies a method to a URITemplate with another URITemplate as argument.</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="126">
+          
+          
+          <code class="ruby">  # This is a useful shorthand since both URITemplates are automatically coerced.</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="127">
+          
+          
+          <code class="ruby">  #</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="128">
+          
+          
+          <code class="ruby">  # @example</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="129">
+          
+          
+          <code class="ruby">  #   tpl = URITemplate.new('foo')</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="130">
+          
+          
+          <code class="ruby">  #   URITemplate.apply( tpl, :/, 'bar' ).pattern #=&gt; 'foo/bar'</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="131">
+          
+          
+          <code class="ruby">  #   URITemplate.apply( 'baz', :/, tpl ).pattern #=&gt; 'baz/foo'</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="132">
+          
+          
+          <code class="ruby">  #   URITemplate.apply( 'bla', :/, 'blub' ).pattern #=&gt; 'bla/blub'</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="133">
+          
+          
+          <code class="ruby">  # </code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="134">
+          <span class="hits">1</span>
+          
+          <code class="ruby">  def self.apply(a, method, b, *args)</code>
+        </li>
+      
+        <li class="covered" data-hits="3" data-linenumber="135">
+          <span class="hits">3</span>
+          
+          <code class="ruby">    a,b,_,_ = self.coerce(a,b)</code>
+        </li>
+      
+        <li class="covered" data-hits="3" data-linenumber="136">
+          <span class="hits">3</span>
+          
+          <code class="ruby">    a.send(method,b,*args)</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="137">
+          
+          
+          <code class="ruby">  end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="138">
+          
+          
+          <code class="ruby">  </code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="139">
+          
+          
+          <code class="ruby">  # A base class for all errors which will be raised upon invalid syntax.</code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="140">
+          <span class="hits">1</span>
+          
+          <code class="ruby">  module Invalid</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="141">
+          
+          
+          <code class="ruby">  end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="142">
+          
+          
+          <code class="ruby">  </code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="143">
+          
+          
+          <code class="ruby">  # @abstract</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="144">
+          
+          
+          <code class="ruby">  # Expands this uri template with the given variables.</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="145">
+          
+          
+          <code class="ruby">  # The variables should be converted to strings using {Utils#object_to_param}.</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="146">
+          
+          
+          <code class="ruby">  # @raise {Unconvertable} if a variable could not be converted to a string.</code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="147">
+          <span class="hits">1</span>
+          
+          <code class="ruby">  def expand(variables={})</code>
+        </li>
+      
+        <li class="missed" data-hits="0" data-linenumber="148">
+          
+          
+          <code class="ruby">    raise &quot;Please implement #expand on #{self.class.inspect}.&quot;</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="149">
+          
+          
+          <code class="ruby">  end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="150">
+          
+          
+          <code class="ruby">  </code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="151">
+          
+          
+          <code class="ruby">  # @abstract</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="152">
+          
+          
+          <code class="ruby">  # Returns the type of this template. The type is a symbol which can be used in {.resolve_class} to resolve the type of this template.</code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="153">
+          <span class="hits">1</span>
+          
+          <code class="ruby">  def type</code>
+        </li>
+      
+        <li class="missed" data-hits="0" data-linenumber="154">
+          
+          
+          <code class="ruby">    raise &quot;Please implement #type on #{self.class.inspect}.&quot;</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="155">
+          
+          
+          <code class="ruby">  end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="156">
+          
+          
           <code class="ruby"></code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="85">
+        <li class="never" data-hits="" data-linenumber="157">
           
           
           <code class="ruby">end</code>
@@ -656,11 +1088,11 @@
         <div class="source_table" id="b51222c87eeada8f9c7a5548d3fd2877b85a0b26">
   <div class="header">
     <h3>lib/uri_template/draft7.rb</h3>
-    <h4><span class="green">98.39 %</span> covered</h4>
+    <h4><span class="green">97.08 %</span> covered</h4>
     <div>
-      <b>373</b> relevant lines. 
-      <span class="green"><b>367</b> lines covered</span> and
-      <span class="red"><b>6</b> lines missed.</span>
+      <b>377</b> relevant lines. 
+      <span class="green"><b>366</b> lines covered</span> and
+      <span class="red"><b>11</b> lines missed.</span>
     </div>
   </div>
   
@@ -1351,8 +1783,8 @@
           <code class="ruby">    def initialize(string)</code>
         </li>
       
-        <li class="covered" data-hits="130" data-linenumber="115">
-          <span class="hits">130</span>
+        <li class="covered" data-hits="143" data-linenumber="115">
+          <span class="hits">143</span>
           
           <code class="ruby">      @string = string</code>
         </li>
@@ -1471,8 +1903,8 @@
           <code class="ruby">    def to_s</code>
         </li>
       
-        <li class="covered" data-hits="14" data-linenumber="135">
-          <span class="hits">14</span>
+        <li class="covered" data-hits="23" data-linenumber="135">
+          <span class="hits">23</span>
           
           <code class="ruby">      @string</code>
         </li>
@@ -1537,8 +1969,8 @@
           <code class="ruby">    def initialize(vars)</code>
         </li>
       
-        <li class="covered" data-hits="300" data-linenumber="146">
-          <span class="hits">300</span>
+        <li class="covered" data-hits="304" data-linenumber="146">
+          <span class="hits">304</span>
           
           <code class="ruby">      @variables = vars</code>
         </li>
@@ -3703,8 +4135,8 @@
           <code class="ruby">    def initialize(source)</code>
         </li>
       
-        <li class="covered" data-hits="310" data-linenumber="507">
-          <span class="hits">310</span>
+        <li class="covered" data-hits="324" data-linenumber="507">
+          <span class="hits">324</span>
           
           <code class="ruby">      @source = source</code>
         </li>
@@ -3727,8 +4159,8 @@
           <code class="ruby">    def each</code>
         </li>
       
-        <li class="covered" data-hits="310" data-linenumber="511">
-          <span class="hits">310</span>
+        <li class="covered" data-hits="324" data-linenumber="511">
+          <span class="hits">324</span>
           
           <code class="ruby">      if !block_given?</code>
         </li>
@@ -3745,44 +4177,44 @@
           <code class="ruby">      end</code>
         </li>
       
-        <li class="covered" data-hits="310" data-linenumber="514">
-          <span class="hits">310</span>
+        <li class="covered" data-hits="324" data-linenumber="514">
+          <span class="hits">324</span>
           
           <code class="ruby">      scanner = StringScanner.new(@source)</code>
         </li>
       
-        <li class="covered" data-hits="310" data-linenumber="515">
-          <span class="hits">310</span>
+        <li class="covered" data-hits="324" data-linenumber="515">
+          <span class="hits">324</span>
           
           <code class="ruby">      until scanner.eos?</code>
         </li>
       
-        <li class="covered" data-hits="426" data-linenumber="516">
-          <span class="hits">426</span>
+        <li class="covered" data-hits="440" data-linenumber="516">
+          <span class="hits">440</span>
           
           <code class="ruby">        expression = scanner.scan(EXPRESSION)</code>
         </li>
       
-        <li class="covered" data-hits="426" data-linenumber="517">
-          <span class="hits">426</span>
+        <li class="covered" data-hits="440" data-linenumber="517">
+          <span class="hits">440</span>
           
           <code class="ruby">        if expression</code>
         </li>
       
-        <li class="covered" data-hits="300" data-linenumber="518">
-          <span class="hits">300</span>
+        <li class="covered" data-hits="304" data-linenumber="518">
+          <span class="hits">304</span>
           
           <code class="ruby">          vars = scanner[5].split(',').map{|name|</code>
         </li>
       
-        <li class="covered" data-hits="400" data-linenumber="519">
-          <span class="hits">400</span>
+        <li class="covered" data-hits="404" data-linenumber="519">
+          <span class="hits">404</span>
           
           <code class="ruby">            match = VAR.match(name)</code>
         </li>
       
-        <li class="covered" data-hits="400" data-linenumber="520">
-          <span class="hits">400</span>
+        <li class="covered" data-hits="404" data-linenumber="520">
+          <span class="hits">404</span>
           
           <code class="ruby">            [ match['varname'], match['explode'] == '*', match['length'].to_i ]</code>
         </li>
@@ -3793,8 +4225,8 @@
           <code class="ruby">          }</code>
         </li>
       
-        <li class="covered" data-hits="300" data-linenumber="522">
-          <span class="hits">300</span>
+        <li class="covered" data-hits="304" data-linenumber="522">
+          <span class="hits">304</span>
           
           <code class="ruby">          yield OPERATORS[scanner[1]].new(vars)</code>
         </li>
@@ -3805,20 +4237,20 @@
           <code class="ruby">        else</code>
         </li>
       
-        <li class="covered" data-hits="126" data-linenumber="524">
-          <span class="hits">126</span>
+        <li class="covered" data-hits="136" data-linenumber="524">
+          <span class="hits">136</span>
           
           <code class="ruby">          literal = scanner.scan(LITERAL)</code>
         </li>
       
-        <li class="covered" data-hits="126" data-linenumber="525">
-          <span class="hits">126</span>
+        <li class="covered" data-hits="136" data-linenumber="525">
+          <span class="hits">136</span>
           
           <code class="ruby">          if literal</code>
         </li>
       
-        <li class="covered" data-hits="121" data-linenumber="526">
-          <span class="hits">121</span>
+        <li class="covered" data-hits="131" data-linenumber="526">
+          <span class="hits">131</span>
           
           <code class="ruby">            yield(Literal.new(literal))</code>
         </li>
@@ -3967,8 +4399,8 @@
           <code class="ruby">    def try_convert(x)</code>
         </li>
       
-        <li class="covered" data-hits="18" data-linenumber="551">
-          <span class="hits">18</span>
+        <li class="covered" data-hits="25" data-linenumber="551">
+          <span class="hits">25</span>
           
           <code class="ruby">      if x.kind_of? self</code>
         </li>
@@ -3979,14 +4411,14 @@
           <code class="ruby">        return x</code>
         </li>
       
-        <li class="covered" data-hits="17" data-linenumber="553">
-          <span class="hits">17</span>
+        <li class="covered" data-hits="24" data-linenumber="553">
+          <span class="hits">24</span>
           
           <code class="ruby">      elsif x.kind_of? String and valid? x</code>
         </li>
       
-        <li class="covered" data-hits="15" data-linenumber="554">
-          <span class="hits">15</span>
+        <li class="covered" data-hits="20" data-linenumber="554">
+          <span class="hits">20</span>
           
           <code class="ruby">        return new(x)</code>
         </li>
@@ -4051,14 +4483,14 @@
           <code class="ruby">    def convert(x)</code>
         </li>
       
-        <li class="covered" data-hits="14" data-linenumber="565">
-          <span class="hits">14</span>
+        <li class="missed" data-hits="0" data-linenumber="565">
+          
           
           <code class="ruby">      o = self.try_convert(x)</code>
         </li>
       
-        <li class="covered" data-hits="14" data-linenumber="566">
-          <span class="hits">14</span>
+        <li class="missed" data-hits="0" data-linenumber="566">
+          
           
           <code class="ruby">      if o.nil?</code>
         </li>
@@ -4075,8 +4507,8 @@
           <code class="ruby">      else</code>
         </li>
       
-        <li class="covered" data-hits="14" data-linenumber="569">
-          <span class="hits">14</span>
+        <li class="missed" data-hits="0" data-linenumber="569">
+          
           
           <code class="ruby">        return o</code>
         </li>
@@ -4135,8 +4567,8 @@
           <code class="ruby">    def valid?(pattern)</code>
         </li>
       
-        <li class="covered" data-hits="128" data-linenumber="579">
-          <span class="hits">128</span>
+        <li class="covered" data-hits="133" data-linenumber="579">
+          <span class="hits">133</span>
           
           <code class="ruby">      URI === pattern</code>
         </li>
@@ -4225,38 +4657,38 @@
           <code class="ruby">  def initialize(pattern_or_tokens,options={})</code>
         </li>
       
-        <li class="covered" data-hits="321" data-linenumber="594">
-          <span class="hits">321</span>
+        <li class="covered" data-hits="338" data-linenumber="594">
+          <span class="hits">338</span>
           
           <code class="ruby">    @options = options.dup.freeze</code>
         </li>
       
-        <li class="covered" data-hits="321" data-linenumber="595">
-          <span class="hits">321</span>
+        <li class="covered" data-hits="338" data-linenumber="595">
+          <span class="hits">338</span>
           
           <code class="ruby">    if pattern_or_tokens.kind_of? String</code>
         </li>
       
-        <li class="covered" data-hits="310" data-linenumber="596">
-          <span class="hits">310</span>
+        <li class="covered" data-hits="324" data-linenumber="596">
+          <span class="hits">324</span>
           
           <code class="ruby">      @pattern = pattern_or_tokens.dup</code>
         </li>
       
-        <li class="covered" data-hits="310" data-linenumber="597">
-          <span class="hits">310</span>
+        <li class="covered" data-hits="324" data-linenumber="597">
+          <span class="hits">324</span>
           
           <code class="ruby">      @pattern.freeze</code>
         </li>
       
-        <li class="covered" data-hits="310" data-linenumber="598">
-          <span class="hits">310</span>
+        <li class="covered" data-hits="324" data-linenumber="598">
+          <span class="hits">324</span>
           
           <code class="ruby">      unless @options[:lazy]</code>
         </li>
       
-        <li class="covered" data-hits="310" data-linenumber="599">
-          <span class="hits">310</span>
+        <li class="covered" data-hits="324" data-linenumber="599">
+          <span class="hits">324</span>
           
           <code class="ruby">        self.tokens</code>
         </li>
@@ -4267,20 +4699,20 @@
           <code class="ruby">      end</code>
         </li>
       
-        <li class="covered" data-hits="11" data-linenumber="601">
-          <span class="hits">11</span>
+        <li class="covered" data-hits="14" data-linenumber="601">
+          <span class="hits">14</span>
           
           <code class="ruby">    elsif pattern_or_tokens.kind_of? Array</code>
         </li>
       
-        <li class="covered" data-hits="10" data-linenumber="602">
-          <span class="hits">10</span>
+        <li class="covered" data-hits="13" data-linenumber="602">
+          <span class="hits">13</span>
           
           <code class="ruby">      @tokens = pattern_or_tokens.dup</code>
         </li>
       
-        <li class="covered" data-hits="10" data-linenumber="603">
-          <span class="hits">10</span>
+        <li class="covered" data-hits="13" data-linenumber="603">
+          <span class="hits">13</span>
           
           <code class="ruby">      @tokens.freeze</code>
         </li>
@@ -5137,8 +5569,8 @@
           <code class="ruby">  def pattern</code>
         </li>
       
-        <li class="covered" data-hits="353" data-linenumber="746">
-          <span class="hits">353</span>
+        <li class="covered" data-hits="378" data-linenumber="746">
+          <span class="hits">378</span>
           
           <code class="ruby">    @pattern ||= tokens.map(&amp;:to_s).join</code>
         </li>
@@ -5176,901 +5608,901 @@
         <li class="covered" data-hits="1" data-linenumber="752">
           <span class="hits">1</span>
           
-          <code class="ruby">  def ==(tpl)</code>
+          <code class="ruby">  def ==(o)</code>
         </li>
       
-        <li class="covered" data-hits="12" data-linenumber="753">
-          <span class="hits">12</span>
+        <li class="covered" data-hits="14" data-linenumber="753">
+          <span class="hits">14</span>
           
-          <code class="ruby">    return false if self.class != tpl.class</code>
+          <code class="ruby">    this, other, this_converted, other_converted = URITemplate.coerce( self, o )</code>
         </li>
       
-        <li class="covered" data-hits="12" data-linenumber="754">
-          <span class="hits">12</span>
+        <li class="covered" data-hits="14" data-linenumber="754">
+          <span class="hits">14</span>
           
-          <code class="ruby">    return self.pattern == tpl.pattern</code>
+          <code class="ruby">    if this_converted</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="755">
+        <li class="missed" data-hits="0" data-linenumber="755">
           
           
-          <code class="ruby">  end</code>
+          <code class="ruby">      return this == other</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="756">
           
           
-          <code class="ruby">  </code>
+          <code class="ruby">    end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="757">
+        <li class="covered" data-hits="14" data-linenumber="757">
+          <span class="hits">14</span>
           
-          
-          <code class="ruby">  # @method ===(uri)</code>
+          <code class="ruby">    return this.pattern == other.pattern</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="758">
           
           
-          <code class="ruby">  # Alias for to_r.=== . Tests whether this template matches a given uri.</code>
+          <code class="ruby">  end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="759">
           
           
-          <code class="ruby">  # @return TrueClass, FalseClass</code>
+          <code class="ruby">  </code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="760">
-          <span class="hits">1</span>
+        <li class="never" data-hits="" data-linenumber="760">
           
-          <code class="ruby">  def_delegators :to_r, :===</code>
+          
+          <code class="ruby">  # @method ===(uri)</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="761">
           
           
-          <code class="ruby">  </code>
+          <code class="ruby">  # Alias for to_r.=== . Tests whether this template matches a given uri.</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="762">
           
           
-          <code class="ruby">  # @method match(uri)</code>
+          <code class="ruby">  # @return TrueClass, FalseClass</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="763">
+        <li class="covered" data-hits="1" data-linenumber="763">
+          <span class="hits">1</span>
           
-          
-          <code class="ruby">  # Alias for to_r.match . Matches this template against the given uri.</code>
+          <code class="ruby">  def_delegators :to_r, :===</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="764">
           
           
-          <code class="ruby">  # @yield MatchData</code>
+          <code class="ruby">  </code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="765">
           
           
-          <code class="ruby">  # @return MatchData, Object </code>
+          <code class="ruby">  # @method match(uri)</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="766">
-          <span class="hits">1</span>
+        <li class="never" data-hits="" data-linenumber="766">
           
-          <code class="ruby">  def_delegators :to_r, :match</code>
+          
+          <code class="ruby">  # Alias for to_r.match . Matches this template against the given uri.</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="767">
           
           
-          <code class="ruby"></code>
+          <code class="ruby">  # @yield MatchData</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="768">
           
           
-          <code class="ruby">  # The type of this template.</code>
+          <code class="ruby">  # @return MatchData, Object </code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="769">
+        <li class="covered" data-hits="1" data-linenumber="769">
+          <span class="hits">1</span>
           
-          
-          <code class="ruby">  #</code>
+          <code class="ruby">  def_delegators :to_r, :match</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="770">
           
           
-          <code class="ruby">  # @example</code>
+          <code class="ruby"></code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="771">
           
           
-          <code class="ruby">  #   tpl1 = URITemplate::Draft7.new('/foo')</code>
+          <code class="ruby">  # The type of this template.</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="772">
           
           
-          <code class="ruby">  #   tpl2 = URITemplate.new( tpl1.pattern, tpl1.type )</code>
+          <code class="ruby">  #</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="773">
           
           
-          <code class="ruby">  #   tpl1 == tpl2 #=&gt; true</code>
+          <code class="ruby">  # @example</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="774">
           
           
-          <code class="ruby">  #</code>
+          <code class="ruby">  #   tpl1 = URITemplate::Draft7.new('/foo')</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="775">
           
           
-          <code class="ruby">  # @see {URITemplate#type}</code>
+          <code class="ruby">  #   tpl2 = URITemplate.new( tpl1.pattern, tpl1.type )</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="776">
-          <span class="hits">1</span>
+        <li class="never" data-hits="" data-linenumber="776">
           
-          <code class="ruby">  def type</code>
+          
+          <code class="ruby">  #   tpl1 == tpl2 #=&gt; true</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="777">
-          <span class="hits">1</span>
+        <li class="never" data-hits="" data-linenumber="777">
           
-          <code class="ruby">    :draft7</code>
+          
+          <code class="ruby">  #</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="778">
           
           
-          <code class="ruby">  end</code>
+          <code class="ruby">  # @see {URITemplate#type}</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="779">
+        <li class="covered" data-hits="1" data-linenumber="779">
+          <span class="hits">1</span>
           
-          
-          <code class="ruby">  </code>
+          <code class="ruby">  def type</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="780">
+        <li class="covered" data-hits="1" data-linenumber="780">
+          <span class="hits">1</span>
           
-          
-          <code class="ruby">  # Returns the level of this template according to the draft ( http://tools.ietf.org/html/draft-gregorio-uritemplate-07#section-1.2 ). Higher level means higher complexity.</code>
+          <code class="ruby">    :draft7</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="781">
           
           
-          <code class="ruby">  # Basically this is defined as:</code>
+          <code class="ruby">  end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="782">
           
           
-          <code class="ruby">  # </code>
+          <code class="ruby">  </code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="783">
           
           
-          <code class="ruby">  # * Level 1: no operators, one variable per expansion, no variable modifiers</code>
+          <code class="ruby">  # Returns the level of this template according to the draft ( http://tools.ietf.org/html/draft-gregorio-uritemplate-07#section-1.2 ). Higher level means higher complexity.</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="784">
           
           
-          <code class="ruby">  # * Level 2: '+' and '#' operators, one variable per expansion, no variable modifiers</code>
+          <code class="ruby">  # Basically this is defined as:</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="785">
           
           
-          <code class="ruby">  # * Level 3: all operators, multiple variables per expansion, no variable modifiers</code>
+          <code class="ruby">  # </code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="786">
           
           
-          <code class="ruby">  # * Level 4: all operators, multiple variables per expansion, all variable modifiers</code>
+          <code class="ruby">  # * Level 1: no operators, one variable per expansion, no variable modifiers</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="787">
           
           
-          <code class="ruby">  #</code>
+          <code class="ruby">  # * Level 2: '+' and '#' operators, one variable per expansion, no variable modifiers</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="788">
           
           
-          <code class="ruby">  # @example</code>
+          <code class="ruby">  # * Level 3: all operators, multiple variables per expansion, no variable modifiers</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="789">
           
           
-          <code class="ruby">  #   URITemplate::Draft7.new('/foo/').level #=&gt; 1</code>
+          <code class="ruby">  # * Level 4: all operators, multiple variables per expansion, all variable modifiers</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="790">
           
           
-          <code class="ruby">  #   URITemplate::Draft7.new('/foo{bar}').level #=&gt; 1</code>
+          <code class="ruby">  #</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="791">
           
           
-          <code class="ruby">  #   URITemplate::Draft7.new('/foo{#bar}').level #=&gt; 2</code>
+          <code class="ruby">  # @example</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="792">
           
           
-          <code class="ruby">  #   URITemplate::Draft7.new('/foo{.bar}').level #=&gt; 3</code>
+          <code class="ruby">  #   URITemplate::Draft7.new('/foo/').level #=&gt; 1</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="793">
           
           
-          <code class="ruby">  #   URITemplate::Draft7.new('/foo{bar,baz}').level #=&gt; 3</code>
+          <code class="ruby">  #   URITemplate::Draft7.new('/foo{bar}').level #=&gt; 1</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="794">
           
           
-          <code class="ruby">  #   URITemplate::Draft7.new('/foo{bar:20}').level #=&gt; 4</code>
+          <code class="ruby">  #   URITemplate::Draft7.new('/foo{#bar}').level #=&gt; 2</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="795">
           
           
-          <code class="ruby">  #   URITemplate::Draft7.new('/foo{bar*}').level #=&gt; 4</code>
+          <code class="ruby">  #   URITemplate::Draft7.new('/foo{.bar}').level #=&gt; 3</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="796">
           
           
-          <code class="ruby">  #</code>
+          <code class="ruby">  #   URITemplate::Draft7.new('/foo{bar,baz}').level #=&gt; 3</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="797">
           
           
-          <code class="ruby">  # Templates of lower levels might be convertible to other formats while templates of higher levels might be incompatible. Level 1 for example should be convertible to any other format since it just contains simple expansions.</code>
+          <code class="ruby">  #   URITemplate::Draft7.new('/foo{bar:20}').level #=&gt; 4</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="798">
           
           
+          <code class="ruby">  #   URITemplate::Draft7.new('/foo{bar*}').level #=&gt; 4</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="799">
+          
+          
           <code class="ruby">  #</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="799">
-          <span class="hits">1</span>
+        <li class="never" data-hits="" data-linenumber="800">
           
-          <code class="ruby">  def level</code>
-        </li>
-      
-        <li class="covered" data-hits="25" data-linenumber="800">
-          <span class="hits">25</span>
           
-          <code class="ruby">    tokens.map(&amp;:level).max</code>
+          <code class="ruby">  # Templates of lower levels might be convertible to other formats while templates of higher levels might be incompatible. Level 1 for example should be convertible to any other format since it just contains simple expansions.</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="801">
           
           
-          <code class="ruby">  end</code>
+          <code class="ruby">  #</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="802">
+        <li class="covered" data-hits="1" data-linenumber="802">
+          <span class="hits">1</span>
           
-          
-          <code class="ruby">  </code>
+          <code class="ruby">  def level</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="803">
+        <li class="covered" data-hits="25" data-linenumber="803">
+          <span class="hits">25</span>
           
-          
-          <code class="ruby">  # Tries to conatenate two templates, as if they were path segments.</code>
+          <code class="ruby">    tokens.map(&amp;:level).max</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="804">
           
           
-          <code class="ruby">  # Removes double slashes or insert one if they are missing.</code>
+          <code class="ruby">  end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="805">
           
           
-          <code class="ruby">  #</code>
+          <code class="ruby">  </code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="806">
           
           
-          <code class="ruby">  # @example</code>
+          <code class="ruby">  # Tries to conatenate two templates, as if they were path segments.</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="807">
           
           
-          <code class="ruby">  #   tpl = URITemplate::Draft7.new('/xy/')</code>
+          <code class="ruby">  # Removes double slashes or insert one if they are missing.</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="808">
           
           
-          <code class="ruby">  #   (tpl / '/z/' ).pattern #=&gt; '/xy/z/'</code>
+          <code class="ruby">  #</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="809">
           
           
-          <code class="ruby">  #   (tpl / 'z/' ).pattern #=&gt; '/xy/z/'</code>
+          <code class="ruby">  # @example</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="810">
           
           
-          <code class="ruby">  #   (tpl / '{/z}' ).pattern #=&gt; '/xy{/z}'</code>
+          <code class="ruby">  #   tpl = URITemplate::Draft7.new('/xy/')</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="811">
           
           
-          <code class="ruby">  #   (tpl / 'a' / 'b' ).pattern #=&gt; '/xy/a/b'</code>
+          <code class="ruby">  #   (tpl / '/z/' ).pattern #=&gt; '/xy/z/'</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="812">
           
           
-          <code class="ruby">  #</code>
+          <code class="ruby">  #   (tpl / 'z/' ).pattern #=&gt; '/xy/z/'</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="813">
-          <span class="hits">1</span>
+        <li class="never" data-hits="" data-linenumber="813">
           
-          <code class="ruby">  def /(o)</code>
+          
+          <code class="ruby">  #   (tpl / '{/z}' ).pattern #=&gt; '/xy{/z}'</code>
         </li>
       
-        <li class="covered" data-hits="14" data-linenumber="814">
-          <span class="hits">14</span>
+        <li class="never" data-hits="" data-linenumber="814">
           
-          <code class="ruby">    other = self.class.convert(o)</code>
+          
+          <code class="ruby">  #   (tpl / 'a' / 'b' ).pattern #=&gt; '/xy/a/b'</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="815">
           
           
+          <code class="ruby">  #</code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="816">
+          <span class="hits">1</span>
+          
+          <code class="ruby">  def /(o)</code>
+        </li>
+      
+        <li class="covered" data-hits="17" data-linenumber="817">
+          <span class="hits">17</span>
+          
+          <code class="ruby">    this, other, this_converted, other_converted = URITemplate.coerce( self, o )</code>
+        </li>
+      
+        <li class="covered" data-hits="17" data-linenumber="818">
+          <span class="hits">17</span>
+          
+          <code class="ruby">    if this_converted</code>
+        </li>
+      
+        <li class="missed" data-hits="0" data-linenumber="819">
+          
+          
+          <code class="ruby">      return this / other</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="820">
+          
+          
+          <code class="ruby">    end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="821">
+          
+          
           <code class="ruby">    </code>
         </li>
       
-        <li class="covered" data-hits="14" data-linenumber="816">
-          <span class="hits">14</span>
+        <li class="covered" data-hits="17" data-linenumber="822">
+          <span class="hits">17</span>
           
           <code class="ruby">    if other.absolute?</code>
         </li>
       
-        <li class="covered" data-hits="3" data-linenumber="817">
+        <li class="covered" data-hits="3" data-linenumber="823">
           <span class="hits">3</span>
           
           <code class="ruby">      raise ArgumentError, &quot;Expected to receive a relative template but got an absoulte one: #{other.inspect}. If you think this is a bug, please report it.&quot;</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="818">
+        <li class="never" data-hits="" data-linenumber="824">
           
           
           <code class="ruby">    end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="819">
+        <li class="never" data-hits="" data-linenumber="825">
           
           
           <code class="ruby">    </code>
         </li>
       
-        <li class="covered" data-hits="11" data-linenumber="820">
-          <span class="hits">11</span>
+        <li class="covered" data-hits="14" data-linenumber="826">
+          <span class="hits">14</span>
           
           <code class="ruby">    if other.pattern == ''</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="821">
+        <li class="covered" data-hits="1" data-linenumber="827">
           <span class="hits">1</span>
           
           <code class="ruby">      return self</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="822">
+        <li class="never" data-hits="" data-linenumber="828">
           
           
           <code class="ruby">    end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="823">
+        <li class="never" data-hits="" data-linenumber="829">
           
           
           <code class="ruby">    # Merge!</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="824">
+        <li class="never" data-hits="" data-linenumber="830">
           
           
           <code class="ruby">    # Analyze the last token of this an the first token of the next and try to merge them</code>
         </li>
       
-        <li class="covered" data-hits="10" data-linenumber="825">
-          <span class="hits">10</span>
+        <li class="covered" data-hits="13" data-linenumber="831">
+          <span class="hits">13</span>
           
           <code class="ruby">    if self.tokens.last.kind_of?(Literal)</code>
         </li>
       
-        <li class="covered" data-hits="10" data-linenumber="826">
-          <span class="hits">10</span>
+        <li class="covered" data-hits="13" data-linenumber="832">
+          <span class="hits">13</span>
           
           <code class="ruby">      if self.tokens.last.string[-1] == '/' # the last token ends with an /</code>
         </li>
       
-        <li class="covered" data-hits="6" data-linenumber="827">
+        <li class="covered" data-hits="6" data-linenumber="833">
           <span class="hits">6</span>
           
           <code class="ruby">        if other.tokens.first.kind_of? Literal</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="828">
+        <li class="never" data-hits="" data-linenumber="834">
           
           
           <code class="ruby">          # both seems to be paths, merge them!</code>
         </li>
       
-        <li class="covered" data-hits="4" data-linenumber="829">
+        <li class="covered" data-hits="4" data-linenumber="835">
           <span class="hits">4</span>
           
           <code class="ruby">          if other.tokens.first.string[0] == '/'</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="830">
+        <li class="never" data-hits="" data-linenumber="836">
           
           
           <code class="ruby">            # strip one '/'</code>
         </li>
       
-        <li class="covered" data-hits="2" data-linenumber="831">
+        <li class="covered" data-hits="2" data-linenumber="837">
           <span class="hits">2</span>
           
           <code class="ruby">            return self.class.new( self.tokens[0..-2] + [ Literal.new(self.tokens.last.string + other.tokens.first.string[1..-1]) ] + other.tokens[1..-1] )</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="832">
+        <li class="never" data-hits="" data-linenumber="838">
           
           
           <code class="ruby">          else</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="833">
+        <li class="never" data-hits="" data-linenumber="839">
           
           
           <code class="ruby">            # no problem, but we can merge them</code>
         </li>
       
-        <li class="covered" data-hits="2" data-linenumber="834">
+        <li class="covered" data-hits="2" data-linenumber="840">
           <span class="hits">2</span>
           
           <code class="ruby">            return self.class.new( self.tokens[0..-2] + [ Literal.new(self.tokens.last.string + other.tokens.first.string) ] + other.tokens[1..-1] )</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="835">
+        <li class="never" data-hits="" data-linenumber="841">
           
           
           <code class="ruby">          end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="836">
+        <li class="never" data-hits="" data-linenumber="842">
           
           
           <code class="ruby">        elsif other.tokens.first.kind_of? Expression::Path</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="837">
+        <li class="never" data-hits="" data-linenumber="843">
           
           
           <code class="ruby">          # this will automatically insert '/'</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="838">
+        <li class="never" data-hits="" data-linenumber="844">
           
           
           <code class="ruby">          # so we can strip one '/'</code>
         </li>
       
-        <li class="covered" data-hits="2" data-linenumber="839">
+        <li class="covered" data-hits="2" data-linenumber="845">
           <span class="hits">2</span>
           
           <code class="ruby">          return self.class.new( self.tokens[0..-2] + [ Literal.new(self.tokens.last.string[0..-2]) ] + other.tokens )</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="840">
+        <li class="never" data-hits="" data-linenumber="846">
           
           
           <code class="ruby">        end</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="841">
-          
-          
-          <code class="ruby">      end</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="842">
-          
-          
-          <code class="ruby">    end</code>
-        </li>
-      
-        <li class="covered" data-hits="4" data-linenumber="843">
-          <span class="hits">4</span>
-          
-          <code class="ruby">    if other.tokens.first.kind_of?(Expression::Path) or (other.tokens.first.kind_of?(Literal) and other.tokens.first.string[0] == '/')</code>
-        </li>
-      
-        <li class="covered" data-hits="1" data-linenumber="844">
-          <span class="hits">1</span>
-          
-          <code class="ruby">      return self.class.new( self.tokens + other.tokens )</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="845">
-          
-          
-          <code class="ruby">    else</code>
-        </li>
-      
-        <li class="covered" data-hits="3" data-linenumber="846">
-          <span class="hits">3</span>
-          
-          <code class="ruby">      return self.class.new( self.tokens + [Literal.new('/')] + other.tokens )</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="847">
           
           
-          <code class="ruby">    end</code>
+          <code class="ruby">      end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="848">
           
           
-          <code class="ruby">  end</code>
+          <code class="ruby">    end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="849">
+        <li class="covered" data-hits="7" data-linenumber="849">
+          <span class="hits">7</span>
           
-          
-          <code class="ruby">  </code>
+          <code class="ruby">    if other.tokens.first.kind_of?(Expression::Path) or (other.tokens.first.kind_of?(Literal) and other.tokens.first.string[0] == '/')</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="850">
+        <li class="covered" data-hits="1" data-linenumber="850">
+          <span class="hits">1</span>
           
-          
-          <code class="ruby">  </code>
+          <code class="ruby">      return self.class.new( self.tokens + other.tokens )</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="851">
           
           
-          <code class="ruby">  #</code>
+          <code class="ruby">    else</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="852">
+        <li class="covered" data-hits="6" data-linenumber="852">
+          <span class="hits">6</span>
           
-          
-          <code class="ruby">  # should be relative:</code>
+          <code class="ruby">      return self.class.new( self.tokens + [Literal.new('/')] + other.tokens )</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="853">
           
           
-          <code class="ruby">  #  xxx ...</code>
+          <code class="ruby">    end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="854">
           
           
-          <code class="ruby">  #  {xxx}x ...</code>
+          <code class="ruby">  end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="855">
           
           
-          <code class="ruby">  # </code>
+          <code class="ruby">  </code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="856">
           
           
-          <code class="ruby">  #  should not be relative:</code>
+          <code class="ruby">  </code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="857">
           
           
-          <code class="ruby">  #  {proto}:// ...</code>
+          <code class="ruby">  #</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="858">
           
           
-          <code class="ruby">  #  http:// ...</code>
+          <code class="ruby">  # should be relative:</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="859">
           
           
-          <code class="ruby">  #  http{ssl}:// ...</code>
+          <code class="ruby">  #  xxx ...</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="860">
           
           
-          <code class="ruby">  #</code>
+          <code class="ruby">  #  {xxx}x ...</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="861">
-          <span class="hits">1</span>
+        <li class="never" data-hits="" data-linenumber="861">
           
-          <code class="ruby">  def absolute?</code>
+          
+          <code class="ruby">  # </code>
         </li>
       
-        <li class="covered" data-hits="14" data-linenumber="862">
-          <span class="hits">14</span>
+        <li class="never" data-hits="" data-linenumber="862">
           
-          <code class="ruby">    read_chars = &quot;&quot;</code>
+          
+          <code class="ruby">  #  should not be relative:</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="863">
           
           
+          <code class="ruby">  #  {proto}:// ...</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="864">
+          
+          
+          <code class="ruby">  #  http:// ...</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="865">
+          
+          
+          <code class="ruby">  #  http{ssl}:// ...</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="866">
+          
+          
+          <code class="ruby">  #</code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="867">
+          <span class="hits">1</span>
+          
+          <code class="ruby">  def absolute?</code>
+        </li>
+      
+        <li class="covered" data-hits="17" data-linenumber="868">
+          <span class="hits">17</span>
+          
+          <code class="ruby">    read_chars = &quot;&quot;</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="869">
+          
+          
           <code class="ruby">    </code>
         </li>
       
-        <li class="covered" data-hits="14" data-linenumber="864">
-          <span class="hits">14</span>
+        <li class="covered" data-hits="17" data-linenumber="870">
+          <span class="hits">17</span>
           
           <code class="ruby">    tokens.each do |token|</code>
         </li>
       
-        <li class="covered" data-hits="16" data-linenumber="865">
-          <span class="hits">16</span>
+        <li class="covered" data-hits="19" data-linenumber="871">
+          <span class="hits">19</span>
           
           <code class="ruby">      if token.kind_of? Expression</code>
         </li>
       
-        <li class="covered" data-hits="6" data-linenumber="866">
+        <li class="covered" data-hits="6" data-linenumber="872">
           <span class="hits">6</span>
           
           <code class="ruby">        if token.class::OPERATOR == ''</code>
         </li>
       
-        <li class="covered" data-hits="3" data-linenumber="867">
+        <li class="covered" data-hits="3" data-linenumber="873">
           <span class="hits">3</span>
           
           <code class="ruby">          read_chars &lt;&lt; &quot;x&quot;</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="868">
+        <li class="never" data-hits="" data-linenumber="874">
           
           
           <code class="ruby">        else</code>
         </li>
       
-        <li class="covered" data-hits="3" data-linenumber="869">
+        <li class="covered" data-hits="3" data-linenumber="875">
           <span class="hits">3</span>
           
           <code class="ruby">          return false</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="870">
+        <li class="never" data-hits="" data-linenumber="876">
           
           
           <code class="ruby">        end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="871">
+        <li class="never" data-hits="" data-linenumber="877">
           
           
           <code class="ruby">      elsif token.kind_of? Literal</code>
         </li>
       
-        <li class="covered" data-hits="10" data-linenumber="872">
-          <span class="hits">10</span>
-          
-          <code class="ruby">        read_chars &lt;&lt; token.string</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="873">
-          
-          
-          <code class="ruby">      end</code>
-        </li>
-      
-        <li class="covered" data-hits="13" data-linenumber="874">
+        <li class="covered" data-hits="13" data-linenumber="878">
           <span class="hits">13</span>
           
-          <code class="ruby">      if read_chars =~ /^[a-z]+:\/\//i</code>
-        </li>
-      
-        <li class="covered" data-hits="3" data-linenumber="875">
-          <span class="hits">3</span>
-          
-          <code class="ruby">        return true</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="876">
-          
-          
-          <code class="ruby">      elsif read_chars =~ /(?&lt;!:|\/)\/(?!\/)/</code>
-        </li>
-      
-        <li class="covered" data-hits="3" data-linenumber="877">
-          <span class="hits">3</span>
-          
-          <code class="ruby">        return false</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="878">
-          
-          
-          <code class="ruby">      end</code>
+          <code class="ruby">        read_chars &lt;&lt; token.string</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="879">
           
           
-          <code class="ruby">    end</code>
+          <code class="ruby">      end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="880">
+        <li class="covered" data-hits="16" data-linenumber="880">
+          <span class="hits">16</span>
           
-          
-          <code class="ruby">    </code>
+          <code class="ruby">      if read_chars =~ /^[a-z]+:\/\//i</code>
         </li>
       
-        <li class="covered" data-hits="5" data-linenumber="881">
-          <span class="hits">5</span>
+        <li class="covered" data-hits="3" data-linenumber="881">
+          <span class="hits">3</span>
           
-          <code class="ruby">    return false</code>
+          <code class="ruby">        return true</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="882">
           
           
-          <code class="ruby">  end</code>
+          <code class="ruby">      elsif read_chars =~ /(?&lt;!:|\/)\/(?!\/)/</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="883">
+        <li class="covered" data-hits="3" data-linenumber="883">
+          <span class="hits">3</span>
           
-          
-          <code class="ruby">  </code>
+          <code class="ruby">        return false</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="884">
           
           
-          <code class="ruby">  # Returns the number of static characters in this template.</code>
+          <code class="ruby">      end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="885">
           
           
-          <code class="ruby">  # This method is useful for routing, since it's often pointful to use the url with fewer variable characters.</code>
+          <code class="ruby">    end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="886">
           
           
-          <code class="ruby">  # For example 'static' and 'sta{var}' both match 'static', but in most cases 'static' should be prefered over 'sta{var}' since it's more specific.</code>
+          <code class="ruby">    </code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="887">
+        <li class="covered" data-hits="8" data-linenumber="887">
+          <span class="hits">8</span>
           
-          
-          <code class="ruby">  #</code>
+          <code class="ruby">    return false</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="888">
           
           
-          <code class="ruby">  # @example</code>
+          <code class="ruby">  end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="889">
           
           
-          <code class="ruby">  #   URITemplate::Draft7.new('/xy/').static_characters #=&gt; 4</code>
+          <code class="ruby">  </code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="890">
           
           
-          <code class="ruby">  #   URITemplate::Draft7.new('{foo}').static_characters #=&gt; 0</code>
+          <code class="ruby">  # Returns the number of static characters in this template.</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="891">
           
           
-          <code class="ruby">  #   URITemplate::Draft7.new('a{foo}b').static_characters #=&gt; 2</code>
+          <code class="ruby">  # This method is useful for routing, since it's often pointful to use the url with fewer variable characters.</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="892">
           
           
-          <code class="ruby">  #</code>
+          <code class="ruby">  # For example 'static' and 'sta{var}' both match 'static', but in most cases 'static' should be prefered over 'sta{var}' since it's more specific.</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="893">
           
           
-          <code class="ruby">  # @return Numeric</code>
+          <code class="ruby">  #</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="894">
-          <span class="hits">1</span>
+        <li class="never" data-hits="" data-linenumber="894">
           
-          <code class="ruby">  def static_characters</code>
+          
+          <code class="ruby">  # @example</code>
         </li>
       
-        <li class="covered" data-hits="11" data-linenumber="895">
-          <span class="hits">11</span>
+        <li class="never" data-hits="" data-linenumber="895">
           
-          <code class="ruby">    @static_characters ||= tokens.select{|t| t.kind_of?(Literal) }.map{|t| t.string.size }.inject(0,:+)</code>
+          
+          <code class="ruby">  #   URITemplate::Draft7.new('/xy/').static_characters #=&gt; 4</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="896">
           
           
-          <code class="ruby">  end</code>
+          <code class="ruby">  #   URITemplate::Draft7.new('{foo}').static_characters #=&gt; 0</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="897">
           
           
-          <code class="ruby"></code>
+          <code class="ruby">  #   URITemplate::Draft7.new('a{foo}b').static_characters #=&gt; 2</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="898">
-          <span class="hits">1</span>
+        <li class="never" data-hits="" data-linenumber="898">
           
-          <code class="ruby">protected</code>
+          
+          <code class="ruby">  #</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="899">
           
           
-          <code class="ruby">  # @private</code>
+          <code class="ruby">  # @return Numeric</code>
         </li>
       
         <li class="covered" data-hits="1" data-linenumber="900">
           <span class="hits">1</span>
           
-          <code class="ruby">  def tokenize!</code>
+          <code class="ruby">  def static_characters</code>
         </li>
       
-        <li class="covered" data-hits="310" data-linenumber="901">
-          <span class="hits">310</span>
+        <li class="covered" data-hits="11" data-linenumber="901">
+          <span class="hits">11</span>
           
-          <code class="ruby">    Tokenizer.new(pattern).to_a</code>
+          <code class="ruby">    @static_characters ||= tokens.select{|t| t.kind_of?(Literal) }.map{|t| t.string.size }.inject(0,:+)</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="902">
@@ -6082,136 +6514,172 @@
         <li class="never" data-hits="" data-linenumber="903">
           
           
-          <code class="ruby">  </code>
+          <code class="ruby"></code>
         </li>
       
         <li class="covered" data-hits="1" data-linenumber="904">
           <span class="hits">1</span>
           
-          <code class="ruby">  def tokens</code>
+          <code class="ruby">protected</code>
         </li>
       
-        <li class="covered" data-hits="1013" data-linenumber="905">
-          <span class="hits">1013</span>
-          
-          <code class="ruby">    @tokens ||= tokenize!</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="906">
-          
-          
-          <code class="ruby">  end</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="907">
-          
-          
-          <code class="ruby">  </code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="908">
+        <li class="never" data-hits="" data-linenumber="905">
           
           
           <code class="ruby">  # @private</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="909">
+        <li class="covered" data-hits="1" data-linenumber="906">
           <span class="hits">1</span>
           
-          <code class="ruby">  def extract_matchdata(matchdata)</code>
+          <code class="ruby">  def tokenize!</code>
         </li>
       
-        <li class="covered" data-hits="230" data-linenumber="910">
-          <span class="hits">230</span>
+        <li class="covered" data-hits="324" data-linenumber="907">
+          <span class="hits">324</span>
           
-          <code class="ruby">    bc = 0</code>
+          <code class="ruby">    Tokenizer.new(pattern).to_a</code>
         </li>
       
-        <li class="covered" data-hits="230" data-linenumber="911">
-          <span class="hits">230</span>
-          
-          <code class="ruby">    vars = []</code>
-        </li>
-      
-        <li class="covered" data-hits="230" data-linenumber="912">
-          <span class="hits">230</span>
-          
-          <code class="ruby">    tokens.each{|part|</code>
-        </li>
-      
-        <li class="covered" data-hits="317" data-linenumber="913">
-          <span class="hits">317</span>
-          
-          <code class="ruby">      i = 0</code>
-        </li>
-      
-        <li class="covered" data-hits="317" data-linenumber="914">
-          <span class="hits">317</span>
-          
-          <code class="ruby">      while i &lt; part.size</code>
-        </li>
-      
-        <li class="covered" data-hits="325" data-linenumber="915">
-          <span class="hits">325</span>
-          
-          <code class="ruby">        vars.push(*part.extract(i, matchdata[&quot;v#{bc}&quot;]))</code>
-        </li>
-      
-        <li class="covered" data-hits="325" data-linenumber="916">
-          <span class="hits">325</span>
-          
-          <code class="ruby">        bc += 1</code>
-        </li>
-      
-        <li class="covered" data-hits="325" data-linenumber="917">
-          <span class="hits">325</span>
-          
-          <code class="ruby">        i += 1</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="918">
-          
-          
-          <code class="ruby">      end</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="919">
-          
-          
-          <code class="ruby">    }</code>
-        </li>
-      
-        <li class="covered" data-hits="230" data-linenumber="920">
-          <span class="hits">230</span>
-          
-          <code class="ruby">    return vars</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="921">
+        <li class="never" data-hits="" data-linenumber="908">
           
           
           <code class="ruby">  end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="922">
+        <li class="never" data-hits="" data-linenumber="909">
           
           
           <code class="ruby">  </code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="923">
+        <li class="covered" data-hits="1" data-linenumber="910">
+          <span class="hits">1</span>
+          
+          <code class="ruby">  def tokens</code>
+        </li>
+      
+        <li class="covered" data-hits="1054" data-linenumber="911">
+          <span class="hits">1054</span>
+          
+          <code class="ruby">    @tokens ||= tokenize!</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="912">
           
           
-          <code class="ruby">end</code>
+          <code class="ruby">  end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="913">
+          
+          
+          <code class="ruby">  </code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="914">
+          
+          
+          <code class="ruby">  # @private</code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="915">
+          <span class="hits">1</span>
+          
+          <code class="ruby">  def extract_matchdata(matchdata)</code>
+        </li>
+      
+        <li class="covered" data-hits="230" data-linenumber="916">
+          <span class="hits">230</span>
+          
+          <code class="ruby">    bc = 0</code>
+        </li>
+      
+        <li class="covered" data-hits="230" data-linenumber="917">
+          <span class="hits">230</span>
+          
+          <code class="ruby">    vars = []</code>
+        </li>
+      
+        <li class="covered" data-hits="230" data-linenumber="918">
+          <span class="hits">230</span>
+          
+          <code class="ruby">    tokens.each{|part|</code>
+        </li>
+      
+        <li class="covered" data-hits="317" data-linenumber="919">
+          <span class="hits">317</span>
+          
+          <code class="ruby">      i = 0</code>
+        </li>
+      
+        <li class="covered" data-hits="317" data-linenumber="920">
+          <span class="hits">317</span>
+          
+          <code class="ruby">      while i &lt; part.size</code>
+        </li>
+      
+        <li class="covered" data-hits="325" data-linenumber="921">
+          <span class="hits">325</span>
+          
+          <code class="ruby">        vars.push(*part.extract(i, matchdata[&quot;v#{bc}&quot;]))</code>
+        </li>
+      
+        <li class="covered" data-hits="325" data-linenumber="922">
+          <span class="hits">325</span>
+          
+          <code class="ruby">        bc += 1</code>
+        </li>
+      
+        <li class="covered" data-hits="325" data-linenumber="923">
+          <span class="hits">325</span>
+          
+          <code class="ruby">        i += 1</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="924">
           
           
-          <code class="ruby"></code>
+          <code class="ruby">      end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="925">
+          
+          
+          <code class="ruby">    }</code>
+        </li>
+      
+        <li class="covered" data-hits="230" data-linenumber="926">
+          <span class="hits">230</span>
+          
+          <code class="ruby">    return vars</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="927">
+          
+          
+          <code class="ruby">  end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="928">
+          
+          
+          <code class="ruby">  </code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="929">
+          
+          
+          <code class="ruby">end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="930">
+          
+          
+          <code class="ruby"></code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="931">
           
           
           <code class="ruby"></code>
@@ -10046,11 +10514,11 @@
         <div class="source_table" id="5df27f43cdf5ed62c4a0aa01f7e40b401889b6c4">
   <div class="header">
     <h3>spec/uri_template_spec.rb</h3>
-    <h4><span class="green">100.0 %</span> covered</h4>
+    <h4><span class="green">96.49 %</span> covered</h4>
     <div>
-      <b>29</b> relevant lines. 
-      <span class="green"><b>29</b> lines covered</span> and
-      <span class="red"><b>0</b> lines missed.</span>
+      <b>57</b> relevant lines. 
+      <span class="green"><b>55</b> lines covered</span> and
+      <span class="red"><b>2</b> lines missed.</span>
     </div>
   </div>
   
@@ -10186,85 +10654,85 @@
         <li class="covered" data-hits="1" data-linenumber="22">
           <span class="hits">1</span>
           
-          <code class="ruby">  describe 'resolving' do</code>
+          <code class="ruby">  class BadURITemplate</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="23">
           
           
-          <code class="ruby">    </code>
+          <code class="ruby">  </code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="24">
-          
-          
-          <code class="ruby">    </code>
-        </li>
-      
-        <li class="covered" data-hits="1" data-linenumber="25">
+        <li class="covered" data-hits="1" data-linenumber="24">
           <span class="hits">1</span>
           
-          <code class="ruby">    it 'should create templates' do</code>
+          <code class="ruby">    include URITemplate</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="26">
+        <li class="never" data-hits="" data-linenumber="25">
           
           
           <code class="ruby">    </code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="27">
+        <li class="covered" data-hits="1" data-linenumber="26">
           <span class="hits">1</span>
           
-          <code class="ruby">      URITemplate.new('{x}').should == URITemplate::Draft7.new('{x}')</code>
+          <code class="ruby">    attr_reader :pattern</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="28">
-          
-          
-          <code class="ruby">      </code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="29">
-          
-          
-          <code class="ruby">    end</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="30">
+        <li class="never" data-hits="" data-linenumber="27">
           
           
           <code class="ruby">    </code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="28">
+          <span class="hits">1</span>
+          
+          <code class="ruby">    def self.try_convert(x)</code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="29">
+          <span class="hits">1</span>
+          
+          <code class="ruby">      if x.kind_of? String</code>
+        </li>
+      
+        <li class="missed" data-hits="0" data-linenumber="30">
+          
+          
+          <code class="ruby">        return new(x)</code>
         </li>
       
         <li class="covered" data-hits="1" data-linenumber="31">
           <span class="hits">1</span>
           
-          <code class="ruby">    it 'should be able to select a template version' do</code>
+          <code class="ruby">      elsif x.kind_of? self</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="32">
+        <li class="missed" data-hits="0" data-linenumber="32">
           
           
-          <code class="ruby">    </code>
+          <code class="ruby">        return x</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="33">
-          <span class="hits">1</span>
+        <li class="never" data-hits="" data-linenumber="33">
           
-          <code class="ruby">      URITemplate.new(:draft7,'{x}').should == URITemplate::Draft7.new('{x}')</code>
+          
+          <code class="ruby">      else</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="34">
-          <span class="hits">1</span>
+        <li class="never" data-hits="" data-linenumber="34">
           
-          <code class="ruby">      URITemplate.new('{x}',:draft7).should == URITemplate::Draft7.new('{x}')</code>
+          
+          <code class="ruby">        return nil</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="35">
           
           
-          <code class="ruby">    </code>
+          <code class="ruby">      end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="36">
@@ -10282,85 +10750,85 @@
         <li class="covered" data-hits="1" data-linenumber="38">
           <span class="hits">1</span>
           
-          <code class="ruby">    it 'should raise when given an invalid version' do</code>
+          <code class="ruby">    def initialize(pattern)</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="39">
+        <li class="covered" data-hits="1" data-linenumber="39">
+          <span class="hits">1</span>
           
-          
-          <code class="ruby">    </code>
+          <code class="ruby">      @pattern = pattern</code>
         </li>
       
-        <li class="covered" data-hits="2" data-linenumber="40">
-          <span class="hits">2</span>
-          
-          <code class="ruby">      lambda{ URITemplate.new(:foo,'{x}') }.should raise_error(ArgumentError)</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="41">
-          
-          
-          <code class="ruby">    </code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="42">
+        <li class="never" data-hits="" data-linenumber="40">
           
           
           <code class="ruby">    end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="43">
+        <li class="never" data-hits="" data-linenumber="41">
           
           
           <code class="ruby">  </code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="44">
+        <li class="never" data-hits="" data-linenumber="42">
           
           
           <code class="ruby">  end</code>
         </li>
       
+        <li class="never" data-hits="" data-linenumber="43">
+          
+          
+          <code class="ruby"></code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="44">
+          <span class="hits">1</span>
+          
+          <code class="ruby">  describe 'resolving' do</code>
+        </li>
+      
         <li class="never" data-hits="" data-linenumber="45">
-          
-          
-          <code class="ruby">  </code>
-        </li>
-      
-        <li class="covered" data-hits="1" data-linenumber="46">
-          <span class="hits">1</span>
-          
-          <code class="ruby">  describe &quot;docs&quot; do</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="47">
-          
-          
-          <code class="ruby">  </code>
-        </li>
-      
-        <li class="covered" data-hits="1" data-linenumber="48">
-          <span class="hits">1</span>
-          
-          <code class="ruby">    gem 'yard'</code>
-        </li>
-      
-        <li class="covered" data-hits="1" data-linenumber="49">
-          <span class="hits">1</span>
-          
-          <code class="ruby">    require 'yard'</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="50">
           
           
           <code class="ruby">    </code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="51">
+        <li class="never" data-hits="" data-linenumber="46">
+          
+          
+          <code class="ruby">    </code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="47">
           <span class="hits">1</span>
           
-          <code class="ruby">    YARD.parse('lib/**/*.rb').inspect</code>
+          <code class="ruby">    it 'should create templates' do</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="48">
+          
+          
+          <code class="ruby">    </code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="49">
+          <span class="hits">1</span>
+          
+          <code class="ruby">      URITemplate.new('{x}').should == URITemplate::Draft7.new('{x}')</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="50">
+          
+          
+          <code class="ruby">      </code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="51">
+          
+          
+          <code class="ruby">    end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="52">
@@ -10372,67 +10840,67 @@
         <li class="covered" data-hits="1" data-linenumber="53">
           <span class="hits">1</span>
           
-          <code class="ruby">    YARD::Registry.each do |object|</code>
+          <code class="ruby">    it 'should be able to select a template version' do</code>
         </li>
       
-        <li class="covered" data-hits="137" data-linenumber="54">
-          <span class="hits">137</span>
+        <li class="never" data-hits="" data-linenumber="54">
           
-          <code class="ruby">      if object.has_tag?('example')</code>
+          
+          <code class="ruby">    </code>
         </li>
       
-        <li class="covered" data-hits="17" data-linenumber="55">
-          <span class="hits">17</span>
+        <li class="covered" data-hits="1" data-linenumber="55">
+          <span class="hits">1</span>
           
-          <code class="ruby">        object.tags('example').each_with_index do |tag, i|</code>
+          <code class="ruby">      URITemplate.new(:draft7,'{x}').should == URITemplate::Draft7.new('{x}')</code>
         </li>
       
-        <li class="covered" data-hits="20" data-linenumber="56">
-          <span class="hits">20</span>
+        <li class="covered" data-hits="1" data-linenumber="56">
+          <span class="hits">1</span>
           
-          <code class="ruby">          code = tag.text.gsub(/(.*)\s*#=&gt;(.*)(\n|$)/){</code>
+          <code class="ruby">      URITemplate.new('{x}',:draft7).should == URITemplate::Draft7.new('{x}')</code>
         </li>
       
-        <li class="covered" data-hits="56" data-linenumber="57">
-          <span class="hits">56</span>
+        <li class="never" data-hits="" data-linenumber="57">
           
-          <code class="ruby">            &quot;(#{$1}).should == #{$2}\n&quot;</code>
+          
+          <code class="ruby">    </code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="58">
           
           
-          <code class="ruby">          }</code>
+          <code class="ruby">    end</code>
         </li>
       
-        <li class="covered" data-hits="20" data-linenumber="59">
-          <span class="hits">20</span>
+        <li class="never" data-hits="" data-linenumber="59">
           
-          <code class="ruby">          it &quot;#{object.to_s} in #{object.file}:#{object.line} should have valid example #{(i+1).to_s}&quot; do</code>
+          
+          <code class="ruby">    </code>
         </li>
       
-        <li class="covered" data-hits="40" data-linenumber="60">
-          <span class="hits">40</span>
+        <li class="covered" data-hits="1" data-linenumber="60">
+          <span class="hits">1</span>
           
-          <code class="ruby">            lambda{ eval code }.should_not raise_error</code>
+          <code class="ruby">    it 'should raise when given an invalid version' do</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="61">
           
           
-          <code class="ruby">          end</code>
+          <code class="ruby">    </code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="62">
+        <li class="covered" data-hits="2" data-linenumber="62">
+          <span class="hits">2</span>
           
-          
-          <code class="ruby">        end</code>
+          <code class="ruby">      lambda{ URITemplate.new(:foo,'{x}') }.should raise_error(ArgumentError)</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="63">
           
           
-          <code class="ruby">      end</code>
+          <code class="ruby">    </code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="64">
@@ -10444,49 +10912,49 @@
         <li class="never" data-hits="" data-linenumber="65">
           
           
-          <code class="ruby">  </code>
+          <code class="ruby">    </code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="66">
+        <li class="covered" data-hits="1" data-linenumber="66">
+          <span class="hits">1</span>
           
-          
-          <code class="ruby">  end</code>
+          <code class="ruby">    it 'should coerce two strings' do</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="67">
           
           
-          <code class="ruby">  </code>
+          <code class="ruby">    </code>
         </li>
       
         <li class="covered" data-hits="1" data-linenumber="68">
           <span class="hits">1</span>
           
-          <code class="ruby">  describe &quot;utils&quot; do</code>
+          <code class="ruby">      result = URITemplate.coerce('foo','bar')</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="69">
+        <li class="covered" data-hits="1" data-linenumber="69">
+          <span class="hits">1</span>
           
-          
-          <code class="ruby">  </code>
+          <code class="ruby">      result[0].should be_kind_of(URITemplate)</code>
         </li>
       
         <li class="covered" data-hits="1" data-linenumber="70">
           <span class="hits">1</span>
           
-          <code class="ruby">    it &quot;should raise on basic object&quot; do</code>
+          <code class="ruby">      result[1].should be_kind_of(URITemplate)</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="71">
+        <li class="covered" data-hits="1" data-linenumber="71">
+          <span class="hits">1</span>
           
-          
-          <code class="ruby">    </code>
+          <code class="ruby">      result[2].should be_true</code>
         </li>
       
-        <li class="covered" data-hits="2" data-linenumber="72">
-          <span class="hits">2</span>
+        <li class="covered" data-hits="1" data-linenumber="72">
+          <span class="hits">1</span>
           
-          <code class="ruby">      lambda{ URITemplate::Utils.object_to_param(BasicObject.new) }.should raise_error(URITemplate::Unconvertable)</code>
+          <code class="ruby">      result[3].should be_true</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="73">
@@ -10510,7 +10978,7 @@
         <li class="covered" data-hits="1" data-linenumber="76">
           <span class="hits">1</span>
           
-          <code class="ruby">    it &quot;should raise when an object is not convertable to string&quot; do</code>
+          <code class="ruby">    it 'should raise when arguments could not be coerced' do</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="77">
@@ -10522,7 +10990,7 @@
         <li class="covered" data-hits="1" data-linenumber="78">
           <span class="hits">1</span>
           
-          <code class="ruby">      obj = Object.new</code>
+          <code class="ruby">      lambda{</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="79">
@@ -10534,7 +11002,7 @@
         <li class="covered" data-hits="1" data-linenumber="80">
           <span class="hits">1</span>
           
-          <code class="ruby">      class &lt;&lt; obj</code>
+          <code class="ruby">        URITemplate.coerce(Object.new,Object.new)</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="81">
@@ -10543,22 +11011,22 @@
           <code class="ruby">      </code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="82">
-          <span class="hits">1</span>
+        <li class="never" data-hits="" data-linenumber="82">
           
-          <code class="ruby">        undef to_s</code>
+          
+          <code class="ruby">      }.should raise_error(ArgumentError)</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="83">
           
           
-          <code class="ruby">      </code>
+          <code class="ruby">    </code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="84">
           
           
-          <code class="ruby">      end</code>
+          <code class="ruby">    end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="85">
@@ -10567,10 +11035,10 @@
           <code class="ruby">    </code>
         </li>
       
-        <li class="covered" data-hits="2" data-linenumber="86">
-          <span class="hits">2</span>
+        <li class="covered" data-hits="1" data-linenumber="86">
+          <span class="hits">1</span>
           
-          <code class="ruby">      lambda{ URITemplate::Utils.object_to_param(obj) }.should raise_error(URITemplate::Unconvertable)</code>
+          <code class="ruby">    it 'should raise when arguments could not be coerced' do</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="87">
@@ -10579,31 +11047,433 @@
           <code class="ruby">    </code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="88">
+        <li class="covered" data-hits="1" data-linenumber="88">
+          <span class="hits">1</span>
           
-          
-          <code class="ruby">    end</code>
+          <code class="ruby">      lambda{</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="89">
           
           
-          <code class="ruby">  </code>
+          <code class="ruby">      </code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="90">
+        <li class="covered" data-hits="1" data-linenumber="90">
+          <span class="hits">1</span>
           
-          
-          <code class="ruby">  end</code>
+          <code class="ruby">        URITemplate.coerce(BadURITemplate.new('x'),URITemplate.new('y'))</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="91">
           
           
-          <code class="ruby"></code>
+          <code class="ruby">      </code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="92">
+          
+          
+          <code class="ruby">      }.should raise_error(ArgumentError)</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="93">
+          
+          
+          <code class="ruby">    </code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="94">
+          
+          
+          <code class="ruby">    end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="95">
+          
+          
+          <code class="ruby">    </code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="96">
+          <span class="hits">1</span>
+          
+          <code class="ruby">    it 'should raise argument errors when convert fails' do</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="97">
+          
+          
+          <code class="ruby">    </code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="98">
+          <span class="hits">1</span>
+          
+          <code class="ruby">      lambda{</code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="99">
+          <span class="hits">1</span>
+          
+          <code class="ruby">        URITemplate.convert(Object.new)</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="100">
+          
+          
+          <code class="ruby">      }.should raise_error(ArgumentError)</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="101">
+          
+          
+          <code class="ruby">    </code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="102">
+          
+          
+          <code class="ruby">    end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="103">
+          
+          
+          <code class="ruby">    </code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="104">
+          <span class="hits">1</span>
+          
+          <code class="ruby">    it 'should not raise argument errors when convert succeds' do</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="105">
+          
+          
+          <code class="ruby">  </code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="106">
+          <span class="hits">1</span>
+          
+          <code class="ruby">      URITemplate.convert('tpl').should be_kind_of(URITemplate)</code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="107">
+          <span class="hits">1</span>
+          
+          <code class="ruby">      URITemplate.convert(URITemplate::Draft7.new('foo')).should be_kind_of(URITemplate)</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="108">
+          
+          
+          <code class="ruby">    </code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="109">
+          
+          
+          <code class="ruby">    end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="110">
+          
+          
+          <code class="ruby">  </code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="111">
+          
+          
+          <code class="ruby">  end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="112">
+          
+          
+          <code class="ruby">  </code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="113">
+          <span class="hits">1</span>
+          
+          <code class="ruby">  describe &quot;docs&quot; do</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="114">
+          
+          
+          <code class="ruby">  </code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="115">
+          <span class="hits">1</span>
+          
+          <code class="ruby">    gem 'yard'</code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="116">
+          <span class="hits">1</span>
+          
+          <code class="ruby">    require 'yard'</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="117">
+          
+          
+          <code class="ruby">    </code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="118">
+          <span class="hits">1</span>
+          
+          <code class="ruby">    YARD.parse('lib/**/*.rb').inspect</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="119">
+          
+          
+          <code class="ruby">    </code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="120">
+          <span class="hits">1</span>
+          
+          <code class="ruby">    YARD::Registry.each do |object|</code>
+        </li>
+      
+        <li class="covered" data-hits="141" data-linenumber="121">
+          <span class="hits">141</span>
+          
+          <code class="ruby">      if object.has_tag?('example')</code>
+        </li>
+      
+        <li class="covered" data-hits="19" data-linenumber="122">
+          <span class="hits">19</span>
+          
+          <code class="ruby">        object.tags('example').each_with_index do |tag, i|</code>
+        </li>
+      
+        <li class="covered" data-hits="22" data-linenumber="123">
+          <span class="hits">22</span>
+          
+          <code class="ruby">          code = tag.text.gsub(/(.*)\s*#=&gt;(.*)(\n|$)/){</code>
+        </li>
+      
+        <li class="covered" data-hits="60" data-linenumber="124">
+          <span class="hits">60</span>
+          
+          <code class="ruby">            &quot;(#{$1}).should == #{$2}\n&quot;</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="125">
+          
+          
+          <code class="ruby">          }</code>
+        </li>
+      
+        <li class="covered" data-hits="22" data-linenumber="126">
+          <span class="hits">22</span>
+          
+          <code class="ruby">          it &quot;#{object.to_s} in #{object.file}:#{object.line} should have valid example #{(i+1).to_s}&quot; do</code>
+        </li>
+      
+        <li class="covered" data-hits="44" data-linenumber="127">
+          <span class="hits">44</span>
+          
+          <code class="ruby">            lambda{ eval code }.should_not raise_error</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="128">
+          
+          
+          <code class="ruby">          end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="129">
+          
+          
+          <code class="ruby">        end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="130">
+          
+          
+          <code class="ruby">      end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="131">
+          
+          
+          <code class="ruby">    end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="132">
+          
+          
+          <code class="ruby">  </code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="133">
+          
+          
+          <code class="ruby">  end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="134">
+          
+          
+          <code class="ruby">  </code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="135">
+          <span class="hits">1</span>
+          
+          <code class="ruby">  describe &quot;utils&quot; do</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="136">
+          
+          
+          <code class="ruby">  </code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="137">
+          <span class="hits">1</span>
+          
+          <code class="ruby">    it &quot;should raise on basic object&quot; do</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="138">
+          
+          
+          <code class="ruby">    </code>
+        </li>
+      
+        <li class="covered" data-hits="2" data-linenumber="139">
+          <span class="hits">2</span>
+          
+          <code class="ruby">      lambda{ URITemplate::Utils.object_to_param(BasicObject.new) }.should raise_error(URITemplate::Unconvertable)</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="140">
+          
+          
+          <code class="ruby">    </code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="141">
+          
+          
+          <code class="ruby">    end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="142">
+          
+          
+          <code class="ruby">    </code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="143">
+          <span class="hits">1</span>
+          
+          <code class="ruby">    it &quot;should raise when an object is not convertable to string&quot; do</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="144">
+          
+          
+          <code class="ruby">    </code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="145">
+          <span class="hits">1</span>
+          
+          <code class="ruby">      obj = Object.new</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="146">
+          
+          
+          <code class="ruby">      </code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="147">
+          <span class="hits">1</span>
+          
+          <code class="ruby">      class &lt;&lt; obj</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="148">
+          
+          
+          <code class="ruby">      </code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="149">
+          <span class="hits">1</span>
+          
+          <code class="ruby">        undef to_s</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="150">
+          
+          
+          <code class="ruby">      </code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="151">
+          
+          
+          <code class="ruby">      end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="152">
+          
+          
+          <code class="ruby">    </code>
+        </li>
+      
+        <li class="covered" data-hits="2" data-linenumber="153">
+          <span class="hits">2</span>
+          
+          <code class="ruby">      lambda{ URITemplate::Utils.object_to_param(obj) }.should raise_error(URITemplate::Unconvertable)</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="154">
+          
+          
+          <code class="ruby">    </code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="155">
+          
+          
+          <code class="ruby">    end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="156">
+          
+          
+          <code class="ruby">  </code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="157">
+          
+          
+          <code class="ruby">  end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="158">
+          
+          
+          <code class="ruby"></code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="159">
           
           
           <code class="ruby">end</code>
