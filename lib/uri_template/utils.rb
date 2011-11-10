@@ -17,6 +17,41 @@
 
 module URITemplate
 
+  # An awesome little helper which helps iterating over a string.
+  # Initialize with a regexp and pass a string to :each.
+  # It will yield a string or a MatchData
+  class RegexpEnumerator
+  
+    include Enumerable
+    
+    def initialize(regexp)
+      @regexp = regexp
+    end
+    
+    def each(str)
+      return Enumerator.new(self,:each,str) unless block_given?
+      rest = str
+      loop do
+        m = @regexp.match(rest)
+        if m.nil?
+          yield rest
+          break
+        end
+        yield m.pre_match if m.pre_match.size > 0
+        yield m
+        if m[0].size == 0
+          # obviously matches empty string, so post_match will equal rest
+          # terminate or this will loop forever
+          yield m.post_match
+          break
+        end
+        rest = m.post_match
+      end
+      return self
+    end
+  
+  end
+
   # This error will be raised whenever an object could not be converted to a param string.
   class Unconvertable < StandardError
   

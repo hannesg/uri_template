@@ -22,20 +22,110 @@ require 'uri_template/utils'
 
 # A colon based template denotes variables with a colon.
 # This template type is realy basic but having just on template type was a bit weird.
-class URITemplate::Colon
+module URITemplate
+  
+class Colon
+
+  include URITemplate
+
+  VAR = /(?:\{:(?<name>[a-z]+)\}|:(?<name>[a-z]+)(?![a-z]))/
+
+  class Token
+    
+    class Variable < self
+      
+      include URITemplate::Expression
+      
+      attr_reader :name
+      
+      def initialize(name)
+        @name = name
+        @variables = [name]
+      end
+      
+      def expand(vars)
+        return Utils.pct(vars[@name])
+      end
+      
+      def to_r
+        return ['(?<', name, '>[^/]*?)'].join
+      end
+      
+    end
+    
+    class Static < self
+    
+      include URITemplate::Literal
+      
+      def initialize(str)
+        @string = str
+      end
+      
+      def expand(_)
+        return @string
+      end
+      
+      def to_r
+        return Regexp.escape(@string)
+      end
+    
+    end
+    
+  end
 
   attr_reader :pattern
+
+  # Tries to convert the value into a colon-template.
+  # @example
+  #   URITemplate::Colon.try_convert('/foo/:bar/').pattern #=> '/foo/:bar/'
+  #   URITemplate::Colon.try_convert(URITemplate::Draft7.new('/foo/{bar}/')).pattern #=> '/foo/{:bar}/'
+  def self.try_convert(x)
+    if x.kind_of? String
+      return new(x)
+    elsif x.kind_of? self
+      return x
+    elsif x.kind_of? URITemplate::Draft7 and x.level == 1
+      return new( x.pattern.gsub(/\{(.*?)\}/){ "{:#{$1}}" } )
+    else
+      return nil
+    end
+  end
 
   def initialize(pattern)
     @pattern = pattern
   end
   
-  def expand(variables)
-    
+  def extract(uri)
+    return self.to_r.match(uri) do |md|
+      Hash[ *self.variables.map{|v|
+        [v, Utils.dpct(md[v])]
+      }.flatten(1) ]
+    end
   end
   
   def type
     :colon
   end
+  
+  def to_r
+    @regexp ||= Regexp.new('\A' + tokens.map(&:to_r).join + '\z')
+  end
+  
+  def tokens
+    @tokens ||= tokenize!
+  end
+  
+protected
 
+  def tokenize!
+    RegexpEnumerator.new(VAR).each(@pattern).map{|x|
+      if x.kind_of? String
+        Token::Static.new(x)
+      else
+        Token::Variable.new(x['name'])
+      end
+    }.to_a
+  end
+
+end
 end
