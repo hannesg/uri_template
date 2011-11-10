@@ -784,7 +784,7 @@ __REGEXP__
     tokens.map(&:level).max
   end
   
-  # Tries to conatenate two templates, as if they were path segments.
+  # Tries to concatenate two templates, as if they were path segments.
   # Removes double slashes or insert one if they are missing.
   #
   # @example

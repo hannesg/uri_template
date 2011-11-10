@@ -23,5 +23,13 @@ describe URITemplate::Colon do
     tpl.extract('/foo/baza/').should == {'bar'=>'baz'}
   
   end
+  
+  it "should return nil if not matchable" do
+  
+    tpl = URITemplate.new(:colon, '/foo/{:bar}a/')
+    
+    tpl.extract('/foo/foo/').should == nil
+  
+  end
 
 end

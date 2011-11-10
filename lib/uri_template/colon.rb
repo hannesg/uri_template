@@ -95,6 +95,10 @@ class Colon
     @pattern = pattern
   end
   
+  # Extracts variables from an uri.
+  #
+  # @param String uri
+  # @return nil,Hash
   def extract(uri)
     return self.to_r.match(uri) do |md|
       Hash[ *self.variables.map{|v|
@@ -113,6 +117,24 @@ class Colon
   
   def tokens
     @tokens ||= tokenize!
+  end
+  
+  # Tries to concatenate two templates, as if they were path segments.
+  # Removes double slashes or inserts one if they are missing.
+  #
+  # @example
+  #   tpl = URITemplate::Colon.new('/xy/')
+  #   (tpl / '/z/' ).pattern #=> '/xy/z/'
+  #   (tpl / 'z/' ).pattern #=> '/xy/z/'
+  #   (tpl / ':z' ).pattern #=> '/xy/:z'
+  #   (tpl / ':a' / 'b' ).pattern #=> '/xy/:a/b'
+  #
+  def /(o)
+    this, other, this_converted, other_converted = URITemplate.coerce( self, o )
+    if this_converted
+      return this / other
+    end
+    return self.class.new( File.join( this.pattern, other.pattern ) )
   end
   
 protected
