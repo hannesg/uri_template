@@ -107,6 +107,15 @@ describe URITemplate do
       URITemplate.convert(URITemplate::Draft7.new('foo')).should be_kind_of(URITemplate)
     
     end
+    
+    it 'should make templates recreateable by type' do
+    
+      URITemplate::VERSIONS.each do |type|
+        tpl = URITemplate.new(type, '/foo')
+        URITemplate.new(tpl.type, tpl.pattern).should == tpl
+      end
+    
+    end
   
   end
   
@@ -128,6 +137,28 @@ describe URITemplate do
           end
         end
       end
+    end
+  
+  end
+  
+  describe "cross-type usability" do
+  
+    it "should allow path-style concatenation between colon and draft7" do
+    
+      (URITemplate.new(:draft7, '/prefix') / URITemplate.new(:colon, '/suffix')).pattern.should == '/prefix/suffix'
+      
+      (URITemplate.new(:colon, '/prefix') / URITemplate.new(:draft7, '/suffix')).pattern.should == '/prefix/suffix'
+      
+      (URITemplate.new(:draft7, '/{prefix}') / URITemplate.new(:colon, '/suffix')).pattern.should == '/{prefix}/suffix'
+      
+      (URITemplate.new(:draft7, '/prefix') / URITemplate.new(:colon, '/:suffix')).pattern.should == '/prefix/{suffix}'
+      
+      (URITemplate.new(:colon, '/:prefix') / URITemplate.new(:draft7, '/suffix')).pattern.should == '/:prefix/suffix'
+      
+      (URITemplate.new(:colon, '/:prefix') / URITemplate.new(:draft7, '/{suffix}')).pattern.should == '/:prefix/{:suffix}'
+      
+      (URITemplate.new(:colon, '/:prefix') / URITemplate.new(:draft7, '{/suffix}')).pattern.should == '/{prefix}{/suffix}'
+   
     end
   
   end
