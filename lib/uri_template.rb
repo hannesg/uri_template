@@ -170,8 +170,29 @@ module URITemplate
         return [a_as_b, b, true, false]
       end
     end
+    bc = self.try_convert(b)
+    if bc.kind_of? URITemplate
+      a_as_b = bc.class.try_convert(a)
+      if a_as_b
+        return [a_as_b, bc, true, true]
+      end
+    end
     raise ArgumentError, "Expected at least on URITemplate, but got #{a.inspect} and #{b.inspect}" unless a.kind_of? URITemplate or b.kind_of? URITemplate
     raise ArgumentError, "Cannot coerce #{a.inspect} and #{b.inspect} into a common representation."
+  end
+  
+  # Applies a method to a URITemplate with another URITemplate as argument.
+  # This is a useful shorthand since both URITemplates are automatically coerced.
+  #
+  # @example
+  #   tpl = URITemplate.new('foo')
+  #   URITemplate.apply( tpl, :/, 'bar' ).pattern #=> 'foo/bar'
+  #   URITemplate.apply( 'baz', :/, tpl ).pattern #=> 'baz/foo'
+  #   URITemplate.apply( 'bla', :/, 'blub' ).pattern #=> 'bla/blub'
+  # 
+  def self.apply(a, method, b, *args)
+    a,b,_,_ = self.coerce(a,b)
+    a.send(method,b,*args)
   end
   
   # A base class for all errors which will be raised upon invalid syntax.
