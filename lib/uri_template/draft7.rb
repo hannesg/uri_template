@@ -277,7 +277,7 @@ __REGEXP__
         return [[ name , matched ]]
       end
       if expand
-        ex = self.hash_extractor(max_length)
+        ex = self.class.hash_extractor(max_length)
         rest = matched
         splitted = []
         found_value = false
@@ -313,14 +313,21 @@ __REGEXP__
      
   protected
     
-    def hash_extractor(max_length)
-      value = "\\g<#{self.class::CHARACTER_CLASS[:class_name]}>#{(max_length > 0)?'{,'+max_length.to_s+'}':'*?'}"
+    module ClassMethods
       
-      pair = "(?<name>\\g<c_vn_>#{Regexp.escape(self.class::PAIR_CONNECTOR)})?(?<value>#{value})"
-      
-      return Regexp.new( CHARACTER_CLASSES[:varname][:class] + "{0}\n" + self.class::CHARACTER_CLASS[:class] + "{0}\n"  + "^#{Regexp.escape(self.class::SEPARATOR)}?" + pair + "(?<rest>$|#{Regexp.escape(self.class::SEPARATOR)}(?!#{Regexp.escape(self.class::SEPARATOR)}))" ,Regexp::EXTENDED)
+      def hash_extractor(max_length)
+        @hash_extractors ||= {}
+        @hash_extractors[max_length] ||= begin
+          value = "\\g<#{self::CHARACTER_CLASS[:class_name]}>#{(max_length > 0)?'{,'+max_length.to_s+'}':'*?'}"
+          pair = "(?<name>\\g<c_vn_>#{Regexp.escape(self::PAIR_CONNECTOR)})?(?<value>#{value})"
+        
+          Regexp.new( CHARACTER_CLASSES[:varname][:class] + "{0}\n" + self::CHARACTER_CLASS[:class] + "{0}\n"  + "^#{Regexp.escape(self::SEPARATOR)}?" + pair + "(?<rest>$|#{Regexp.escape(self::SEPARATOR)}(?!#{Regexp.escape(self::SEPARATOR)}))" ,Regexp::EXTENDED)
+        end
+      end
       
     end
+    
+    extend ClassMethods
     
     def encode(x)
       Utils.pct(Utils.object_to_param(x), self.class::CHARACTER_CLASS[:unencoded])
