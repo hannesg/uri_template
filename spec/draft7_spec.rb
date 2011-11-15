@@ -437,7 +437,10 @@ describe URITemplate::Draft7 do
     it "should parse variable names correctly" do
       
       p = URITemplate::Draft7.new('{a,b,c}{x,y}{c,a,b}{b,c,a}')
-      p.variables.should == ['x','y','b','c','a']
+      p.variables.should have(5).items
+      ['x','y','b','c','a'].each do |i|
+        p.variables.should be_include(i)
+      end
       
     end
     
@@ -500,6 +503,18 @@ describe URITemplate::Draft7 do
     
     end
   
+    it "should concatenate edge-literals" do
+    
+      (URITemplate::Draft7.new('/foo/bar/') / 'baz').tokens.should have(1).item
+      
+      (URITemplate::Draft7.new('/foo/bar') / '/baz').tokens.should have(1).item
+      
+      (URITemplate::Draft7.new('/foo/bar') / 'baz').tokens.should have(1).item
+       
+      (URITemplate::Draft7.new('{foo}') / 'baz').tokens.should have(2).item
+      
+    end
+    
   end
 
 end

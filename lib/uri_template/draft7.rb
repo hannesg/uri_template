@@ -109,22 +109,18 @@ __REGEXP__
   # @private
   class Literal < Token
   
-    attr_reader :string
-  
+    include URITemplate::Literal
+    
     def initialize(string)
       @string = string
-    end
-    
-    def size
-      0
     end
     
     def level
       1
     end
     
-    def expand(*_)
-      return @string
+    def arity
+      0
     end
     
     def to_r_source(*_)
@@ -139,11 +135,15 @@ __REGEXP__
 
   # @private
   class Expression < Token
+  
+    include URITemplate::Expression
     
     attr_reader :variables, :max_length
     
     def initialize(vars)
-      @variables = vars
+      @variable_specs = vars
+      @variables = vars.map(&:first)
+      @variables.uniq!
     end
     
     PREFIX = ''.freeze
@@ -158,13 +158,9 @@ __REGEXP__
     NAMED = false
     OPERATOR = ''
     
-    def size
-      @variables.size
-    end
-    
     def level
-      if @variables.none?{|_,expand,ml| expand || (ml > 0) }
-        if @variables.size == 1
+      if @variable_specs.none?{|_,expand,ml| expand || (ml > 0) }
+        if @variable_specs.size == 1
           return self.class::BASE_LEVEL
         else
           return 3
@@ -174,9 +170,13 @@ __REGEXP__
       end
     end
     
-    def expand( vars, options )
+    def arity
+      @variable_specs.size
+    end
+    
+    def expand( vars )
       result = []
-      variables.each{| var, expand , max_length |
+      @variable_specs.each{| var, expand , max_length |
         unless vars[var].nil?
           if vars[var].kind_of? Hash
             result.push( *transform_hash(var, vars[var], expand, max_length) )
@@ -199,7 +199,7 @@ __REGEXP__
     end
     
     def to_s
-      '{' + self.class::OPERATOR +  @variables.map{|name,expand,max_length| name +(expand ? '*': '') + (max_length > 0 ? ':'+max_length.to_s : '') }.join(',') + '}'
+      '{' + self.class::OPERATOR +  @variable_specs.map{|name,expand,max_length| name +(expand ? '*': '') + (max_length > 0 ? ':'+max_length.to_s : '') }.join(',') + '}'
     end
     
     #TODO: certain things after a slurpy variable will never get matched. therefore, it's pointless to add expressions for them
@@ -207,10 +207,10 @@ __REGEXP__
     def to_r_source(base_counter = 0)
       source = []
       first = true
-      vs = variables.size - 1
+      vs = @variable_specs.size - 1
       i = 0
       if self.class::NAMED
-        variables.each{| var, expand , max_length |
+        @variable_specs.each{| var, expand , max_length |
           last = (vs == i)
           value = "(?:\\g<#{self.class::CHARACTER_CLASS[:class_name]}>|,)#{(max_length > 0)?'{,'+max_length.to_s+'}':'*'}"
           if expand
@@ -240,7 +240,7 @@ __REGEXP__
           i = i+1
         }
       else
-        variables.each{| var, expand , max_length |
+        @variable_specs.each{| var, expand , max_length |
           last = (vs == i)
           if expand
             # could be list or map, too
@@ -272,12 +272,12 @@ __REGEXP__
     end
     
     def extract(position,matched)
-      name, expand, max_length = @variables[position]
+      name, expand, max_length = @variable_specs[position]
       if matched.nil?
         return [[ name , matched ]]
       end
       if expand
-        ex = self.hash_extractor(max_length)
+        ex = self.class.hash_extractor(max_length)
         rest = matched
         splitted = []
         found_value = false
@@ -310,21 +310,24 @@ __REGEXP__
       
       return [ [ name,  decode( matched ) ] ]
     end
-    
-    def variable_names
-      @variables.collect(&:first)
-    end
      
   protected
     
-    def hash_extractor(max_length)
-      value = "\\g<#{self.class::CHARACTER_CLASS[:class_name]}>#{(max_length > 0)?'{,'+max_length.to_s+'}':'*?'}"
+    module ClassMethods
       
-      pair = "(?<name>\\g<c_vn_>#{Regexp.escape(self.class::PAIR_CONNECTOR)})?(?<value>#{value})"
-      
-      return Regexp.new( CHARACTER_CLASSES[:varname][:class] + "{0}\n" + self.class::CHARACTER_CLASS[:class] + "{0}\n"  + "^#{Regexp.escape(self.class::SEPARATOR)}?" + pair + "(?<rest>$|#{Regexp.escape(self.class::SEPARATOR)}(?!#{Regexp.escape(self.class::SEPARATOR)}))" ,Regexp::EXTENDED)
+      def hash_extractor(max_length)
+        @hash_extractors ||= {}
+        @hash_extractors[max_length] ||= begin
+          value = "\\g<#{self::CHARACTER_CLASS[:class_name]}>#{(max_length > 0)?'{,'+max_length.to_s+'}':'*?'}"
+          pair = "(?<name>\\g<c_vn_>#{Regexp.escape(self::PAIR_CONNECTOR)})?(?<value>#{value})"
+        
+          Regexp.new( CHARACTER_CLASSES[:varname][:class] + "{0}\n" + self::CHARACTER_CLASS[:class] + "{0}\n"  + "^#{Regexp.escape(self::SEPARATOR)}?" + pair + "(?<rest>$|#{Regexp.escape(self::SEPARATOR)}(?!#{Regexp.escape(self::SEPARATOR)}))" ,Regexp::EXTENDED)
+        end
+      end
       
     end
+    
+    extend ClassMethods
     
     def encode(x)
       Utils.pct(Utils.object_to_param(x), self.class::CHARACTER_CLASS[:unencoded])
@@ -544,6 +547,7 @@ __REGEXP__
     #   tpl = URITemplate::Draft7.new('{foo}')
     #   URITemplate::Draft7.try_convert( tpl ) #=> tpl
     #   URITemplate::Draft7.try_convert('{foo}') #=> tpl
+    #   URITemplate::Draft7.try_convert(URITemplate.new(:colon, ':foo')) #=> tpl
     #   # This pattern is invalid, so it wont be parsed:
     #   URITemplate::Draft7.try_convert('{foo') #=> nil
     #
@@ -552,6 +556,14 @@ __REGEXP__
         return x
       elsif x.kind_of? String and valid? x
         return new(x)
+      elsif x.kind_of? URITemplate::Colon
+        return new( x.tokens.map{|tk|
+          if tk.literal?
+            Literal.new(tk.string)
+          else
+            Expression.new([[tk.variables.first, false, 0]])
+          end
+        })
       else
         return nil
       end
@@ -606,6 +618,7 @@ __REGEXP__
     end
   end
   
+  # @method expand(variables = {})
   # Expands the template with the given variables.
   # The expansion should be compatible to uritemplate spec draft 7 ( http://tools.ietf.org/html/draft-gregorio-uritemplate-07 ).
   # @note
@@ -619,31 +632,6 @@ __REGEXP__
   #
   # @param variables Hash
   # @return String
-  def expand(variables = {})
-    tokens.map{|part|
-      part.expand(variables, {})
-    }.join
-  end
-  
-  # Returns an array containing all variables. Repeated variables are ignored, but the order will be kept intact.
-  # @example
-  #   URITemplate::Draft7.new('{foo}{bar}{baz}').variables #=> ['foo','bar','baz']
-  #   URITemplate::Draft7.new('{a}{c}{a}{b}').variables #=> ['c','a','b']
-  #
-  # @return Array
-  def variables
-    @variables ||= begin
-      vars = []
-      tokens.each{|token|
-        if token.respond_to? :variable_names
-          vn = token.variable_names.uniq
-          vars -= vn
-          vars.push(*vn)
-        end
-      }
-      vars
-    end
-  end
   
   # Compiles this template into a regular expression which can be used to test whether a given uri matches this template. This template is also used for {#===}.
   #
@@ -659,7 +647,7 @@ __REGEXP__
     bc = 0
     @regexp ||= Regexp.new(classes.join + '\A' + tokens.map{|part|
       r = part.to_r_source(bc)
-      bc += part.size
+      bc += part.arity
       r
     }.join + '\z' , Regexp::EXTENDED)
   end
@@ -803,7 +791,7 @@ __REGEXP__
     tokens.map(&:level).max
   end
   
-  # Tries to conatenate two templates, as if they were path segments.
+  # Tries to concatenate two templates, as if they were path segments.
   # Removes double slashes or insert one if they are missing.
   #
   # @example
@@ -844,61 +832,32 @@ __REGEXP__
           # so we can strip one '/'
           return self.class.new( self.tokens[0..-2] + [ Literal.new(self.tokens.last.string[0..-2]) ] + other.tokens )
         end
+      elsif other.tokens.first.kind_of? Literal
+        # okay, this template does not end with /, but the next starts with a literal => merge them!
+        if other.tokens.first.string[0] == '/'
+          return self.class.new( self.tokens[0..-2] + [Literal.new(self.tokens.last.string + other.tokens.first.string)] + other.tokens[1..-1] )
+        else
+          return self.class.new( self.tokens[0..-2] + [Literal.new(self.tokens.last.string + '/' + other.tokens.first.string)] + other.tokens[1..-1] )
+        end
       end
     end
-    if other.tokens.first.kind_of?(Expression::Path) or (other.tokens.first.kind_of?(Literal) and other.tokens.first.string[0] == '/')
+    
+    if other.tokens.first.kind_of?(Literal)
+      if other.tokens.first.string[0] == '/'
+        return self.class.new( self.tokens + other.tokens )
+      else
+        return self.class.new( self.tokens + [Literal.new('/' + other.tokens.first.string)]+ other.tokens[1..-1] )
+      end
+    elsif other.tokens.first.kind_of?(Expression::Path)
       return self.class.new( self.tokens + other.tokens )
     else
       return self.class.new( self.tokens + [Literal.new('/')] + other.tokens )
     end
   end
   
-  
-  #
-  # should be relative:
-  #  xxx ...
-  #  {xxx}x ...
-  # 
-  #  should not be relative:
-  #  {proto}:// ...
-  #  http:// ...
-  #  http{ssl}:// ...
-  #
-  def absolute?
-    read_chars = ""
-    
-    tokens.each do |token|
-      if token.kind_of? Expression
-        if token.class::OPERATOR == ''
-          read_chars << "x"
-        else
-          return false
-        end
-      elsif token.kind_of? Literal
-        read_chars << token.string
-      end
-      if read_chars =~ /^[a-z]+:\/\//i
-        return true
-      elsif read_chars =~ /(?<!:|\/)\/(?!\/)/
-        return false
-      end
-    end
-    
-    return false
-  end
-  
-  # Returns the number of static characters in this template.
-  # This method is useful for routing, since it's often pointful to use the url with fewer variable characters.
-  # For example 'static' and 'sta{var}' both match 'static', but in most cases 'static' should be prefered over 'sta{var}' since it's more specific.
-  #
-  # @example
-  #   URITemplate::Draft7.new('/xy/').static_characters #=> 4
-  #   URITemplate::Draft7.new('{foo}').static_characters #=> 0
-  #   URITemplate::Draft7.new('a{foo}b').static_characters #=> 2
-  #
-  # @return Numeric
-  def static_characters
-    @static_characters ||= tokens.select{|t| t.kind_of?(Literal) }.map{|t| t.string.size }.inject(0,:+)
+  # Returns an array containing a the template tokens.
+  def tokens
+    @tokens ||= tokenize!
   end
 
 protected
@@ -907,17 +866,13 @@ protected
     Tokenizer.new(pattern).to_a
   end
   
-  def tokens
-    @tokens ||= tokenize!
-  end
-  
   # @private
   def extract_matchdata(matchdata)
     bc = 0
     vars = []
     tokens.each{|part|
       i = 0
-      while i < part.size
+      while i < part.arity
         vars.push(*part.extract(i, matchdata["v#{bc}"]))
         bc += 1
         i += 1

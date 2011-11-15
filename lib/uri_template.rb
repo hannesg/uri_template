@@ -18,8 +18,65 @@
 # A base module for all implementations of a uri template.
 module URITemplate
 
+  # This should make it possible to do basic analysis independently from the concrete type.
+  module Token
+  
+    def size
+      variables.size
+    end
+  
+  end
+  
+  # A module which all literal tokens should include.
+  module Literal
+    
+    include Token
+    
+    attr_reader :string
+    
+    def literal?
+      true
+    end
+    
+    def expression?
+      false
+    end
+    
+    def variables
+      []
+    end
+    
+    def size
+      0
+    end
+    
+    def expand(*_)
+      return string
+    end
+    
+  end
+  
+  
+  # A module which all non-literal tokens should include.
+  module Expression
+  
+    include Token
+    
+    attr_reader :variables
+    
+    def literal?
+      false
+    end
+    
+    def expression?
+      true
+    end
+  
+  end
+
   autoload :Utils, 'uri_template/utils'
   autoload :Draft7, 'uri_template/draft7'
+  autoload :Colon, 'uri_template/colon'
   
   # A hash with all available implementations.
   # Currently the only implementation is :draft7. But there also aliases :default and :latest available. This should make it possible to add newer specs later.
@@ -27,6 +84,7 @@ module URITemplate
   VERSIONS = {
     :draft7 => :Draft7,
     :default => :Draft7,
+    :colon => :Colon,
     :latest => :Draft7
   }
   
@@ -95,6 +153,7 @@ module URITemplate
   #
   # @example
   #   URITemplate.coerce( URITemplate.new(:draft7,'{x}'), '{y}' ) #=> [URITemplate.new(:draft7,'{x}'), URITemplate.new(:draft7,'{y}'), false, true]
+  #   URITemplate.coerce( '{y}', URITemplate.new(:draft7,'{x}') ) #=> [URITemplate.new(:draft7,'{y}'), URITemplate.new(:draft7,'{x}'), true, false]
   def self.coerce(a,b)
     if a.kind_of? URITemplate
       if a.class == b.class
@@ -140,18 +199,78 @@ module URITemplate
   module Invalid
   end
   
-  # @abstract
   # Expands this uri template with the given variables.
   # The variables should be converted to strings using {Utils#object_to_param}.
   # @raise {Unconvertable} if a variable could not be converted to a string.
-  def expand(variables={})
-    raise "Please implement #expand on #{self.class.inspect}."
+  # @param variables Hash
+  # @return String
+  def expand(variables = {})
+    tokens.map{|part|
+      part.expand(variables)
+    }.join
   end
   
   # @abstract
   # Returns the type of this template. The type is a symbol which can be used in {.resolve_class} to resolve the type of this template.
   def type
     raise "Please implement #type on #{self.class.inspect}."
+  end
+  
+  # @abstract
+  # Returns the tokens of this templates. Tokens should include either {Static} or {Expression}.
+  def tokens
+    raise "Please implement #tokens on #{self.class.inspect}."
+  end
+  
+  # Returns an array containing all variables. Repeated variables are ignored. The concrete order of the variables may change.
+  # @example
+  #   URITemplate.new('{foo}{bar}{baz}').variables #=> ['foo','bar','baz']
+  #   URITemplate.new('{a}{c}{a}{b}').variables #=> ['a','c','b']
+  #
+  # @return Array
+  def variables
+    @variables ||= tokens.select(&:expression?).map(&:variables).flatten.uniq
+  end
+  
+  # Returns the number of static characters in this template.
+  # This method is useful for routing, since it's often pointful to use the url with fewer variable characters.
+  # For example 'static' and 'sta\{var\}' both match 'static', but in most cases 'static' should be prefered over 'sta{var}' since it's more specific.
+  #
+  # @example
+  #   URITemplate.new('/xy/').static_characters #=> 4
+  #   URITemplate.new('{foo}').static_characters #=> 0
+  #   URITemplate.new('a{foo}b').static_characters #=> 2
+  #
+  # @return Numeric
+  def static_characters
+    @static_characters ||= tokens.select(&:literal?).map{|t| t.string.size }.inject(0,:+)
+  end
+  
+  # Returns whether this uri-template is absolute.
+  # This is detected by checking for "://".
+  #
+  def absolute?
+    read_chars = ""
+    
+    tokens.each do |token|
+      if token.expression?
+        read_chars << "x"
+      elsif token.literal?
+        read_chars << token.string
+      end
+      if read_chars =~ /^[a-z]+:\/\//i
+        return true
+      elsif read_chars =~ /(?<!:|\/)\/(?!\/)/
+        return false
+      end
+    end
+    
+    return false
+  end
+  
+  # Opposite of {#absolute?}
+  def relative?
+    !absolute?
   end
 
 end
