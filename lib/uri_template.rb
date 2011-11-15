@@ -245,5 +245,32 @@ module URITemplate
   def static_characters
     @static_characters ||= tokens.select(&:literal?).map{|t| t.string.size }.inject(0,:+)
   end
+  
+  # Returns whether this uri-template is absolute.
+  # This is detected by checking for "://".
+  #
+  def absolute?
+    read_chars = ""
+    
+    tokens.each do |token|
+      if token.expression?
+        read_chars << "x"
+      elsif token.literal?
+        read_chars << token.string
+      end
+      if read_chars =~ /^[a-z]+:\/\//i
+        return true
+      elsif read_chars =~ /(?<!:|\/)\/(?!\/)/
+        return false
+      end
+    end
+    
+    return false
+  end
+  
+  # Opposite of {#absolute?}
+  def relative?
+    !absolute?
+  end
 
 end

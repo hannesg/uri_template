@@ -503,6 +503,18 @@ describe URITemplate::Draft7 do
     
     end
   
+    it "should concatenate edge-literals" do
+    
+      (URITemplate::Draft7.new('/foo/bar/') / 'baz').tokens.should have(1).item
+      
+      (URITemplate::Draft7.new('/foo/bar') / '/baz').tokens.should have(1).item
+      
+      (URITemplate::Draft7.new('/foo/bar') / 'baz').tokens.should have(1).item
+       
+      (URITemplate::Draft7.new('{foo}') / 'baz').tokens.should have(2).item
+      
+    end
+    
   end
 
 end

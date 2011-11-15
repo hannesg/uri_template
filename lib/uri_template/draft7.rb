@@ -832,57 +832,38 @@ __REGEXP__
           # so we can strip one '/'
           return self.class.new( self.tokens[0..-2] + [ Literal.new(self.tokens.last.string[0..-2]) ] + other.tokens )
         end
+      elsif other.tokens.first.kind_of? Literal
+        # okay, this template does not end with /, but the next starts with a literal => merge them!
+        if other.tokens.first.string[0] == '/'
+          return self.class.new( self.tokens[0..-2] + [Literal.new(self.tokens.last.string + other.tokens.first.string)] + other.tokens[1..-1] )
+        else
+          return self.class.new( self.tokens[0..-2] + [Literal.new(self.tokens.last.string + '/' + other.tokens.first.string)] + other.tokens[1..-1] )
+        end
       end
     end
-    if other.tokens.first.kind_of?(Expression::Path) or (other.tokens.first.kind_of?(Literal) and other.tokens.first.string[0] == '/')
+    
+    if other.tokens.first.kind_of?(Literal)
+      if other.tokens.first.string[0] == '/'
+        return self.class.new( self.tokens + other.tokens )
+      else
+        return self.class.new( self.tokens + [Literal.new('/' + other.tokens.first.string)]+ other.tokens[1..-1] )
+      end
+    elsif other.tokens.first.kind_of?(Expression::Path)
       return self.class.new( self.tokens + other.tokens )
     else
       return self.class.new( self.tokens + [Literal.new('/')] + other.tokens )
     end
   end
   
-  
-  #
-  # should be relative:
-  #  xxx ...
-  #  {xxx}x ...
-  # 
-  #  should not be relative:
-  #  {proto}:// ...
-  #  http:// ...
-  #  http{ssl}:// ...
-  #
-  def absolute?
-    read_chars = ""
-    
-    tokens.each do |token|
-      if token.kind_of? Expression
-        if token.class::OPERATOR == ''
-          read_chars << "x"
-        else
-          return false
-        end
-      elsif token.kind_of? Literal
-        read_chars << token.string
-      end
-      if read_chars =~ /^[a-z]+:\/\//i
-        return true
-      elsif read_chars =~ /(?<!:|\/)\/(?!\/)/
-        return false
-      end
-    end
-    
-    return false
+  # Returns an array containing a the template tokens.
+  def tokens
+    @tokens ||= tokenize!
   end
 
 protected
   # @private
   def tokenize!
     Tokenizer.new(pattern).to_a
-  end
-  
-  def tokens
-    @tokens ||= tokenize!
   end
   
   # @private
