@@ -250,8 +250,8 @@ module URITemplate
   # This is detected by checking for "://".
   #
   def absolute?
+    return @absolute unless @absolute.nil?
     read_chars = ""
-    
     tokens.each do |token|
       if token.expression?
         read_chars << "x"
@@ -259,13 +259,13 @@ module URITemplate
         read_chars << token.string
       end
       if read_chars =~ /^[a-z]+:\/\//i
-        return true
+        return @absolute = true
       elsif read_chars =~ /(?<!:|\/)\/(?!\/)/
-        return false
+        return @absolute = false
       end
     end
     
-    return false
+    return @absolute = false
   end
   
   # Opposite of {#absolute?}
