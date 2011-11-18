@@ -643,13 +643,15 @@ __REGEXP__
   # 
   # @return Regexp
   def to_r
-    classes = CHARACTER_CLASSES.map{|_,v| v[:class]+"{0}\n" }
-    bc = 0
-    @regexp ||= Regexp.new(classes.join + '\A' + tokens.map{|part|
-      r = part.to_r_source(bc)
-      bc += part.arity
-      r
-    }.join + '\z' , Regexp::EXTENDED)
+    @regexp ||= begin
+      classes = CHARACTER_CLASSES.map{|_,v| v[:class]+"{0}\n" }
+      bc = 0
+      Regexp.new(classes.join + '\A' + tokens.map{|part|
+        r = part.to_r_source(bc)
+        bc += part.arity
+        r
+      }.join + '\z' , Regexp::EXTENDED)
+    end
   end
   
   
@@ -705,15 +707,7 @@ __REGEXP__
     if m.nil?
       return nil
     else
-      result = extract_matchdata(m)
-      if post_processing.include? :convert_values
-        result.map!{|k,v| [k, Utils.pair_array_to_hash(v)] }
-      end
-      
-      if post_processing.include? :convert_result
-        result = Utils.pair_array_to_hash(result)
-      end
-      
+      result = extract_matchdata(m, post_processing)
       if block_given?
         return yield result
       end
@@ -866,19 +860,40 @@ protected
     Tokenizer.new(pattern).to_a
   end
   
+  def arity
+    @arity ||= tokens.inject(0){|a,t| a + t.arity }
+  end
+  
   # @private
-  def extract_matchdata(matchdata)
+  def extract_matchdata(matchdata, post_processing)
     bc = 0
     vars = []
     tokens.each{|part|
+      next if part.literal?
       i = 0
-      while i < part.arity
-        vars.push(*part.extract(i, matchdata["v#{bc}"]))
+      pa = part.arity
+      while i < pa
+        vars << part.extract(i, matchdata["v#{bc}"])
         bc += 1
         i += 1
       end
     }
-    return vars
+    if post_processing.include? :convert_result
+      if post_processing.include? :convert_values
+        vars.flatten!(1)
+        return Hash[*vars.collect_concat{|k,v| [k,Utils.pair_array_to_hash(v)] }]
+      else
+        vars.flatten!(2)
+        return Hash[*vars]
+      end
+    else
+      if post_processing.include? :convert_value
+        vars.flatten!(1)
+        return vars.collect{|k,v| [k,Utils.pair_array_to_hash(v)] }
+      else
+        return vars.flatten(1)
+      end
+    end
   end
   
 end

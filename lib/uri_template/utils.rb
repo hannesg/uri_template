@@ -81,10 +81,11 @@ module URITemplate
     #   URITemplate::Utils.pct("abc") #=> "abc"
     #   URITemplate::Utils.pct("%") #=> "%25"
     #
+    #TODO: is encoding as utf8/ascii really needed?
     def pct(s, m=NOT_SIMPLE_CHARS)
-      s.to_s.encode('UTF-8').gsub(m){
+      s.to_s.gsub(m){
         '%'+$1.unpack('H2'*$1.bytesize).join('%').upcase
-      }.encode('ASCII')
+      }.force_encoding('ASCII')
     end
     
     # Decodes the given pct-encoded string into a utf-8 string.
@@ -95,9 +96,9 @@ module URITemplate
     #   URITemplate::Utils.dpct("%25") #=> "%"
     #
     def dpct(s)
-      s.to_s.encode('ASCII').gsub(PCT){
+      s.to_s.gsub(PCT){
         $1.to_i(16).chr
-      }.encode('UTF-8')
+      }.force_encoding('UTF-8')
     end
     
     # Converts an object to a param value.
@@ -139,19 +140,25 @@ module URITemplate
     # Turns the given value into a hash if it is an array of pairs.
     # Otherwise it returns the value.
     # You can test whether a value will be converted with {#pair_array?}.
+    #
     # @example
     #   URITemplate::Utils.pair_array_to_hash( 'x' ) #=> 'x'
     #   URITemplate::Utils.pair_array_to_hash( [ ['a',1],['b',2],['c',3] ] ) #=> {'a'=>1,'b'=>2,'c'=>3}
     #   URITemplate::Utils.pair_array_to_hash( [ ['a',1],['a',2],['a',3] ] ) #=> {'a'=>3}
-    def pair_array_to_hash(a)
-      if pair_array?(a)
-        return Hash[ *a.map{ |k,v| [k,pair_array_to_hash(v)] }.flatten(1) ]
+    #
+    # @example Carful vs. Ignorant
+    #   URITemplate::Utils.pair_array_to_hash( [ ['a',1],'foo','bar'], false ) #=> {'a'=>1,'foo'=>'bar'}
+    #   URITemplate::Utils.pair_array_to_hash( [ ['a',1],'foo','bar'], true ) #=> [ ['a',1],'foo','bar']
+    #
+    # @param x the value to convert
+    # @param careful [true,false] wheter to check every array item. Use this when you expect array with subarrays which are not pairs. Setting this to false however improves runtime by ~30% even with comparetivly short arrays.
+    def pair_array_to_hash(x, careful = false )
+      if careful ? pair_array?(x) : (x.kind_of?(Array) and x.first.kind_of?(Array))
+        return Hash[ *x.flatten(1) ]
       else
-        return a
+        return x
       end
     end
-    
-    
     
     extend self
   
