@@ -67,6 +67,8 @@ module URITemplate
   # A collection of some utility methods
   module Utils
   
+    KCODE_UTF8 = (Regexp::KCODE_UTF8 rescue 0)
+  
     # @private
     PCT = /%(\h\h)/.freeze
     

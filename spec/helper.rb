@@ -15,7 +15,10 @@
 #    (c) 2011 by Hannes Georg
 #
 
-gem 'simplecov'
-require 'simplecov'
-SimpleCov.add_filter('spec')
-SimpleCov.start
+begin
+  require 'simplecov'
+  SimpleCov.add_filter('spec')
+  SimpleCov.start
+rescue LoadError
+  warn 'Not using simplecov.'
+end

@@ -34,19 +34,20 @@ class URITemplate::Draft7
   Utils = URITemplate::Utils
   
   # @private
-  LITERAL = /^([^"'%<>\\^`{|}\s\p{Cc}]|%\h\h)+/
+  #                           \/ - unicode ctrl-chars ( \p{Cc} doen't work with rbx
+  LITERAL = /^([^"'%<>\\^`{|}\s\p{Cntrl}]|%\h\h)+/u
   
   # @private
   CHARACTER_CLASSES = {
   
     :unreserved => {
-      :unencoded => /([^A-Za-z0-9\-\._])/,
+      :unencoded => /([^A-Za-z0-9\-\._])/u,
       :class => '(?<c_u_>[A-Za-z0-9\-\._]|%\h\h)',
       :class_name => 'c_u_',
       :grabs_comma => false
     },
     :unreserved_reserved_pct => {
-      :unencoded => /([^A-Za-z0-9\-\._:\/?#\[\]@!\$%'\(\)*+,;=]|%(?!\h\h))/,
+      :unencoded => /([^A-Za-z0-9\-\._:\/?#\[\]@!\$%'\(\)*+,;=]|%(?!\h\h))/u,
       :class => '(?<c_urp_>[A-Za-z0-9\-\._:\/?#\[\]@!\$%\'\(\)*+,;=]|%\h\h)',
       :class_name => 'c_urp_',
       :grabs_comma => true
@@ -76,7 +77,7 @@ class URITemplate::Draft7
   DEFAULT_PROCESSING = CONVERT_VALUES + CONVERT_RESULT
   
   # @private
-  VAR = Regexp.compile(<<'__REGEXP__'.strip, Regexp::EXTENDED)
+  VAR = Regexp.compile(<<'__REGEXP__'.strip, Regexp::EXTENDED | Utils::KCODE_UTF8)
 (?<operator> [+#\./;?&]?){0}
 (?<varchar> [a-zA-Z_]|%[0-9a-fA-F]{2}){0}
 (?<varname> \g<varchar>(?:\g<varchar>|\.)*){0}
@@ -85,7 +86,7 @@ class URITemplate::Draft7
 __REGEXP__
   
   # @private
-  EXPRESSION = Regexp.compile(<<'__REGEXP__'.strip, Regexp::EXTENDED)
+  EXPRESSION = Regexp.compile(<<'__REGEXP__'.strip, Regexp::EXTENDED | Utils::KCODE_UTF8)
 (?<operator> [+#\./;?&]?){0}
 (?<varchar> [a-zA-Z_]|%[0-9a-fA-F]{2}){0}
 (?<varname> \g<varchar>(?:\g<varchar>|\.)*){0}
@@ -94,12 +95,12 @@ __REGEXP__
 __REGEXP__
 
   # @private
-  URI = Regexp.compile(<<'__REGEXP__'.strip, Regexp::EXTENDED)
+  URI = Regexp.compile(<<'__REGEXP__'.strip, Regexp::EXTENDED | Utils::KCODE_UTF8)
 (?<operator> [+#\./;?&]?){0}
 (?<varchar> [a-zA-Z_]|%[0-9a-fA-F]{2}){0}
 (?<varname> \g<varchar>(?:\g<varchar>|\.)*){0}
 (?<varspec> \g<varname>\*?(?::\d+)?){0}
-^(([^"'%<>^`{|}\s\p{Cc}]|%\h\h)+|\{\g<operator>(?<vars>\g<varspec>(?:,\g<varspec>)*)\})*$
+^(([^"'%<>^`{|}\s\p{Cntrl}]|%\h\h)+|\{\g<operator>(?<vars>\g<varspec>(?:,\g<varspec>)*)\})*$
 __REGEXP__
   
   # @private
@@ -199,7 +200,7 @@ __REGEXP__
     end
     
     def to_s
-      '{' + self.class::OPERATOR +  @variable_specs.map{|name,expand,max_length| name +(expand ? '*': '') + (max_length > 0 ? ':'+max_length.to_s : '') }.join(',') + '}'
+      return '{' + self.class::OPERATOR + @variable_specs.map{|name,expand,max_length| name + (expand ? '*': '') + (max_length > 0 ? (':' + max_length.to_s) : '') }.join(',') + '}'
     end
     
     #TODO: certain things after a slurpy variable will never get matched. therefore, it's pointless to add expressions for them
@@ -321,7 +322,7 @@ __REGEXP__
           value = "\\g<#{self::CHARACTER_CLASS[:class_name]}>#{(max_length > 0)?'{,'+max_length.to_s+'}':'*?'}"
           pair = "(?<name>\\g<c_vn_>#{Regexp.escape(self::PAIR_CONNECTOR)})?(?<value>#{value})"
         
-          Regexp.new( CHARACTER_CLASSES[:varname][:class] + "{0}\n" + self::CHARACTER_CLASS[:class] + "{0}\n"  + "^#{Regexp.escape(self::SEPARATOR)}?" + pair + "(?<rest>$|#{Regexp.escape(self::SEPARATOR)}(?!#{Regexp.escape(self::SEPARATOR)}))" ,Regexp::EXTENDED)
+          Regexp.new( CHARACTER_CLASSES[:varname][:class] + "{0}\n" + self::CHARACTER_CLASS[:class] + "{0}\n"  + "^#{Regexp.escape(self::SEPARATOR)}?" + pair + "(?<rest>$|#{Regexp.escape(self::SEPARATOR)}(?!#{Regexp.escape(self::SEPARATOR)}))" ,Regexp::EXTENDED | Utils::KCODE_UTF8)
         end
       end
       
@@ -650,7 +651,7 @@ __REGEXP__
         r = part.to_r_source(bc)
         bc += part.arity
         r
-      }.join + '\z' , Regexp::EXTENDED)
+      }.join + '\z' , Regexp::EXTENDED | Utils::KCODE_UTF8)
     end
   end
   
