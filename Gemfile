@@ -1,0 +1,3 @@
+# sigh, same setting everywhere ...
+source "http://rubygems.org"
+gemspec
