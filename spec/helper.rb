@@ -15,6 +15,10 @@
 #    (c) 2011 by Hannes Georg
 #
 
+$LOAD_PATH << File.expand_path('../lib',File.dirname(__FILE__))
+
+require 'uri_template'
+
 begin
   require 'simplecov'
   SimpleCov.add_filter('spec')
