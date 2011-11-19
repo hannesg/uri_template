@@ -196,7 +196,7 @@ __REGEXP__
     
     #TODO: certain things after a slurpy variable will never get matched. therefore, it's pointless to add expressions for them
     #TODO: variables, which appear twice could be compacted, don't they?
-    def to_r_source(base_counter = 0)
+    def to_r_source
       source = []
       first = true
       vs = @variable_specs.size - 1
@@ -644,12 +644,10 @@ __REGEXP__
     @regexp ||= begin
       #classes = CHARACTER_CLASSES.map{|_,v| v[:class]+"{0}\n" }
       bc = 0
-      source = '\A' + tokens.map{|part|
-        r = part.to_r_source(bc)
-        bc += part.arity
-        r
-      }.join + '\z'
-      Regexp.new( source, Utils::KCODE_UTF8)
+      source = tokens.map(&:to_r_source)
+      source.unshift('\A')
+      source.push('\z')
+      Regexp.new( source.join, Utils::KCODE_UTF8)
     end
   end
   
