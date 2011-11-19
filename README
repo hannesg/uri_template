@@ -21,30 +21,30 @@ Some implementations might be able to extract variables, too ( Draft 7 is! ).
   
 == Benchmarks
 
- * System: Core 2 Duo T9300, 4 gb ram, Fedora 16 64 bit, ruby 1.9.2, 100_000 repetitions
+ * System: Core 2 Duo T9300, 4 gb ram, Fedora 16 64 bit, ruby 1.9.3, 100_000 repetitions
  * Implementation: Draft7 ( version 0.1.3 (pre) ) vs. Addressable ( 2.2.6 )
  * Results marked with * means that the template object is reused.
 
                                                        Addressable | Addressable* |  Draft7 | Draft7* |
     --Expansion----------------------------------------------------------------------------------------
-    Empty string                                             8.556 |        8.431 |   0.521 |   0.071 |
-    One simple variable                                     20.373 |       20.602 |   3.220 |   0.987 |
-    One escaped variable                                    23.020 |       23.208 |   6.817 |   4.601 |
-    One missing variable                                     9.901 |        9.879 |   2.224 |   0.249 |
-    Path segments                                           25.559 |       25.666 |   3.645 |   1.515 |
-    Arguments                                               28.416 |       28.261 |   6.361 |   2.945 |
-    Full URI                                                84.303 |       90.531 |  15.246 |   7.657 |
-    Segments and Arguments                                  84.982 |       90.849 |  10.989 |   4.857 |
+    Empty string                                             8.601 |        8.529 |   0.451 |   0.057 |
+    One simple variable                                     19.832 |       19.675 |   2.746 |   0.928 |
+    One escaped variable                                    22.437 |       22.151 |   6.011 |   4.242 |
+    One missing variable                                     9.638 |        9.544 |   1.855 |   0.184 |
+    Path segments                                           25.353 |       25.413 |   3.171 |   1.372 |
+    Arguments                                               27.140 |       27.144 |   5.293 |   2.715 |
+    Full URI                                                75.599 |       75.680 |  11.147 |   5.246 |
+    Segments and Arguments                                  73.360 |       73.334 |   7.694 |   3.604 |
     --Extraction---------------------------------------------------------------------------------------
-    Empty string                                            16.284 |       16.644 |   8.034 |   0.720 |
-    One simple variable                                     38.910 |       40.144 |  14.118 |   3.180 |
-    One escaped variable                                    45.668 |       47.827 |  16.136 |   4.971 |
-    One missing variable                                    26.747 |       27.941 |  13.079 |   1.357 |
-    Path segments                                           55.225 |       55.072 |  21.108 |   6.544 |
-    Arguments                                               65.504 |       63.078 |  24.713 |   5.273 |
-    Full URI                                               115.505 |      116.590 |  43.582 |  12.063 |
-    Segments and Arguments                                  99.426 |      100.522 |  33.363 |  10.206 |
-    Segments and Arguments ( not extractable )              26.146 |       27.504 |  23.795 |   0.355 |
+    Empty string                                            14.031 |       13.993 |   1.849 |   0.576 |
+    One simple variable                                     28.701 |       28.503 |   6.988 |   1.840 |
+    One escaped variable                                    33.237 |       33.358 |   8.354 |   3.155 |
+    One missing variable                                    17.201 |       17.051 |   6.318 |   1.177 |
+    Path segments                                           43.112 |       43.623 |  12.502 |   2.983 |
+    Arguments                                               54.448 |       54.090 |  13.772 |   3.394 |
+    Full URI                                                95.433 |       91.961 |  30.762 |   6.797 |
+    Segments and Arguments                                  80.508 |       79.570 |  23.204 |   5.210 |
+    Segments and Arguments ( not extractable )              22.079 |       21.967 |  18.017 |   0.256 |
 
 SUCCESS - Draft7 was faster in every test!
 
