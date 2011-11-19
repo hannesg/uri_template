@@ -165,7 +165,7 @@ describe URITemplate do
   
   describe "utils" do
   
-    it "should raise on basic object" do
+    it "should raise on basic object", :if => (defined? BasicObject) do
     
       lambda{ URITemplate::Utils.object_to_param(BasicObject.new) }.should raise_error(URITemplate::Unconvertable)
     

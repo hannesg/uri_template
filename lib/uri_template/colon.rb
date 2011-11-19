@@ -28,7 +28,7 @@ class Colon
 
   include URITemplate
 
-  VAR = /(?:\{:(?<name>[a-z]+)\}|:(?<name>[a-z]+)(?![a-z]))/u
+  VAR = /(?:\{:([a-z]+)\}|:([a-z]+)(?![a-z]))/u
 
   class Token
     
@@ -48,7 +48,7 @@ class Colon
       end
       
       def to_r
-        return ['(?<', name, '>[^/]*?)'].join
+        return ['([^/]*?)'].join
       end
       
     end
@@ -102,8 +102,8 @@ class Colon
   def extract(uri)
     md = self.to_r.match(uri)
     return nil unless md
-    return Hash[ *self.variables.map{|v|
-      [v, Utils.dpct(md[v])]
+    return Hash[ *self.variables.each_with_index.map{|v,i|
+      [v, Utils.dpct(md[i+1])]
     }.flatten(1) ]
   end
   

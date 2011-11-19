@@ -75,6 +75,44 @@ module URITemplate
     # A regexp which match all non-simple characters.
     NOT_SIMPLE_CHARS = /([^A-Za-z0-9\-\._])/.freeze
     
+    ASCII = 'ASCII'.freeze
+    UTF8 = 'UTF-8'.freeze
+    
+    def to_ascii_force_encoding(str)
+      str.force_encoding(ASCII)
+    end
+    
+    def to_utf8_force_encoding(str)
+      str.force_encoding(UTF8)
+    end
+    
+    def to_ascii_encode(str)
+      str.encode(ASCII)
+    end
+    
+    def to_utf8_encode(str)
+      str.encode(UTF8)
+    end
+    
+    def to_ascii_fallback(str)
+      str
+    end
+    
+    def to_utf8_fallback(str)
+      str
+    end
+    
+    if "".respond_to?(:force_encoding)
+      alias_method :to_ascii, :to_ascii_force_encoding
+      alias_method :to_utf8, :to_utf8_force_encoding
+    elsif "".respond_to?(:encode)
+      alias_method :to_ascii, :to_ascii_encode
+      alias_method :to_utf8, :to_utf8_encode
+    else
+      alias_method :to_ascii, :to_ascii_fallback
+      alias_method :to_utf8, :to_utf8_fallback
+    end
+    
     # Encodes the given string into a pct-encoded string.
     # @param s The string to be encoded.
     # @param m A regexp matching all characters, which need to be encoded.
@@ -85,9 +123,9 @@ module URITemplate
     #
     #TODO: is encoding as utf8/ascii really needed?
     def pct(s, m=NOT_SIMPLE_CHARS)
-      s.to_s.gsub(m){
+      to_ascii( s.to_s.gsub(m){
         '%'+$1.unpack('H2'*$1.bytesize).join('%').upcase
-      }.force_encoding('ASCII')
+      } )
     end
     
     # Decodes the given pct-encoded string into a utf-8 string.
@@ -98,9 +136,9 @@ module URITemplate
     #   URITemplate::Utils.dpct("%25") #=> "%"
     #
     def dpct(s)
-      s.to_s.gsub(PCT){
+      to_utf8(s.to_s.gsub(PCT){
         $1.to_i(16).chr
-      }.force_encoding('UTF-8')
+      })
     end
     
     # Converts an object to a param value.
