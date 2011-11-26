@@ -184,7 +184,7 @@ describe URITemplate do
       lambda{ URITemplate::Utils.object_to_param(obj) }.should raise_error(URITemplate::Unconvertable)
     
     end
-  
+    
   end
 
 end

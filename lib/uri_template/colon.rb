@@ -44,7 +44,7 @@ class Colon
       end
       
       def expand(vars)
-        return Utils.pct(vars[@name])
+        return Utils.escape_url(Utils.object_to_param(vars[@name]))
       end
       
       def to_r
@@ -103,7 +103,7 @@ class Colon
     md = self.to_r.match(uri)
     return nil unless md
     return Hash[ *self.variables.each_with_index.map{|v,i|
-      [v, Utils.dpct(md[i+1])]
+      [v, Utils.unescape_url(md[i+1])]
     }.flatten(1) ]
   end
   

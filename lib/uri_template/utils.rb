@@ -68,77 +68,138 @@ module URITemplate
   module Utils
   
     KCODE_UTF8 = (Regexp::KCODE_UTF8 rescue 0)
-  
-    # @private
-    PCT = /%(\h\h)/.freeze
     
-    # A regexp which match all non-simple characters.
-    NOT_SIMPLE_CHARS = /([^A-Za-z0-9\-\._])/.freeze
+    module StringEncoding
     
-    ASCII = 'ASCII'.freeze
-    UTF8 = 'UTF-8'.freeze
-    
-    def to_ascii_force_encoding(str)
-      str.force_encoding(ASCII)
+      def to_ascii_force_encoding(str)
+        if str.frozen?
+          str = str.dup
+        end
+        str.force_encoding(Encoding::ASCII)
+      end
+      
+      def to_utf8_force_encoding(str)
+        if str.frozen?
+          str = str.dup
+        end
+        str.force_encoding(Encoding::UTF_8)
+      end
+      
+      def to_ascii_encode(str)
+        str.encode(Encoding::ASCII)
+      end
+      
+      def to_utf8_encode(str)
+        str.encode(Encoding::UTF_8)
+      end
+      
+      def to_ascii_fallback(str)
+        str
+      end
+      
+      def to_utf8_fallback(str)
+        str
+      end
+      
+      if "".respond_to?(:force_encoding)
+        alias_method :to_ascii, :to_ascii_force_encoding
+        alias_method :to_utf8, :to_utf8_force_encoding
+      elsif "".respond_to?(:encode)
+        alias_method :to_ascii, :to_ascii_encode
+        alias_method :to_utf8, :to_utf8_encode
+      else
+        alias_method :to_ascii, :to_ascii_fallback
+        alias_method :to_utf8, :to_utf8_fallback
+      end
+      
     end
     
-    def to_utf8_force_encoding(str)
-      str.force_encoding(UTF8)
+    module Escaping
+    
+      module Pure
+    
+        include StringEncoding
+    
+        # @private
+        URL_ESCAPED = /([^A-Za-z0-9\-\._])/.freeze
+        
+        # @private
+        URI_ESCAPED = /([^A-Za-z0-9!$&'()*+,.\/:;=?@\[\]_~])/.freeze
+        
+        # @private
+        PCT = /%(\h\h)/.freeze
+        
+        def escape_url(s)
+          to_ascii( s.to_s.gsub(URL_ESCAPED){
+            '%'+$1.unpack('H2'*$1.bytesize).join('%').upcase
+          } )
+        end
+        
+        def escape_uri(s)
+          to_ascii( s.to_s.gsub(URI_ESCAPED){
+            '%'+$1.unpack('H2'*$1.bytesize).join('%').upcase
+          } )
+        end
+        
+        def unescape_url(s)
+          to_utf8( s.to_s.gsub('+',' ').gsub(PCT){
+            $1.to_i(16).chr
+          } )
+        end
+        
+        def unescape_uri(s)
+          to_utf8( s.to_s.gsub(PCT){
+            $1.to_i(16).chr
+          })
+        end
+        
+        def using_escape_utils?
+          false
+        end
+        
+      end
+      
+    begin
+      require 'escape_utils'
+      module EscapeUtils
+      
+        include StringEncoding
+      
+        include ::EscapeUtils
+    
+        def using_escape_utils?
+          true
+        end
+        
+        def escape_url(s)
+          super(to_utf8(s)).gsub('+','%20')
+        end
+        
+        def escape_uri(s)
+          super(to_utf8(s))
+        end
+        
+        def unescape_url(s)
+          super(to_ascii(s))
+        end
+        
+        def unescape_uri(s)
+          super(to_ascii(s))
+        end
+      
+      end
+    rescue LoadError
     end
     
-    def to_ascii_encode(str)
-      str.encode(ASCII)
+    
     end
     
-    def to_utf8_encode(str)
-      str.encode(UTF8)
-    end
-    
-    def to_ascii_fallback(str)
-      str
-    end
-    
-    def to_utf8_fallback(str)
-      str
-    end
-    
-    if "".respond_to?(:force_encoding)
-      alias_method :to_ascii, :to_ascii_force_encoding
-      alias_method :to_utf8, :to_utf8_force_encoding
-    elsif "".respond_to?(:encode)
-      alias_method :to_ascii, :to_ascii_encode
-      alias_method :to_utf8, :to_utf8_encode
+    if Escaping.const_defined? :EscapeUtils
+      include Escaping::EscapeUtils
+      puts "Using escape_utils." if $VERBOSE
     else
-      alias_method :to_ascii, :to_ascii_fallback
-      alias_method :to_utf8, :to_utf8_fallback
-    end
-    
-    # Encodes the given string into a pct-encoded string.
-    # @param s The string to be encoded.
-    # @param m A regexp matching all characters, which need to be encoded.
-    #
-    # @example
-    #   URITemplate::Utils.pct("abc") #=> "abc"
-    #   URITemplate::Utils.pct("%") #=> "%25"
-    #
-    #TODO: is encoding as utf8/ascii really needed?
-    def pct(s, m=NOT_SIMPLE_CHARS)
-      to_ascii( s.to_s.gsub(m){
-        '%'+$1.unpack('H2'*$1.bytesize).join('%').upcase
-      } )
-    end
-    
-    # Decodes the given pct-encoded string into a utf-8 string.
-    # Should be the opposite of #pct.
-    #
-    # @example
-    #   URITemplate::Utils.dpct("abc") #=> "abc"
-    #   URITemplate::Utils.dpct("%25") #=> "%"
-    #
-    def dpct(s)
-      to_utf8(s.to_s.gsub(PCT){
-        $1.to_i(16).chr
-      })
+      include Escaping::Pure
+      puts "Not using escape_utils." if $VERBOSE
     end
     
     # Converts an object to a param value.

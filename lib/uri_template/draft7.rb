@@ -178,7 +178,7 @@ __REGEXP__
             if self.class::NAMED
               result.push( pair(var, vars[var], max_length) )
             else
-              result.push( cut( encode(vars[var]), max_length ) )
+              result.push( cut( escape(vars[var]), max_length ) )
             end
           end
         end
@@ -269,6 +269,7 @@ __REGEXP__
         return [[ name , matched ]]
       end
       if expand
+        #TODO: do we really need this? - this could be stolen from rack
         ex = self.class.hash_extractor(max_length)
         rest = matched
         splitted = []
@@ -324,8 +325,12 @@ __REGEXP__
     
     extend ClassMethods
     
-    def encode(x)
-      Utils.pct(Utils.object_to_param(x), self.class::CHARACTER_CLASS[:unencoded])
+    def escape(x)
+      Utils.escape_url(Utils.object_to_param(x))
+    end
+    
+    def unescape(x)
+      Utils.unescape_url(x)
     end
     
     SPLITTER = /^(?:,(,*)|([^,]+))/
@@ -345,7 +350,7 @@ __REGEXP__
           if m[1] and m[1].size > 0
             r << m[1]
           elsif m[2]
-            r << Utils.dpct(m[2])
+            r << unescape(m[2])
           end
           v = m.post_match
         end
@@ -355,7 +360,7 @@ __REGEXP__
           else r
         end
       else
-        Utils.dpct(x)
+        unescape(x)
       end
     end
     
@@ -370,8 +375,8 @@ __REGEXP__
     end
     
     def pair(key, value, max_length = 0)
-      ek = encode(key)
-      ev = encode(value)
+      ek = escape(key)
+      ev = escape(value)
       if !self.class::PAIR_IF_EMPTY and ev.size == 0
         return ek
       else
@@ -385,17 +390,17 @@ __REGEXP__
       elsif hsh.none?
         []
       else
-        [ (self.class::NAMED ? encode(name)+self.class::PAIR_CONNECTOR : '' ) + hsh.map{|key,value| encode(key)+self.class::LIST_CONNECTOR+encode(value) }.join(self.class::LIST_CONNECTOR) ]
+        [ (self.class::NAMED ? escape(name)+self.class::PAIR_CONNECTOR : '' ) + hsh.map{|key,value| escape(key)+self.class::LIST_CONNECTOR+escape(value) }.join(self.class::LIST_CONNECTOR) ]
       end
     end
     
     def transform_array(name, ary, expand , max_length)
       if expand
-        ary.map{|value| encode(value) }
+        ary.map{|value| escape(value) }
       elsif ary.none?
         []
       else
-        [ (self.class::NAMED ? encode(name)+self.class::PAIR_CONNECTOR : '' ) + ary.map{|value| encode(value) }.join(self.class::LIST_CONNECTOR) ]
+        [ (self.class::NAMED ? escape(name)+self.class::PAIR_CONNECTOR : '' ) + ary.map{|value| escape(value) }.join(self.class::LIST_CONNECTOR) ]
       end
     end
     
@@ -404,6 +409,14 @@ __REGEXP__
       CHARACTER_CLASS = CHARACTER_CLASSES[:unreserved_reserved_pct]
       OPERATOR = '+'.freeze
       BASE_LEVEL = 2
+      
+      def escape(x)
+        Utils.escape_uri(Utils.object_to_param(x))
+      end
+      
+      def unescape(x)
+        Utils.unescape_uri(x)
+      end
     
     end
     
@@ -413,6 +426,14 @@ __REGEXP__
       PREFIX = '#'.freeze
       OPERATOR = '#'.freeze
       BASE_LEVEL = 2
+      
+      def escape(x)
+        Utils.escape_uri(Utils.object_to_param(x))
+      end
+      
+      def unescape(x)
+        Utils.unescape_uri(x)
+      end
     
     end
     

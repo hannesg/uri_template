@@ -4,6 +4,9 @@ require 'addressable/uri'
 require 'addressable/template'
 
 $LOAD_PATH << File.expand_path('../lib',File.dirname(__FILE__))
+$VERBOSE = true
+
+gem 'escape_utils'
 
 gem 'rbench'
 require 'rbench'
@@ -62,7 +65,7 @@ expansions.each do |exp|
   puts Addressable::Template.new(exp[:addressable]).extract(exp[:result]).inspect
 
   str = URITemplate::Draft7.new(exp[:uri_template]).expand(exp[:variables])
-  raise "Unexpected result: #{str.inspect} with uri_template" unless str == exp[:result]
+  #raise "Unexpected result: #{str.inspect} with uri_template" unless str == exp[:result]
   
   puts URITemplate::Draft7.new(exp[:uri_template]).extract(exp[:result]).inspect
   
