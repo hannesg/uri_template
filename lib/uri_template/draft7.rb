@@ -203,7 +203,6 @@ __REGEXP__
       i = 0
       if self.class::NAMED
         @variable_specs.each{| var, expand , max_length |
-          last = (vs == i)
           value = "(?:#{self.class::CHARACTER_CLASS[:class]}|,)#{(max_length > 0)?'{,'+max_length.to_s+'}':'*'}"
           if expand
             #if self.class::PAIR_IF_EMPTY
@@ -614,8 +613,6 @@ __REGEXP__
   
   extend ClassMethods
   
-  attr_reader :pattern
-  
   attr_reader :options
   
   # @param String,Array either a pattern as String or an Array of tokens
@@ -663,8 +660,6 @@ __REGEXP__
   # @return Regexp
   def to_r
     @regexp ||= begin
-      #classes = CHARACTER_CLASSES.map{|_,v| v[:class]+"{0}\n" }
-      bc = 0
       source = tokens.map(&:to_r_source)
       source.unshift('\A')
       source.push('\z')
@@ -750,7 +745,7 @@ __REGEXP__
   
   # Compares two template patterns.
   def ==(o)
-    this, other, this_converted, other_converted = URITemplate.coerce( self, o )
+    this, other, this_converted, _ = URITemplate.coerce( self, o )
     if this_converted
       return this == other
     end
@@ -814,7 +809,7 @@ __REGEXP__
   #   (tpl / 'a' / 'b' ).pattern #=> '/xy/a/b'
   #
   def /(o)
-    this, other, this_converted, other_converted = URITemplate.coerce( self, o )
+    this, other, this_converted, _ = URITemplate.coerce( self, o )
     if this_converted
       return this / other
     end
