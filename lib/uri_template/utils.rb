@@ -133,8 +133,8 @@ module URITemplate
         alias_method :to_utf8, :to_utf8_fallback
       end
       
-      public to_ascii
-      public to_utf8
+      public :to_ascii
+      public :to_utf8
       
     end
     

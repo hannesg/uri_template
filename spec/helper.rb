@@ -17,8 +17,6 @@
 
 $LOAD_PATH << File.expand_path('../lib',File.dirname(__FILE__))
 
-require 'uri_template'
-
 require 'bundler'
 Bundler.setup(:default,:development)
 Bundler.require(:default,:development)
@@ -29,4 +27,10 @@ begin
   SimpleCov.start
 rescue LoadError
   warn 'Not using simplecov.'
+end
+
+require 'uri_template'
+
+unless URITemplate::Utils.using_escape_utils?
+  warn 'Not using escape_utils.'
 end
