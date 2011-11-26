@@ -69,18 +69,33 @@ module URITemplate
   
     KCODE_UTF8 = (Regexp::KCODE_UTF8 rescue 0)
     
+    # Bundles some string encoding methods.
     module StringEncoding
-    
+      
+      # @method to_ascii(string)
+      # converts a string to ascii
+      # 
+      # This method checks which encoding method is available.
+      # @param String
+      # @return String
+      # @visibility public
       def to_ascii_force_encoding(str)
         if str.frozen?
-          str = str.dup
+          return str.encode(Encoding::ASCII)
         end
         str.force_encoding(Encoding::ASCII)
       end
       
+      # @method to_utf8(string)
+      # converts a string to utf8
+      # 
+      # This method checks which encoding method is available.
+      # @param String
+      # @return String
+      # @visibility public
       def to_utf8_force_encoding(str)
         if str.frozen?
-          str = str.dup
+          return str.encode(Encoding::UTF_8)
         end
         str.force_encoding(Encoding::UTF_8)
       end
@@ -102,20 +117,31 @@ module URITemplate
       end
       
       if "".respond_to?(:force_encoding)
+        # @private
         alias_method :to_ascii, :to_ascii_force_encoding
+        # @private
         alias_method :to_utf8, :to_utf8_force_encoding
       elsif "".respond_to?(:encode)
+        # @private
         alias_method :to_ascii, :to_ascii_encode
+        # @private
         alias_method :to_utf8, :to_utf8_encode
       else
+        # @private
         alias_method :to_ascii, :to_ascii_fallback
+        # @private
         alias_method :to_utf8, :to_utf8_fallback
       end
+      
+      public to_ascii
+      public to_utf8
       
     end
     
     module Escaping
     
+      # A pure escaping module, which implements escaping methods in pure ruby.
+      # The performance is acceptable, but could be better with escape_utils.
       module Pure
     
         include StringEncoding
@@ -159,8 +185,10 @@ module URITemplate
         
       end
       
-    begin
-      require 'escape_utils'
+    if defined? EscapeUtils
+      
+      # A escaping module, which is backed by escape_utils.
+      # The performance is good, espacially for strings with many escaped characters.
       module EscapeUtils
       
         include StringEncoding
@@ -188,11 +216,13 @@ module URITemplate
         end
       
       end
-    rescue LoadError
+    
     end
     
     
     end
+    
+    include StringEncoding
     
     if Escaping.const_defined? :EscapeUtils
       include Escaping::EscapeUtils

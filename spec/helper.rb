@@ -19,6 +19,10 @@ $LOAD_PATH << File.expand_path('../lib',File.dirname(__FILE__))
 
 require 'uri_template'
 
+require 'bundler'
+Bundler.setup(:default,:development)
+Bundler.require(:default,:development)
+
 begin
   require 'simplecov'
   SimpleCov.add_filter('spec')
