@@ -185,6 +185,54 @@ describe URITemplate do
     
     end
     
+    describe "escape utils", :if => URITemplate::Utils.using_escape_utils? do
+      
+      if URITemplate::Utils.using_escape_utils?
+      
+        pure = Object.new
+        pure.extend(URITemplate::Utils::Escaping::Pure)
+        escape_utils = Object.new
+        escape_utils.extend(URITemplate::Utils::Escaping::EscapeUtils)
+        
+        [
+          "",
+          "a",
+          " ",
+          "%%%",
+          "a".encode('ISO-8859-1'),
+          "öüä".encode('ISO-8859-1'),
+          "+",
+          "öäü"
+        ].each do |str|
+          it "should correctly escape #{str.inspect} ( encoding: #{str.encoding} )" do
+            escape_utils.escape_uri(str).should == pure.escape_uri(str)
+            escape_utils.escape_url(str).should == pure.escape_url(str)
+          end
+        end
+        
+        [
+          "",
+          "a",
+          " ",
+          "a".encode('ISO-8859-1'),
+          "+",
+          "%20%30%40",
+          # errors:
+          "%",
+          "%%%",
+          "%gh",
+          "%a"
+        ].each do |str|
+          it "should correctly unescape #{str.inspect} ( encoding: #{str.encoding} )" do
+            escape_utils.unescape_uri(str).should == pure.unescape_uri(str)
+            escape_utils.unescape_url(str).should == pure.unescape_url(str)
+          end
+        end
+      
+      end
+      
+    end
+    
   end
 
 end

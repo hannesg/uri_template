@@ -79,11 +79,8 @@ module URITemplate
       # @param String
       # @return String
       # @visibility public
-      def to_ascii_force_encoding(str)
-        if str.frozen?
-          return str.encode(Encoding::ASCII)
-        end
-        str.force_encoding(Encoding::ASCII)
+      def to_ascii_encode(str)
+        str.encode(Encoding::ASCII)
       end
       
       # @method to_utf8(string)
@@ -93,17 +90,6 @@ module URITemplate
       # @param String
       # @return String
       # @visibility public
-      def to_utf8_force_encoding(str)
-        if str.frozen?
-          return str.encode(Encoding::UTF_8)
-        end
-        str.force_encoding(Encoding::UTF_8)
-      end
-      
-      def to_ascii_encode(str)
-        str.encode(Encoding::ASCII)
-      end
-      
       def to_utf8_encode(str)
         str.encode(Encoding::UTF_8)
       end
@@ -116,12 +102,7 @@ module URITemplate
         str
       end
       
-      if "".respond_to?(:force_encoding)
-        # @private
-        alias_method :to_ascii, :to_ascii_force_encoding
-        # @private
-        alias_method :to_utf8, :to_utf8_force_encoding
-      elsif "".respond_to?(:encode)
+      if "".respond_to?(:encode)
         # @private
         alias_method :to_ascii, :to_ascii_encode
         # @private
@@ -156,15 +137,15 @@ module URITemplate
         PCT = /%(\h\h)/.freeze
         
         def escape_url(s)
-          to_ascii( s.to_s.gsub(URL_ESCAPED){
+          to_utf8(s.to_s).gsub(URL_ESCAPED){
             '%'+$1.unpack('H2'*$1.bytesize).join('%').upcase
-          } )
+          }
         end
         
         def escape_uri(s)
-          to_ascii( s.to_s.gsub(URI_ESCAPED){
+          to_utf8(s.to_s).gsub(URI_ESCAPED){
             '%'+$1.unpack('H2'*$1.bytesize).join('%').upcase
-          } )
+          }
         end
         
         def unescape_url(s)
