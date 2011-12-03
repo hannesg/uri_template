@@ -64,7 +64,10 @@ module URITemplate
   
   end
 
-  # A collection of some utility methods
+  # A collection of some utility methods.
+  # The most methods are used to parse or generate uri-parameters.
+  # I will use the escape_utils library if available, but runs happily without.
+  #
   module Utils
   
     KCODE_UTF8 = (Regexp::KCODE_UTF8 rescue 0)

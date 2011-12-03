@@ -6,6 +6,19 @@ It's currently planed to add newer versions of that spec when they emerge. There
 
 Some implementations might be able to extract variables, too ( Draft 7 is! ).
 
+From version 0.2.0, it will use escape_utils if available. This will significantly boost uri-escape/unescape performance if more characters need to be escaped ( may be slightly slower in trivial cases. working on that ... ), but does not run everywhere. To enable this, do the following:
+
+````ruby
+  # escape_utils has to be loaded when uri_templates is loaded
+  gem 'escape_utils'
+  require 'escape_utils'
+  
+  gem 'uri_template'
+  require 'uri_template'
+  
+  UriTemplate::Utils.using_escape_utils? #=> true
+
+
 == Examples
 
   require 'uri_template'

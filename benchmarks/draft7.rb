@@ -7,6 +7,7 @@ $LOAD_PATH << File.expand_path('../lib',File.dirname(__FILE__))
 $VERBOSE = true
 
 gem 'escape_utils'
+require 'escape_utils'
 
 gem 'rbench'
 require 'rbench'
@@ -96,6 +97,8 @@ RBench.run(100_000) do
       end
     end
     
+    summary('total')
+    
   end
   
   group "Extraction" do
@@ -115,6 +118,7 @@ RBench.run(100_000) do
       end
     end
     
+    summary('total')
   
   end
 end

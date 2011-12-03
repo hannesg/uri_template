@@ -1,3 +1,7 @@
+# 0.2.0 - 03.12.2011
+* Reworked the escaping mechanism
++ escape_utils can now be used to boost escape/unescape performance
+
 # 0.1.4 - 19.11.2011
 * Compatiblity: Works now with MRI 1.9.3, Rubinius and JRuby
 * Various (significant!) performance improvements
