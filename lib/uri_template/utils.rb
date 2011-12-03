@@ -64,40 +64,156 @@ module URITemplate
   
   end
 
-  # A collection of some utility methods
+  # A collection of some utility methods.
+  # The most methods are used to parse or generate uri-parameters.
+  # I will use the escape_utils library if available, but runs happily without.
+  #
   module Utils
   
-    # @private
-    PCT = /%(\h\h)/.freeze
+    KCODE_UTF8 = (Regexp::KCODE_UTF8 rescue 0)
     
-    # A regexp which match all non-simple characters.
-    NOT_SIMPLE_CHARS = /([^A-Za-z0-9\-\._])/.freeze
-    
-    # Encodes the given string into a pct-encoded string.
-    # @param s The string to be encoded.
-    # @param m A regexp matching all characters, which need to be encoded.
-    #
-    # @example
-    #   URITemplate::Utils.pct("abc") #=> "abc"
-    #   URITemplate::Utils.pct("%") #=> "%25"
-    #
-    def pct(s, m=NOT_SIMPLE_CHARS)
-      s.to_s.encode('UTF-8').gsub(m){
-        '%'+$1.unpack('H2'*$1.bytesize).join('%').upcase
-      }.encode('ASCII')
+    # Bundles some string encoding methods.
+    module StringEncoding
+      
+      # @method to_ascii(string)
+      # converts a string to ascii
+      # 
+      # This method checks which encoding method is available.
+      # @param String
+      # @return String
+      # @visibility public
+      def to_ascii_encode(str)
+        str.encode(Encoding::ASCII)
+      end
+      
+      # @method to_utf8(string)
+      # converts a string to utf8
+      # 
+      # This method checks which encoding method is available.
+      # @param String
+      # @return String
+      # @visibility public
+      def to_utf8_encode(str)
+        str.encode(Encoding::UTF_8)
+      end
+      
+      def to_ascii_fallback(str)
+        str
+      end
+      
+      def to_utf8_fallback(str)
+        str
+      end
+      
+      if "".respond_to?(:encode)
+        # @private
+        alias_method :to_ascii, :to_ascii_encode
+        # @private
+        alias_method :to_utf8, :to_utf8_encode
+      else
+        # @private
+        alias_method :to_ascii, :to_ascii_fallback
+        # @private
+        alias_method :to_utf8, :to_utf8_fallback
+      end
+      
+      public :to_ascii
+      public :to_utf8
+      
     end
     
-    # Decodes the given pct-encoded string into a utf-8 string.
-    # Should be the opposite of #pct.
-    #
-    # @example
-    #   URITemplate::Utils.dpct("abc") #=> "abc"
-    #   URITemplate::Utils.dpct("%25") #=> "%"
-    #
-    def dpct(s)
-      s.to_s.encode('ASCII').gsub(PCT){
-        $1.to_i(16).chr
-      }.encode('UTF-8')
+    module Escaping
+    
+      # A pure escaping module, which implements escaping methods in pure ruby.
+      # The performance is acceptable, but could be better with escape_utils.
+      module Pure
+    
+        include StringEncoding
+    
+        # @private
+        URL_ESCAPED = /([^A-Za-z0-9\-\._])/.freeze
+        
+        # @private
+        URI_ESCAPED = /([^A-Za-z0-9!$&'()*+,.\/:;=?@\[\]_~])/.freeze
+        
+        # @private
+        PCT = /%(\h\h)/.freeze
+        
+        def escape_url(s)
+          to_utf8(s.to_s).gsub(URL_ESCAPED){
+            '%'+$1.unpack('H2'*$1.bytesize).join('%').upcase
+          }
+        end
+        
+        def escape_uri(s)
+          to_utf8(s.to_s).gsub(URI_ESCAPED){
+            '%'+$1.unpack('H2'*$1.bytesize).join('%').upcase
+          }
+        end
+        
+        def unescape_url(s)
+          to_utf8( s.to_s.gsub('+',' ').gsub(PCT){
+            $1.to_i(16).chr
+          } )
+        end
+        
+        def unescape_uri(s)
+          to_utf8( s.to_s.gsub(PCT){
+            $1.to_i(16).chr
+          })
+        end
+        
+        def using_escape_utils?
+          false
+        end
+        
+      end
+      
+    if defined? EscapeUtils
+      
+      # A escaping module, which is backed by escape_utils.
+      # The performance is good, espacially for strings with many escaped characters.
+      module EscapeUtils
+      
+        include StringEncoding
+      
+        include ::EscapeUtils
+    
+        def using_escape_utils?
+          true
+        end
+        
+        def escape_url(s)
+          super(to_utf8(s)).gsub('+','%20')
+        end
+        
+        def escape_uri(s)
+          super(to_utf8(s))
+        end
+        
+        def unescape_url(s)
+          super(to_ascii(s))
+        end
+        
+        def unescape_uri(s)
+          super(to_ascii(s))
+        end
+      
+      end
+    
+    end
+    
+    
+    end
+    
+    include StringEncoding
+    
+    if Escaping.const_defined? :EscapeUtils
+      include Escaping::EscapeUtils
+      puts "Using escape_utils." if $VERBOSE
+    else
+      include Escaping::Pure
+      puts "Not using escape_utils." if $VERBOSE
     end
     
     # Converts an object to a param value.
@@ -139,19 +255,25 @@ module URITemplate
     # Turns the given value into a hash if it is an array of pairs.
     # Otherwise it returns the value.
     # You can test whether a value will be converted with {#pair_array?}.
+    #
     # @example
     #   URITemplate::Utils.pair_array_to_hash( 'x' ) #=> 'x'
     #   URITemplate::Utils.pair_array_to_hash( [ ['a',1],['b',2],['c',3] ] ) #=> {'a'=>1,'b'=>2,'c'=>3}
     #   URITemplate::Utils.pair_array_to_hash( [ ['a',1],['a',2],['a',3] ] ) #=> {'a'=>3}
-    def pair_array_to_hash(a)
-      if pair_array?(a)
-        return Hash[ *a.map{ |k,v| [k,pair_array_to_hash(v)] }.flatten(1) ]
+    #
+    # @example Carful vs. Ignorant
+    #   URITemplate::Utils.pair_array_to_hash( [ ['a',1],'foo','bar'], false ) #=> {'a'=>1,'foo'=>'bar'}
+    #   URITemplate::Utils.pair_array_to_hash( [ ['a',1],'foo','bar'], true ) #=> [ ['a',1],'foo','bar']
+    #
+    # @param x the value to convert
+    # @param careful [true,false] wheter to check every array item. Use this when you expect array with subarrays which are not pairs. Setting this to false however improves runtime by ~30% even with comparetivly short arrays.
+    def pair_array_to_hash(x, careful = false )
+      if careful ? pair_array?(x) : (x.kind_of?(Array) and x.first.kind_of?(Array))
+        return Hash[ *x.flatten(1) ]
       else
-        return a
+        return x
       end
     end
-    
-    
     
     extend self
   

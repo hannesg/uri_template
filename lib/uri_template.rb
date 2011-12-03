@@ -149,7 +149,7 @@ module URITemplate
   end
   
   # Tries to coerce two URITemplates into a common representation.
-  # Returns an array with two {URITemplate}s and two booleans indicating which of the two were converted or raises an {ArgumentError}.
+  # Returns an array with two {URITemplate}s and two booleans indicating which of the two were converted or raises an ArgumentError.
   #
   # @example
   #   URITemplate.coerce( URITemplate.new(:draft7,'{x}'), '{y}' ) #=> [URITemplate.new(:draft7,'{x}'), URITemplate.new(:draft7,'{y}'), false, true]
@@ -217,7 +217,7 @@ module URITemplate
   end
   
   # @abstract
-  # Returns the tokens of this templates. Tokens should include either {Static} or {Expression}.
+  # Returns the tokens of this templates. Tokens should include either {Literal} or {Expression}.
   def tokens
     raise "Please implement #tokens on #{self.class.inspect}."
   end
@@ -234,7 +234,7 @@ module URITemplate
   
   # Returns the number of static characters in this template.
   # This method is useful for routing, since it's often pointful to use the url with fewer variable characters.
-  # For example 'static' and 'sta\{var\}' both match 'static', but in most cases 'static' should be prefered over 'sta{var}' since it's more specific.
+  # For example 'static' and 'sta\\{var\\}' both match 'static', but in most cases 'static' should be prefered over 'sta\\{var\\}' since it's more specific.
   #
   # @example
   #   URITemplate.new('/xy/').static_characters #=> 4
@@ -250,8 +250,8 @@ module URITemplate
   # This is detected by checking for "://".
   #
   def absolute?
+    return @absolute unless @absolute.nil?
     read_chars = ""
-    
     tokens.each do |token|
       if token.expression?
         read_chars << "x"
@@ -259,13 +259,13 @@ module URITemplate
         read_chars << token.string
       end
       if read_chars =~ /^[a-z]+:\/\//i
-        return true
+        return @absolute = true
       elsif read_chars =~ /(?<!:|\/)\/(?!\/)/
-        return false
+        return @absolute = false
       end
     end
     
-    return false
+    return @absolute = false
   end
   
   # Opposite of {#absolute?}

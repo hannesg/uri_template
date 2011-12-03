@@ -6,6 +6,19 @@ It's currently planed to add newer versions of that spec when they emerge. There
 
 Some implementations might be able to extract variables, too ( Draft 7 is! ).
 
+From version 0.2.0, it will use escape_utils if available. This will significantly boost uri-escape/unescape performance if more characters need to be escaped ( may be slightly slower in trivial cases. working on that ... ), but does not run everywhere. To enable this, do the following:
+
+````ruby
+  # escape_utils has to be loaded when uri_templates is loaded
+  gem 'escape_utils'
+  require 'escape_utils'
+  
+  gem 'uri_template'
+  require 'uri_template'
+  
+  UriTemplate::Utils.using_escape_utils? #=> true
+
+
 == Examples
 
   require 'uri_template'
@@ -21,109 +34,30 @@ Some implementations might be able to extract variables, too ( Draft 7 is! ).
   
 == Benchmarks
 
-System: Core 2 Duo T9600, 4 gb ram, Fedora 15 64 bit, 10_000 repetitions
-Implementation: Draft7
-Results marked with * means that the template object is reused.
+ * System: Core 2 Duo T9300, 4 gb ram, Fedora 16 64 bit, ruby 1.9.3, 100_000 repetitions
+ * Implementation: Draft7 ( version 0.1.3 (pre) ) vs. Addressable ( 2.2.6 )
+ * Results marked with * means that the template object is reused.
 
-=== Expansion
-    "" vs "" => ""
-          user     system      total        real
-    Addressable  0.070000   0.010000   0.080000 (  0.081990)
-    UriTemplate   0.010000   0.000000   0.010000 (  0.007668)
-    Addressable*  0.090000   0.000000   0.090000 (  0.090763)
-    UriTemplate*  0.000000   0.000000   0.000000 (  0.001633)
-    
-    "{simple_string}" vs "{simple_string}" => "noneedtoescape"
-          user     system      total        real
-    Addressable  0.560000   0.000000   0.560000 (  0.560811)
-    UriTemplate   0.030000   0.000000   0.030000 (  0.034104)
-    Addressable*  0.560000   0.000000   0.560000 (  0.558118)
-    UriTemplate*  0.030000   0.000000   0.030000 (  0.026850)
-    
-    "{escaped_string}" vs "{escaped_string}" => "%2F%20%2F%25%2F%20%3F%2B"
-          user     system      total        real
-    Addressable  0.560000   0.000000   0.560000 (  0.562588)
-    UriTemplate   0.070000   0.000000   0.070000 (  0.072649)
-    Addressable*  0.560000   0.000000   0.560000 (  0.556001)
-    UriTemplate*  0.050000   0.000000   0.050000 (  0.054520)
-    
-    "{missing}" vs "{missing}" => ""
-          user     system      total        real
-    Addressable  0.550000   0.010000   0.560000 (  0.550707)
-    UriTemplate   0.040000   0.000000   0.040000 (  0.035343)
-    Addressable*  0.550000   0.000000   0.550000 (  0.556634)
-    UriTemplate*  0.010000   0.000000   0.010000 (  0.003132)
-    
-    "{-prefix|/|segments}" vs "{/segments*}" => "/a/b/c"
-          user     system      total        real
-    Addressable  0.650000   0.000000   0.650000 (  0.656996)
-    UriTemplate   0.030000   0.000000   0.030000 (  0.038546)
-    Addressable*  0.660000   0.000000   0.660000 (  0.655364)
-    UriTemplate*  0.020000   0.000000   0.020000 (  0.018265)
-    
-    "?{-join|&|one,two,three}" vs "{?one,two,three}" => "?one=1&two=2&three=3"
-          user     system      total        real
-    Addressable  0.670000   0.000000   0.670000 (  0.671649)
-    UriTemplate   0.080000   0.000000   0.080000 (  0.078588)
-    Addressable*  0.670000   0.000000   0.670000 (  0.669606)
-    UriTemplate*  0.030000   0.000000   0.030000 (  0.035886)
-    
-    "http://{host}/{-suffix|/|segments}?{-join|&|one,two,bogus}\#{fragment}" vs "http://{host}{/segments*}/{?one,two,bogus}{#fragment}" => "http://example.com/a/b/c/?one=1&two=2#foo"
-          user     system      total        real
-    Addressable  0.800000   0.000000   0.800000 (  0.802170)
-    UriTemplate   0.150000   0.000000   0.150000 (  0.147875)
-    Addressable*  0.810000   0.000000   0.810000 (  0.803928)
-    UriTemplate*  0.060000   0.000000   0.060000 (  0.064376)
+                                                       Addressable | Addressable* |  Draft7 | Draft7* |
+    --Expansion----------------------------------------------------------------------------------------
+    Empty string                                             8.601 |        8.529 |   0.451 |   0.057 |
+    One simple variable                                     19.832 |       19.675 |   2.746 |   0.928 |
+    One escaped variable                                    22.437 |       22.151 |   6.011 |   4.242 |
+    One missing variable                                     9.638 |        9.544 |   1.855 |   0.184 |
+    Path segments                                           25.353 |       25.413 |   3.171 |   1.372 |
+    Arguments                                               27.140 |       27.144 |   5.293 |   2.715 |
+    Full URI                                                75.599 |       75.680 |  11.147 |   5.246 |
+    Segments and Arguments                                  73.360 |       73.334 |   7.694 |   3.604 |
+    --Extraction---------------------------------------------------------------------------------------
+    Empty string                                            14.031 |       13.993 |   1.849 |   0.576 |
+    One simple variable                                     28.701 |       28.503 |   6.988 |   1.840 |
+    One escaped variable                                    33.237 |       33.358 |   8.354 |   3.155 |
+    One missing variable                                    17.201 |       17.051 |   6.318 |   1.177 |
+    Path segments                                           43.112 |       43.623 |  12.502 |   2.983 |
+    Arguments                                               54.448 |       54.090 |  13.772 |   3.394 |
+    Full URI                                                95.433 |       91.961 |  30.762 |   6.797 |
+    Segments and Arguments                                  80.508 |       79.570 |  23.204 |   5.210 |
+    Segments and Arguments ( not extractable )              22.079 |       21.967 |  18.017 |   0.256 |
 
-=== Extraction
-    "" => "" vs ""
-          user     system      total        real
-    Addressable  0.150000   0.000000   0.150000 (  0.144244)
-    UriTemplate   0.080000   0.000000   0.080000 (  0.079467)
-    Addressable*  0.140000   0.000000   0.140000 (  0.149177)
-    UriTemplate*  0.010000   0.000000   0.010000 (  0.008808)
-    
-    "noneedtoescape" => "{simple_string}" vs "{simple_string}"
-          user     system      total        real
-    Addressable  0.350000   0.000000   0.350000 (  0.345314)
-    UriTemplate   0.110000   0.000000   0.110000 (  0.116090)
-    Addressable*  0.350000   0.000000   0.350000 (  0.342613)
-    UriTemplate*  0.020000   0.000000   0.020000 (  0.025884)
-    
-    "%2F%20%2F%25%2F%20%3F%2B" => "{escaped_string}" vs "{escaped_string}"
-          user     system      total        real
-    Addressable  0.410000   0.000000   0.410000 (  0.404258)
-    UriTemplate   0.140000   0.000000   0.140000 (  0.143897)
-    Addressable*  0.380000   0.000000   0.380000 (  0.382331)
-    UriTemplate*  0.060000   0.000000   0.060000 (  0.053483)
-    
-    "" => "{missing}" vs "{missing}"
-          user     system      total        real
-    Addressable  0.220000   0.000000   0.220000 (  0.222086)
-    UriTemplate   0.100000   0.000000   0.100000 (  0.104280)
-    Addressable*  0.230000   0.000000   0.230000 (  0.238814)
-    UriTemplate*  0.020000   0.000000   0.020000 (  0.017284)
-    
-    "/a/b/c" => "{-prefix|/|segments}" vs "{/segments*}"
-          user     system      total        real
-    Addressable  0.490000   0.000000   0.490000 (  0.489809)
-    UriTemplate   0.230000   0.000000   0.230000 (  0.232298)
-    Addressable*  0.490000   0.000000   0.490000 (  0.489334)
-    UriTemplate*  0.120000   0.000000   0.120000 (  0.119815)
-    
-    "?one=1&two=2&three=3" => "?{-join|&|one,two,three}" vs "{?one,two,three}"
-          user     system      total        real
-    Addressable  0.550000   0.000000   0.550000 (  0.553224)
-    UriTemplate   0.210000   0.000000   0.210000 (  0.208296)
-    Addressable*  0.550000   0.000000   0.550000 (  0.551459)
-    UriTemplate*  0.060000   0.000000   0.060000 (  0.059963)
-    
-    "http://example.com/a/b/c/?one=1&two=2#foo" => "http://{host}/{-suffix|/|segments}?{-join|&|one,two,bogus}\#{fragment}" vs "http://{host}{/segments*}/{?one,two,bogus}{#fragment}"
-          user     system      total        real
-    Addressable  0.980000   0.000000   0.980000 (  0.980292)
-    UriTemplate   0.450000   0.000000   0.450000 (  0.446143)
-    Addressable*  1.000000   0.000000   1.000000 (  0.996237)
-    UriTemplate*  0.170000   0.000000   0.170000 (  0.175239)
-    
 SUCCESS - Draft7 was faster in every test!
 

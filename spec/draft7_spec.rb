@@ -362,8 +362,8 @@ describe URITemplate::Draft7 do
     
     end
   
-    it "should raise on foreign match data extraction" do
-    
+    it "should raise on foreign match data extraction", :if => //.match('').respond_to?(:regexp) do
+      
       tpl = URITemplate::Draft7.new('tpl')
       md = /something else/.match('something else')
       md.should_not be_nil
@@ -387,7 +387,7 @@ describe URITemplate::Draft7 do
     
     end
     
-    it "should raise when extracting from foreign matchdata" do
+    it "should raise when extracting from foreign matchdata", :if => //.match('').respond_to?(:regexp) do
     
       tpl = URITemplate::Draft7.new('{var}')
       

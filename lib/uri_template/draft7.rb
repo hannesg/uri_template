@@ -34,26 +34,28 @@ class URITemplate::Draft7
   Utils = URITemplate::Utils
   
   # @private
-  LITERAL = /^([^"'%<>\\^`{|}\s\p{Cc}]|%\h\h)+/
+  #                           \/ - unicode ctrl-chars ( \p{Cc} doen't work with rbx
+  LITERAL = /^([^"'%<>\\^`{|}\s\p{Cntrl}]|%\h\h)+/u
   
   # @private
   CHARACTER_CLASSES = {
   
     :unreserved => {
-      :unencoded => /([^A-Za-z0-9\-\._])/,
-      :class => '(?<c_u_>[A-Za-z0-9\-\._]|%\h\h)',
+      :unencoded => /([^A-Za-z0-9\-\._])/u,
+      :class => '(?:[A-Za-z0-9\-\._]|%\h\h)',
+      
       :class_name => 'c_u_',
       :grabs_comma => false
     },
     :unreserved_reserved_pct => {
-      :unencoded => /([^A-Za-z0-9\-\._:\/?#\[\]@!\$%'\(\)*+,;=]|%(?!\h\h))/,
-      :class => '(?<c_urp_>[A-Za-z0-9\-\._:\/?#\[\]@!\$%\'\(\)*+,;=]|%\h\h)',
+      :unencoded => /([^A-Za-z0-9\-\._:\/?#\[\]@!\$%'\(\)*+,;=]|%(?!\h\h))/u,
+      :class => '(?:[A-Za-z0-9\-\._:\/?#\[\]@!\$%\'\(\)*+,;=]|%\h\h)',
       :class_name => 'c_urp_',
       :grabs_comma => true
     },
     
     :varname => {
-      :class => '(?<c_vn_> (?:[a-zA-Z_]|%[0-9a-fA-F]{2})(?:[a-zA-Z_\.]|%[0-9a-fA-F]{2})*?)',
+      :class => '(?:[a-zA-Z_]|%[0-9a-fA-F]{2})(?:[a-zA-Z_\.]|%[0-9a-fA-F]{2})*?',
       :class_name => 'c_vn_'
     }
   
@@ -76,31 +78,21 @@ class URITemplate::Draft7
   DEFAULT_PROCESSING = CONVERT_VALUES + CONVERT_RESULT
   
   # @private
-  VAR = Regexp.compile(<<'__REGEXP__'.strip, Regexp::EXTENDED)
-(?<operator> [+#\./;?&]?){0}
-(?<varchar> [a-zA-Z_]|%[0-9a-fA-F]{2}){0}
-(?<varname> \g<varchar>(?:\g<varchar>|\.)*){0}
-(?<varspec> \g<varname>(?<explode>\*?)(?::(?<length>\d+))?){0}
-\g<varspec>
+  VAR = Regexp.compile(<<'__REGEXP__'.strip, Utils::KCODE_UTF8)
+((?:[a-zA-Z_]|%[0-9a-fA-F]{2})(?:[a-zA-Z_\.]|%[0-9a-fA-F]{2})*)(\*)?(?::(\d+))?
 __REGEXP__
   
   # @private
-  EXPRESSION = Regexp.compile(<<'__REGEXP__'.strip, Regexp::EXTENDED)
-(?<operator> [+#\./;?&]?){0}
-(?<varchar> [a-zA-Z_]|%[0-9a-fA-F]{2}){0}
-(?<varname> \g<varchar>(?:\g<varchar>|\.)*){0}
-(?<varspec> \g<varname>\*?(?::\d+)?){0}
-\{\g<operator>(?<vars>\g<varspec>(?:,\g<varspec>)*)\}
+  EXPRESSION = Regexp.compile(<<'__REGEXP__'.strip, Utils::KCODE_UTF8)
+\{([+#\./;?&]?)((?:[a-zA-Z_]|%[0-9a-fA-F]{2})(?:[a-zA-Z_\.]|%[0-9a-fA-F]{2})*\*?(?::\d+)?(?:,(?:[a-zA-Z_]|%[0-9a-fA-F]{2})(?:[a-zA-Z_\.]|%[0-9a-fA-F]{2})*\*?(?::\d+)?)*)\}
 __REGEXP__
 
   # @private
-  URI = Regexp.compile(<<'__REGEXP__'.strip, Regexp::EXTENDED)
-(?<operator> [+#\./;?&]?){0}
-(?<varchar> [a-zA-Z_]|%[0-9a-fA-F]{2}){0}
-(?<varname> \g<varchar>(?:\g<varchar>|\.)*){0}
-(?<varspec> \g<varname>\*?(?::\d+)?){0}
-^(([^"'%<>^`{|}\s\p{Cc}]|%\h\h)+|\{\g<operator>(?<vars>\g<varspec>(?:,\g<varspec>)*)\})*$
+  URI = Regexp.compile(<<'__REGEXP__'.strip, Utils::KCODE_UTF8)
+\A(([^"'%<>^`{|}\s\p{Cntrl}]|%\h\h)+|\{([+#\./;?&]?)((?:[a-zA-Z_]|%[0-9a-fA-F]{2})(?:[a-zA-Z_\.]|%[0-9a-fA-F]{2})*\*?(?::\d+)?(?:,(?:[a-zA-Z_]|%[0-9a-fA-F]{2})(?:[a-zA-Z_\.]|%[0-9a-fA-F]{2})*\*?(?::\d+)?)*)\})*\z
 __REGEXP__
+
+  SLASH = ?/
   
   # @private
   class Token
@@ -186,7 +178,7 @@ __REGEXP__
             if self.class::NAMED
               result.push( pair(var, vars[var], max_length) )
             else
-              result.push( cut( encode(vars[var]), max_length ) )
+              result.push( cut( escape(vars[var]), max_length ) )
             end
           end
         end
@@ -199,34 +191,33 @@ __REGEXP__
     end
     
     def to_s
-      '{' + self.class::OPERATOR +  @variable_specs.map{|name,expand,max_length| name +(expand ? '*': '') + (max_length > 0 ? ':'+max_length.to_s : '') }.join(',') + '}'
+      return '{' + self.class::OPERATOR + @variable_specs.map{|name,expand,max_length| name + (expand ? '*': '') + (max_length > 0 ? (':' + max_length.to_s) : '') }.join(',') + '}'
     end
     
     #TODO: certain things after a slurpy variable will never get matched. therefore, it's pointless to add expressions for them
     #TODO: variables, which appear twice could be compacted, don't they?
-    def to_r_source(base_counter = 0)
+    def to_r_source
       source = []
       first = true
       vs = @variable_specs.size - 1
       i = 0
       if self.class::NAMED
         @variable_specs.each{| var, expand , max_length |
-          last = (vs == i)
-          value = "(?:\\g<#{self.class::CHARACTER_CLASS[:class_name]}>|,)#{(max_length > 0)?'{,'+max_length.to_s+'}':'*'}"
+          value = "(?:#{self.class::CHARACTER_CLASS[:class]}|,)#{(max_length > 0)?'{,'+max_length.to_s+'}':'*'}"
           if expand
             #if self.class::PAIR_IF_EMPTY
-            pair = "(?:\\g<c_vn_>#{Regexp.escape(self.class::PAIR_CONNECTOR)})?#{value}"
+            pair = "(?:#{CHARACTER_CLASSES[:varname][:class]}#{Regexp.escape(self.class::PAIR_CONNECTOR)})?#{value}"
             
             if first
-              source << "(?<v#{base_counter + i}>(?:#{pair})(?:#{Regexp.escape(self.class::SEPARATOR)}#{pair})*)"
+              source << "((?:#{pair})(?:#{Regexp.escape(self.class::SEPARATOR)}#{pair})*)"
             else
-              source << "(?<v#{base_counter + i}>(?:#{Regexp.escape(self.class::SEPARATOR)}#{pair})*)"
+              source << "((?:#{Regexp.escape(self.class::SEPARATOR)}#{pair})*)"
             end
           else
             if self.class::PAIR_IF_EMPTY
-              pair = "#{Regexp.escape(var)}(?<v#{base_counter + i}>#{Regexp.escape(self.class::PAIR_CONNECTOR)}#{value})?"
+              pair = "#{Regexp.escape(var)}(#{Regexp.escape(self.class::PAIR_CONNECTOR)}#{value})"
             else
-              pair = "#{Regexp.escape(var)}(?<v#{base_counter + i}>#{Regexp.escape(self.class::PAIR_CONNECTOR)}#{value}|)"
+              pair = "#{Regexp.escape(var)}(#{Regexp.escape(self.class::PAIR_CONNECTOR)}#{value}|)"
             end
             
             if first
@@ -244,26 +235,26 @@ __REGEXP__
           last = (vs == i)
           if expand
             # could be list or map, too
-            value = "\\g<#{self.class::CHARACTER_CLASS[:class_name]}>#{(max_length > 0)?'{,'+max_length.to_s+'}':'*'}"
+            value = "#{self.class::CHARACTER_CLASS[:class]}#{(max_length > 0)?'{,'+max_length.to_s+'}':'*'}"
             
-            pair = "(?:\\g<c_vn_>#{Regexp.escape(self.class::PAIR_CONNECTOR)})?#{value}"
+            pair = "(?:#{CHARACTER_CLASSES[:varname][:class]}#{Regexp.escape(self.class::PAIR_CONNECTOR)})?#{value}"
             
             value = "#{pair}(?:#{Regexp.escape(self.class::SEPARATOR)}#{pair})*"
           elsif last
             # the last will slurp lists
             if self.class::CHARACTER_CLASS[:grabs_comma]
-              value = "(?:\\g<#{self.class::CHARACTER_CLASS[:class_name]}>)#{(max_length > 0)?'{,'+max_length.to_s+'}':'*?'}"
+              value = "#{self.class::CHARACTER_CLASS[:class]}#{(max_length > 0)?'{,'+max_length.to_s+'}':'*?'}"
             else
-              value = "(?:\\g<#{self.class::CHARACTER_CLASS[:class_name]}>|,)#{(max_length > 0)?'{,'+max_length.to_s+'}':'*?'}"
+              value = "(?:#{self.class::CHARACTER_CLASS[:class]}|,)#{(max_length > 0)?'{,'+max_length.to_s+'}':'*?'}"
             end
           else
-            value = "\\g<#{self.class::CHARACTER_CLASS[:class_name]}>#{(max_length > 0)?'{,'+max_length.to_s+'}':'*?'}"
+            value = "#{self.class::CHARACTER_CLASS[:class]}#{(max_length > 0)?'{,'+max_length.to_s+'}':'*?'}"
           end
           if first
-            source << "(?<v#{base_counter + i}>#{value})"
+            source << "(#{value})"
             first = false
           else
-            source << "(?:#{Regexp.escape(self.class::SEPARATOR)}(?<v#{base_counter + i}>#{value}))?"
+            source << "(?:#{Regexp.escape(self.class::SEPARATOR)}(#{value}))?"
           end
           i = i+1
         }
@@ -277,25 +268,29 @@ __REGEXP__
         return [[ name , matched ]]
       end
       if expand
+        #TODO: do we really need this? - this could be stolen from rack
         ex = self.class.hash_extractor(max_length)
         rest = matched
         splitted = []
         found_value = false
+        # 1 = name
+        # 2 = value
+        # 3 = rest
         until rest.size == 0
           match = ex.match(rest)
           if match.nil?
             raise "Couldn't match #{rest.inspect} againts the hash extractor. This is definitly a Bug. Please report this ASAP!"
           end
           if match.post_match.size == 0
-            rest = match['rest'].to_s
+            rest = match[3].to_s
           else
             rest = ''
           end
-          if match['name']
+          if match[1]
             found_value = true
-            splitted << [ match['name'][0..-2], decode(match['value'] + rest , false) ]
+            splitted << [ match[1][0..-2], decode(match[2] + rest , false) ]
           else
-            splitted << [ match['value'] + rest, nil ]
+            splitted << [ match[2] + rest, nil ]
           end
           rest = match.post_match
         end
@@ -318,10 +313,10 @@ __REGEXP__
       def hash_extractor(max_length)
         @hash_extractors ||= {}
         @hash_extractors[max_length] ||= begin
-          value = "\\g<#{self::CHARACTER_CLASS[:class_name]}>#{(max_length > 0)?'{,'+max_length.to_s+'}':'*?'}"
-          pair = "(?<name>\\g<c_vn_>#{Regexp.escape(self::PAIR_CONNECTOR)})?(?<value>#{value})"
-        
-          Regexp.new( CHARACTER_CLASSES[:varname][:class] + "{0}\n" + self::CHARACTER_CLASS[:class] + "{0}\n"  + "^#{Regexp.escape(self::SEPARATOR)}?" + pair + "(?<rest>$|#{Regexp.escape(self::SEPARATOR)}(?!#{Regexp.escape(self::SEPARATOR)}))" ,Regexp::EXTENDED)
+          value = "#{self::CHARACTER_CLASS[:class]}#{(max_length > 0)?'{,'+max_length.to_s+'}':'*?'}"
+          pair = "(#{CHARACTER_CLASSES[:varname][:class]}#{Regexp.escape(self::PAIR_CONNECTOR)})?(#{value})"
+          source = "\\A#{Regexp.escape(self::SEPARATOR)}?" + pair + "(\\z|#{Regexp.escape(self::SEPARATOR)}(?!#{Regexp.escape(self::SEPARATOR)}))"
+          Regexp.new( source , Utils::KCODE_UTF8)
         end
       end
       
@@ -329,8 +324,12 @@ __REGEXP__
     
     extend ClassMethods
     
-    def encode(x)
-      Utils.pct(Utils.object_to_param(x), self.class::CHARACTER_CLASS[:unencoded])
+    def escape(x)
+      Utils.escape_url(Utils.object_to_param(x))
+    end
+    
+    def unescape(x)
+      Utils.unescape_url(x)
     end
     
     SPLITTER = /^(?:,(,*)|([^,]+))/
@@ -350,7 +349,7 @@ __REGEXP__
           if m[1] and m[1].size > 0
             r << m[1]
           elsif m[2]
-            r << Utils.dpct(m[2])
+            r << unescape(m[2])
           end
           v = m.post_match
         end
@@ -360,13 +359,13 @@ __REGEXP__
           else r
         end
       else
-        Utils.dpct(x)
+        unescape(x)
       end
     end
     
     def cut(str,chars)
       if chars > 0
-        md = Regexp.compile("^#{self.class::CHARACTER_CLASS[:class]}{,#{chars.to_s}}", Regexp::EXTENDED).match(str)
+        md = Regexp.compile("\\A#{self.class::CHARACTER_CLASS[:class]}{,#{chars.to_s}}", Utils::KCODE_UTF8).match(str)
         #TODO: handle invalid matches
         return md[0]
       else
@@ -375,8 +374,8 @@ __REGEXP__
     end
     
     def pair(key, value, max_length = 0)
-      ek = encode(key)
-      ev = encode(value)
+      ek = escape(key)
+      ev = escape(value)
       if !self.class::PAIR_IF_EMPTY and ev.size == 0
         return ek
       else
@@ -390,17 +389,17 @@ __REGEXP__
       elsif hsh.none?
         []
       else
-        [ (self.class::NAMED ? encode(name)+self.class::PAIR_CONNECTOR : '' ) + hsh.map{|key,value| encode(key)+self.class::LIST_CONNECTOR+encode(value) }.join(self.class::LIST_CONNECTOR) ]
+        [ (self.class::NAMED ? escape(name)+self.class::PAIR_CONNECTOR : '' ) + hsh.map{|key,value| escape(key)+self.class::LIST_CONNECTOR+escape(value) }.join(self.class::LIST_CONNECTOR) ]
       end
     end
     
     def transform_array(name, ary, expand , max_length)
       if expand
-        ary.map{|value| encode(value) }
+        ary.map{|value| escape(value) }
       elsif ary.none?
         []
       else
-        [ (self.class::NAMED ? encode(name)+self.class::PAIR_CONNECTOR : '' ) + ary.map{|value| encode(value) }.join(self.class::LIST_CONNECTOR) ]
+        [ (self.class::NAMED ? escape(name)+self.class::PAIR_CONNECTOR : '' ) + ary.map{|value| escape(value) }.join(self.class::LIST_CONNECTOR) ]
       end
     end
     
@@ -409,6 +408,14 @@ __REGEXP__
       CHARACTER_CLASS = CHARACTER_CLASSES[:unreserved_reserved_pct]
       OPERATOR = '+'.freeze
       BASE_LEVEL = 2
+      
+      def escape(x)
+        Utils.escape_uri(Utils.object_to_param(x))
+      end
+      
+      def unescape(x)
+        Utils.unescape_uri(x)
+      end
     
     end
     
@@ -418,6 +425,14 @@ __REGEXP__
       PREFIX = '#'.freeze
       OPERATOR = '#'.freeze
       BASE_LEVEL = 2
+      
+      def escape(x)
+        Utils.escape_uri(Utils.object_to_param(x))
+      end
+      
+      def unescape(x)
+        Utils.unescape_uri(x)
+      end
     
     end
     
@@ -518,9 +533,12 @@ __REGEXP__
       until scanner.eos?
         expression = scanner.scan(EXPRESSION)
         if expression
-          vars = scanner[5].split(',').map{|name|
+          vars = scanner[2].split(',').map{|name|
             match = VAR.match(name)
-            [ match['varname'], match['explode'] == '*', match['length'].to_i ]
+            # 1 = varname
+            # 2 = explode
+            # 3 = length
+            [ match[1], match[2] == '*', match[3].to_i ]
           }
           yield OPERATORS[scanner[1]].new(vars)
         else
@@ -595,8 +613,6 @@ __REGEXP__
   
   extend ClassMethods
   
-  attr_reader :pattern
-  
   attr_reader :options
   
   # @param String,Array either a pattern as String or an Array of tokens
@@ -643,13 +659,12 @@ __REGEXP__
   # 
   # @return Regexp
   def to_r
-    classes = CHARACTER_CLASSES.map{|_,v| v[:class]+"{0}\n" }
-    bc = 0
-    @regexp ||= Regexp.new(classes.join + '\A' + tokens.map{|part|
-      r = part.to_r_source(bc)
-      bc += part.arity
-      r
-    }.join + '\z' , Regexp::EXTENDED)
+    @regexp ||= begin
+      source = tokens.map(&:to_r_source)
+      source.unshift('\A')
+      source.push('\z')
+      Regexp.new( source.join, Utils::KCODE_UTF8)
+    end
   end
   
   
@@ -693,7 +708,7 @@ __REGEXP__
     if uri_or_match.kind_of? String
       m = self.to_r.match(uri_or_match)
     elsif uri_or_match.kind_of?(MatchData)
-      if uri_or_match.regexp != self.to_r
+      if uri_or_match.respond_to?(:regexp) and uri_or_match.regexp != self.to_r
         raise ArgumentError, "Trying to extract variables from MatchData which was not generated by this template."
       end
       m = uri_or_match
@@ -705,15 +720,7 @@ __REGEXP__
     if m.nil?
       return nil
     else
-      result = extract_matchdata(m)
-      if post_processing.include? :convert_values
-        result.map!{|k,v| [k, Utils.pair_array_to_hash(v)] }
-      end
-      
-      if post_processing.include? :convert_result
-        result = Utils.pair_array_to_hash(result)
-      end
-      
+      result = extract_matchdata(m, post_processing)
       if block_given?
         return yield result
       end
@@ -738,7 +745,7 @@ __REGEXP__
   
   # Compares two template patterns.
   def ==(o)
-    this, other, this_converted, other_converted = URITemplate.coerce( self, o )
+    this, other, this_converted, _ = URITemplate.coerce( self, o )
     if this_converted
       return this == other
     end
@@ -802,7 +809,7 @@ __REGEXP__
   #   (tpl / 'a' / 'b' ).pattern #=> '/xy/a/b'
   #
   def /(o)
-    this, other, this_converted, other_converted = URITemplate.coerce( self, o )
+    this, other, this_converted, _ = URITemplate.coerce( self, o )
     if this_converted
       return this / other
     end
@@ -817,10 +824,10 @@ __REGEXP__
     # Merge!
     # Analyze the last token of this an the first token of the next and try to merge them
     if self.tokens.last.kind_of?(Literal)
-      if self.tokens.last.string[-1] == '/' # the last token ends with an /
+      if self.tokens.last.string[-1] == SLASH # the last token ends with an /
         if other.tokens.first.kind_of? Literal
           # both seems to be paths, merge them!
-          if other.tokens.first.string[0] == '/'
+          if other.tokens.first.string[0] == SLASH
             # strip one '/'
             return self.class.new( self.tokens[0..-2] + [ Literal.new(self.tokens.last.string + other.tokens.first.string[1..-1]) ] + other.tokens[1..-1] )
           else
@@ -834,7 +841,7 @@ __REGEXP__
         end
       elsif other.tokens.first.kind_of? Literal
         # okay, this template does not end with /, but the next starts with a literal => merge them!
-        if other.tokens.first.string[0] == '/'
+        if other.tokens.first.string[0] == SLASH
           return self.class.new( self.tokens[0..-2] + [Literal.new(self.tokens.last.string + other.tokens.first.string)] + other.tokens[1..-1] )
         else
           return self.class.new( self.tokens[0..-2] + [Literal.new(self.tokens.last.string + '/' + other.tokens.first.string)] + other.tokens[1..-1] )
@@ -843,7 +850,7 @@ __REGEXP__
     end
     
     if other.tokens.first.kind_of?(Literal)
-      if other.tokens.first.string[0] == '/'
+      if other.tokens.first.string[0] == SLASH
         return self.class.new( self.tokens + other.tokens )
       else
         return self.class.new( self.tokens + [Literal.new('/' + other.tokens.first.string)]+ other.tokens[1..-1] )
@@ -866,19 +873,40 @@ protected
     Tokenizer.new(pattern).to_a
   end
   
+  def arity
+    @arity ||= tokens.inject(0){|a,t| a + t.arity }
+  end
+  
   # @private
-  def extract_matchdata(matchdata)
-    bc = 0
+  def extract_matchdata(matchdata, post_processing)
+    bc = 1
     vars = []
     tokens.each{|part|
+      next if part.literal?
       i = 0
-      while i < part.arity
-        vars.push(*part.extract(i, matchdata["v#{bc}"]))
+      pa = part.arity
+      while i < pa
+        vars << part.extract(i, matchdata[bc])
         bc += 1
         i += 1
       end
     }
-    return vars
+    if post_processing.include? :convert_result
+      if post_processing.include? :convert_values
+        vars.flatten!(1)
+        return Hash[*vars.map!{|k,v| [k,Utils.pair_array_to_hash(v)] }.flatten(1) ]
+      else
+        vars.flatten!(2)
+        return Hash[*vars]
+      end
+    else
+      if post_processing.include? :convert_value
+        vars.flatten!(1)
+        return vars.collect{|k,v| [k,Utils.pair_array_to_hash(v)] }
+      else
+        return vars.flatten(1)
+      end
+    end
   end
   
 end

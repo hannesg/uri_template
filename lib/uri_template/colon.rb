@@ -28,7 +28,7 @@ class Colon
 
   include URITemplate
 
-  VAR = /(?:\{:(?<name>[a-z]+)\}|:(?<name>[a-z]+)(?![a-z]))/
+  VAR = /(?:\{:([a-z]+)\}|:([a-z]+)(?![a-z]))/u
 
   class Token
     
@@ -44,11 +44,11 @@ class Colon
       end
       
       def expand(vars)
-        return Utils.pct(vars[@name])
+        return Utils.escape_url(Utils.object_to_param(vars[@name]))
       end
       
       def to_r
-        return ['(?<', name, '>[^/]*?)'].join
+        return ['([^/]*?)'].join
       end
       
     end
@@ -85,7 +85,7 @@ class Colon
     elsif x.kind_of? self
       return x
     elsif x.kind_of? URITemplate::Draft7 and x.level == 1
-      return new( x.pattern.gsub(/\{(.*?)\}/){ "{:#{$1}}" } )
+      return new( x.pattern.gsub(/\{(.*?)\}/u){ "{:#{$1}}" } )
     else
       return nil
     end
@@ -100,11 +100,11 @@ class Colon
   # @param String uri
   # @return nil,Hash
   def extract(uri)
-    return self.to_r.match(uri) do |md|
-      Hash[ *self.variables.map{|v|
-        [v, Utils.dpct(md[v])]
-      }.flatten(1) ]
-    end
+    md = self.to_r.match(uri)
+    return nil unless md
+    return Hash[ *self.variables.each_with_index.map{|v,i|
+      [v, Utils.unescape_url(md[i+1])]
+    }.flatten(1) ]
   end
   
   def type
@@ -112,7 +112,7 @@ class Colon
   end
   
   def to_r
-    @regexp ||= Regexp.new('\A' + tokens.map(&:to_r).join + '\z')
+    @regexp ||= Regexp.new('\A' + tokens.map(&:to_r).join + '\z', Utils::KCODE_UTF8)
   end
   
   def tokens
@@ -144,7 +144,8 @@ protected
       if x.kind_of? String
         Token::Static.new(x)
       else
-        Token::Variable.new(x['name'])
+        # TODO: when rubinius supports ambigious names this could be replaced with x['name'] *sigh*
+        Token::Variable.new(x[1] || x[2])
       end
     }.to_a
   end
