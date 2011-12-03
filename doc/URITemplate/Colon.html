@@ -114,7 +114,7 @@
         <dt id="VAR-constant" class="">VAR =
           
         </dt>
-        <dd><pre class="code"><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>(?:\{:(?&lt;name&gt;[a-z]+)\}|:(?&lt;name&gt;[a-z]+)(?![a-z]))</span><span class='regexp_end'>/</span></span></pre></dd>
+        <dd><pre class="code"><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>(?:\{:([a-z]+)\}|:([a-z]+)(?![a-z]))</span><span class='regexp_end'>/u</span></span></pre></dd>
       
     </dl>
   
@@ -149,9 +149,8 @@
   
 
   
-    <span class="summary_desc"><div class='inline'><p>
-Returns the value of attribute pattern.
-</p>
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the value of attribute pattern.</p>
 </div></span>
   
 </li>
@@ -189,9 +188,8 @@ Returns the value of attribute pattern.
   
 
   
-    <span class="summary_desc"><div class='inline'><p>
-Tries to convert the value into a colon-template.
-</p>
+    <span class="summary_desc"><div class='inline'>
+<p>Tries to convert the value into a colon-template.</p>
 </div></span>
   
 </li>
@@ -222,9 +220,8 @@ Tries to convert the value into a colon-template.
   
 
   
-    <span class="summary_desc"><div class='inline'><p>
-Tries to concatenate two templates, as if they were path segments.
-</p>
+    <span class="summary_desc"><div class='inline'>
+<p>Tries to concatenate two templates, as if they were path segments.</p>
 </div></span>
   
 </li>
@@ -246,9 +243,8 @@ Tries to concatenate two templates, as if they were path segments.
   
 
   
-    <span class="summary_desc"><div class='inline'><p>
-Extracts variables from an uri.
-</p>
+    <span class="summary_desc"><div class='inline'>
+<p>Extracts variables from an uri.</p>
 </div></span>
   
 </li>
@@ -272,9 +268,8 @@ Extracts variables from an uri.
   
 
   
-    <span class="summary_desc"><div class='inline'><p>
-A new instance of Colon.
-</p>
+    <span class="summary_desc"><div class='inline'>
+<p>A new instance of Colon.</p>
 </div></span>
   
 </li>
@@ -368,9 +363,8 @@ A new instance of Colon.
   
 </p><div class="docstring">
   <div class="discussion">
-    <p>
-A new instance of Colon
-</p>
+    
+<p>A new instance of Colon</p>
 
 
   </div>
@@ -416,9 +410,8 @@ A new instance of Colon
   
 </p><div class="docstring">
   <div class="discussion">
-    <p>
-Returns the value of attribute pattern
-</p>
+    
+<p>Returns the value of attribute pattern</p>
 
 
   </div>
@@ -463,9 +456,8 @@ Returns the value of attribute pattern
   
 </p><div class="docstring">
   <div class="discussion">
-    <p>
-Tries to convert the value into a colon-template.
-</p>
+    
+<p>Tries to convert the value into a colon-template.</p>
 
 
   </div>
@@ -509,7 +501,7 @@ Tries to convert the value into a colon-template.
   <span class='kw'>elsif</span> <span class='id x'>x</span><span class='period'>.</span><span class='id kind_of?'>kind_of?</span> <span class='kw'>self</span>
     <span class='kw'>return</span> <span class='id x'>x</span>
   <span class='kw'>elsif</span> <span class='id x'>x</span><span class='period'>.</span><span class='id kind_of?'>kind_of?</span> <span class='const'>URITemplate</span><span class='op'>::</span><span class='const'>Draft7</span> <span class='kw'>and</span> <span class='id x'>x</span><span class='period'>.</span><span class='id level'>level</span> <span class='op'>==</span> <span class='int'>1</span>
-    <span class='kw'>return</span> <span class='id new'>new</span><span class='lparen'>(</span> <span class='id x'>x</span><span class='period'>.</span><span class='id pattern'>pattern</span><span class='period'>.</span><span class='id gsub'>gsub</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\{(.*?)\}</span><span class='regexp_end'>/</span></span><span class='rparen'>)</span><span class='lbrace'>{</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>{:</span><span class='embexpr_beg'>#{</span><span class='backref'>$1</span><span class='rbrace'>}</span><span class='tstring_content'>}</span><span class='tstring_end'>&quot;</span></span> <span class='rbrace'>}</span> <span class='rparen'>)</span>
+    <span class='kw'>return</span> <span class='id new'>new</span><span class='lparen'>(</span> <span class='id x'>x</span><span class='period'>.</span><span class='id pattern'>pattern</span><span class='period'>.</span><span class='id gsub'>gsub</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\{(.*?)\}</span><span class='regexp_end'>/u</span></span><span class='rparen'>)</span><span class='lbrace'>{</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>{:</span><span class='embexpr_beg'>#{</span><span class='backref'>$1</span><span class='rbrace'>}</span><span class='tstring_content'>}</span><span class='tstring_end'>&quot;</span></span> <span class='rbrace'>}</span> <span class='rparen'>)</span>
   <span class='kw'>else</span>
     <span class='kw'>return</span> <span class='kw'>nil</span>
   <span class='kw'>end</span>
@@ -534,10 +526,9 @@ Tries to convert the value into a colon-template.
   
 </p><div class="docstring">
   <div class="discussion">
-    <p>
-Tries to concatenate two templates, as if they were path segments. Removes
-double slashes or inserts one if they are missing.
-</p>
+    
+<p>Tries to concatenate two templates, as if they were path segments. Removes
+double slashes or inserts one if they are missing.</p>
 
 
   </div>
@@ -595,9 +586,8 @@ double slashes or inserts one if they are missing.
   
 </p><div class="docstring">
   <div class="discussion">
-    <p>
-Extracts variables from an uri.
-</p>
+    
+<p>Extracts variables from an uri.</p>
 
 
   </div>
@@ -616,9 +606,8 @@ Extracts variables from an uri.
       
       
         &mdash;
-        <div class='inline'><p>
-uri
-</p>
+        <div class='inline'>
+<p>uri</p>
 </div>
       
     </li>
@@ -636,9 +625,8 @@ uri
       
       
         
-        <div class='inline'><p>
-nil,Hash
-</p>
+        <div class='inline'>
+<p>nil,Hash</p>
 </div>
       
     </li>
@@ -663,11 +651,11 @@ nil,Hash
       <pre class="code"><span class="info file"># File 'lib/uri_template/colon.rb', line 102</span>
 
 <span class='kw'>def</span> <span class='id extract'>extract</span><span class='lparen'>(</span><span class='id uri'>uri</span><span class='rparen'>)</span>
-  <span class='kw'>return</span> <span class='kw'>self</span><span class='period'>.</span><span class='id to_r'>to_r</span><span class='period'>.</span><span class='id match'>match</span><span class='lparen'>(</span><span class='id uri'>uri</span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id md'>md</span><span class='op'>|</span>
-    <span class='const'>Hash</span><span class='lbracket'>[</span> <span class='op'>*</span><span class='kw'>self</span><span class='period'>.</span><span class='id variables'>variables</span><span class='period'>.</span><span class='id map'>map</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id v'>v</span><span class='op'>|</span>
-      <span class='lbracket'>[</span><span class='id v'>v</span><span class='comma'>,</span> <span class='const'>Utils</span><span class='period'>.</span><span class='id dpct'>dpct</span><span class='lparen'>(</span><span class='id md'>md</span><span class='lbracket'>[</span><span class='id v'>v</span><span class='rbracket'>]</span><span class='rparen'>)</span><span class='rbracket'>]</span>
-    <span class='rbrace'>}</span><span class='period'>.</span><span class='id flatten'>flatten</span><span class='lparen'>(</span><span class='int'>1</span><span class='rparen'>)</span> <span class='rbracket'>]</span>
-  <span class='kw'>end</span>
+  <span class='id md'>md</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id to_r'>to_r</span><span class='period'>.</span><span class='id match'>match</span><span class='lparen'>(</span><span class='id uri'>uri</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='kw'>nil</span> <span class='kw'>unless</span> <span class='id md'>md</span>
+  <span class='kw'>return</span> <span class='const'>Hash</span><span class='lbracket'>[</span> <span class='op'>*</span><span class='kw'>self</span><span class='period'>.</span><span class='id variables'>variables</span><span class='period'>.</span><span class='id each_with_index'>each_with_index</span><span class='period'>.</span><span class='id map'>map</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id v'>v</span><span class='comma'>,</span><span class='id i'>i</span><span class='op'>|</span>
+    <span class='lbracket'>[</span><span class='id v'>v</span><span class='comma'>,</span> <span class='const'>Utils</span><span class='period'>.</span><span class='id unescape_url'>unescape_url</span><span class='lparen'>(</span><span class='id md'>md</span><span class='lbracket'>[</span><span class='id i'>i</span><span class='op'>+</span><span class='int'>1</span><span class='rbracket'>]</span><span class='rparen'>)</span><span class='rbracket'>]</span>
+  <span class='rbrace'>}</span><span class='period'>.</span><span class='id flatten'>flatten</span><span class='lparen'>(</span><span class='int'>1</span><span class='rparen'>)</span> <span class='rbracket'>]</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -695,7 +683,7 @@ nil,Hash
       <pre class="code"><span class="info file"># File 'lib/uri_template/colon.rb', line 114</span>
 
 <span class='kw'>def</span> <span class='id to_r'>to_r</span>
-  <span class='ivar'>@regexp</span> <span class='op'>||=</span> <span class='const'>Regexp</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>\A</span><span class='tstring_end'>'</span></span> <span class='op'>+</span> <span class='id tokens'>tokens</span><span class='period'>.</span><span class='id map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:to_r</span><span class='rparen'>)</span><span class='period'>.</span><span class='id join'>join</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>\z</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
+  <span class='ivar'>@regexp</span> <span class='op'>||=</span> <span class='const'>Regexp</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>\A</span><span class='tstring_end'>'</span></span> <span class='op'>+</span> <span class='id tokens'>tokens</span><span class='period'>.</span><span class='id map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:to_r</span><span class='rparen'>)</span><span class='period'>.</span><span class='id join'>join</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>\z</span><span class='tstring_end'>'</span></span><span class='comma'>,</span> <span class='const'>Utils</span><span class='op'>::</span><span class='const'>KCODE_UTF8</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -763,9 +751,9 @@ nil,Hash
 </div>
     
     <div id="footer">
-  Generated on Tue Nov 15 23:04:39 2011 by 
+  Generated on Sat Dec  3 15:47:46 2011 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.7.3 (ruby-1.9.2).
+  0.7.3 (ruby-1.9.3).
 </div>
 
   </body>

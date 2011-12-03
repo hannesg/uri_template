@@ -105,20 +105,18 @@
     
   <div class="note notetag">
     <strong>Note:</strong> 
-    <div class='inline'><p>
-Most specs and examples refer to this class directly, because they are
+    <div class='inline'>
+<p>Most specs and examples refer to this class directly, because they are
 acutally refering to this specific implementation. If you just want uri
 templates, you should rather use the methods on <span class='object_link'><a href="../URITemplate.html" title="URITemplate (module)">URITemplate</a></span> to create
-templates since they will select an implementation.
-</p>
+templates since they will select an implementation.</p>
 </div>
   </div>
 
-<p>
-A uri template which should comply with the uri template spec draft 7 ( <a
+
+<p>A uri template which should comply with the uri template spec draft 7 ( <a
 href="http://tools.ietf.org/html/draft-gregorio-uritemplate-07">tools.ietf.org/html/draft-gregorio-uritemplate-07</a>
-).
-</p>
+).</p>
 
 
   </div>
@@ -146,9 +144,8 @@ href="http://tools.ietf.org/html/draft-gregorio-uritemplate-07">tools.ietf.org/h
         <dt id="NO_PROCESSING-constant" class="">NO_PROCESSING =
           <div class="docstring">
   <div class="discussion">
-    <p>
-Specifies that no processing should be done upon extraction.
-</p>
+    
+<p>Specifies that no processing should be done upon extraction.</p>
 
 
   </div>
@@ -170,9 +167,8 @@ Specifies that no processing should be done upon extraction.
         <dt id="CONVERT_VALUES-constant" class="">CONVERT_VALUES =
           <div class="docstring">
   <div class="discussion">
-    <p>
-Specifies that the extracted values should be processed.
-</p>
+    
+<p>Specifies that the extracted values should be processed.</p>
 
 
   </div>
@@ -194,9 +190,8 @@ Specifies that the extracted values should be processed.
         <dt id="CONVERT_RESULT-constant" class="">CONVERT_RESULT =
           <div class="docstring">
   <div class="discussion">
-    <p>
-Specifies that the extracted variable list should be processed.
-</p>
+    
+<p>Specifies that the extracted variable list should be processed.</p>
 
 
   </div>
@@ -218,9 +213,8 @@ Specifies that the extracted variable list should be processed.
         <dt id="DEFAULT_PROCESSING-constant" class="">DEFAULT_PROCESSING =
           <div class="docstring">
   <div class="discussion">
-    <p>
-Default processing. Means: convert values and the list itself.
-</p>
+    
+<p>Default processing. Means: convert values and the list itself.</p>
 
 
   </div>
@@ -238,6 +232,11 @@ Default processing. Means: convert values and the list itself.
 </div>
         </dt>
         <dd><pre class="code"><span class='const'>CONVERT_VALUES</span> <span class='op'>+</span> <span class='const'>CONVERT_RESULT</span></pre></dd>
+      
+        <dt id="SLASH-constant" class="">SLASH =
+          
+        </dt>
+        <dd><pre class="code"><span class='CHAR'>?/</span></pre></dd>
       
     </dl>
   
@@ -277,38 +276,8 @@ Default processing. Means: convert values and the list itself.
   
 
   
-    <span class="summary_desc"><div class='inline'><p>
-Returns the value of attribute options.
-</p>
-</div></span>
-  
-</li>
-
-    
-      <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#pattern-instance_method" title="#pattern (instance method)">- (Object) <strong>pattern</strong> </a>
-    
-
-    
-      (also: #to_s)
-    
-  </span>
-  
-  
-    <span class="note title readonly">readonly</span>
-    
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'><p>
-Returns the pattern for this template.
-</p>
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the value of attribute options.</p>
 </div></span>
   
 </li>
@@ -350,9 +319,8 @@ Returns the pattern for this template.
   
 
   
-    <span class="summary_desc"><div class='inline'><p>
-Tries to concatenate two templates, as if they were path segments.
-</p>
+    <span class="summary_desc"><div class='inline'>
+<p>Tries to concatenate two templates, as if they were path segments.</p>
 </div></span>
   
 </li>
@@ -374,9 +342,8 @@ Tries to concatenate two templates, as if they were path segments.
   
 
   
-    <span class="summary_desc"><div class='inline'><p>
-Compares two template patterns.
-</p>
+    <span class="summary_desc"><div class='inline'>
+<p>Compares two template patterns.</p>
 </div></span>
   
 </li>
@@ -398,9 +365,8 @@ Compares two template patterns.
   
 
   
-    <span class="summary_desc"><div class='inline'><p>
-Alias for to_r.=== .
-</p>
+    <span class="summary_desc"><div class='inline'>
+<p>Alias for to_r.=== .</p>
 </div></span>
   
 </li>
@@ -422,12 +388,11 @@ Alias for to_r.=== .
   
 
   
-    <span class="summary_desc"><div class='inline'><p>
-Extracts variables from a uri ( given as string ) or an instance of
+    <span class="summary_desc"><div class='inline'>
+<p>Extracts variables from a uri ( given as string ) or an instance of
 MatchData ( which was matched by the regexp of this template. The actual
 result depends on the value of post_processing. This argument specifies
-whether pair arrays should be converted to hashes..
-</p>
+whether pair arrays should be converted to hashes..</p>
 </div></span>
   
 </li>
@@ -449,9 +414,8 @@ whether pair arrays should be converted to hashes..
   
 
   
-    <span class="summary_desc"><div class='inline'><p>
-Extracts variables without any proccessing.
-</p>
+    <span class="summary_desc"><div class='inline'>
+<p>Extracts variables without any proccessing.</p>
 </div></span>
   
 </li>
@@ -475,9 +439,8 @@ Extracts variables without any proccessing.
   
 
   
-    <span class="summary_desc"><div class='inline'><p>
-A new instance of Draft7.
-</p>
+    <span class="summary_desc"><div class='inline'>
+<p>A new instance of Draft7.</p>
 </div></span>
   
 </li>
@@ -499,11 +462,10 @@ A new instance of Draft7.
   
 
   
-    <span class="summary_desc"><div class='inline'><p>
-Returns the level of this template according to the draft ( <a
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the level of this template according to the draft ( <a
 href="http://tools.ietf.org/html/draft-gregorio-uritemplate-07#section-1.2">tools.ietf.org/html/draft-gregorio-uritemplate-07#section-1.2</a>
-).
-</p>
+).</p>
 </div></span>
   
 </li>
@@ -525,9 +487,33 @@ href="http://tools.ietf.org/html/draft-gregorio-uritemplate-07#section-1.2">tool
   
 
   
-    <span class="summary_desc"><div class='inline'><p>
-Alias for to_r.match .
-</p>
+    <span class="summary_desc"><div class='inline'>
+<p>Alias for to_r.match .</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#pattern-instance_method" title="#pattern (instance method)">- (Object) <strong>pattern</strong> </a>
+    
+
+    
+      (also: #to_s)
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the pattern for this template.</p>
 </div></span>
   
 </li>
@@ -549,10 +535,9 @@ Alias for to_r.match .
   
 
   
-    <span class="summary_desc"><div class='inline'><p>
-Compiles this template into a regular expression which can be used to test
-whether a given uri matches this template.
-</p>
+    <span class="summary_desc"><div class='inline'>
+<p>Compiles this template into a regular expression which can be used to test
+whether a given uri matches this template.</p>
 </div></span>
   
 </li>
@@ -574,9 +559,8 @@ whether a given uri matches this template.
   
 
   
-    <span class="summary_desc"><div class='inline'><p>
-Returns an array containing a the template tokens.
-</p>
+    <span class="summary_desc"><div class='inline'>
+<p>Returns an array containing a the template tokens.</p>
 </div></span>
   
 </li>
@@ -598,9 +582,8 @@ Returns an array containing a the template tokens.
   
 
   
-    <span class="summary_desc"><div class='inline'><p>
-The type of this template.
-</p>
+    <span class="summary_desc"><div class='inline'>
+<p>The type of this template.</p>
 </div></span>
   
 </li>
@@ -642,9 +625,8 @@ The type of this template.
   
 </p><div class="docstring">
   <div class="discussion">
-    <p>
-A new instance of Draft7
-</p>
+    
+<p>A new instance of Draft7</p>
 
 
   </div>
@@ -663,9 +645,8 @@ A new instance of Draft7
       
       
         &mdash;
-        <div class='inline'><p>
-either a pattern as String or an Array of tokens
-</p>
+        <div class='inline'>
+<p>either a pattern as String or an Array of tokens</p>
 </div>
       
     </li>
@@ -680,9 +661,8 @@ either a pattern as String or an Array of tokens
       
       
         &mdash;
-        <div class='inline'><p>
-some options
-</p>
+        <div class='inline'>
+<p>some options</p>
 </div>
       
     </li>
@@ -697,9 +677,8 @@ some options
       
       
         &mdash;
-        <div class='inline'><p>
-a customizable set of options
-</p>
+        <div class='inline'>
+<p>a customizable set of options</p>
 </div>
       
     </li>
@@ -719,24 +698,24 @@ a customizable set of options
       <pre class="lines">
 
 
-605
-606
-607
-608
-609
-610
-611
-612
-613
-614
-615
-616
-617
-618
-619</pre>
+621
+622
+623
+624
+625
+626
+627
+628
+629
+630
+631
+632
+633
+634
+635</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 605</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 621</span>
 
 <span class='kw'>def</span> <span class='id initialize'>initialize</span><span class='lparen'>(</span><span class='id pattern_or_tokens'>pattern_or_tokens</span><span class='comma'>,</span><span class='id options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='ivar'>@options</span> <span class='op'>=</span> <span class='id options'>options</span><span class='period'>.</span><span class='id dup'>dup</span><span class='period'>.</span><span class='id freeze'>freeze</span>
@@ -775,9 +754,8 @@ a customizable set of options
   
 </p><div class="docstring">
   <div class="discussion">
-    <p>
-Returns the value of attribute options
-</p>
+    
+<p>Returns the value of attribute options</p>
 
 
   </div>
@@ -791,62 +769,15 @@ Returns the value of attribute options
       <pre class="lines">
 
 
-600
-601
-602</pre>
+616
+617
+618</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 600</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 616</span>
 
 <span class='kw'>def</span> <span class='id options'>options</span>
   <span class='ivar'>@options</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      
-      <span id=""></span>
-      <span id="pattern-instance_method"></span>
-      <div class="method_details ">
-  <p class="signature " id="pattern-instance_method">
-  
-    - (<tt>Object</tt>) <strong>pattern</strong>  <span class="extras">(readonly)</span>
-  
-
-  
-    <span class="aliases">Also known as:
-    <span class="names"><span id='to_s-instance_method'>to_s</span></span>
-    </span>
-  
-</p><div class="docstring">
-  <div class="discussion">
-    <p>
-Returns the pattern for this template.
-</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-733
-734
-735</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 733</span>
-
-<span class='kw'>def</span> <span class='id pattern'>pattern</span>
-  <span class='ivar'>@pattern</span> <span class='op'>||=</span> <span class='id tokens'>tokens</span><span class='period'>.</span><span class='id map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:to_s</span><span class='rparen'>)</span><span class='period'>.</span><span class='id join'>join</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -869,10 +800,9 @@ Returns the pattern for this template.
   
 </p><div class="docstring">
   <div class="discussion">
-    <p>
-Tries to concatenate two templates, as if they were path segments. Removes
-double slashes or insert one if they are missing.
-</p>
+    
+<p>Tries to concatenate two templates, as if they were path segments. Removes
+double slashes or insert one if they are missing.</p>
 
 
   </div>
@@ -898,13 +828,6 @@ double slashes or insert one if they are missing.
       <pre class="lines">
 
 
-804
-805
-806
-807
-808
-809
-810
 811
 812
 813
@@ -950,13 +873,20 @@ double slashes or insert one if they are missing.
 853
 854
 855
-856</pre>
+856
+857
+858
+859
+860
+861
+862
+863</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 804</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 811</span>
 
 <span class='kw'>def</span> <span class='op'>/</span><span class='lparen'>(</span><span class='id o'>o</span><span class='rparen'>)</span>
-  <span class='id this'>this</span><span class='comma'>,</span> <span class='id other'>other</span><span class='comma'>,</span> <span class='id this_converted'>this_converted</span><span class='comma'>,</span> <span class='id other_converted'>other_converted</span> <span class='op'>=</span> <span class='const'>URITemplate</span><span class='period'>.</span><span class='id coerce'>coerce</span><span class='lparen'>(</span> <span class='kw'>self</span><span class='comma'>,</span> <span class='id o'>o</span> <span class='rparen'>)</span>
+  <span class='id this'>this</span><span class='comma'>,</span> <span class='id other'>other</span><span class='comma'>,</span> <span class='id this_converted'>this_converted</span><span class='comma'>,</span> <span class='id _'>_</span> <span class='op'>=</span> <span class='const'>URITemplate</span><span class='period'>.</span><span class='id coerce'>coerce</span><span class='lparen'>(</span> <span class='kw'>self</span><span class='comma'>,</span> <span class='id o'>o</span> <span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='id this_converted'>this_converted</span>
     <span class='kw'>return</span> <span class='id this'>this</span> <span class='op'>/</span> <span class='id other'>other</span>
   <span class='kw'>end</span>
@@ -971,10 +901,10 @@ double slashes or insert one if they are missing.
   <span class='comment'># Merge!
 </span>  <span class='comment'># Analyze the last token of this an the first token of the next and try to merge them
 </span>  <span class='kw'>if</span> <span class='kw'>self</span><span class='period'>.</span><span class='id tokens'>tokens</span><span class='period'>.</span><span class='id last'>last</span><span class='period'>.</span><span class='id kind_of?'>kind_of?</span><span class='lparen'>(</span><span class='const'>Literal</span><span class='rparen'>)</span>
-    <span class='kw'>if</span> <span class='kw'>self</span><span class='period'>.</span><span class='id tokens'>tokens</span><span class='period'>.</span><span class='id last'>last</span><span class='period'>.</span><span class='id string'>string</span><span class='lbracket'>[</span><span class='op'>-</span><span class='int'>1</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>/</span><span class='tstring_end'>'</span></span> <span class='comment'># the last token ends with an /
+    <span class='kw'>if</span> <span class='kw'>self</span><span class='period'>.</span><span class='id tokens'>tokens</span><span class='period'>.</span><span class='id last'>last</span><span class='period'>.</span><span class='id string'>string</span><span class='lbracket'>[</span><span class='op'>-</span><span class='int'>1</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='const'>SLASH</span> <span class='comment'># the last token ends with an /
 </span>      <span class='kw'>if</span> <span class='id other'>other</span><span class='period'>.</span><span class='id tokens'>tokens</span><span class='period'>.</span><span class='id first'>first</span><span class='period'>.</span><span class='id kind_of?'>kind_of?</span> <span class='const'>Literal</span>
         <span class='comment'># both seems to be paths, merge them!
-</span>        <span class='kw'>if</span> <span class='id other'>other</span><span class='period'>.</span><span class='id tokens'>tokens</span><span class='period'>.</span><span class='id first'>first</span><span class='period'>.</span><span class='id string'>string</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>/</span><span class='tstring_end'>'</span></span>
+</span>        <span class='kw'>if</span> <span class='id other'>other</span><span class='period'>.</span><span class='id tokens'>tokens</span><span class='period'>.</span><span class='id first'>first</span><span class='period'>.</span><span class='id string'>string</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='const'>SLASH</span>
           <span class='comment'># strip one '/'
 </span>          <span class='kw'>return</span> <span class='kw'>self</span><span class='period'>.</span><span class='id class'>class</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span> <span class='kw'>self</span><span class='period'>.</span><span class='id tokens'>tokens</span><span class='lbracket'>[</span><span class='int'>0</span><span class='op'>..</span><span class='op'>-</span><span class='int'>2</span><span class='rbracket'>]</span> <span class='op'>+</span> <span class='lbracket'>[</span> <span class='const'>Literal</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='kw'>self</span><span class='period'>.</span><span class='id tokens'>tokens</span><span class='period'>.</span><span class='id last'>last</span><span class='period'>.</span><span class='id string'>string</span> <span class='op'>+</span> <span class='id other'>other</span><span class='period'>.</span><span class='id tokens'>tokens</span><span class='period'>.</span><span class='id first'>first</span><span class='period'>.</span><span class='id string'>string</span><span class='lbracket'>[</span><span class='int'>1</span><span class='op'>..</span><span class='op'>-</span><span class='int'>1</span><span class='rbracket'>]</span><span class='rparen'>)</span> <span class='rbracket'>]</span> <span class='op'>+</span> <span class='id other'>other</span><span class='period'>.</span><span class='id tokens'>tokens</span><span class='lbracket'>[</span><span class='int'>1</span><span class='op'>..</span><span class='op'>-</span><span class='int'>1</span><span class='rbracket'>]</span> <span class='rparen'>)</span>
         <span class='kw'>else</span>
@@ -988,7 +918,7 @@ double slashes or insert one if they are missing.
       <span class='kw'>end</span>
     <span class='kw'>elsif</span> <span class='id other'>other</span><span class='period'>.</span><span class='id tokens'>tokens</span><span class='period'>.</span><span class='id first'>first</span><span class='period'>.</span><span class='id kind_of?'>kind_of?</span> <span class='const'>Literal</span>
       <span class='comment'># okay, this template does not end with /, but the next starts with a literal =&gt; merge them!
-</span>      <span class='kw'>if</span> <span class='id other'>other</span><span class='period'>.</span><span class='id tokens'>tokens</span><span class='period'>.</span><span class='id first'>first</span><span class='period'>.</span><span class='id string'>string</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>/</span><span class='tstring_end'>'</span></span>
+</span>      <span class='kw'>if</span> <span class='id other'>other</span><span class='period'>.</span><span class='id tokens'>tokens</span><span class='period'>.</span><span class='id first'>first</span><span class='period'>.</span><span class='id string'>string</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='const'>SLASH</span>
         <span class='kw'>return</span> <span class='kw'>self</span><span class='period'>.</span><span class='id class'>class</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span> <span class='kw'>self</span><span class='period'>.</span><span class='id tokens'>tokens</span><span class='lbracket'>[</span><span class='int'>0</span><span class='op'>..</span><span class='op'>-</span><span class='int'>2</span><span class='rbracket'>]</span> <span class='op'>+</span> <span class='lbracket'>[</span><span class='const'>Literal</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='kw'>self</span><span class='period'>.</span><span class='id tokens'>tokens</span><span class='period'>.</span><span class='id last'>last</span><span class='period'>.</span><span class='id string'>string</span> <span class='op'>+</span> <span class='id other'>other</span><span class='period'>.</span><span class='id tokens'>tokens</span><span class='period'>.</span><span class='id first'>first</span><span class='period'>.</span><span class='id string'>string</span><span class='rparen'>)</span><span class='rbracket'>]</span> <span class='op'>+</span> <span class='id other'>other</span><span class='period'>.</span><span class='id tokens'>tokens</span><span class='lbracket'>[</span><span class='int'>1</span><span class='op'>..</span><span class='op'>-</span><span class='int'>1</span><span class='rbracket'>]</span> <span class='rparen'>)</span>
       <span class='kw'>else</span>
         <span class='kw'>return</span> <span class='kw'>self</span><span class='period'>.</span><span class='id class'>class</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span> <span class='kw'>self</span><span class='period'>.</span><span class='id tokens'>tokens</span><span class='lbracket'>[</span><span class='int'>0</span><span class='op'>..</span><span class='op'>-</span><span class='int'>2</span><span class='rbracket'>]</span> <span class='op'>+</span> <span class='lbracket'>[</span><span class='const'>Literal</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='kw'>self</span><span class='period'>.</span><span class='id tokens'>tokens</span><span class='period'>.</span><span class='id last'>last</span><span class='period'>.</span><span class='id string'>string</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>/</span><span class='tstring_end'>'</span></span> <span class='op'>+</span> <span class='id other'>other</span><span class='period'>.</span><span class='id tokens'>tokens</span><span class='period'>.</span><span class='id first'>first</span><span class='period'>.</span><span class='id string'>string</span><span class='rparen'>)</span><span class='rbracket'>]</span> <span class='op'>+</span> <span class='id other'>other</span><span class='period'>.</span><span class='id tokens'>tokens</span><span class='lbracket'>[</span><span class='int'>1</span><span class='op'>..</span><span class='op'>-</span><span class='int'>1</span><span class='rbracket'>]</span> <span class='rparen'>)</span>
@@ -997,7 +927,7 @@ double slashes or insert one if they are missing.
   <span class='kw'>end</span>
   
   <span class='kw'>if</span> <span class='id other'>other</span><span class='period'>.</span><span class='id tokens'>tokens</span><span class='period'>.</span><span class='id first'>first</span><span class='period'>.</span><span class='id kind_of?'>kind_of?</span><span class='lparen'>(</span><span class='const'>Literal</span><span class='rparen'>)</span>
-    <span class='kw'>if</span> <span class='id other'>other</span><span class='period'>.</span><span class='id tokens'>tokens</span><span class='period'>.</span><span class='id first'>first</span><span class='period'>.</span><span class='id string'>string</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>/</span><span class='tstring_end'>'</span></span>
+    <span class='kw'>if</span> <span class='id other'>other</span><span class='period'>.</span><span class='id tokens'>tokens</span><span class='period'>.</span><span class='id first'>first</span><span class='period'>.</span><span class='id string'>string</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='const'>SLASH</span>
       <span class='kw'>return</span> <span class='kw'>self</span><span class='period'>.</span><span class='id class'>class</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span> <span class='kw'>self</span><span class='period'>.</span><span class='id tokens'>tokens</span> <span class='op'>+</span> <span class='id other'>other</span><span class='period'>.</span><span class='id tokens'>tokens</span> <span class='rparen'>)</span>
     <span class='kw'>else</span>
       <span class='kw'>return</span> <span class='kw'>self</span><span class='period'>.</span><span class='id class'>class</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span> <span class='kw'>self</span><span class='period'>.</span><span class='id tokens'>tokens</span> <span class='op'>+</span> <span class='lbracket'>[</span><span class='const'>Literal</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>/</span><span class='tstring_end'>'</span></span> <span class='op'>+</span> <span class='id other'>other</span><span class='period'>.</span><span class='id tokens'>tokens</span><span class='period'>.</span><span class='id first'>first</span><span class='period'>.</span><span class='id string'>string</span><span class='rparen'>)</span><span class='rbracket'>]</span><span class='op'>+</span> <span class='id other'>other</span><span class='period'>.</span><span class='id tokens'>tokens</span><span class='lbracket'>[</span><span class='int'>1</span><span class='op'>..</span><span class='op'>-</span><span class='int'>1</span><span class='rbracket'>]</span> <span class='rparen'>)</span>
@@ -1022,9 +952,8 @@ double slashes or insert one if they are missing.
   
 </p><div class="docstring">
   <div class="discussion">
-    <p>
-Compares two template patterns.
-</p>
+    
+<p>Compares two template patterns.</p>
 
 
   </div>
@@ -1038,19 +967,19 @@ Compares two template patterns.
       <pre class="lines">
 
 
-740
-741
-742
-743
-744
-745
-746</pre>
+747
+748
+749
+750
+751
+752
+753</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 740</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 747</span>
 
 <span class='kw'>def</span> <span class='op'>==</span><span class='lparen'>(</span><span class='id o'>o</span><span class='rparen'>)</span>
-  <span class='id this'>this</span><span class='comma'>,</span> <span class='id other'>other</span><span class='comma'>,</span> <span class='id this_converted'>this_converted</span><span class='comma'>,</span> <span class='id other_converted'>other_converted</span> <span class='op'>=</span> <span class='const'>URITemplate</span><span class='period'>.</span><span class='id coerce'>coerce</span><span class='lparen'>(</span> <span class='kw'>self</span><span class='comma'>,</span> <span class='id o'>o</span> <span class='rparen'>)</span>
+  <span class='id this'>this</span><span class='comma'>,</span> <span class='id other'>other</span><span class='comma'>,</span> <span class='id this_converted'>this_converted</span><span class='comma'>,</span> <span class='id _'>_</span> <span class='op'>=</span> <span class='const'>URITemplate</span><span class='period'>.</span><span class='id coerce'>coerce</span><span class='lparen'>(</span> <span class='kw'>self</span><span class='comma'>,</span> <span class='id o'>o</span> <span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='id this_converted'>this_converted</span>
     <span class='kw'>return</span> <span class='id this'>this</span> <span class='op'>==</span> <span class='id other'>other</span>
   <span class='kw'>end</span>
@@ -1070,9 +999,8 @@ Compares two template patterns.
   
 </p><div class="docstring">
   <div class="discussion">
-    <p>
-Alias for to_r.=== . Tests whether this template matches a given uri.
-</p>
+    
+<p>Alias for to_r.=== . Tests whether this template matches a given uri.</p>
 
 
   </div>
@@ -1092,9 +1020,8 @@ Alias for to_r.=== . Tests whether this template matches a given uri.
       
       
         
-        <div class='inline'><p>
-TrueClass, FalseClass
-</p>
+        <div class='inline'>
+<p>TrueClass, FalseClass</p>
 </div>
       
     </li>
@@ -1107,10 +1034,10 @@ TrueClass, FalseClass
       <pre class="lines">
 
 
-751</pre>
+758</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 751</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 758</span>
 
 <span class='id def_delegators'>def_delegators</span> <span class='symbol'>:to_r</span><span class='comma'>,</span> <span class='symbol'>:===</span></pre>
     </td>
@@ -1130,32 +1057,29 @@ TrueClass, FalseClass
     
   <div class="note notetag">
     <strong>Note:</strong> 
-    <div class='inline'><p>
-Don&#8217;t expect that an extraction can fully recover the expanded
-variables. Extract rather generates a variable list which should expand to
-the uri from which it were extracted. In general the following equation
-should hold true:
-</p>
-<pre class="code">
-  <span class='id a_tpl'>a_tpl</span><span class='period'>.</span><span class='id expand'>expand</span><span class='lparen'>(</span> <span class='id a_tpl'>a_tpl</span><span class='period'>.</span><span class='id extract'>extract</span><span class='lparen'>(</span> <span class='id an_uri'>an_uri</span> <span class='rparen'>)</span> <span class='rparen'>)</span> <span class='op'>==</span> <span class='id an_uri'>an_uri</span></pre>
+    <div class='inline'>
+<p>Don't expect that an extraction can fully recover the expanded variables.
+Extract rather generates a variable list which should expand to the uri
+from which it were extracted. In general the following equation should hold
+true:</p>
+
+<pre class="code"><span class='id a_tpl'>a_tpl</span><span class='period'>.</span><span class='id expand'>expand</span><span class='lparen'>(</span> <span class='id a_tpl'>a_tpl</span><span class='period'>.</span><span class='id extract'>extract</span><span class='lparen'>(</span> <span class='id an_uri'>an_uri</span> <span class='rparen'>)</span> <span class='rparen'>)</span> <span class='op'>==</span> <span class='id an_uri'>an_uri</span></pre>
 </div>
   </div>
 
   <div class="note notetag">
     <strong>Note:</strong> 
-    <div class='inline'><p>
-The current implementation drops duplicated variables instead of checking
-them.
-</p>
+    <div class='inline'>
+<p>The current implementation drops duplicated variables instead of checking
+them.</p>
 </div>
   </div>
 
-<p>
-Extracts variables from a uri ( given as string ) or an instance of
+
+<p>Extracts variables from a uri ( given as string ) or an instance of
 MatchData ( which was matched by the regexp of this template. The actual
 result depends on the value of post_processing. This argument specifies
-whether pair arrays should be converted to hashes.
-</p>
+whether pair arrays should be converted to hashes.</p>
 
 
   </div>
@@ -1165,25 +1089,22 @@ whether pair arrays should be converted to hashes.
   <div class="examples">
     <h3>Examples:</h3>
     
-      <h4><div class='inline'><p>
-Default Processing
-</p>
+      <h4><div class='inline'>
+<p>Default Processing</p>
 </div></h4>
       <pre class="example code"><span class='const'>URITemplate</span><span class='op'>::</span><span class='const'>Draft7</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>{var}</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id extract'>extract</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>value</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span> <span class='comment'>#=&gt; {'var'=&gt;'value'}
 </span><span class='const'>URITemplate</span><span class='op'>::</span><span class='const'>Draft7</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>{&amp;args*}</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id extract'>extract</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>&amp;a=1&amp;b=2</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span> <span class='comment'>#=&gt; {'args'=&gt;{'a'=&gt;'1','b'=&gt;'2'}}
 </span><span class='const'>URITemplate</span><span class='op'>::</span><span class='const'>Draft7</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>{&amp;arg,arg}</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id extract'>extract</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>&amp;arg=1&amp;arg=2</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span> <span class='comment'>#=&gt; {'arg'=&gt;'2'}</span></pre>
     
-      <h4><div class='inline'><p>
-No Processing
-</p>
+      <h4><div class='inline'>
+<p>No Processing</p>
 </div></h4>
       <pre class="example code"><span class='const'>URITemplate</span><span class='op'>::</span><span class='const'>Draft7</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>{var}</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id extract'>extract</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>value</span><span class='tstring_end'>'</span></span><span class='comma'>,</span> <span class='const'>URITemplate</span><span class='op'>::</span><span class='const'>Draft7</span><span class='op'>::</span><span class='const'>NO_PROCESSING</span><span class='rparen'>)</span> <span class='comment'>#=&gt; [['var','value']]
 </span><span class='const'>URITemplate</span><span class='op'>::</span><span class='const'>Draft7</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>{&amp;args*}</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id extract'>extract</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>&amp;a=1&amp;b=2</span><span class='tstring_end'>'</span></span><span class='comma'>,</span> <span class='const'>URITemplate</span><span class='op'>::</span><span class='const'>Draft7</span><span class='op'>::</span><span class='const'>NO_PROCESSING</span><span class='rparen'>)</span> <span class='comment'>#=&gt; [['args',[['a','1'],['b','2']]]]
 </span><span class='const'>URITemplate</span><span class='op'>::</span><span class='const'>Draft7</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>{&amp;arg,arg}</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id extract'>extract</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>&amp;arg=1&amp;arg=2</span><span class='tstring_end'>'</span></span><span class='comma'>,</span> <span class='const'>URITemplate</span><span class='op'>::</span><span class='const'>Draft7</span><span class='op'>::</span><span class='const'>NO_PROCESSING</span><span class='rparen'>)</span> <span class='comment'>#=&gt; [['arg','1'],['arg','2']]</span></pre>
     
-      <h4><div class='inline'><p>
-Extraction cruces
-</p>
+      <h4><div class='inline'>
+<p>Extraction cruces</p>
 </div></h4>
       <pre class="example code"><span class='id two_lists'>two_lists</span> <span class='op'>=</span> <span class='const'>URITemplate</span><span class='op'>::</span><span class='const'>Draft7</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>{listA*,listB*}</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
 <span class='id uri'>uri</span> <span class='op'>=</span> <span class='id two_lists'>two_lists</span><span class='period'>.</span><span class='id expand'>expand</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>listA</span><span class='tstring_end'>'</span></span><span class='op'>=&gt;</span><span class='lbracket'>[</span><span class='int'>1</span><span class='comma'>,</span><span class='int'>2</span><span class='rbracket'>]</span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>listB</span><span class='tstring_end'>'</span></span><span class='op'>=&gt;</span><span class='lbracket'>[</span><span class='int'>3</span><span class='comma'>,</span><span class='int'>4</span><span class='rbracket'>]</span><span class='rparen'>)</span> <span class='comment'>#=&gt; &quot;1,2,3,4&quot;
@@ -1205,9 +1126,8 @@ Extraction cruces
       
       
         &mdash;
-        <div class='inline'><p>
-A uri or a matchdata from which the variables should be extracted.
-</p>
+        <div class='inline'>
+<p>A uri or a matchdata from which the variables should be extracted.</p>
 </div>
       
     </li>
@@ -1222,9 +1142,8 @@ A uri or a matchdata from which the variables should be extracted.
       
       
         &mdash;
-        <div class='inline'><p>
-Specifies which processing should be done.
-</p>
+        <div class='inline'>
+<p>Specifies which processing should be done.</p>
 </div>
       
     </li>
@@ -1242,10 +1161,9 @@ Specifies which processing should be done.
       
       
         
-        <div class='inline'><p>
-Encoding::InvalidByteSequenceError when the given uri was not properly
-encoded.
-</p>
+        <div class='inline'>
+<p>Encoding::InvalidByteSequenceError when the given uri was not properly
+encoded.</p>
 </div>
       
     </li>
@@ -1258,10 +1176,9 @@ encoded.
       
       
         
-        <div class='inline'><p>
-Encoding::UndefinedConversionError when the given uri could not be
-converted to utf-8.
-</p>
+        <div class='inline'>
+<p>Encoding::UndefinedConversionError when the given uri could not be
+converted to utf-8.</p>
 </div>
       
     </li>
@@ -1274,10 +1191,9 @@ converted to utf-8.
       
       
         
-        <div class='inline'><p>
-Encoding::CompatibilityError when the given uri could not be converted to
-utf-8.
-</p>
+        <div class='inline'>
+<p>Encoding::CompatibilityError when the given uri could not be converted to
+utf-8.</p>
 </div>
       
     </li>
@@ -1290,21 +1206,6 @@ utf-8.
       <pre class="lines">
 
 
-692
-693
-694
-695
-696
-697
-698
-699
-700
-701
-702
-703
-704
-705
-706
 707
 708
 709
@@ -1321,16 +1222,23 @@ utf-8.
 720
 721
 722
-723</pre>
+723
+724
+725
+726
+727
+728
+729
+730</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 692</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 707</span>
 
 <span class='kw'>def</span> <span class='id extract'>extract</span><span class='lparen'>(</span><span class='id uri_or_match'>uri_or_match</span><span class='comma'>,</span> <span class='id post_processing'>post_processing</span> <span class='op'>=</span> <span class='const'>DEFAULT_PROCESSING</span> <span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='id uri_or_match'>uri_or_match</span><span class='period'>.</span><span class='id kind_of?'>kind_of?</span> <span class='const'>String</span>
     <span class='id m'>m</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id to_r'>to_r</span><span class='period'>.</span><span class='id match'>match</span><span class='lparen'>(</span><span class='id uri_or_match'>uri_or_match</span><span class='rparen'>)</span>
   <span class='kw'>elsif</span> <span class='id uri_or_match'>uri_or_match</span><span class='period'>.</span><span class='id kind_of?'>kind_of?</span><span class='lparen'>(</span><span class='const'>MatchData</span><span class='rparen'>)</span>
-    <span class='kw'>if</span> <span class='id uri_or_match'>uri_or_match</span><span class='period'>.</span><span class='id regexp'>regexp</span> <span class='op'>!=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id to_r'>to_r</span>
+    <span class='kw'>if</span> <span class='id uri_or_match'>uri_or_match</span><span class='period'>.</span><span class='id respond_to?'>respond_to?</span><span class='lparen'>(</span><span class='symbol'>:regexp</span><span class='rparen'>)</span> <span class='kw'>and</span> <span class='id uri_or_match'>uri_or_match</span><span class='period'>.</span><span class='id regexp'>regexp</span> <span class='op'>!=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id to_r'>to_r</span>
       <span class='id raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Trying to extract variables from MatchData which was not generated by this template.</span><span class='tstring_end'>&quot;</span></span>
     <span class='kw'>end</span>
     <span class='id m'>m</span> <span class='op'>=</span> <span class='id uri_or_match'>uri_or_match</span>
@@ -1342,15 +1250,7 @@ utf-8.
   <span class='kw'>if</span> <span class='id m'>m</span><span class='period'>.</span><span class='id nil?'>nil?</span>
     <span class='kw'>return</span> <span class='kw'>nil</span>
   <span class='kw'>else</span>
-    <span class='id result'>result</span> <span class='op'>=</span> <span class='id extract_matchdata'>extract_matchdata</span><span class='lparen'>(</span><span class='id m'>m</span><span class='rparen'>)</span>
-    <span class='kw'>if</span> <span class='id post_processing'>post_processing</span><span class='period'>.</span><span class='id include?'>include?</span> <span class='symbol'>:convert_values</span>
-      <span class='id result'>result</span><span class='period'>.</span><span class='id map!'>map!</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id k'>k</span><span class='comma'>,</span><span class='id v'>v</span><span class='op'>|</span> <span class='lbracket'>[</span><span class='id k'>k</span><span class='comma'>,</span> <span class='const'>Utils</span><span class='period'>.</span><span class='id pair_array_to_hash'>pair_array_to_hash</span><span class='lparen'>(</span><span class='id v'>v</span><span class='rparen'>)</span><span class='rbracket'>]</span> <span class='rbrace'>}</span>
-    <span class='kw'>end</span>
-    
-    <span class='kw'>if</span> <span class='id post_processing'>post_processing</span><span class='period'>.</span><span class='id include?'>include?</span> <span class='symbol'>:convert_result</span>
-      <span class='id result'>result</span> <span class='op'>=</span> <span class='const'>Utils</span><span class='period'>.</span><span class='id pair_array_to_hash'>pair_array_to_hash</span><span class='lparen'>(</span><span class='id result'>result</span><span class='rparen'>)</span>
-    <span class='kw'>end</span>
-    
+    <span class='id result'>result</span> <span class='op'>=</span> <span class='id extract_matchdata'>extract_matchdata</span><span class='lparen'>(</span><span class='id m'>m</span><span class='comma'>,</span> <span class='id post_processing'>post_processing</span><span class='rparen'>)</span>
     <span class='kw'>if</span> <span class='id block_given?'>block_given?</span>
       <span class='kw'>return</span> <span class='kw'>yield</span> <span class='id result'>result</span>
     <span class='kw'>end</span>
@@ -1372,10 +1272,9 @@ utf-8.
   
 </p><div class="docstring">
   <div class="discussion">
-    <p>
-Extracts variables without any proccessing. This is equivalent to
-<span class='object_link'><a href="#extract-instance_method" title="URITemplate::Draft7#extract (method)">#extract</a></span> with options <span class='object_link'><a href="#NO_PROCESSING-constant" title="URITemplate::Draft7::NO_PROCESSING (constant)">NO_PROCESSING</a></span>.
-</p>
+    
+<p>Extracts variables without any proccessing. This is equivalent to
+<span class='object_link'><a href="#extract-instance_method" title="URITemplate::Draft7#extract (method)">#extract</a></span> with options <span class='object_link'><a href="#NO_PROCESSING-constant" title="URITemplate::Draft7::NO_PROCESSING (constant)">NO_PROCESSING</a></span>.</p>
 
 
   </div>
@@ -1396,12 +1295,12 @@ Extracts variables without any proccessing. This is equivalent to
       <pre class="lines">
 
 
-728
-729
-730</pre>
+735
+736
+737</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 728</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 735</span>
 
 <span class='kw'>def</span> <span class='id extract_simple'>extract_simple</span><span class='lparen'>(</span><span class='id uri_or_match'>uri_or_match</span><span class='rparen'>)</span>
   <span class='id extract'>extract</span><span class='lparen'>(</span> <span class='id uri_or_match'>uri_or_match</span><span class='comma'>,</span> <span class='const'>NO_PROCESSING</span> <span class='rparen'>)</span>
@@ -1420,38 +1319,27 @@ Extracts variables without any proccessing. This is equivalent to
   
 </p><div class="docstring">
   <div class="discussion">
-    <p>
-Returns the level of this template according to the draft ( <a
+    
+<p>Returns the level of this template according to the draft ( <a
 href="http://tools.ietf.org/html/draft-gregorio-uritemplate-07#section-1.2">tools.ietf.org/html/draft-gregorio-uritemplate-07#section-1.2</a>
-). Higher level means higher complexity. Basically this is defined as:
-</p>
-<ul>
-<li><p>
-Level 1: no operators, one variable per expansion, no variable modifiers
-</p>
-</li>
-<li><p>
-Level 2: &#8217;+&#8217; and &#8217;#&#8217; operators, one variable per
-expansion, no variable modifiers
-</p>
-</li>
-<li><p>
-Level 3: all operators, multiple variables per expansion, no variable
-modifiers
-</p>
-</li>
-<li><p>
-Level 4: all operators, multiple variables per expansion, all variable
-modifiers
-</p>
-</li>
-</ul>
-<p>
-Templates of lower levels might be convertible to other formats while
+). Higher level means higher complexity. Basically this is defined as:</p>
+<ul><li>
+<p>Level 1: no operators, one variable per expansion, no variable modifiers</p>
+</li><li>
+<p>Level 2: '+' and '#' operators, one variable per expansion, no variable
+modifiers</p>
+</li><li>
+<p>Level 3: all operators, multiple variables per expansion, no variable
+modifiers</p>
+</li><li>
+<p>Level 4: all operators, multiple variables per expansion, all variable
+modifiers</p>
+</li></ul>
+
+<p>Templates of lower levels might be convertible to other formats while
 templates of higher levels might be incompatible. Level 1 for example
 should be convertible to any other format since it just contains simple
-expansions.
-</p>
+expansions.</p>
 
 
   </div>
@@ -1479,12 +1367,12 @@ expansions.
       <pre class="lines">
 
 
-790
-791
-792</pre>
+797
+798
+799</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 790</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 797</span>
 
 <span class='kw'>def</span> <span class='id level'>level</span>
   <span class='id tokens'>tokens</span><span class='period'>.</span><span class='id map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:level</span><span class='rparen'>)</span><span class='period'>.</span><span class='id max'>max</span>
@@ -1503,9 +1391,8 @@ expansions.
   
 </p><div class="docstring">
   <div class="discussion">
-    <p>
-Alias for to_r.match . Matches this template against the given uri.
-</p>
+    
+<p>Alias for to_r.match . Matches this template against the given uri.</p>
 
 
   </div>
@@ -1525,9 +1412,8 @@ Alias for to_r.match . Matches this template against the given uri.
       
       
         
-        <div class='inline'><p>
-MatchData
-</p>
+        <div class='inline'>
+<p>MatchData</p>
 </div>
       
     </li>
@@ -1544,9 +1430,8 @@ MatchData
       
       
         
-        <div class='inline'><p>
-MatchData, Object
-</p>
+        <div class='inline'>
+<p>MatchData, Object</p>
 </div>
       
     </li>
@@ -1559,12 +1444,55 @@ MatchData, Object
       <pre class="lines">
 
 
-757</pre>
+764</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 757</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 764</span>
 
 <span class='id def_delegators'>def_delegators</span> <span class='symbol'>:to_r</span><span class='comma'>,</span> <span class='symbol'>:match</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="pattern-instance_method">
+  
+    - (<tt>Object</tt>) <strong>pattern</strong> 
+  
+
+  
+    <span class="aliases">Also known as:
+    <span class="names"><span id='to_s-instance_method'>to_s</span></span>
+    </span>
+  
+</p><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the pattern for this template.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+740
+741
+742</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 740</span>
+
+<span class='kw'>def</span> <span class='id pattern'>pattern</span>
+  <span class='ivar'>@pattern</span> <span class='op'>||=</span> <span class='id tokens'>tokens</span><span class='period'>.</span><span class='id map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:to_s</span><span class='rparen'>)</span><span class='period'>.</span><span class='id join'>join</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -1579,11 +1507,10 @@ MatchData, Object
   
 </p><div class="docstring">
   <div class="discussion">
-    <p>
-Compiles this template into a regular expression which can be used to test
+    
+<p>Compiles this template into a regular expression which can be used to test
 whether a given uri matches this template. This template is also used for
-<span class='object_link'><a href="#%3D%3D%3D-instance_method" title="URITemplate::Draft7#=== (method)">#===</a></span>.
-</p>
+<span class='object_link'><a href="#%3D%3D%3D-instance_method" title="URITemplate::Draft7#=== (method)">#===</a></span>.</p>
 
 
   </div>
@@ -1612,9 +1539,8 @@ whether a given uri matches this template. This template is also used for
       
       
         
-        <div class='inline'><p>
-Regexp
-</p>
+        <div class='inline'>
+<p>Regexp</p>
 </div>
       
     </li>
@@ -1627,27 +1553,25 @@ Regexp
       <pre class="lines">
 
 
-645
-646
-647
-648
-649
-650
-651
-652
-653</pre>
+661
+662
+663
+664
+665
+666
+667
+668</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 645</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 661</span>
 
 <span class='kw'>def</span> <span class='id to_r'>to_r</span>
-  <span class='id classes'>classes</span> <span class='op'>=</span> <span class='const'>CHARACTER_CLASSES</span><span class='period'>.</span><span class='id map'>map</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id _'>_</span><span class='comma'>,</span><span class='id v'>v</span><span class='op'>|</span> <span class='id v'>v</span><span class='lbracket'>[</span><span class='symbol'>:class</span><span class='rbracket'>]</span><span class='op'>+</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>{0}\n</span><span class='tstring_end'>&quot;</span></span> <span class='rbrace'>}</span>
-  <span class='id bc'>bc</span> <span class='op'>=</span> <span class='int'>0</span>
-  <span class='ivar'>@regexp</span> <span class='op'>||=</span> <span class='const'>Regexp</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='id classes'>classes</span><span class='period'>.</span><span class='id join'>join</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>\A</span><span class='tstring_end'>'</span></span> <span class='op'>+</span> <span class='id tokens'>tokens</span><span class='period'>.</span><span class='id map'>map</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id part'>part</span><span class='op'>|</span>
-    <span class='id r'>r</span> <span class='op'>=</span> <span class='id part'>part</span><span class='period'>.</span><span class='id to_r_source'>to_r_source</span><span class='lparen'>(</span><span class='id bc'>bc</span><span class='rparen'>)</span>
-    <span class='id bc'>bc</span> <span class='op'>+=</span> <span class='id part'>part</span><span class='period'>.</span><span class='id arity'>arity</span>
-    <span class='id r'>r</span>
-  <span class='rbrace'>}</span><span class='period'>.</span><span class='id join'>join</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>\z</span><span class='tstring_end'>'</span></span> <span class='comma'>,</span> <span class='const'>Regexp</span><span class='op'>::</span><span class='const'>EXTENDED</span><span class='rparen'>)</span>
+  <span class='ivar'>@regexp</span> <span class='op'>||=</span> <span class='kw'>begin</span>
+    <span class='id source'>source</span> <span class='op'>=</span> <span class='id tokens'>tokens</span><span class='period'>.</span><span class='id map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:to_r_source</span><span class='rparen'>)</span>
+    <span class='id source'>source</span><span class='period'>.</span><span class='id unshift'>unshift</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>\A</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
+    <span class='id source'>source</span><span class='period'>.</span><span class='id push'>push</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>\z</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
+    <span class='const'>Regexp</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span> <span class='id source'>source</span><span class='period'>.</span><span class='id join'>join</span><span class='comma'>,</span> <span class='const'>Utils</span><span class='op'>::</span><span class='const'>KCODE_UTF8</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1663,9 +1587,8 @@ Regexp
   
 </p><div class="docstring">
   <div class="discussion">
-    <p>
-Returns an array containing a the template tokens.
-</p>
+    
+<p>Returns an array containing a the template tokens.</p>
 
 
   </div>
@@ -1679,12 +1602,12 @@ Returns an array containing a the template tokens.
       <pre class="lines">
 
 
-859
-860
-861</pre>
+866
+867
+868</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 859</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 866</span>
 
 <span class='kw'>def</span> <span class='id tokens'>tokens</span>
   <span class='ivar'>@tokens</span> <span class='op'>||=</span> <span class='id tokenize!'>tokenize!</span>
@@ -1703,9 +1626,8 @@ Returns an array containing a the template tokens.
   
 </p><div class="docstring">
   <div class="discussion">
-    <p>
-The type of this template.
-</p>
+    
+<p>The type of this template.</p>
 
 
   </div>
@@ -1736,12 +1658,12 @@ The type of this template.
       <pre class="lines">
 
 
-767
-768
-769</pre>
+774
+775
+776</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 767</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/draft7.rb', line 774</span>
 
 <span class='kw'>def</span> <span class='id type'>type</span>
   <span class='symbol'>:draft7</span>
@@ -1756,9 +1678,9 @@ The type of this template.
 </div>
     
     <div id="footer">
-  Generated on Tue Nov 15 23:04:39 2011 by 
+  Generated on Sat Dec  3 15:47:46 2011 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.7.3 (ruby-1.9.2).
+  0.7.3 (ruby-1.9.3).
 </div>
 
   </body>

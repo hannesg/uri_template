@@ -134,9 +134,8 @@
   
 
   
-    <span class="summary_desc"><div class='inline'><p>
-Returns the value of attribute name.
-</p>
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the value of attribute name.</p>
 </div></span>
   
 </li>
@@ -208,9 +207,8 @@ Returns the value of attribute name.
   
 
   
-    <span class="summary_desc"><div class='inline'><p>
-A new instance of Variable.
-</p>
+    <span class="summary_desc"><div class='inline'>
+<p>A new instance of Variable.</p>
 </div></span>
   
 </li>
@@ -277,9 +275,8 @@ A new instance of Variable.
   
 </p><div class="docstring">
   <div class="discussion">
-    <p>
-A new instance of Variable
-</p>
+    
+<p>A new instance of Variable</p>
 
 
   </div>
@@ -327,9 +324,8 @@ A new instance of Variable
   
 </p><div class="docstring">
   <div class="discussion">
-    <p>
-Returns the value of attribute name
-</p>
+    
+<p>Returns the value of attribute name</p>
 
 
   </div>
@@ -386,7 +382,7 @@ Returns the value of attribute name
       <pre class="code"><span class="info file"># File 'lib/uri_template/colon.rb', line 46</span>
 
 <span class='kw'>def</span> <span class='id expand'>expand</span><span class='lparen'>(</span><span class='id vars'>vars</span><span class='rparen'>)</span>
-  <span class='kw'>return</span> <span class='const'>Utils</span><span class='period'>.</span><span class='id pct'>pct</span><span class='lparen'>(</span><span class='id vars'>vars</span><span class='lbracket'>[</span><span class='ivar'>@name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='const'>Utils</span><span class='period'>.</span><span class='id escape_url'>escape_url</span><span class='lparen'>(</span><span class='const'>Utils</span><span class='period'>.</span><span class='id object_to_param'>object_to_param</span><span class='lparen'>(</span><span class='id vars'>vars</span><span class='lbracket'>[</span><span class='ivar'>@name</span><span class='rbracket'>]</span><span class='rparen'>)</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -414,7 +410,7 @@ Returns the value of attribute name
       <pre class="code"><span class="info file"># File 'lib/uri_template/colon.rb', line 50</span>
 
 <span class='kw'>def</span> <span class='id to_r'>to_r</span>
-  <span class='kw'>return</span> <span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>(?&lt;</span><span class='tstring_end'>'</span></span><span class='comma'>,</span> <span class='id name'>name</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>&gt;[^/]*?)</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id join'>join</span>
+  <span class='kw'>return</span> <span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>([^/]*?)</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id join'>join</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -426,9 +422,9 @@ Returns the value of attribute name
 </div>
     
     <div id="footer">
-  Generated on Tue Nov 15 23:04:39 2011 by 
+  Generated on Sat Dec  3 15:47:46 2011 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.7.3 (ruby-1.9.2).
+  0.7.3 (ruby-1.9.3).
 </div>
 
   </body>

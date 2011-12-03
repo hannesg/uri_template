@@ -54,155 +54,84 @@
     
     <iframe id="search_frame"></iframe>
     
-    <div id="content"><div id='filecontents'><h1>URITemplate - a uri template library</h1>
-<p>
-With URITemplate you can generate URI based on simple templates. The
+    <div id="content"><div id='filecontents'>
+<h1>URITemplate - a uri template library</h1>
+
+<p>With URITemplate you can generate URI based on simple templates. The
 current implementation is based on draft 7 of the uri template spec ( <a
 href="http://tools.ietf.org/html/draft-gregorio-uritemplate-07">tools.ietf.org/html/draft-gregorio-uritemplate-07</a>
 ). For the syntax read that spec. Draft 2 of that specification is
-implemented as addressable gem.
-</p>
-<p>
-It&#8217;s currently planed to add newer versions of that spec when they
-emerge. Therefore the module URITemplate just defines one abstract method (
-expand ) and some methods to access the actual implementations.
-</p>
-<p>
-Some implementations might be able to extract variables, too ( Draft 7 is!
-).
-</p>
+implemented as addressable gem.</p>
+
+<p>It’s currently planed to add newer versions of that spec when they emerge.
+Therefore the module URITemplate just defines one abstract method ( expand
+) and some methods to access the actual implementations.</p>
+
+<p>Some implementations might be able to extract variables, too ( Draft 7 is!
+).</p>
+
+<p>From version 0.2.0, it will use escape_utils if available. This will
+significantly boost uri-escape/unescape performance if more characters need
+to be escaped ( may be slightly slower in trivial cases. working on that …
+), but does not run everywhere. To enable this, do the following:</p>
+
+<p>““ruby</p>
+
+<pre class="code"><span class='comment'># escape_utils has to be loaded when uri_templates is loaded
+</span><span class='id gem'>gem</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>escape_utils</span><span class='tstring_end'>'</span></span>
+<span class='id require'>require</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>escape_utils</span><span class='tstring_end'>'</span></span>
+
+<span class='id gem'>gem</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>uri_template</span><span class='tstring_end'>'</span></span>
+<span class='id require'>require</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>uri_template</span><span class='tstring_end'>'</span></span>
+
+<span class='const'>UriTemplate</span><span class='op'>::</span><span class='const'>Utils</span><span class='period'>.</span><span class='id using_escape_utils?'>using_escape_utils?</span> <span class='comment'>#=&gt; true</span></pre>
+
 <h2>Examples</h2>
-<pre class="code">
-  <span class='id require'>require</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>uri_template</span><span class='tstring_end'>'</span></span>
-  
-  <span class='id tpl'>tpl</span> <span class='op'>=</span> <span class='const'>URITemplate</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>http://{host}{/segments*}/{file}{.extensions*}</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
-  
-  <span class='comment'># This will give: http://www.host.com/path/to/a/file.x.y
-</span>  <span class='id tpl'>tpl</span><span class='period'>.</span><span class='id expand'>expand</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>host</span><span class='tstring_end'>'</span></span><span class='op'>=&gt;</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>www.host.com</span><span class='tstring_end'>'</span></span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>segments</span><span class='tstring_end'>'</span></span><span class='op'>=&gt;</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>path</span><span class='tstring_end'>'</span></span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>to</span><span class='tstring_end'>'</span></span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>a</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>file</span><span class='tstring_end'>'</span></span><span class='op'>=&gt;</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>file</span><span class='tstring_end'>'</span></span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>extensions</span><span class='tstring_end'>'</span></span><span class='op'>=&gt;</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>x</span><span class='tstring_end'>'</span></span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>y</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='rparen'>)</span>
-  
-  <span class='comment'># This will give: { 'host'=&gt;'www.host.com','segments'=&gt;['path','to','a'],'file'=&gt;'file','extensions'=&gt;['x','y']}
-</span>  <span class='id tpl'>tpl</span><span class='period'>.</span><span class='id extract'>extract</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>http://www.host.com/path/to/a/file.x.y</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
-  
-  
-</pre>
+
+<pre class="code"><span class='id require'>require</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>uri_template</span><span class='tstring_end'>'</span></span>
+
+<span class='id tpl'>tpl</span> <span class='op'>=</span> <span class='const'>URITemplate</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>http://{host}{/segments*}/{file}{.extensions*}</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
+
+<span class='comment'># This will give: http://www.host.com/path/to/a/file.x.y
+</span><span class='id tpl'>tpl</span><span class='period'>.</span><span class='id expand'>expand</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>host</span><span class='tstring_end'>'</span></span><span class='op'>=&gt;</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>www.host.com</span><span class='tstring_end'>'</span></span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>segments</span><span class='tstring_end'>'</span></span><span class='op'>=&gt;</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>path</span><span class='tstring_end'>'</span></span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>to</span><span class='tstring_end'>'</span></span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>a</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>file</span><span class='tstring_end'>'</span></span><span class='op'>=&gt;</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>file</span><span class='tstring_end'>'</span></span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>extensions</span><span class='tstring_end'>'</span></span><span class='op'>=&gt;</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>x</span><span class='tstring_end'>'</span></span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>y</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='rparen'>)</span>
+
+<span class='comment'># This will give: { 'host'=&gt;'www.host.com','segments'=&gt;['path','to','a'],'file'=&gt;'file','extensions'=&gt;['x','y']}
+</span><span class='id tpl'>tpl</span><span class='period'>.</span><span class='id extract'>extract</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>http://www.host.com/path/to/a/file.x.y</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span></pre>
+
 <h2>Benchmarks</h2>
-<p>
-System: Core 2 Duo T9600, 4 gb ram, Fedora 15 64 bit, 10_000 repetitions
-Implementation: Draft7 Results marked with * means that the template object
-is reused.
-</p>
-<h3>Expansion</h3>
-<pre class="code">
-    &quot;&quot; vs &quot;&quot; =&gt; &quot;&quot;
-          user     system      total        real
-    Addressable  0.070000   0.010000   0.080000 (  0.081990)
-    UriTemplate   0.010000   0.000000   0.010000 (  0.007668)
-    Addressable*  0.090000   0.000000   0.090000 (  0.090763)
-    UriTemplate*  0.000000   0.000000   0.000000 (  0.001633)
-    
-    &quot;{simple_string}&quot; vs &quot;{simple_string}&quot; =&gt; &quot;noneedtoescape&quot;
-          user     system      total        real
-    Addressable  0.560000   0.000000   0.560000 (  0.560811)
-    UriTemplate   0.030000   0.000000   0.030000 (  0.034104)
-    Addressable*  0.560000   0.000000   0.560000 (  0.558118)
-    UriTemplate*  0.030000   0.000000   0.030000 (  0.026850)
-    
-    &quot;{escaped_string}&quot; vs &quot;{escaped_string}&quot; =&gt; &quot;%2F%20%2F%25%2F%20%3F%2B&quot;
-          user     system      total        real
-    Addressable  0.560000   0.000000   0.560000 (  0.562588)
-    UriTemplate   0.070000   0.000000   0.070000 (  0.072649)
-    Addressable*  0.560000   0.000000   0.560000 (  0.556001)
-    UriTemplate*  0.050000   0.000000   0.050000 (  0.054520)
-    
-    &quot;{missing}&quot; vs &quot;{missing}&quot; =&gt; &quot;&quot;
-          user     system      total        real
-    Addressable  0.550000   0.010000   0.560000 (  0.550707)
-    UriTemplate   0.040000   0.000000   0.040000 (  0.035343)
-    Addressable*  0.550000   0.000000   0.550000 (  0.556634)
-    UriTemplate*  0.010000   0.000000   0.010000 (  0.003132)
-    
-    &quot;{-prefix|/|segments}&quot; vs &quot;{/segments*}&quot; =&gt; &quot;/a/b/c&quot;
-          user     system      total        real
-    Addressable  0.650000   0.000000   0.650000 (  0.656996)
-    UriTemplate   0.030000   0.000000   0.030000 (  0.038546)
-    Addressable*  0.660000   0.000000   0.660000 (  0.655364)
-    UriTemplate*  0.020000   0.000000   0.020000 (  0.018265)
-    
-    &quot;?{-join|&amp;|one,two,three}&quot; vs &quot;{?one,two,three}&quot; =&gt; &quot;?one=1&amp;two=2&amp;three=3&quot;
-          user     system      total        real
-    Addressable  0.670000   0.000000   0.670000 (  0.671649)
-    UriTemplate   0.080000   0.000000   0.080000 (  0.078588)
-    Addressable*  0.670000   0.000000   0.670000 (  0.669606)
-    UriTemplate*  0.030000   0.000000   0.030000 (  0.035886)
-    
-    &quot;http://{host}/{-suffix|/|segments}?{-join|&amp;|one,two,bogus}\#{fragment}&quot; vs &quot;http://{host}{/segments*}/{?one,two,bogus}{#fragment}&quot; =&gt; &quot;http://example.com/a/b/c/?one=1&amp;two=2#foo&quot;
-          user     system      total        real
-    Addressable  0.800000   0.000000   0.800000 (  0.802170)
-    UriTemplate   0.150000   0.000000   0.150000 (  0.147875)
-    Addressable*  0.810000   0.000000   0.810000 (  0.803928)
-    UriTemplate*  0.060000   0.000000   0.060000 (  0.064376)
-</pre>
-<h3>Extraction</h3>
-<pre class="code">
-    &quot;&quot; =&gt; &quot;&quot; vs &quot;&quot;
-          user     system      total        real
-    Addressable  0.150000   0.000000   0.150000 (  0.144244)
-    UriTemplate   0.080000   0.000000   0.080000 (  0.079467)
-    Addressable*  0.140000   0.000000   0.140000 (  0.149177)
-    UriTemplate*  0.010000   0.000000   0.010000 (  0.008808)
-    
-    &quot;noneedtoescape&quot; =&gt; &quot;{simple_string}&quot; vs &quot;{simple_string}&quot;
-          user     system      total        real
-    Addressable  0.350000   0.000000   0.350000 (  0.345314)
-    UriTemplate   0.110000   0.000000   0.110000 (  0.116090)
-    Addressable*  0.350000   0.000000   0.350000 (  0.342613)
-    UriTemplate*  0.020000   0.000000   0.020000 (  0.025884)
-    
-    &quot;%2F%20%2F%25%2F%20%3F%2B&quot; =&gt; &quot;{escaped_string}&quot; vs &quot;{escaped_string}&quot;
-          user     system      total        real
-    Addressable  0.410000   0.000000   0.410000 (  0.404258)
-    UriTemplate   0.140000   0.000000   0.140000 (  0.143897)
-    Addressable*  0.380000   0.000000   0.380000 (  0.382331)
-    UriTemplate*  0.060000   0.000000   0.060000 (  0.053483)
-    
-    &quot;&quot; =&gt; &quot;{missing}&quot; vs &quot;{missing}&quot;
-          user     system      total        real
-    Addressable  0.220000   0.000000   0.220000 (  0.222086)
-    UriTemplate   0.100000   0.000000   0.100000 (  0.104280)
-    Addressable*  0.230000   0.000000   0.230000 (  0.238814)
-    UriTemplate*  0.020000   0.000000   0.020000 (  0.017284)
-    
-    &quot;/a/b/c&quot; =&gt; &quot;{-prefix|/|segments}&quot; vs &quot;{/segments*}&quot;
-          user     system      total        real
-    Addressable  0.490000   0.000000   0.490000 (  0.489809)
-    UriTemplate   0.230000   0.000000   0.230000 (  0.232298)
-    Addressable*  0.490000   0.000000   0.490000 (  0.489334)
-    UriTemplate*  0.120000   0.000000   0.120000 (  0.119815)
-    
-    &quot;?one=1&amp;two=2&amp;three=3&quot; =&gt; &quot;?{-join|&amp;|one,two,three}&quot; vs &quot;{?one,two,three}&quot;
-          user     system      total        real
-    Addressable  0.550000   0.000000   0.550000 (  0.553224)
-    UriTemplate   0.210000   0.000000   0.210000 (  0.208296)
-    Addressable*  0.550000   0.000000   0.550000 (  0.551459)
-    UriTemplate*  0.060000   0.000000   0.060000 (  0.059963)
-    
-    &quot;http://example.com/a/b/c/?one=1&amp;two=2#foo&quot; =&gt; &quot;http://{host}/{-suffix|/|segments}?{-join|&amp;|one,two,bogus}\#{fragment}&quot; vs &quot;http://{host}{/segments*}/{?one,two,bogus}{#fragment}&quot;
-          user     system      total        real
-    Addressable  0.980000   0.000000   0.980000 (  0.980292)
-    UriTemplate   0.450000   0.000000   0.450000 (  0.446143)
-    Addressable*  1.000000   0.000000   1.000000 (  0.996237)
-    UriTemplate*  0.170000   0.000000   0.170000 (  0.175239)
-    
-</pre>
-<p>
-SUCCESS - Draft7 was faster in every test!
-</p>
+
+<pre class="code">* System: Core 2 Duo T9300, 4 gb ram, Fedora 16 64 bit, ruby 1.9.3, 100_000 repetitions
+* Implementation: Draft7 ( version 0.1.3 (pre) ) vs. Addressable ( 2.2.6 )
+* Results marked with * means that the template object is reused.
+
+                                                      Addressable | Addressable* |  Draft7 | Draft7* |
+   --Expansion----------------------------------------------------------------------------------------
+   Empty string                                             8.601 |        8.529 |   0.451 |   0.057 |
+   One simple variable                                     19.832 |       19.675 |   2.746 |   0.928 |
+   One escaped variable                                    22.437 |       22.151 |   6.011 |   4.242 |
+   One missing variable                                     9.638 |        9.544 |   1.855 |   0.184 |
+   Path segments                                           25.353 |       25.413 |   3.171 |   1.372 |
+   Arguments                                               27.140 |       27.144 |   5.293 |   2.715 |
+   Full URI                                                75.599 |       75.680 |  11.147 |   5.246 |
+   Segments and Arguments                                  73.360 |       73.334 |   7.694 |   3.604 |
+   --Extraction---------------------------------------------------------------------------------------
+   Empty string                                            14.031 |       13.993 |   1.849 |   0.576 |
+   One simple variable                                     28.701 |       28.503 |   6.988 |   1.840 |
+   One escaped variable                                    33.237 |       33.358 |   8.354 |   3.155 |
+   One missing variable                                    17.201 |       17.051 |   6.318 |   1.177 |
+   Path segments                                           43.112 |       43.623 |  12.502 |   2.983 |
+   Arguments                                               54.448 |       54.090 |  13.772 |   3.394 |
+   Full URI                                                95.433 |       91.961 |  30.762 |   6.797 |
+   Segments and Arguments                                  80.508 |       79.570 |  23.204 |   5.210 |
+   Segments and Arguments ( not extractable )              22.079 |       21.967 |  18.017 |   0.256 |</pre>
+
+<p>SUCCESS - Draft7 was faster in every test!</p>
 </div></div>
     
     <div id="footer">
-  Generated on Tue Nov 15 23:04:38 2011 by 
+  Generated on Sat Dec  3 15:47:45 2011 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.7.3 (ruby-1.9.2).
+  0.7.3 (ruby-1.9.3).
 </div>
 
   </body>

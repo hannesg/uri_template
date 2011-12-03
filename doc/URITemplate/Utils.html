@@ -72,24 +72,29 @@
     
   
     
-  
-  
-    <dt class="r2">Included in:</dt>
-    <dd class="r2"><span class='object_link'><a href="" title="URITemplate::Utils (module)">Utils</a></span></dd>
+      <dt class="r2">Includes:</dt>
+      <dd class="r2"><span class='object_link'><a href="Utils/Escaping/EscapeUtils.html" title="URITemplate::Utils::Escaping::EscapeUtils (module)">Escaping::EscapeUtils</a></span>, <span class='object_link'><a href="Utils/Escaping/Pure.html" title="URITemplate::Utils::Escaping::Pure (module)">Escaping::Pure</a></span>, <span class='object_link'><a href="Utils/StringEncoding.html" title="URITemplate::Utils::StringEncoding (module)">StringEncoding</a></span></dd>
+      
     
   
   
-    <dt class="r1 last">Defined in:</dt>
-    <dd class="r1 last">lib/uri_template/utils.rb</dd>
+    <dt class="r1">Included in:</dt>
+    <dd class="r1"><span class='object_link'><a href="" title="URITemplate::Utils (module)">Utils</a></span></dd>
+    
+  
+  
+    <dt class="r2 last">Defined in:</dt>
+    <dd class="r2 last">lib/uri_template/utils.rb</dd>
   
 </dl>
 <div class="clear"></div>
 
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
-    <p>
-A collection of some utility methods
-</p>
+    
+<p>A collection of some utility methods. The most methods are used to parse or
+generate uri-parameters. I will use the escape_utils library if available,
+but runs happily without.</p>
 
 
   </div>
@@ -97,34 +102,55 @@ A collection of some utility methods
 <div class="tags">
   
 
-</div>
+</div><h2>Defined Under Namespace</h2>
+<p class="children">
+   
+    
+      <strong class="modules">Modules:</strong> <span class='object_link'><a href="Utils/Escaping.html" title="URITemplate::Utils::Escaping (module)">Escaping</a></span>, <span class='object_link'><a href="Utils/StringEncoding.html" title="URITemplate::Utils::StringEncoding (module)">StringEncoding</a></span>
+    
+   
+    
+  
+</p>
+
   <h2>Constant Summary</h2>
   
     <dl class="constants">
       
-        <dt id="NOT_SIMPLE_CHARS-constant" class="">NOT_SIMPLE_CHARS =
-          <div class="docstring">
-  <div class="discussion">
-    <p>
-A regexp which match all non-simple characters.
-</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div>
+        <dt id="KCODE_UTF8-constant" class="">KCODE_UTF8 =
+          
         </dt>
-        <dd><pre class="code"><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>([^A-Za-z0-9\-\._])</span><span class='regexp_end'>/</span></span><span class='period'>.</span><span class='id freeze'>freeze</span></pre></dd>
+        <dd><pre class="code"><span class='lparen'>(</span><span class='const'>Regexp</span><span class='op'>::</span><span class='const'>KCODE_UTF8</span> <span class='kw'>rescue</span> <span class='int'>0</span><span class='rparen'>)</span></pre></dd>
       
     </dl>
   
 
 
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 
 
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 
   
     <h2>
@@ -133,30 +159,6 @@ A regexp which match all non-simple characters.
     </h2>
 
     <ul class="summary">
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#dpct-instance_method" title="#dpct (instance method)">- (Object) <strong>dpct</strong>(s) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'><p>
-Decodes the given pct-encoded string into a utf-8 string.
-</p>
-</div></span>
-  
-</li>
-
       
         <li class="public ">
   <span class="summary_signature">
@@ -174,9 +176,8 @@ Decodes the given pct-encoded string into a utf-8 string.
   
 
   
-    <span class="summary_desc"><div class='inline'><p>
-Converts an object to a param value.
-</p>
+    <span class="summary_desc"><div class='inline'>
+<p>Converts an object to a param value.</p>
 </div></span>
   
 </li>
@@ -198,10 +199,9 @@ Converts an object to a param value.
   
 
   
-    <span class="summary_desc"><div class='inline'><p>
-Returns true when the given value is an array and it only consists of
-arrays with two items.
-</p>
+    <span class="summary_desc"><div class='inline'>
+<p>Returns true when the given value is an array and it only consists of
+arrays with two items.</p>
 </div></span>
   
 </li>
@@ -210,7 +210,7 @@ arrays with two items.
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#pair_array_to_hash-instance_method" title="#pair_array_to_hash (instance method)">- (Object) <strong>pair_array_to_hash</strong>(a) </a>
+      <a href="#pair_array_to_hash-instance_method" title="#pair_array_to_hash (instance method)">- (Object) <strong>pair_array_to_hash</strong>(x, careful = false) </a>
     
 
     
@@ -223,33 +223,8 @@ arrays with two items.
   
 
   
-    <span class="summary_desc"><div class='inline'><p>
-Turns the given value into a hash if it is an array of pairs.
-</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#pct-instance_method" title="#pct (instance method)">- (Object) <strong>pct</strong>(s, m = NOT_SIMPLE_CHARS) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'><p>
-Encodes the given string into a pct-encoded string.
-</p>
+    <span class="summary_desc"><div class='inline'>
+<p>Turns the given value into a hash if it is an array of pairs.</p>
 </div></span>
   
 </li>
@@ -259,67 +234,44 @@ Encodes the given string into a pct-encoded string.
   
 
 
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="Utils/Escaping/Pure.html" title="URITemplate::Utils::Escaping::Pure (module)">Escaping::Pure</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="Utils/Escaping/Pure.html#escape_uri-instance_method" title="URITemplate::Utils::Escaping::Pure#escape_uri (method)">#escape_uri</a></span>, <span class='object_link'><a href="Utils/Escaping/Pure.html#escape_url-instance_method" title="URITemplate::Utils::Escaping::Pure#escape_url (method)">#escape_url</a></span>, <span class='object_link'><a href="Utils/Escaping/Pure.html#unescape_uri-instance_method" title="URITemplate::Utils::Escaping::Pure#unescape_uri (method)">#unescape_uri</a></span>, <span class='object_link'><a href="Utils/Escaping/Pure.html#unescape_url-instance_method" title="URITemplate::Utils::Escaping::Pure#unescape_url (method)">#unescape_url</a></span>, <span class='object_link'><a href="Utils/Escaping/Pure.html#using_escape_utils%3F-instance_method" title="URITemplate::Utils::Escaping::Pure#using_escape_utils? (method)">#using_escape_utils?</a></span></p>
+
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="Utils/StringEncoding.html" title="URITemplate::Utils::StringEncoding (module)">StringEncoding</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="Utils/StringEncoding.html#to_ascii_encode-instance_method" title="URITemplate::Utils::StringEncoding#to_ascii_encode (method)">#to_ascii_encode</a></span>, <span class='object_link'><a href="Utils/StringEncoding.html#to_ascii_fallback-instance_method" title="URITemplate::Utils::StringEncoding#to_ascii_fallback (method)">#to_ascii_fallback</a></span>, <span class='object_link'><a href="Utils/StringEncoding.html#to_utf8_encode-instance_method" title="URITemplate::Utils::StringEncoding#to_utf8_encode (method)">#to_utf8_encode</a></span>, <span class='object_link'><a href="Utils/StringEncoding.html#to_utf8_fallback-instance_method" title="URITemplate::Utils::StringEncoding#to_utf8_fallback (method)">#to_utf8_fallback</a></span></p>
+
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="Utils/Escaping/EscapeUtils.html" title="URITemplate::Utils::Escaping::EscapeUtils (module)">Escaping::EscapeUtils</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="Utils/Escaping/EscapeUtils.html#escape_uri-instance_method" title="URITemplate::Utils::Escaping::EscapeUtils#escape_uri (method)">#escape_uri</a></span>, <span class='object_link'><a href="Utils/Escaping/EscapeUtils.html#escape_url-instance_method" title="URITemplate::Utils::Escaping::EscapeUtils#escape_url (method)">#escape_url</a></span>, <span class='object_link'><a href="Utils/Escaping/EscapeUtils.html#unescape_uri-instance_method" title="URITemplate::Utils::Escaping::EscapeUtils#unescape_uri (method)">#unescape_uri</a></span>, <span class='object_link'><a href="Utils/Escaping/EscapeUtils.html#unescape_url-instance_method" title="URITemplate::Utils::Escaping::EscapeUtils#unescape_url (method)">#unescape_url</a></span>, <span class='object_link'><a href="Utils/Escaping/EscapeUtils.html#using_escape_utils%3F-instance_method" title="URITemplate::Utils::Escaping::EscapeUtils#using_escape_utils? (method)">#using_escape_utils?</a></span></p>
+
+  
 
   <div id="instance_method_details" class="method_details_list">
     <h2>Instance Method Details</h2>
     
     
       <div class="method_details first">
-  <p class="signature first" id="dpct-instance_method">
-  
-    - (<tt>Object</tt>) <strong>dpct</strong>(s) 
-  
-
-  
-</p><div class="docstring">
-  <div class="discussion">
-    <p>
-Decodes the given pct-encoded string into a utf-8 string. Should be the
-opposite of #pct.
-</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <h3>Examples:</h3>
-    
-      <h4><div class='inline'></div></h4>
-      <pre class="example code"><span class='const'>URITemplate</span><span class='op'>::</span><span class='const'>Utils</span><span class='period'>.</span><span class='id dpct'>dpct</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>abc</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='comment'>#=&gt; &quot;abc&quot;
-</span><span class='const'>URITemplate</span><span class='op'>::</span><span class='const'>Utils</span><span class='period'>.</span><span class='id dpct'>dpct</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>%25</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='comment'>#=&gt; &quot;%&quot;</span></pre>
-    
-  </div>
-
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-97
-98
-99
-100
-101</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/utils.rb', line 97</span>
-
-<span class='kw'>def</span> <span class='id dpct'>dpct</span><span class='lparen'>(</span><span class='id s'>s</span><span class='rparen'>)</span>
-  <span class='id s'>s</span><span class='period'>.</span><span class='id to_s'>to_s</span><span class='period'>.</span><span class='id encode'>encode</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>ASCII</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id gsub'>gsub</span><span class='lparen'>(</span><span class='const'>PCT</span><span class='rparen'>)</span><span class='lbrace'>{</span>
-    <span class='backref'>$1</span><span class='period'>.</span><span class='id to_i'>to_i</span><span class='lparen'>(</span><span class='int'>16</span><span class='rparen'>)</span><span class='period'>.</span><span class='id chr'>chr</span>
-  <span class='rbrace'>}</span><span class='period'>.</span><span class='id encode'>encode</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>UTF-8</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <p class="signature " id="object_to_param-instance_method">
+  <p class="signature first" id="object_to_param-instance_method">
   
     - (<tt>Object</tt>) <strong>object_to_param</strong>(object) 
   
@@ -327,10 +279,9 @@ opposite of #pct.
   
 </p><div class="docstring">
   <div class="discussion">
-    <p>
-Converts an object to a param value. Tries to call :to_param and then :to_s
-on that object.
-</p>
+    
+<p>Converts an object to a param value. Tries to call :to_param and then :to_s
+on that object.</p>
 
 
   </div>
@@ -361,9 +312,8 @@ on that object.
       
       
         
-        <div class='inline'><p>
-Unconvertable if the object could not be converted.
-</p>
+        <div class='inline'>
+<p>Unconvertable if the object could not be converted.</p>
 </div>
       
     </li>
@@ -376,20 +326,20 @@ Unconvertable if the object could not be converted.
       <pre class="lines">
 
 
-113
-114
-115
-116
-117
-118
-119
-120
-121
-122
-123</pre>
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/utils.rb', line 113</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/utils.rb', line 229</span>
 
 <span class='kw'>def</span> <span class='id object_to_param'>object_to_param</span><span class='lparen'>(</span><span class='id object'>object</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='id object'>object</span><span class='period'>.</span><span class='id respond_to?'>respond_to?</span> <span class='symbol'>:to_param</span>
@@ -416,11 +366,10 @@ Unconvertable if the object could not be converted.
   
 </p><div class="docstring">
   <div class="discussion">
-    <p>
-Returns true when the given value is an array and it only consists of
+    
+<p>Returns true when the given value is an array and it only consists of
 arrays with two items. This useful when using a hash is not ideal, since it
-doesn&#8217;t allow duplicate keys.
-</p>
+doesn't allow duplicate keys.</p>
 
 
   </div>
@@ -459,13 +408,13 @@ doesn&#8217;t allow duplicate keys.
       <pre class="lines">
 
 
-134
-135
-136
-137</pre>
+250
+251
+252
+253</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/utils.rb', line 134</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/utils.rb', line 250</span>
 
 <span class='kw'>def</span> <span class='id pair_array?'>pair_array?</span><span class='lparen'>(</span><span class='id a'>a</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='kw'>false</span> <span class='kw'>unless</span> <span class='id a'>a</span><span class='period'>.</span><span class='id kind_of?'>kind_of?</span> <span class='const'>Array</span>
@@ -479,17 +428,16 @@ doesn&#8217;t allow duplicate keys.
       <div class="method_details ">
   <p class="signature " id="pair_array_to_hash-instance_method">
   
-    - (<tt>Object</tt>) <strong>pair_array_to_hash</strong>(a) 
+    - (<tt>Object</tt>) <strong>pair_array_to_hash</strong>(x, careful = false) 
   
 
   
 </p><div class="docstring">
   <div class="discussion">
-    <p>
-Turns the given value into a hash if it is an array of pairs. Otherwise it
+    
+<p>Turns the given value into a hash if it is an array of pairs. Otherwise it
 returns the value. You can test whether a value will be converted with
-<span class='object_link'><a href="#pair_array%3F-instance_method" title="URITemplate::Utils#pair_array? (method)">#pair_array?</a></span>.
-</p>
+<span class='object_link'><a href="#pair_array%3F-instance_method" title="URITemplate::Utils#pair_array? (method)">#pair_array?</a></span>.</p>
 
 
   </div>
@@ -504,62 +452,11 @@ returns the value. You can test whether a value will be converted with
 </span><span class='const'>URITemplate</span><span class='op'>::</span><span class='const'>Utils</span><span class='period'>.</span><span class='id pair_array_to_hash'>pair_array_to_hash</span><span class='lparen'>(</span> <span class='lbracket'>[</span> <span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>a</span><span class='tstring_end'>'</span></span><span class='comma'>,</span><span class='int'>1</span><span class='rbracket'>]</span><span class='comma'>,</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>b</span><span class='tstring_end'>'</span></span><span class='comma'>,</span><span class='int'>2</span><span class='rbracket'>]</span><span class='comma'>,</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>c</span><span class='tstring_end'>'</span></span><span class='comma'>,</span><span class='int'>3</span><span class='rbracket'>]</span> <span class='rbracket'>]</span> <span class='rparen'>)</span> <span class='comment'>#=&gt; {'a'=&gt;1,'b'=&gt;2,'c'=&gt;3}
 </span><span class='const'>URITemplate</span><span class='op'>::</span><span class='const'>Utils</span><span class='period'>.</span><span class='id pair_array_to_hash'>pair_array_to_hash</span><span class='lparen'>(</span> <span class='lbracket'>[</span> <span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>a</span><span class='tstring_end'>'</span></span><span class='comma'>,</span><span class='int'>1</span><span class='rbracket'>]</span><span class='comma'>,</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>a</span><span class='tstring_end'>'</span></span><span class='comma'>,</span><span class='int'>2</span><span class='rbracket'>]</span><span class='comma'>,</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>a</span><span class='tstring_end'>'</span></span><span class='comma'>,</span><span class='int'>3</span><span class='rbracket'>]</span> <span class='rbracket'>]</span> <span class='rparen'>)</span> <span class='comment'>#=&gt; {'a'=&gt;3}</span></pre>
     
-  </div>
-
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-146
-147
-148
-149
-150
-151
-152</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/utils.rb', line 146</span>
-
-<span class='kw'>def</span> <span class='id pair_array_to_hash'>pair_array_to_hash</span><span class='lparen'>(</span><span class='id a'>a</span><span class='rparen'>)</span>
-  <span class='kw'>if</span> <span class='id pair_array?'>pair_array?</span><span class='lparen'>(</span><span class='id a'>a</span><span class='rparen'>)</span>
-    <span class='kw'>return</span> <span class='const'>Hash</span><span class='lbracket'>[</span> <span class='op'>*</span><span class='id a'>a</span><span class='period'>.</span><span class='id map'>map</span><span class='lbrace'>{</span> <span class='op'>|</span><span class='id k'>k</span><span class='comma'>,</span><span class='id v'>v</span><span class='op'>|</span> <span class='lbracket'>[</span><span class='id k'>k</span><span class='comma'>,</span><span class='id pair_array_to_hash'>pair_array_to_hash</span><span class='lparen'>(</span><span class='id v'>v</span><span class='rparen'>)</span><span class='rbracket'>]</span> <span class='rbrace'>}</span><span class='period'>.</span><span class='id flatten'>flatten</span><span class='lparen'>(</span><span class='int'>1</span><span class='rparen'>)</span> <span class='rbracket'>]</span>
-  <span class='kw'>else</span>
-    <span class='kw'>return</span> <span class='id a'>a</span>
-  <span class='kw'>end</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <p class="signature " id="pct-instance_method">
-  
-    - (<tt>Object</tt>) <strong>pct</strong>(s, m = NOT_SIMPLE_CHARS) 
-  
-
-  
-</p><div class="docstring">
-  <div class="discussion">
-    <p>
-Encodes the given string into a pct-encoded string.
-</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <h3>Examples:</h3>
-    
-      <h4><div class='inline'></div></h4>
-      <pre class="example code"><span class='const'>URITemplate</span><span class='op'>::</span><span class='const'>Utils</span><span class='period'>.</span><span class='id pct'>pct</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>abc</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='comment'>#=&gt; &quot;abc&quot;
-</span><span class='const'>URITemplate</span><span class='op'>::</span><span class='const'>Utils</span><span class='period'>.</span><span class='id pct'>pct</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>%</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='comment'>#=&gt; &quot;%25&quot;</span></pre>
+      <h4><div class='inline'>
+<p>Carful vs. Ignorant</p>
+</div></h4>
+      <pre class="example code"><span class='const'>URITemplate</span><span class='op'>::</span><span class='const'>Utils</span><span class='period'>.</span><span class='id pair_array_to_hash'>pair_array_to_hash</span><span class='lparen'>(</span> <span class='lbracket'>[</span> <span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>a</span><span class='tstring_end'>'</span></span><span class='comma'>,</span><span class='int'>1</span><span class='rbracket'>]</span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>foo</span><span class='tstring_end'>'</span></span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>bar</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='kw'>false</span> <span class='rparen'>)</span> <span class='comment'>#=&gt; {'a'=&gt;1,'foo'=&gt;'bar'}
+</span><span class='const'>URITemplate</span><span class='op'>::</span><span class='const'>Utils</span><span class='period'>.</span><span class='id pair_array_to_hash'>pair_array_to_hash</span><span class='lparen'>(</span> <span class='lbracket'>[</span> <span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>a</span><span class='tstring_end'>'</span></span><span class='comma'>,</span><span class='int'>1</span><span class='rbracket'>]</span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>foo</span><span class='tstring_end'>'</span></span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>bar</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='kw'>true</span> <span class='rparen'>)</span> <span class='comment'>#=&gt; [ ['a',1],'foo','bar']</span></pre>
     
   </div>
 <h3>Parameters:</h3>
@@ -567,7 +464,7 @@ Encodes the given string into a pct-encoded string.
   
     <li>
       
-        <span class='name'>s</span>
+        <span class='name'>x</span>
       
       
         <span class='type'></span>
@@ -575,28 +472,28 @@ Encodes the given string into a pct-encoded string.
       
       
         &mdash;
-        <div class='inline'><p>
-The string to be encoded.
-</p>
+        <div class='inline'>
+<p>the value to convert</p>
 </div>
       
     </li>
   
     <li>
       
-        <span class='name'>m</span>
+        <span class='name'>careful</span>
       
       
-        <span class='type'></span>
+        <span class='type'>(<tt>true</tt>, <tt>false</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>NOT_SIMPLE_CHARS</tt>)</em>
+        <em class="default">(defaults to: <tt>false</tt>)</em>
       
       
         &mdash;
-        <div class='inline'><p>
-A regexp matching all characters, which need to be encoded.
-</p>
+        <div class='inline'>
+<p>wheter to check every array item. Use this when you expect array with
+subarrays which are not pairs. Setting this to false however improves
+runtime by ~30% even with comparetivly short arrays.</p>
 </div>
       
     </li>
@@ -610,19 +507,23 @@ A regexp matching all characters, which need to be encoded.
       <pre class="lines">
 
 
-84
-85
-86
-87
-88</pre>
+270
+271
+272
+273
+274
+275
+276</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/utils.rb', line 84</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/utils.rb', line 270</span>
 
-<span class='kw'>def</span> <span class='id pct'>pct</span><span class='lparen'>(</span><span class='id s'>s</span><span class='comma'>,</span> <span class='id m'>m</span><span class='op'>=</span><span class='const'>NOT_SIMPLE_CHARS</span><span class='rparen'>)</span>
-  <span class='id s'>s</span><span class='period'>.</span><span class='id to_s'>to_s</span><span class='period'>.</span><span class='id encode'>encode</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>UTF-8</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id gsub'>gsub</span><span class='lparen'>(</span><span class='id m'>m</span><span class='rparen'>)</span><span class='lbrace'>{</span>
-    <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>%</span><span class='tstring_end'>'</span></span><span class='op'>+</span><span class='backref'>$1</span><span class='period'>.</span><span class='id unpack'>unpack</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>H2</span><span class='tstring_end'>'</span></span><span class='op'>*</span><span class='backref'>$1</span><span class='period'>.</span><span class='id bytesize'>bytesize</span><span class='rparen'>)</span><span class='period'>.</span><span class='id join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>%</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id upcase'>upcase</span>
-  <span class='rbrace'>}</span><span class='period'>.</span><span class='id encode'>encode</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>ASCII</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id pair_array_to_hash'>pair_array_to_hash</span><span class='lparen'>(</span><span class='id x'>x</span><span class='comma'>,</span> <span class='id careful'>careful</span> <span class='op'>=</span> <span class='kw'>false</span> <span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='id careful'>careful</span> <span class='op'>?</span> <span class='id pair_array?'>pair_array?</span><span class='lparen'>(</span><span class='id x'>x</span><span class='rparen'>)</span> <span class='op'>:</span> <span class='lparen'>(</span><span class='id x'>x</span><span class='period'>.</span><span class='id kind_of?'>kind_of?</span><span class='lparen'>(</span><span class='const'>Array</span><span class='rparen'>)</span> <span class='kw'>and</span> <span class='id x'>x</span><span class='period'>.</span><span class='id first'>first</span><span class='period'>.</span><span class='id kind_of?'>kind_of?</span><span class='lparen'>(</span><span class='const'>Array</span><span class='rparen'>)</span><span class='rparen'>)</span>
+    <span class='kw'>return</span> <span class='const'>Hash</span><span class='lbracket'>[</span> <span class='op'>*</span><span class='id x'>x</span><span class='period'>.</span><span class='id flatten'>flatten</span><span class='lparen'>(</span><span class='int'>1</span><span class='rparen'>)</span> <span class='rbracket'>]</span>
+  <span class='kw'>else</span>
+    <span class='kw'>return</span> <span class='id x'>x</span>
+  <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -634,9 +535,9 @@ A regexp matching all characters, which need to be encoded.
 </div>
     
     <div id="footer">
-  Generated on Tue Nov 15 23:04:39 2011 by 
+  Generated on Sat Dec  3 15:47:46 2011 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.7.3 (ruby-1.9.2).
+  0.7.3 (ruby-1.9.3).
 </div>
 
   </body>
