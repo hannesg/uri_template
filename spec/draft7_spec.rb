@@ -425,7 +425,7 @@ describe URITemplate::Draft7 do
     it "should raise on non-uri characters" do
     
       lambda{ URITemplate::Draft7.new("\n") }.should raise_error(URITemplate::Invalid)
-      lambda{ URITemplate::Draft7.new(" ") }.should raise_error(URITemplate::Invalid)
+      lambda{ puts URITemplate::Draft7.new(" ").tokens.inspect }.should raise_error(URITemplate::Invalid)
       lambda{ URITemplate::Draft7.new("\r") }.should raise_error(URITemplate::Invalid)
     
     end

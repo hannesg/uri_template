@@ -18,6 +18,15 @@
 # A base module for all implementations of a uri template.
 module URITemplate
 
+  # @private
+  # Should we use \u.... or \x.. in regexps?
+  SUPPORTS_UNICODE_CHARS = begin
+                             rx = eval('/\u0020/')
+                             !!(rx =~ " ")
+                           rescue SyntaxError
+                             false
+                           end
+  
   # This should make it possible to do basic analysis independently from the concrete type.
   module Token
   
@@ -260,7 +269,7 @@ module URITemplate
       end
       if read_chars =~ /^[a-z]+:\/\//i
         return @absolute = true
-      elsif read_chars =~ /(?<!:|\/)\/(?!\/)/
+      elsif read_chars =~ /(^|[^:\/])\/(?!\/)/
         return @absolute = false
       end
     end

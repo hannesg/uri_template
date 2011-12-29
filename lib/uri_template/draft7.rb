@@ -32,25 +32,29 @@ class URITemplate::Draft7
   
   # @private
   Utils = URITemplate::Utils
-  
-  # @private
-  #                           \/ - unicode ctrl-chars ( \p{Cc} doen't work with rbx
-  LITERAL = /^([^"'%<>\\^`{|}\s\p{Cntrl}]|%\h\h)+/u
-  
+ 
+  if SUPPORTS_UNICODE_CHARS
+    # @private
+    #                           \/ - unicode ctrl-chars
+    LITERAL = /([^"'%<>\\^`{|}\u0000-\u001F\u007F-\u009F\s]|%[0-9a-fA-F]{2})+/u
+  else
+    # @private
+    LITERAL = Regexp.compile('([^"\'%<>\\\\^`{|}\x00-\x1F\x7F-\x9F\s]|%[0-9a-fA-F]{2})+',Utils::KCODE_UTF8)
+  end
+
   # @private
   CHARACTER_CLASSES = {
   
     :unreserved => {
-      :unencoded => /([^A-Za-z0-9\-\._])/u,
-      :class => '(?:[A-Za-z0-9\-\._]|%\h\h)',
-      
-      :class_name => 'c_u_',
+      #:unencoded => /([^A-Za-z0-9\-\._])/u,
+      :class => '(?:[A-Za-z0-9\-\._]|%[0-9a-fA-F]{2})', 
+      #:class_name => 'c_u_',
       :grabs_comma => false
     },
     :unreserved_reserved_pct => {
-      :unencoded => /([^A-Za-z0-9\-\._:\/?#\[\]@!\$%'\(\)*+,;=]|%(?!\h\h))/u,
-      :class => '(?:[A-Za-z0-9\-\._:\/?#\[\]@!\$%\'\(\)*+,;=]|%\h\h)',
-      :class_name => 'c_urp_',
+      #:unencoded => /([^A-Za-z0-9\-\._:\/?#\[\]@!\$%'\(\)*+,;=]|%(?!\h\h))/u,
+      :class => '(?:[A-Za-z0-9\-\._:\/?#\[\]@!\$%\'\(\)*+,;=]|%[0-9a-fA-F]{2})',
+      #:class_name => 'c_urp_',
       :grabs_comma => true
     },
     
@@ -88,8 +92,8 @@ __REGEXP__
 __REGEXP__
 
   # @private
-  URI = Regexp.compile(<<'__REGEXP__'.strip, Utils::KCODE_UTF8)
-\A(([^"'%<>^`{|}\s\p{Cntrl}]|%\h\h)+|\{([+#\./;?&]?)((?:[a-zA-Z_]|%[0-9a-fA-F]{2})(?:[a-zA-Z_\.]|%[0-9a-fA-F]{2})*\*?(?::\d+)?(?:,(?:[a-zA-Z_]|%[0-9a-fA-F]{2})(?:[a-zA-Z_\.]|%[0-9a-fA-F]{2})*\*?(?::\d+)?)*)\})*\z
+  URI = Regexp.compile(<<__REGEXP__.strip, Utils::KCODE_UTF8)
+\\A(#{LITERAL.source}|#{EXPRESSION.source})*\\z
 __REGEXP__
 
   SLASH = ?/
@@ -203,7 +207,7 @@ __REGEXP__
       i = 0
       if self.class::NAMED
         @variable_specs.each{| var, expand , max_length |
-          value = "(?:#{self.class::CHARACTER_CLASS[:class]}|,)#{(max_length > 0)?'{,'+max_length.to_s+'}':'*'}"
+          value = "(?:#{self.class::CHARACTER_CLASS[:class]}|,)#{(max_length > 0)?'{0,'+max_length.to_s+'}':'*'}"
           if expand
             #if self.class::PAIR_IF_EMPTY
             pair = "(?:#{CHARACTER_CLASSES[:varname][:class]}#{Regexp.escape(self.class::PAIR_CONNECTOR)})?#{value}"
@@ -235,7 +239,7 @@ __REGEXP__
           last = (vs == i)
           if expand
             # could be list or map, too
-            value = "#{self.class::CHARACTER_CLASS[:class]}#{(max_length > 0)?'{,'+max_length.to_s+'}':'*'}"
+            value = "#{self.class::CHARACTER_CLASS[:class]}#{(max_length > 0)?'{0,'+max_length.to_s+'}':'*'}"
             
             pair = "(?:#{CHARACTER_CLASSES[:varname][:class]}#{Regexp.escape(self.class::PAIR_CONNECTOR)})?#{value}"
             
@@ -243,12 +247,12 @@ __REGEXP__
           elsif last
             # the last will slurp lists
             if self.class::CHARACTER_CLASS[:grabs_comma]
-              value = "#{self.class::CHARACTER_CLASS[:class]}#{(max_length > 0)?'{,'+max_length.to_s+'}':'*?'}"
+              value = "#{self.class::CHARACTER_CLASS[:class]}#{(max_length > 0)?'{0,'+max_length.to_s+'}':'*?'}"
             else
-              value = "(?:#{self.class::CHARACTER_CLASS[:class]}|,)#{(max_length > 0)?'{,'+max_length.to_s+'}':'*?'}"
+              value = "(?:#{self.class::CHARACTER_CLASS[:class]}|,)#{(max_length > 0)?'{0,'+max_length.to_s+'}':'*?'}"
             end
           else
-            value = "#{self.class::CHARACTER_CLASS[:class]}#{(max_length > 0)?'{,'+max_length.to_s+'}':'*?'}"
+            value = "#{self.class::CHARACTER_CLASS[:class]}#{(max_length > 0)?'{0,'+max_length.to_s+'}':'*?'}"
           end
           if first
             source << "(#{value})"
@@ -313,7 +317,7 @@ __REGEXP__
       def hash_extractor(max_length)
         @hash_extractors ||= {}
         @hash_extractors[max_length] ||= begin
-          value = "#{self::CHARACTER_CLASS[:class]}#{(max_length > 0)?'{,'+max_length.to_s+'}':'*?'}"
+          value = "#{self::CHARACTER_CLASS[:class]}#{(max_length > 0)?'{0,'+max_length.to_s+'}':'*?'}"
           pair = "(#{CHARACTER_CLASSES[:varname][:class]}#{Regexp.escape(self::PAIR_CONNECTOR)})?(#{value})"
           source = "\\A#{Regexp.escape(self::SEPARATOR)}?" + pair + "(\\z|#{Regexp.escape(self::SEPARATOR)}(?!#{Regexp.escape(self::SEPARATOR)}))"
           Regexp.new( source , Utils::KCODE_UTF8)
@@ -365,7 +369,7 @@ __REGEXP__
     
     def cut(str,chars)
       if chars > 0
-        md = Regexp.compile("\\A#{self.class::CHARACTER_CLASS[:class]}{,#{chars.to_s}}", Utils::KCODE_UTF8).match(str)
+        md = Regexp.compile("\\A#{self.class::CHARACTER_CLASS[:class]}{0,#{chars.to_s}}", Utils::KCODE_UTF8).match(str)
         #TODO: handle invalid matches
         return md[0]
       else

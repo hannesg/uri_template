@@ -189,6 +189,7 @@ describe URITemplate do
       
       if URITemplate::Utils.using_escape_utils?
       
+        encode = "".respond_to? :encode
         pure = Object.new
         pure.extend(URITemplate::Utils::Escaping::Pure)
         escape_utils = Object.new
@@ -199,12 +200,12 @@ describe URITemplate do
           "a",
           " ",
           "%%%",
-          "a".encode('ISO-8859-1'),
-          "öüä".encode('ISO-8859-1'),
+          encode ? "a".encode('ISO-8859-1') : "a",
+          encode ? "öüä".encode('ISO-8859-1') : "öüä",
           "+",
           "öäü"
         ].each do |str|
-          it "should correctly escape #{str.inspect} ( encoding: #{str.encoding} )" do
+          it "should correctly escape #{str.inspect} ( encoding: #{encode ? str.encoding : '--'} )" do
             escape_utils.escape_uri(str).should == pure.escape_uri(str)
             escape_utils.escape_url(str).should == pure.escape_url(str)
           end
@@ -214,7 +215,7 @@ describe URITemplate do
           "",
           "a",
           " ",
-          "a".encode('ISO-8859-1'),
+          encode ? "a".encode('ISO-8859-1') : "a",
           "+",
           "%20%30%40",
           # errors:
@@ -223,7 +224,7 @@ describe URITemplate do
           "%gh",
           "%a"
         ].each do |str|
-          it "should correctly unescape #{str.inspect} ( encoding: #{str.encoding} )" do
+          it "should correctly unescape #{str.inspect} ( encoding: #{encode ? str.encoding : '--'} )" do
             escape_utils.unescape_uri(str).should == pure.unescape_uri(str)
             escape_utils.unescape_url(str).should == pure.unescape_url(str)
           end

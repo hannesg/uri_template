@@ -137,7 +137,7 @@ module URITemplate
         URI_ESCAPED = /([^A-Za-z0-9!$&'()*+,.\/:;=?@\[\]_~])/.freeze
         
         # @private
-        PCT = /%(\h\h)/.freeze
+        PCT = /%([0-9a-fA-F]{2})/.freeze
         
         def escape_url(s)
           to_utf8(s.to_s).gsub(URL_ESCAPED){
