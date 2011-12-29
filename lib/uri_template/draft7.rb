@@ -170,7 +170,7 @@ __REGEXP__
       result = []
       @variable_specs.each{| var, expand , max_length |
         unless vars[var].nil?
-          if vars[var].kind_of? Hash
+          if vars[var].kind_of?(Hash) or Utils.pair_array?(vars[var])
             result.push( *transform_hash(var, vars[var], expand, max_length) )
           elsif vars[var].kind_of? Array
             result.push( *transform_array(var, vars[var], expand, max_length) )

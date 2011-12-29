@@ -27,7 +27,7 @@ variables = {
   'base' => "http://example.com/home/",
   'path' => "/foo/bar",
   'list' => [ "red", "green", "blue" ],
-  'keys' => { "semi" => ";" , "dot" => "." , "comma" => ","},
+  'keys' => [ ["semi",";"] , ["dot","."] , ["comma",","] ],
   'v' => "6",
   'x' => "1024",
   'y' => "768",
@@ -38,7 +38,7 @@ variables = {
   'segments' => ["path","to"],
   'file' => "file",
   'ext' => "ext",
-  'args' => {"a"=>"b"}
+  'args' => [["a","b"]]
 }
 
 expansion_results = {"{var}"=>"value",
@@ -325,7 +325,7 @@ describe URITemplate::Draft7 do
       v.should == exp
 
       # make some easy transformations
-      tv = p.extract(expansion_results[pattern])
+      tv = p.extract(expansion_results[pattern], URITemplate::Draft7::CONVERT_RESULT )
       p.expand(tv).should == expansion_results[pattern]
 
     end
