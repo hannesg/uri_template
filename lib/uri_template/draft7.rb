@@ -46,15 +46,11 @@ class URITemplate::Draft7
   CHARACTER_CLASSES = {
 
     :unreserved => {
-      #:unencoded => /([^A-Za-z0-9\-\._])/u,
       :class => '(?:[A-Za-z0-9\-\._]|%[0-9a-fA-F]{2})', 
-      #:class_name => 'c_u_',
       :grabs_comma => false
     },
     :unreserved_reserved_pct => {
-      #:unencoded => /([^A-Za-z0-9\-\._:\/?#\[\]@!\$%'\(\)*+,;=]|%(?!\h\h))/u,
       :class => '(?:[A-Za-z0-9\-\._:\/?#\[\]@!\$%\'\(\)*+,;=]|%[0-9a-fA-F]{2})',
-      #:class_name => 'c_urp_',
       :grabs_comma => true
     },
 
