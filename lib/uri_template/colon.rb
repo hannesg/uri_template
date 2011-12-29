@@ -23,7 +23,7 @@ require 'uri_template/utils'
 # A colon based template denotes variables with a colon.
 # This template type is realy basic but having just on template type was a bit weird.
 module URITemplate
-  
+
 class Colon
 
   include URITemplate
@@ -31,46 +31,46 @@ class Colon
   VAR = /(?:\{:([a-z]+)\}|:([a-z]+)(?![a-z]))/u
 
   class Token
-    
+
     class Variable < self
-      
+
       include URITemplate::Expression
-      
+
       attr_reader :name
-      
+
       def initialize(name)
         @name = name
         @variables = [name]
       end
-      
+
       def expand(vars)
         return Utils.escape_url(Utils.object_to_param(vars[@name]))
       end
-      
+
       def to_r
         return ['([^/]*?)'].join
       end
-      
+
     end
-    
+
     class Static < self
-    
+
       include URITemplate::Literal
-      
+
       def initialize(str)
         @string = str
       end
-      
+
       def expand(_)
         return @string
       end
-      
+
       def to_r
         return Regexp.escape(@string)
       end
-    
+
     end
-    
+
   end
 
   attr_reader :pattern
@@ -94,7 +94,7 @@ class Colon
   def initialize(pattern)
     @pattern = pattern
   end
-  
+
   # Extracts variables from an uri.
   #
   # @param String uri
@@ -106,19 +106,19 @@ class Colon
       [v, Utils.unescape_url(md[i+1])]
     }.flatten(1) ]
   end
-  
+
   def type
     :colon
   end
-  
+
   def to_r
     @regexp ||= Regexp.new('\A' + tokens.map(&:to_r).join + '\z', Utils::KCODE_UTF8)
   end
-  
+
   def tokens
     @tokens ||= tokenize!
   end
-  
+
   # Tries to concatenate two templates, as if they were path segments.
   # Removes double slashes or inserts one if they are missing.
   #
@@ -136,7 +136,7 @@ class Colon
     end
     return self.class.new( File.join( this.pattern, other.pattern ) )
   end
-  
+
 protected
 
   def tokenize!

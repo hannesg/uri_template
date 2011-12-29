@@ -29,10 +29,10 @@ class URITemplate::Draft7
 
   include URITemplate
   extend Forwardable
-  
+
   # @private
   Utils = URITemplate::Utils
- 
+
   if SUPPORTS_UNICODE_CHARS
     # @private
     #                           \/ - unicode ctrl-chars
@@ -44,7 +44,7 @@ class URITemplate::Draft7
 
   # @private
   CHARACTER_CLASSES = {
-  
+
     :unreserved => {
       #:unencoded => /([^A-Za-z0-9\-\._])/u,
       :class => '(?:[A-Za-z0-9\-\._]|%[0-9a-fA-F]{2})', 
@@ -57,35 +57,35 @@ class URITemplate::Draft7
       #:class_name => 'c_urp_',
       :grabs_comma => true
     },
-    
+
     :varname => {
       :class => '(?:[a-zA-Z_]|%[0-9a-fA-F]{2})(?:[a-zA-Z_\.]|%[0-9a-fA-F]{2})*?',
       :class_name => 'c_vn_'
     }
-  
+
   }
-  
+
   # Specifies that no processing should be done upon extraction.
   # @see #extract
   NO_PROCESSING = []
-  
+
   # Specifies that the extracted values should be processed.
   # @see #extract
   CONVERT_VALUES = [:convert_values]
-  
+
   # Specifies that the extracted variable list should be processed.
   # @see #extract
   CONVERT_RESULT = [:convert_result]
-  
+
   # Default processing. Means: convert values and the list itself.
   # @see #extract
   DEFAULT_PROCESSING = CONVERT_VALUES + CONVERT_RESULT
-  
+
   # @private
   VAR = Regexp.compile(<<'__REGEXP__'.strip, Utils::KCODE_UTF8)
 ((?:[a-zA-Z_]|%[0-9a-fA-F]{2})(?:[a-zA-Z_\.]|%[0-9a-fA-F]{2})*)(\*)?(?::(\d+))?
 __REGEXP__
-  
+
   # @private
   EXPRESSION = Regexp.compile(<<'__REGEXP__'.strip, Utils::KCODE_UTF8)
 \{([+#\./;?&]?)((?:[a-zA-Z_]|%[0-9a-fA-F]{2})(?:[a-zA-Z_\.]|%[0-9a-fA-F]{2})*\*?(?::\d+)?(?:,(?:[a-zA-Z_]|%[0-9a-fA-F]{2})(?:[a-zA-Z_\.]|%[0-9a-fA-F]{2})*\*?(?::\d+)?)*)\}
@@ -97,63 +97,63 @@ __REGEXP__
 __REGEXP__
 
   SLASH = ?/
-  
+
   # @private
   class Token
   end
-  
+
   # @private
   class Literal < Token
-  
+
     include URITemplate::Literal
-    
+
     def initialize(string)
       @string = string
     end
-    
+
     def level
       1
     end
-    
+
     def arity
       0
     end
-    
+
     def to_r_source(*_)
       Regexp.escape(@string)
     end
-    
+
     def to_s
       @string
     end
-    
+
   end
 
   # @private
   class Expression < Token
-  
+
     include URITemplate::Expression
-    
+
     attr_reader :variables, :max_length
-    
+
     def initialize(vars)
       @variable_specs = vars
       @variables = vars.map(&:first)
       @variables.uniq!
     end
-    
+
     PREFIX = ''.freeze
     SEPARATOR = ','.freeze
     PAIR_CONNECTOR = '='.freeze
     PAIR_IF_EMPTY = true
     LIST_CONNECTOR = ','.freeze
     BASE_LEVEL = 1
-    
+
     CHARACTER_CLASS = CHARACTER_CLASSES[:unreserved]
-    
+
     NAMED = false
     OPERATOR = ''
-    
+
     def level
       if @variable_specs.none?{|_,expand,ml| expand || (ml > 0) }
         if @variable_specs.size == 1
@@ -165,11 +165,11 @@ __REGEXP__
         return 4
       end
     end
-    
+
     def arity
       @variable_specs.size
     end
-    
+
     def expand( vars )
       result = []
       @variable_specs.each{| var, expand , max_length |
@@ -193,11 +193,11 @@ __REGEXP__
         return ''
       end
     end
-    
+
     def to_s
       return '{' + self.class::OPERATOR + @variable_specs.map{|name,expand,max_length| name + (expand ? '*': '') + (max_length > 0 ? (':' + max_length.to_s) : '') }.join(',') + '}'
     end
-    
+
     #TODO: certain things after a slurpy variable will never get matched. therefore, it's pointless to add expressions for them
     #TODO: variables, which appear twice could be compacted, don't they?
     def to_r_source
@@ -211,7 +211,7 @@ __REGEXP__
           if expand
             #if self.class::PAIR_IF_EMPTY
             pair = "(?:#{CHARACTER_CLASSES[:varname][:class]}#{Regexp.escape(self.class::PAIR_CONNECTOR)})?#{value}"
-            
+
             if first
               source << "((?:#{pair})(?:#{Regexp.escape(self.class::SEPARATOR)}#{pair})*)"
             else
@@ -223,14 +223,14 @@ __REGEXP__
             else
               pair = "#{Regexp.escape(var)}(#{Regexp.escape(self.class::PAIR_CONNECTOR)}#{value}|)"
             end
-            
+
             if first
             source << "(?:#{pair})"
             else
               source << "(?:#{Regexp.escape(self.class::SEPARATOR)}#{pair})?"
             end
           end
-          
+
           first = false
           i = i+1
         }
@@ -240,9 +240,9 @@ __REGEXP__
           if expand
             # could be list or map, too
             value = "#{self.class::CHARACTER_CLASS[:class]}#{(max_length > 0)?'{0,'+max_length.to_s+'}':'*'}"
-            
+
             pair = "(?:#{CHARACTER_CLASSES[:varname][:class]}#{Regexp.escape(self.class::PAIR_CONNECTOR)})?#{value}"
-            
+
             value = "#{pair}(?:#{Regexp.escape(self.class::SEPARATOR)}#{pair})*"
           elsif last
             # the last will slurp lists
@@ -265,7 +265,7 @@ __REGEXP__
       end
       return '(?:' + Regexp.escape(self.class::PREFIX) + source.join + ')?'
     end
-    
+
     def extract(position,matched)
       name, expand, max_length = @variable_specs[position]
       if matched.nil?
@@ -306,14 +306,14 @@ __REGEXP__
       elsif self.class::NAMED
         return [ [ name, decode( matched[1..-1] ) ] ]
       end
-      
+
       return [ [ name,  decode( matched ) ] ]
     end
-     
+
   protected
-    
+
     module ClassMethods
-      
+
       def hash_extractor(max_length)
         @hash_extractors ||= {}
         @hash_extractors[max_length] ||= begin
@@ -323,21 +323,21 @@ __REGEXP__
           Regexp.new( source , Utils::KCODE_UTF8)
         end
       end
-      
+
     end
-    
+
     extend ClassMethods
-    
+
     def escape(x)
       Utils.escape_url(Utils.object_to_param(x))
     end
-    
+
     def unescape(x)
       Utils.unescape_url(x)
     end
-    
+
     SPLITTER = /^(?:,(,*)|([^,]+))/
-    
+
     def decode(x, split = true)
       if x.nil?
         if self.class::PAIR_IF_EMPTY
@@ -366,7 +366,7 @@ __REGEXP__
         unescape(x)
       end
     end
-    
+
     def cut(str,chars)
       if chars > 0
         md = Regexp.compile("\\A#{self.class::CHARACTER_CLASS[:class]}{0,#{chars.to_s}}", Utils::KCODE_UTF8).match(str)
@@ -376,7 +376,7 @@ __REGEXP__
         return str
       end
     end
-    
+
     def pair(key, value, max_length = 0)
       ek = escape(key)
       ev = escape(value)
@@ -386,7 +386,7 @@ __REGEXP__
         return ek + self.class::PAIR_CONNECTOR + cut( ev, max_length )
       end
     end
-    
+
     def transform_hash(name, hsh, expand , max_length)
       if expand
         hsh.map{|key,value| pair(key,value) }
@@ -396,7 +396,7 @@ __REGEXP__
         [ (self.class::NAMED ? escape(name)+self.class::PAIR_CONNECTOR : '' ) + hsh.map{|key,value| escape(key)+self.class::LIST_CONNECTOR+escape(value) }.join(self.class::LIST_CONNECTOR) ]
       end
     end
-    
+
     def transform_array(name, ary, expand , max_length)
       if expand
         ary.map{|value| escape(value) }
@@ -406,91 +406,91 @@ __REGEXP__
         [ (self.class::NAMED ? escape(name)+self.class::PAIR_CONNECTOR : '' ) + ary.map{|value| escape(value) }.join(self.class::LIST_CONNECTOR) ]
       end
     end
-    
+
     class Reserved < self
-    
+
       CHARACTER_CLASS = CHARACTER_CLASSES[:unreserved_reserved_pct]
       OPERATOR = '+'.freeze
       BASE_LEVEL = 2
-      
+
       def escape(x)
         Utils.escape_uri(Utils.object_to_param(x))
       end
-      
+
       def unescape(x)
         Utils.unescape_uri(x)
       end
-    
+
     end
-    
+
     class Fragment < self
-    
+
       CHARACTER_CLASS = CHARACTER_CLASSES[:unreserved_reserved_pct]
       PREFIX = '#'.freeze
       OPERATOR = '#'.freeze
       BASE_LEVEL = 2
-      
+
       def escape(x)
         Utils.escape_uri(Utils.object_to_param(x))
       end
-      
+
       def unescape(x)
         Utils.unescape_uri(x)
       end
-    
+
     end
-    
+
     class Label < self
-    
+
       SEPARATOR = '.'.freeze
       PREFIX = '.'.freeze
       OPERATOR = '.'.freeze
       BASE_LEVEL = 3
-    
+
     end
-    
+
     class Path < self
-    
+
       SEPARATOR = '/'.freeze
       PREFIX = '/'.freeze
       OPERATOR = '/'.freeze
       BASE_LEVEL = 3
-    
+
     end
-    
+
     class PathParameters < self
-    
+
       SEPARATOR = ';'.freeze
       PREFIX = ';'.freeze
       NAMED = true
       PAIR_IF_EMPTY = false
       OPERATOR = ';'.freeze
       BASE_LEVEL = 3
-    
+
     end
-    
+
     class FormQuery < self
-    
+
       SEPARATOR = '&'.freeze
       PREFIX = '?'.freeze
       NAMED = true
       OPERATOR = '?'.freeze
       BASE_LEVEL = 3
-    
+
     end
-    
+
     class FormQueryContinuation < self
-    
+
       SEPARATOR = '&'.freeze
       PREFIX = '&'.freeze
       NAMED = true
       OPERATOR = '&'.freeze
       BASE_LEVEL = 3
-    
+
     end
-    
+
   end
-  
+
   # @private
   OPERATORS = {
     ''  => Expression,
@@ -502,33 +502,33 @@ __REGEXP__
     '?' => Expression::FormQuery,
     '&' => Expression::FormQueryContinuation
   }
-  
+
   # This error is raised when an invalid pattern was given.
   class Invalid < StandardError
-    
+
     include URITemplate::Invalid
-  
+
     attr_reader :pattern, :position
-    
+
     def initialize(source, position)
       @pattern = pattern
       @position = position
       super("Invalid expression found in #{source.inspect} at #{position}: '#{source[position..-1]}'")
     end
-    
+
   end
-  
+
   # @private
   class Tokenizer
-  
+
     include Enumerable
-    
+
     attr_reader :source
-    
+
     def initialize(source)
       @source = source
     end
-  
+
     def each
       if !block_given?
         return Enumerator.new(self)
@@ -555,12 +555,12 @@ __REGEXP__
         end
       end
     end
-  
+
   end
-  
+
   # The class methods for all draft7 templates.
   module ClassMethods
-  
+
     # Tries to convert the given param in to a instance of {Draft7}
     # It basically passes thru instances of that class, parses strings and return nil on everything else.
     #
@@ -590,8 +590,7 @@ __REGEXP__
         return nil
       end
     end
-    
-    
+
     # Like {.try_convert}, but raises an ArgumentError, when the conversion failed.
     # 
     # @raise ArgumentError
@@ -603,7 +602,7 @@ __REGEXP__
         return o
       end
     end
-    
+
     # Tests whether a given pattern is a valid template pattern.
     # @example
     #   URITemplate::Draft7.valid? 'foo' #=> true
@@ -612,13 +611,13 @@ __REGEXP__
     def valid?(pattern)
       URI === pattern
     end
-  
+
   end
-  
+
   extend ClassMethods
-  
+
   attr_reader :options
-  
+
   # @param String,Array either a pattern as String or an Array of tokens
   # @param Hash some options
   # @option :lazy If true the pattern will be parsed on first access, this also means that syntax errors will not be detected unless accessed.
@@ -637,7 +636,7 @@ __REGEXP__
       raise ArgumentError, "Expected to receive a pattern string, but got #{pattern_or_tokens.inspect}"
     end
   end
-  
+
   # @method expand(variables = {})
   # Expands the template with the given variables.
   # The expansion should be compatible to uritemplate spec draft 7 ( http://tools.ietf.org/html/draft-gregorio-uritemplate-07 ).
@@ -652,7 +651,7 @@ __REGEXP__
   #
   # @param variables Hash
   # @return String
-  
+
   # Compiles this template into a regular expression which can be used to test whether a given uri matches this template. This template is also used for {#===}.
   #
   # @example
@@ -670,8 +669,7 @@ __REGEXP__
       Regexp.new( source.join, Utils::KCODE_UTF8)
     end
   end
-  
-  
+
   # Extracts variables from a uri ( given as string ) or an instance of MatchData ( which was matched by the regexp of this template.
   # The actual result depends on the value of post_processing.
   # This argument specifies whether pair arrays should be converted to hashes.
@@ -728,25 +726,25 @@ __REGEXP__
       if block_given?
         return yield result
       end
-      
+
       return result
     end
   end
-  
+
   # Extracts variables without any proccessing.
   # This is equivalent to {#extract} with options {NO_PROCESSING}.
   # @see #extract
   def extract_simple(uri_or_match)
     extract( uri_or_match, NO_PROCESSING )
   end
-  
+
   # Returns the pattern for this template.
   def pattern
     @pattern ||= tokens.map(&:to_s).join
   end
-  
+
   alias to_s pattern
-  
+
   # Compares two template patterns.
   def ==(o)
     this, other, this_converted, _ = URITemplate.coerce( self, o )
@@ -755,12 +753,12 @@ __REGEXP__
     end
     return this.pattern == other.pattern
   end
-  
+
   # @method ===(uri)
   # Alias for to_r.=== . Tests whether this template matches a given uri.
   # @return TrueClass, FalseClass
   def_delegators :to_r, :===
-  
+
   # @method match(uri)
   # Alias for to_r.match . Matches this template against the given uri.
   # @yield MatchData
@@ -778,7 +776,7 @@ __REGEXP__
   def type
     :draft7
   end
-  
+
   # Returns the level of this template according to the draft ( http://tools.ietf.org/html/draft-gregorio-uritemplate-07#section-1.2 ). Higher level means higher complexity.
   # Basically this is defined as:
   # 
@@ -801,7 +799,7 @@ __REGEXP__
   def level
     tokens.map(&:level).max
   end
-  
+
   # Tries to concatenate two templates, as if they were path segments.
   # Removes double slashes or insert one if they are missing.
   #
@@ -817,11 +815,11 @@ __REGEXP__
     if this_converted
       return this / other
     end
-    
+
     if other.absolute?
       raise ArgumentError, "Expected to receive a relative template but got an absoulte one: #{other.inspect}. If you think this is a bug, please report it."
     end
-    
+
     if other.pattern == ''
       return self
     end
@@ -852,7 +850,7 @@ __REGEXP__
         end
       end
     end
-    
+
     if other.tokens.first.kind_of?(Literal)
       if other.tokens.first.string[0] == SLASH
         return self.class.new( self.tokens + other.tokens )
@@ -865,7 +863,7 @@ __REGEXP__
       return self.class.new( self.tokens + [Literal.new('/')] + other.tokens )
     end
   end
-  
+
   # Returns an array containing a the template tokens.
   def tokens
     @tokens ||= tokenize!
@@ -876,11 +874,11 @@ protected
   def tokenize!
     Tokenizer.new(pattern).to_a
   end
-  
+
   def arity
     @arity ||= tokens.inject(0){|a,t| a + t.arity }
   end
-  
+
   # @private
   def extract_matchdata(matchdata, post_processing)
     bc = 1
@@ -912,7 +910,5 @@ protected
       end
     end
   end
-  
+
 end
-
-
