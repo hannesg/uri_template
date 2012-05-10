@@ -12,7 +12,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-#    (c) 2011 by Hannes Georg
+#    (c) 2011 - 2012 by Hannes Georg
 #
 
 module URITemplate
