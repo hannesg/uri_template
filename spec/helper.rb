@@ -34,3 +34,30 @@ require 'uri_template'
 unless URITemplate::Utils.using_escape_utils?
   warn 'Not using escape_utils.'
 end
+
+
+class URITemplate::ExpansionMatcher
+
+  def initialize( variables, expected )
+    @variables = variables
+    @expected = expected
+  end
+
+  def matches?( actual )
+    @actual = actual
+    s = @actual.expand(@variables)
+    return Array(@expected).any?{|e| e === s }
+  end
+
+  def failure_message_for_should
+    return [@actual.inspect, ' should not expand to ', @actual.expand(@variables).inspect ,' but ', @expected.inspect, ' when given the following variables: ',"\n", @variables.inspect ].join 
+  end
+
+end
+
+RSpec::Matchers.class_eval do
+  def expand_to( variables,expected )
+    return URITemplate::ExpansionMatcher.new(variables, expected)
+  end
+end
+

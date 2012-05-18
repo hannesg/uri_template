@@ -266,7 +266,7 @@ module URITemplate
     # @param x the value to convert
     # @param careful [true,false] wheter to check every array item. Use this when you expect array with subarrays which are not pairs. Setting this to false however improves runtime by ~30% even with comparetivly short arrays.
     def pair_array_to_hash(x, careful = false )
-      if careful ? pair_array?(x) : (x.kind_of?(Array) and x.first.kind_of?(Array))
+      if careful ? pair_array?(x) : (x.kind_of?(Array) and ( x.empty? or x.first.kind_of?(Array) ) )
         return Hash[ *x.flatten(1) ]
       else
         return x
@@ -274,6 +274,24 @@ module URITemplate
     end
 
     extend self
+
+    # @api privat
+    def pair_array_to_hash2(x)
+      c = {}
+      result = []
+
+      x.each do | (k,v) |
+        e = c[k]
+        if !e
+          result << c[k] = [k,v]
+        else
+          e[1] = [e[1]] unless e[1].kind_of? Array
+          e[1] << v
+        end
+      end
+
+      return result
+    end
 
   end
 

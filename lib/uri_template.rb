@@ -84,6 +84,7 @@ module URITemplate
 
   autoload :Utils, 'uri_template/utils'
   autoload :Draft7, 'uri_template/draft7'
+  autoload :RFC6570, 'uri_template/rfc6570'
   autoload :Colon, 'uri_template/colon'
 
   # A hash with all available implementations.
@@ -91,9 +92,10 @@ module URITemplate
   # @see resolve_class
   VERSIONS = {
     :draft7 => :Draft7,
+    :rfc6570 => :RFC6570,
     :default => :Draft7,
     :colon => :Colon,
-    :latest => :Draft7
+    :latest => :RFC6570
   }
 
   # Looks up which implementation to use.
@@ -213,6 +215,7 @@ module URITemplate
   # @param variables Hash
   # @return String
   def expand(variables = {})
+    raise ArgumentError, "Expected something that returns to :[], but got: #{variables.inspect}" unless variables.respond_to? :[]
     tokens.map{|part|
       part.expand(variables)
     }.join

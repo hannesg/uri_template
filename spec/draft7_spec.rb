@@ -28,6 +28,7 @@ variables = {
   'path' => "/foo/bar",
   'list' => [ "red", "green", "blue" ],
   'keys' => [ ["semi",";"] , ["dot","."] , ["comma",","] ],
+  'keys2' => [ ["comma",","] , ["semi",";"] , ["dot","."] ],
   'v' => "6",
   'x' => "1024",
   'y' => "768",
@@ -85,6 +86,7 @@ expansion_results = {"{var}"=>"value",
  "{#list}"=>"#red,green,blue",
  "{#list*}"=>"#red,green,blue",
  "{#keys}"=>"#semi,;,dot,.,comma,,",
+ "{#keys2}"=>"#comma,,,semi,;,dot,.",
  "{#keys*}"=>"#semi=;,dot=.,comma=,",
  "{.who}"=>".fred",
  "{.who,who}"=>".fred.fred",
@@ -196,6 +198,7 @@ extraction_results = {"{var}"=>[["var", "value"]],
  "{#list}"=>[["list", ["red", "green", "blue"]]],
  "{#list*}"=>[["list", ["red", "green", "blue"]]],
  "{#keys}"=>[["keys", ["semi", ";", "dot", ".", "comma",","]]],
+ "{#keys2}"=>[["keys2", [ "comma",",", "semi", ";", "dot", "."]]],
  "{#keys*}"=>[["keys", [["semi",";"], ["dot", "."], ["comma",","]]]],
  "{.who}"=>[["who", "fred"]],
  "{.who,who}"=>[["who", "fred"], ["who", "fred"]],
@@ -290,7 +293,7 @@ describe URITemplate::Draft7 do
 
   expansion_levels.each{|pattern, exp|
 
-    it "should expand #{pattern.inspect} to #{exp.inspect}" do
+    it "should say that #{pattern.inspect} is of level #{exp.inspect}" do
       p = URITemplate::Draft7.new(pattern)
       p.level.should == exp
     end
