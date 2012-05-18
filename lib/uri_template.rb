@@ -21,8 +21,13 @@ module URITemplate
   # @private
   # Should we use \u.... or \x.. in regexps?
   SUPPORTS_UNICODE_CHARS = begin
-                             rx = eval('/\u0020/')
-                             !!(rx =~ " ")
+                             if "string".respond_to? :encoding
+                               rx = eval('Regexp.compile("\u0020")')
+                               !!(rx =~ " ")
+                             else
+                               rx = eval('/\u0020/')
+                               !!(rx =~ " ")
+                             end
                            rescue SyntaxError
                              false
                            end

@@ -16,9 +16,6 @@
 #
 
 require 'uri_template'
-require 'json'
-
-
 
 def expand_to( variables,expected )
   return URITemplate::ExpansionMatcher.new(variables, expected)
@@ -30,7 +27,7 @@ describe URITemplate::RFC6570 do
   describe "( in the examples from uritemplate-test " do
 
     f = File.new(File.expand_path('uritemplate-test/spec-examples.json', File.dirname(__FILE__)))
-    data = JSON.load( f.read )
+    data = MultiJson.load( f.read )
     data.each do |label, spec|
       describe "- #{label} )" do
         variables = spec['variables']

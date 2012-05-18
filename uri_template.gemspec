@@ -11,7 +11,8 @@ Gem::Specification.new do |s|
   s.require_paths = ['lib']
   
   s.files = Dir.glob('lib/**/**/*.rb') + ['uri_template.gemspec', 'README', 'CHANGELOG']
-  
+ 
+  s.add_development_dependency 'multi_json'
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'yard'
   s.add_development_dependency 'rake'
