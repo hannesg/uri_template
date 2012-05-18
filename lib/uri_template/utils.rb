@@ -79,7 +79,7 @@ module URITemplate
       # converts a string to ascii
       # 
       # This method checks which encoding method is available.
-      # @param String
+      # @param str [String]
       # @return String
       # @visibility public
       def to_ascii_encode(str)
@@ -90,7 +90,7 @@ module URITemplate
       # converts a string to utf8
       # 
       # This method checks which encoding method is available.
-      # @param String
+      # @param str [String]
       # @return String
       # @visibility public
       def to_utf8_encode(str)

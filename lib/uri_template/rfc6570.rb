@@ -651,9 +651,9 @@ __REGEXP__
 
   attr_reader :options
 
-  # @param String,Array either a pattern as String or an Array of tokens
-  # @param Hash some options
-  # @option :lazy If true the pattern will be parsed on first access, this also means that syntax errors will not be detected unless accessed.
+  # @param pattern_or_tokens [String,Array] either a pattern as String or an Array of tokens
+  # @param options [Hash] some options
+  # @option :lazy [true,false] If true the pattern will be parsed on first access, this also means that syntax errors will not be detected unless accessed.
   def initialize(pattern_or_tokens,options={})
     @options = options.dup.freeze
     if pattern_or_tokens.kind_of? String
@@ -682,7 +682,7 @@ __REGEXP__
   #   URITemplate::RFC6570.new('{?args*}').expand('args'=>{'key'=>'value'}) #=> '?key=value'
   #   URITemplate::RFC6570.new('{undef}').expand() #=> ''
   #
-  # @param variables Hash
+  # @param variables [Hash]
   # @return String
 
   # Compiles this template into a regular expression which can be used to test whether a given uri matches this template. This template is also used for {#===}.
@@ -721,8 +721,8 @@ __REGEXP__
   # @raise Encoding::UndefinedConversionError when the given uri could not be converted to utf-8.
   # @raise Encoding::CompatibilityError when the given uri could not be converted to utf-8.
   #
-  # @param [String,MatchData] Uri_or_MatchData A uri or a matchdata from which the variables should be extracted.
-  # @param [Array] Processing Specifies which processing should be done.
+  # @param uri_or_match [String,MatchData] Uri_or_MatchData A uri or a matchdata from which the variables should be extracted.
+  # @param post_processing [Array] Processing Specifies which processing should be done.
   # 
   # @note
   #   Don't expect that an extraction can fully recover the expanded variables. Extract rather generates a variable list which should expand to the uri from which it were extracted. In general the following equation should hold true:

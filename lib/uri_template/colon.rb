@@ -97,7 +97,7 @@ class Colon
 
   # Extracts variables from an uri.
   #
-  # @param String uri
+  # @param uri [String]
   # @return nil,Hash
   def extract(uri)
     md = self.to_r.match(uri)
