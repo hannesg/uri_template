@@ -30,9 +30,16 @@ describe URITemplate::RFC6570 do
         spec['testcases'].each do | template, results |
 
           if results == false
-            
+ 
             it " should say that #{template} is borked" do
               lambda{ URITemplate::RFC6570.new(template) }.should raise_error(URITemplate::Invalid)
+            end
+
+          elsif results == true
+
+            it " should say that #{template} is valid but cannot expand these variables" do
+              t = URITemplate::RFC6570.new(template)
+              lambda{ t.expand(variables) }.should raise_error(URITemplate::InvalidValue)
             end
 
           elsif results.kind_of? String or results.kind_of? Array
@@ -60,6 +67,17 @@ describe URITemplate::RFC6570 do
 
   end
 
+  describe "expansion" do
+
+    it "should refuse to expand a complex variable with length limit" do
+
+      t = URITemplate::RFC6570.new("{?assoc:10}")
+      lambda{ t.expand("assoc"=>{'foo'=>'bar'}) }.should raise_error
+
+    end
+
+  end
+
   describe "extraction" do
 
      it ' should ignore draf7-style lists' do
@@ -67,6 +85,7 @@ describe URITemplate::RFC6570 do
       t = URITemplate::RFC6570.new("{?list*}")
       t.extract('?a&b&c').should be_nil
       t.should extract_from({'list'=>%w{a b c}}, '?list=a&list=b&list=c')
+
      end
 
   end

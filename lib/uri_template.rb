@@ -214,6 +214,11 @@ module URITemplate
   module Invalid
   end
 
+  # A base class for all errors which will be raised when a variable value
+  # is not allowed for a certain expansion.
+  module InvalidValue
+  end
+
   # Expands this uri template with the given variables.
   # The variables should be converted to strings using {Utils#object_to_param}.
   # @raise {Unconvertable} if a variable could not be converted to a string.

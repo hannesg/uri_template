@@ -174,8 +174,14 @@ __REGEXP__
       @variable_specs.each{| var, expand , max_length |
         unless vars[var].nil?
           if vars[var].kind_of?(Hash) or Utils.pair_array?(vars[var])
+            if max_length && max_length > 0
+              raise InvalidValue::LengthLimitInapplicable.new(var,vars[var])
+            end
             result.push( *transform_hash(var, vars[var], expand, max_length) )
           elsif vars[var].kind_of? Array
+            if max_length && max_length > 0
+              raise InvalidValue::LengthLimitInapplicable.new(var,vars[var])
+            end
             result.push( *transform_array(var, vars[var], expand, max_length) )
           else
             if self.class::NAMED
@@ -543,9 +549,37 @@ __REGEXP__
     attr_reader :pattern, :position
 
     def initialize(source, position)
-      @pattern = pattern
+      @pattern = source
       @position = position
       super("Invalid expression found in #{source.inspect} at #{position}: '#{source[position..-1]}'")
+    end
+
+  end
+
+  class InvalidValue < StandardError
+
+    include URITemplate::InvalidValue
+
+    attr_reader :variable, :value
+
+    def initialize(variable, value)
+      @variable = variable
+      @value = value
+      super(generate_message())
+    end
+  protected
+
+    def generate_message()
+      return "The template variable " + variable.inspect + " cannot expand the given value "+ value.inspect
+    end
+
+  end
+
+  class InvalidValue::LengthLimitInapplicable < InvalidValue
+
+  protected
+    def generate_message()
+      return "The template variable "+variable.inspect+" has a length limit and therefore cannot expand an associative value ("+value.inspect+")."
     end
 
   end

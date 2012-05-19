@@ -407,6 +407,13 @@ describe URITemplate::Draft7 do
 
     end
 
+    it "should not expand complex values for lenght limited variables" do
+
+      tpl = URITemplate::Draft7.new('{?assoc:5}')
+      lambda{ tpl.expand("assoc"=>{'foo'=>'bar'}) }.should raise_error(URITemplate::Draft7::InvalidValue)
+
+    end
+
   end
 
   describe "bogus templates" do
