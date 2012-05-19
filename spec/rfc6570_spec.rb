@@ -62,10 +62,11 @@ describe URITemplate::RFC6570 do
 
   describe "extraction" do
 
-     describe URITemplate::RFC6570.new("{?list*}") do
-      
-      should extract_from({'list'=>['a','b','c']},'?list=a,list=b,list=c')
+     it ' should ignore draf7-style lists' do
 
+      t = URITemplate::RFC6570.new("{?list*}")
+      t.extract('?a&b&c').should be_nil
+      t.should extract_from({'list'=>%w{a b c}}, '?list=a&list=b&list=c')
      end
 
   end
