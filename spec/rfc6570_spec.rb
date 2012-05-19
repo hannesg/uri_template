@@ -17,11 +17,6 @@
 
 require 'uri_template'
 
-def expand_to( variables,expected )
-  return URITemplate::ExpansionMatcher.new(variables, expected)
-end
-
-
 describe URITemplate::RFC6570 do
 
   describe "( in the examples from uritemplate-test " do
@@ -34,16 +29,28 @@ describe URITemplate::RFC6570 do
 
         spec['testcases'].each do | template, results |
 
-          it " should expand #{template} correctly " do
-            results = Array(results)
-            t = URITemplate::RFC6570.new( template )
-            t.should expand_to( variables, results )
-          end
+          if results == false
+            
+            it " should say that #{template} is borked" do
+              lambda{ URITemplate::RFC6570.new(template) }.should raise_error(URITemplate::Invalid)
+            end
 
-          it " should extract the variables from #{template} correctly " do
-            result = Array(results).first
-            t = URITemplate::RFC6570.new( template )
-            t.should expand_to( t.extract(result) , result )
+          elsif results.kind_of? String or results.kind_of? Array
+
+            it " should expand #{template} correctly " do
+              results = Array(results)
+              t = URITemplate::RFC6570.new( template )
+              t.should expand_to( variables, results )
+            end
+
+            it " should extract the variables from #{template} correctly " do
+              result = Array(results).first
+              t = URITemplate::RFC6570.new( template )
+              t.should expand_to( t.extract(result) , result )
+            end
+
+          else
+            warn "Ignoring template #{template}"
           end
 
         end

@@ -55,9 +55,58 @@ class URITemplate::ExpansionMatcher
 
 end
 
+class URITemplate::ExtractionMatcher
+
+  def initialize( variables, uri, fuzzy = true )
+    @variables = variables
+    @fuzzy = fuzzy
+    @uri = uri 
+  end
+
+  def matches?( actual )
+    @message = []
+    v = actual.extract(@uri)
+    if !@fuzzy
+      @message = [actual.inspect,' should extract ',@variables.inspect,' from ',@uri.inspect,' but got ',v.inspect]
+      return @variables == v
+    else
+      tpl_variable_names = actual.variables
+      diff = []
+      @variables.each do |key,val|
+        if tpl_variable_names.include? key
+          if val != v[key]
+            diff << [key, val, v[key] ]
+          end
+        end
+      end
+      v.each do |key,val|
+        if !@variables.key? key
+          diff << [key, nil, val]
+        end
+      end
+      if !diff.empty?
+        @message = [actual.inspect,' should extract ',@variables.inspect,' from ',@uri.inspect,' but got ',v.inspect]
+        diff.each do |key, should, actual|
+          @message << "\n\t" << key << ":\tshould: " << should.inspect << ", is: " << actual.inspect
+        end
+      end
+      return diff.empty?
+    end
+  end
+
+  def failure_message_for_should
+    return @message.join
+  end
+
+end
+
 RSpec::Matchers.class_eval do
   def expand_to( variables,expected )
     return URITemplate::ExpansionMatcher.new(variables, expected)
+  end
+
+  def extract_from( variables, uri)
+    return URITemplate::ExtractionMatcher.new(variables, uri)
   end
 end
 

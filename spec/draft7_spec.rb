@@ -309,8 +309,7 @@ describe URITemplate::Draft7 do
     it "should expand #{pattern.inspect} to #{exp.inspect}" do
       p = URITemplate::Draft7.new(pattern)
       URITemplate::Draft7.valid?(pattern).should == true
-      s = p.expand(variables)
-      s.should == exp
+      p.should expand_to(variables, exp)
     end
 
   }
