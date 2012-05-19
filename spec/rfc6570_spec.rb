@@ -60,5 +60,15 @@ describe URITemplate::RFC6570 do
 
   end
 
+  describe "extraction" do
+
+     describe URITemplate::RFC6570.new("{?list*}") do
+      
+      should extract_from({'list'=>['a','b','c']},'?list=a,list=b,list=c')
+
+     end
+
+  end
+
 end
 
