@@ -47,7 +47,7 @@ describe URITemplate::RFC6570 do
             it " should extract the variables from #{template} correctly " do
               result = Array(results).first
               t = URITemplate::RFC6570.new( template )
-              t.should expand_to( t.extract(result) , result )
+              t.should expand_to( t.extract(result) , RUBY_VERSION > "1.9" ? result : results )
             end
 
           else
