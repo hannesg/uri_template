@@ -165,6 +165,10 @@ __REGEXP__
       end
     end
 
+    def expands?
+      @variable_specs.any?{|_,expand,_| expand }
+    end
+
     def arity
       @variable_specs.size
     end
@@ -625,7 +629,7 @@ __REGEXP__
 
   end
 
-  # The class methods for all draft7 templates.
+  # The class methods for all rfc6570 templates.
   module ClassMethods
 
     # Tries to convert the given param in to a instance of {RFC6570}
@@ -637,11 +641,14 @@ __REGEXP__
     #   URITemplate::RFC6570.try_convert( tpl ) #=> tpl
     #   URITemplate::RFC6570.try_convert('{foo}') #=> tpl
     #   URITemplate::RFC6570.try_convert(URITemplate.new(:colon, ':foo')) #=> tpl
+    #   URITemplate::RFC6570.try_convert(URITemplate.new(:draft7, '{foo}')) #=> tpl
+    #   # Draft7 and RFC6570 handle expansion of named variables a bit differently:
+    #   URITemplate::RFC6570.try_convert(URITemplate.new(:draft7, '{?list*}')) #=> nil
     #   # This pattern is invalid, so it wont be parsed:
     #   URITemplate::RFC6570.try_convert('{foo') #=> nil
     #
     def try_convert(x)
-      if x.kind_of? self
+      if x.class == self
         return x
       elsif x.kind_of? String and valid? x
         return new(x)
@@ -653,6 +660,10 @@ __REGEXP__
             Expression.new([[tk.variables.first, false, 0]])
           end
         })
+      elsif (x.class == URITemplate::Draft7 and self == URITemplate::RFC6570) or (x.class == URITemplate::RFC6570 and self == URITemplate::Draft7)
+        if x.tokens.none?{|t| t.class::NAMED and t.expands? }
+          return self.new(x.to_s)
+        end
       else
         return nil
       end

@@ -90,5 +90,14 @@ describe URITemplate::RFC6570 do
 
   end
 
+  describe "conversion" do
+
+    it ' should convert most draft7 templates' do
+      
+      URITemplate::RFC6570.try_convert( URITemplate::Draft7.new('{var}') ).should_not be_nil
+
+    end
+  end
+
 end
 
