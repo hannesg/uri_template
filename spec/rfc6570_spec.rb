@@ -61,6 +61,15 @@ describe URITemplate::RFC6570 do
   end
   end
 
+  describe "syntax" do
+
+    it "should refuse variables with terminal dots" do
+      lambda{ URITemplate::RFC6570.new('{var.}') }.should raise_error(URITemplate::Invalid)
+      lambda{ URITemplate::RFC6570.new('{..var.}') }.should raise_error(URITemplate::Invalid)
+    end
+
+  end
+
   describe "expansion" do
 
     it "should refuse to expand a complex variable with length limit" do

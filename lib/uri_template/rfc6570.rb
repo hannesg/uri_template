@@ -81,12 +81,12 @@ class URITemplate::RFC6570
 
   # @private
   VAR = Regexp.compile(<<'__REGEXP__'.strip, Utils::KCODE_UTF8)
-((?:[a-zA-Z0-9_]|%[0-9a-fA-F]{2})(?:[a-zA-Z0-9_\.]|%[0-9a-fA-F]{2})*)(\*)?(?::(\d+))?
+((?:[a-zA-Z0-9_]|%[0-9a-fA-F]{2})(?:\.?(?:[a-zA-Z0-9_]|%[0-9a-fA-F]{2}))*)(\*)?(?::(\d+))?
 __REGEXP__
 
   # @private
   EXPRESSION = Regexp.compile(<<'__REGEXP__'.strip, Utils::KCODE_UTF8)
-\{([+#\./;?&]?)((?:[a-zA-Z0-9_]|%[0-9a-fA-F]{2})(?:[a-zA-Z0-9_\.]|%[0-9a-fA-F]{2})*\*?(?::\d+)?(?:,(?:[a-zA-Z0-9_]|%[0-9a-fA-F]{2})(?:[a-zA-Z0-9_\.]|%[0-9a-fA-F]{2})*\*?(?::\d+)?)*)\}
+\{([+#\./;?&]?)((?:[a-zA-Z0-9_]|%[0-9a-fA-F]{2})(?:\.?(?:[a-zA-Z0-9_]|%[0-9a-fA-F]{2}))*\*?(?::\d+)?(?:,(?:[a-zA-Z0-9_]|%[0-9a-fA-F]{2})(?:\.?(?:[a-zA-Z0-9_]|%[0-9a-fA-F]{2}))*\*?(?::\d+)?)*)\}
 __REGEXP__
 
   # @private
