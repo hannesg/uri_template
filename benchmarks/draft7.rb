@@ -64,10 +64,10 @@ expansions.each do |exp|
 
   puts Addressable::Template.new(exp[:addressable]).extract(exp[:result]).inspect
 
-  str = URITemplate::Draft7.new(exp[:uri_template]).expand(exp[:variables])
+  str = URITemplate::RFC6570.new(exp[:uri_template]).expand(exp[:variables])
   #raise "Unexpected result: #{str.inspect} with uri_template" unless str == exp[:result]
 
-  puts URITemplate::Draft7.new(exp[:uri_template]).extract(exp[:result]).inspect
+  puts URITemplate::RFC6570.new(exp[:uri_template]).extract(exp[:result]).inspect
 
 end
 
@@ -75,8 +75,8 @@ RBench.run(100_000) do
 
   column :addressable, :title => 'Addressable'
   column :addressable_cached, :title => 'Addressable*'
-  column :draft7, :title => 'Draft7'
-  column :draft7_cached, :title => 'Draft7*'
+  column :draft7, :title => 'RFC6570'
+  column :draft7_cached, :title => 'RFC6570*'
 
   group "Expansion" do
 
