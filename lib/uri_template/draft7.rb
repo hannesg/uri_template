@@ -72,7 +72,7 @@ class URITemplate::Draft7 < URITemplate::RFC6570
       return [ [ name,  decode( matched ) ] ]
     end
 
-def to_r_source
+    def to_r_source
       source = []
       first = true
       vs = @variable_specs.size - 1
