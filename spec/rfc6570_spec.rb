@@ -11,7 +11,6 @@
 #
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
 #    (c) 2011 - 2012 by Hannes Georg
 #
 
@@ -19,9 +18,11 @@ require 'uri_template'
 
 describe URITemplate::RFC6570 do
 
+  ['spec-examples.json', 'extended-tests.json'].each do |file_name|
+
   describe "( in the examples from uritemplate-test " do
 
-    f = File.new(File.expand_path('uritemplate-test/spec-examples.json', File.dirname(__FILE__)))
+    f = File.new(File.expand_path(file_name, File.join(File.dirname(__FILE__),'uritemplate-test')))
     data = MultiJson.load( f.read )
     data.each do |label, spec|
       describe "- #{label} )" do
@@ -33,13 +34,6 @@ describe URITemplate::RFC6570 do
  
             it " should say that #{template} is borked" do
               lambda{ URITemplate::RFC6570.new(template) }.should raise_error(URITemplate::Invalid)
-            end
-
-          elsif results == true
-
-            it " should say that #{template} is valid but cannot expand these variables" do
-              t = URITemplate::RFC6570.new(template)
-              lambda{ t.expand(variables) }.should raise_error(URITemplate::InvalidValue)
             end
 
           elsif results.kind_of? String or results.kind_of? Array
@@ -64,7 +58,7 @@ describe URITemplate::RFC6570 do
 
       end
     end
-
+  end
   end
 
   describe "expansion" do
