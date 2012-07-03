@@ -6,7 +6,7 @@
 <title>
   File: README
   
-    &mdash; Documentation by YARD 0.7.3
+    &mdash; Documentation by YARD 0.8.2.1
   
 </title>
 
@@ -15,9 +15,11 @@
   <link rel="stylesheet" href="css/common.css" type="text/css" media="screen" charset="utf-8" />
 
 <script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
   relpath = '';
-  if (relpath != '') relpath += '/';
+  framesUrl = "frames.html#!" + escape(window.location.href);
 </script>
+
 
   <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
 
@@ -26,49 +28,56 @@
 
   </head>
   <body>
-    <script type="text/javascript" charset="utf-8">
-      if (window.top.frames.main) document.body.className = 'frames';
-    </script>
-    
     <div id="header">
       <div id="menu">
   
-    <a href="_index.html" title="Index">Index</a> &raquo; 
+    <a href="_index.html">Index</a> &raquo; 
     <span class="title">File: README</span>
   
-  
+
   <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
 </div>
 
       <div id="search">
   
-    <a id="class_list_link" href="#">Class List</a>
+    <a class="full_list_link" id="class_list_link"
+        href="class_list.html">
+      Class List
+    </a>
   
-    <a id="method_list_link" href="#">Method List</a>
+    <a class="full_list_link" id="method_list_link"
+        href="method_list.html">
+      Method List
+    </a>
   
-    <a id="file_list_link" href="#">File List</a>
+    <a class="full_list_link" id="file_list_link"
+        href="file_list.html">
+      File List
+    </a>
   
 </div>
       <div class="clear"></div>
     </div>
-    
+
     <iframe id="search_frame"></iframe>
-    
+
     <div id="content"><div id='filecontents'>
 <h1>URITemplate - a uri template library</h1>
 
-<p>With URITemplate you can generate URI based on simple templates. The
-current implementation is based on draft 7 of the uri template spec ( <a
+<p>With URITemplate you can generate URI based on simple templates. The syntax
+if defined by RFC 6570 ( <a
+href="http://tools.ietf.org/html/rfc6570">tools.ietf.org/html/rfc6570</a>
+).</p>
+
+<p>For backward compatibility, there is an implementation based on draft 7 of
+the uri template spec ( <a
 href="http://tools.ietf.org/html/draft-gregorio-uritemplate-07">tools.ietf.org/html/draft-gregorio-uritemplate-07</a>
-). For the syntax read that spec. Draft 2 of that specification is
+), too. For the syntax read that spec. Draft 2 of that specification is
 implemented as addressable gem.</p>
 
 <p>It’s currently planed to add newer versions of that spec when they emerge.
 Therefore the module URITemplate just defines one abstract method ( expand
 ) and some methods to access the actual implementations.</p>
-
-<p>Some implementations might be able to extract variables, too ( Draft 7 is!
-).</p>
 
 <p>From version 0.2.0, it will use escape_utils if available. This will
 significantly boost uri-escape/unescape performance if more characters need
@@ -77,61 +86,63 @@ to be escaped ( may be slightly slower in trivial cases. working on that …
 
 <p>““ruby</p>
 
-<pre class="code"><span class='comment'># escape_utils has to be loaded when uri_templates is loaded
-</span><span class='id gem'>gem</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>escape_utils</span><span class='tstring_end'>'</span></span>
-<span class='id require'>require</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>escape_utils</span><span class='tstring_end'>'</span></span>
+<pre class="code ruby"><code><span class='comment'># escape_utils has to be loaded when uri_templates is loaded
+</span><span class='id identifier rubyid_gem'>gem</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>escape_utils</span><span class='tstring_end'>'</span></span>
+<span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>escape_utils</span><span class='tstring_end'>'</span></span>
 
-<span class='id gem'>gem</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>uri_template</span><span class='tstring_end'>'</span></span>
-<span class='id require'>require</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>uri_template</span><span class='tstring_end'>'</span></span>
+<span class='id identifier rubyid_gem'>gem</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>uri_template</span><span class='tstring_end'>'</span></span>
+<span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>uri_template</span><span class='tstring_end'>'</span></span>
 
-<span class='const'>UriTemplate</span><span class='op'>::</span><span class='const'>Utils</span><span class='period'>.</span><span class='id using_escape_utils?'>using_escape_utils?</span> <span class='comment'>#=&gt; true</span></pre>
+<span class='const'>UriTemplate</span><span class='op'>::</span><span class='const'>Utils</span><span class='period'>.</span><span class='id identifier rubyid_using_escape_utils?'>using_escape_utils?</span> <span class='comment'>#=&gt; true</span></code></pre>
 
 <h2>Examples</h2>
 
-<pre class="code"><span class='id require'>require</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>uri_template</span><span class='tstring_end'>'</span></span>
+<pre class="code ruby"><code><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>uri_template</span><span class='tstring_end'>'</span></span>
 
-<span class='id tpl'>tpl</span> <span class='op'>=</span> <span class='const'>URITemplate</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>http://{host}{/segments*}/{file}{.extensions*}</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
+<span class='id identifier rubyid_tpl'>tpl</span> <span class='op'>=</span> <span class='const'>URITemplate</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>http://{host}{/segments*}/{file}{.extensions*}</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
 
 <span class='comment'># This will give: http://www.host.com/path/to/a/file.x.y
-</span><span class='id tpl'>tpl</span><span class='period'>.</span><span class='id expand'>expand</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>host</span><span class='tstring_end'>'</span></span><span class='op'>=&gt;</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>www.host.com</span><span class='tstring_end'>'</span></span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>segments</span><span class='tstring_end'>'</span></span><span class='op'>=&gt;</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>path</span><span class='tstring_end'>'</span></span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>to</span><span class='tstring_end'>'</span></span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>a</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>file</span><span class='tstring_end'>'</span></span><span class='op'>=&gt;</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>file</span><span class='tstring_end'>'</span></span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>extensions</span><span class='tstring_end'>'</span></span><span class='op'>=&gt;</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>x</span><span class='tstring_end'>'</span></span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>y</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='rparen'>)</span>
+</span><span class='id identifier rubyid_tpl'>tpl</span><span class='period'>.</span><span class='id identifier rubyid_expand'>expand</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>host</span><span class='tstring_end'>'</span></span><span class='op'>=&gt;</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>www.host.com</span><span class='tstring_end'>'</span></span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>segments</span><span class='tstring_end'>'</span></span><span class='op'>=&gt;</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>path</span><span class='tstring_end'>'</span></span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>to</span><span class='tstring_end'>'</span></span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>a</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>file</span><span class='tstring_end'>'</span></span><span class='op'>=&gt;</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>file</span><span class='tstring_end'>'</span></span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>extensions</span><span class='tstring_end'>'</span></span><span class='op'>=&gt;</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>x</span><span class='tstring_end'>'</span></span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>y</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='rparen'>)</span>
 
 <span class='comment'># This will give: { 'host'=&gt;'www.host.com','segments'=&gt;['path','to','a'],'file'=&gt;'file','extensions'=&gt;['x','y']}
-</span><span class='id tpl'>tpl</span><span class='period'>.</span><span class='id extract'>extract</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>http://www.host.com/path/to/a/file.x.y</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span></pre>
+</span><span class='id identifier rubyid_tpl'>tpl</span><span class='period'>.</span><span class='id identifier rubyid_extract'>extract</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>http://www.host.com/path/to/a/file.x.y</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span></code></pre>
 
 <h2>Benchmarks</h2>
 
-<pre class="code">* System: Core 2 Duo T9300, 4 gb ram, Fedora 16 64 bit, ruby 1.9.3, 100_000 repetitions
-* Implementation: Draft7 ( version 0.1.3 (pre) ) vs. Addressable ( 2.2.6 )
+<pre class="code ruby"><code>* System: Core 2 Duo T9300, 4 gb ram, ubuntu 12.04 64 bit, ruby 1.9.3, 100_000 repetitions
+* Implementation: RFC6570 ( version 0.3.0 ) vs. Addressable ( 2.2.8 )
 * Results marked with * means that the template object is reused.
 
-                                                      Addressable | Addressable* |  Draft7 | Draft7* |
-   --Expansion----------------------------------------------------------------------------------------
-   Empty string                                             8.601 |        8.529 |   0.451 |   0.057 |
-   One simple variable                                     19.832 |       19.675 |   2.746 |   0.928 |
-   One escaped variable                                    22.437 |       22.151 |   6.011 |   4.242 |
-   One missing variable                                     9.638 |        9.544 |   1.855 |   0.184 |
-   Path segments                                           25.353 |       25.413 |   3.171 |   1.372 |
-   Arguments                                               27.140 |       27.144 |   5.293 |   2.715 |
-   Full URI                                                75.599 |       75.680 |  11.147 |   5.246 |
-   Segments and Arguments                                  73.360 |       73.334 |   7.694 |   3.604 |
-   --Extraction---------------------------------------------------------------------------------------
-   Empty string                                            14.031 |       13.993 |   1.849 |   0.576 |
-   One simple variable                                     28.701 |       28.503 |   6.988 |   1.840 |
-   One escaped variable                                    33.237 |       33.358 |   8.354 |   3.155 |
-   One missing variable                                    17.201 |       17.051 |   6.318 |   1.177 |
-   Path segments                                           43.112 |       43.623 |  12.502 |   2.983 |
-   Arguments                                               54.448 |       54.090 |  13.772 |   3.394 |
-   Full URI                                                95.433 |       91.961 |  30.762 |   6.797 |
-   Segments and Arguments                                  80.508 |       79.570 |  23.204 |   5.210 |
-   Segments and Arguments ( not extractable )              22.079 |       21.967 |  18.017 |   0.256 |</pre>
+                                                      Addressable | Addressable* | RFC6570 | RFC6570* |
+   --Expansion-----------------------------------------------------------------------------------------
+   Empty string                                             8.505 |        8.439 |   0.539 |    0.064 |
+   One simple variable                                     19.717 |       19.721 |   3.031 |    1.169 |
+   One escaped variable                                    21.873 |       22.017 |   3.573 |    1.705 |
+   One missing variable                                     9.676 |       11.981 |   2.633 |    0.352 |
+   Path segments                                           29.901 |       31.698 |   4.929 |    3.051 |
+   Arguments                                               36.584 |       36.531 |   9.540 |    5.982 |
+   Full URI                                               109.102 |      116.458 |  19.806 |   10.548 |
+   Segments and Arguments                                 108.103 |      107.750 |  14.059 |    7.593 |
+   total                                                  343.461 |      354.596 |  58.109 |   30.464 |
+   --Extraction----------------------------------------------------------------------------------------
+   Empty string                                            21.422 |       21.843 |   3.122 |    0.804 |
+   One simple variable                                     39.860 |       43.840 |  10.671 |    2.874 |
+   One escaped variable                                    51.321 |       50.790 |  10.963 |    2.040 |
+   One missing variable                                    26.125 |       26.320 |   9.400 |    1.847 |
+   Path segments                                           62.712 |       64.191 |  18.502 |    4.518 |
+   Arguments                                               81.350 |       81.258 |  20.762 |    5.401 |
+   Full URI                                               145.339 |      141.795 |  45.306 |   11.096 |
+   Segments and Arguments                                 124.431 |      122.885 |  34.208 |    8.126 |
+   Segments and Arguments ( not extractable )              34.183 |       34.200 |  26.542 |    0.410 |
+   total                                                  586.743 |      587.122 | 179.476 |   37.116 |</code></pre>
 
-<p>SUCCESS - Draft7 was faster in every test!</p>
+<p>SUCCESS - URITemplate was faster in every test!</p>
 </div></div>
-    
+
     <div id="footer">
-  Generated on Sat Dec  3 15:47:45 2011 by 
+  Generated on Tue Jul  3 19:56:07 2012 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.7.3 (ruby-1.9.3).
+  0.8.2.1 (ruby-1.9.3).
 </div>
 
   </body>

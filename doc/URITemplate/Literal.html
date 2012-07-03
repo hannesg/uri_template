@@ -6,7 +6,7 @@
 <title>
   Module: URITemplate::Literal
   
-    &mdash; Documentation by YARD 0.7.3
+    &mdash; Documentation by YARD 0.8.2.1
   
 </title>
 
@@ -15,9 +15,11 @@
   <link rel="stylesheet" href="../css/common.css" type="text/css" media="screen" charset="utf-8" />
 
 <script type="text/javascript" charset="utf-8">
-  relpath = '..';
-  if (relpath != '') relpath += '/';
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '../';
+  framesUrl = "../frames.html#!" + escape(window.location.href);
 </script>
+
 
   <script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
 
@@ -26,36 +28,41 @@
 
   </head>
   <body>
-    <script type="text/javascript" charset="utf-8">
-      if (window.top.frames.main) document.body.className = 'frames';
-    </script>
-    
     <div id="header">
       <div id="menu">
   
-    <a href="../_index.html">Index (L)</a> &raquo; 
+    <a href="../_index.html">Index (L)</a> &raquo;
     <span class='title'><span class='object_link'><a href="../URITemplate.html" title="URITemplate (module)">URITemplate</a></span></span>
      &raquo; 
     <span class="title">Literal</span>
   
-  
+
   <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
 </div>
 
       <div id="search">
   
-    <a id="class_list_link" href="#">Class List</a>
+    <a class="full_list_link" id="class_list_link"
+        href="../class_list.html">
+      Class List
+    </a>
   
-    <a id="method_list_link" href="#">Method List</a>
+    <a class="full_list_link" id="method_list_link"
+        href="../method_list.html">
+      Method List
+    </a>
   
-    <a id="file_list_link" href="#">File List</a>
+    <a class="full_list_link" id="file_list_link"
+        href="../file_list.html">
+      File List
+    </a>
   
 </div>
       <div class="clear"></div>
     </div>
-    
+
     <iframe id="search_frame"></iframe>
-    
+
     <div id="content"><h1>Module: URITemplate::Literal
   
   
@@ -98,10 +105,8 @@
 
 </div>
 
-  
-  
-  
-  
+
+
   <h2>Instance Attribute Summary <small>(<a href="#" class="summary_toggle">collapse</a>)</small></h2>
   <ul class="summary">
     
@@ -115,7 +120,10 @@
   </span>
   
   
-    <span class="note title readonly">readonly</span>
+  
+    
+      <span class="note title readonly">readonly</span>
+    
     
   
   
@@ -135,9 +143,6 @@
 
 
 
-  
-  
-  
 
   
     <h2>
@@ -155,6 +160,7 @@
 
     
   </span>
+  
   
   
   
@@ -182,6 +188,7 @@
   
   
   
+  
 
   
     <span class="summary_desc"><div class='inline'></div></span>
@@ -197,6 +204,7 @@
 
     
   </span>
+  
   
   
   
@@ -224,6 +232,7 @@
   
   
   
+  
 
   
     <span class="summary_desc"><div class='inline'></div></span>
@@ -239,6 +248,7 @@
 
     
   </span>
+  
   
   
   
@@ -261,20 +271,22 @@
   
   
   
+  
   <div id="instance_attr_details" class="attr_details">
     <h2>Instance Attribute Details</h2>
     
       
       <span id=""></span>
-      <span id="string-instance_method"></span>
       <div class="method_details first">
-  <p class="signature first" id="string-instance_method">
+  <h3 class="signature first" id="string-instance_method">
   
     - (<tt>Object</tt>) <strong>string</strong>  <span class="extras">(readonly)</span>
   
 
   
-</p><div class="docstring">
+
+  
+</h3><div class="docstring">
   <div class="discussion">
     
 <p>Returns the value of attribute string</p>
@@ -291,14 +303,14 @@
       <pre class="lines">
 
 
-35
-36
-37</pre>
+49
+50
+51</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template.rb', line 35</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template.rb', line 49</span>
 
-<span class='kw'>def</span> <span class='id string'>string</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_string'>string</span>
   <span class='ivar'>@string</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -311,30 +323,32 @@
 
   <div id="instance_method_details" class="method_details_list">
     <h2>Instance Method Details</h2>
-    
+
     
       <div class="method_details first">
-  <p class="signature first" id="expand-instance_method">
+  <h3 class="signature first" id="expand-instance_method">
   
     - (<tt>Object</tt>) <strong>expand</strong>(*_) 
   
 
   
-</p><table class="source_code">
+
+  
+</h3><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-53
-54
-55</pre>
+67
+68
+69</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template.rb', line 53</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template.rb', line 67</span>
 
-<span class='kw'>def</span> <span class='id expand'>expand</span><span class='lparen'>(</span><span class='op'>*</span><span class='id _'>_</span><span class='rparen'>)</span>
-  <span class='kw'>return</span> <span class='id string'>string</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_expand'>expand</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid__'>_</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_string'>string</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -342,13 +356,15 @@
 </div>
     
       <div class="method_details ">
-  <p class="signature " id="expression?-instance_method">
+  <h3 class="signature " id="expression?-instance_method">
   
     - (<tt>Boolean</tt>) <strong>expression?</strong> 
   
 
   
-</p><div class="docstring">
+
+  
+</h3><div class="docstring">
   <div class="discussion">
     
 
@@ -356,7 +372,7 @@
 </div>
 <div class="tags">
   
-<h3>Returns:</h3>
+<p class="tag_title">Returns:</p>
 <ul class="return">
   
     <li>
@@ -376,14 +392,14 @@
       <pre class="lines">
 
 
-41
-42
-43</pre>
+55
+56
+57</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template.rb', line 41</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template.rb', line 55</span>
 
-<span class='kw'>def</span> <span class='id expression?'>expression?</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_expression?'>expression?</span>
   <span class='kw'>false</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -392,13 +408,15 @@
 </div>
     
       <div class="method_details ">
-  <p class="signature " id="literal?-instance_method">
+  <h3 class="signature " id="literal?-instance_method">
   
     - (<tt>Boolean</tt>) <strong>literal?</strong> 
   
 
   
-</p><div class="docstring">
+
+  
+</h3><div class="docstring">
   <div class="discussion">
     
 
@@ -406,7 +424,7 @@
 </div>
 <div class="tags">
   
-<h3>Returns:</h3>
+<p class="tag_title">Returns:</p>
 <ul class="return">
   
     <li>
@@ -426,14 +444,14 @@
       <pre class="lines">
 
 
-37
-38
-39</pre>
+51
+52
+53</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template.rb', line 37</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template.rb', line 51</span>
 
-<span class='kw'>def</span> <span class='id literal?'>literal?</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_literal?'>literal?</span>
   <span class='kw'>true</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -442,26 +460,28 @@
 </div>
     
       <div class="method_details ">
-  <p class="signature " id="size-instance_method">
+  <h3 class="signature " id="size-instance_method">
   
     - (<tt>Object</tt>) <strong>size</strong> 
   
 
   
-</p><table class="source_code">
+
+  
+</h3><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-49
-50
-51</pre>
+63
+64
+65</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template.rb', line 49</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template.rb', line 63</span>
 
-<span class='kw'>def</span> <span class='id size'>size</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_size'>size</span>
   <span class='int'>0</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -470,26 +490,28 @@
 </div>
     
       <div class="method_details ">
-  <p class="signature " id="variables-instance_method">
+  <h3 class="signature " id="variables-instance_method">
   
     - (<tt>Object</tt>) <strong>variables</strong> 
   
 
   
-</p><table class="source_code">
+
+  
+</h3><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-45
-46
-47</pre>
+59
+60
+61</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template.rb', line 45</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template.rb', line 59</span>
 
-<span class='kw'>def</span> <span class='id variables'>variables</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_variables'>variables</span>
   <span class='lbracket'>[</span><span class='rbracket'>]</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -500,11 +522,11 @@
   </div>
 
 </div>
-    
+
     <div id="footer">
-  Generated on Sat Dec  3 15:47:46 2011 by 
+  Generated on Tue Jul  3 19:56:07 2012 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.7.3 (ruby-1.9.3).
+  0.8.2.1 (ruby-1.9.3).
 </div>
 
   </body>

@@ -6,7 +6,7 @@
 <title>
   Module: URITemplate::Token
   
-    &mdash; Documentation by YARD 0.7.3
+    &mdash; Documentation by YARD 0.8.2.1
   
 </title>
 
@@ -15,9 +15,11 @@
   <link rel="stylesheet" href="../css/common.css" type="text/css" media="screen" charset="utf-8" />
 
 <script type="text/javascript" charset="utf-8">
-  relpath = '..';
-  if (relpath != '') relpath += '/';
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '../';
+  framesUrl = "../frames.html#!" + escape(window.location.href);
 </script>
+
 
   <script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
 
@@ -26,36 +28,41 @@
 
   </head>
   <body>
-    <script type="text/javascript" charset="utf-8">
-      if (window.top.frames.main) document.body.className = 'frames';
-    </script>
-    
     <div id="header">
       <div id="menu">
   
-    <a href="../_index.html">Index (T)</a> &raquo; 
+    <a href="../_index.html">Index (T)</a> &raquo;
     <span class='title'><span class='object_link'><a href="../URITemplate.html" title="URITemplate (module)">URITemplate</a></span></span>
      &raquo; 
     <span class="title">Token</span>
   
-  
+
   <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
 </div>
 
       <div id="search">
   
-    <a id="class_list_link" href="#">Class List</a>
+    <a class="full_list_link" id="class_list_link"
+        href="../class_list.html">
+      Class List
+    </a>
   
-    <a id="method_list_link" href="#">Method List</a>
+    <a class="full_list_link" id="method_list_link"
+        href="../method_list.html">
+      Method List
+    </a>
   
-    <a id="file_list_link" href="#">File List</a>
+    <a class="full_list_link" id="file_list_link"
+        href="../file_list.html">
+      File List
+    </a>
   
 </div>
       <div class="clear"></div>
     </div>
-    
+
     <iframe id="search_frame"></iframe>
-    
+
     <div id="content"><h1>Module: URITemplate::Token
   
   
@@ -98,6 +105,8 @@ concrete type.</p>
 
 
 
+
+
   
     <h2>
       Instance Method Summary
@@ -120,6 +129,7 @@ concrete type.</p>
   
   
   
+  
 
   
     <span class="summary_desc"><div class='inline'></div></span>
@@ -134,30 +144,32 @@ concrete type.</p>
 
   <div id="instance_method_details" class="method_details_list">
     <h2>Instance Method Details</h2>
-    
+
     
       <div class="method_details first">
-  <p class="signature first" id="size-instance_method">
+  <h3 class="signature first" id="size-instance_method">
   
     - (<tt>Object</tt>) <strong>size</strong> 
   
 
   
-</p><table class="source_code">
+
+  
+</h3><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-24
-25
-26</pre>
+38
+39
+40</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template.rb', line 24</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template.rb', line 38</span>
 
-<span class='kw'>def</span> <span class='id size'>size</span>
-  <span class='id variables'>variables</span><span class='period'>.</span><span class='id size'>size</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_size'>size</span>
+  <span class='id identifier rubyid_variables'>variables</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -167,11 +179,11 @@ concrete type.</p>
   </div>
 
 </div>
-    
+
     <div id="footer">
-  Generated on Sat Dec  3 15:47:46 2011 by 
+  Generated on Tue Jul  3 19:56:07 2012 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.7.3 (ruby-1.9.3).
+  0.8.2.1 (ruby-1.9.3).
 </div>
 
   </body>

@@ -6,7 +6,7 @@
 <title>
   Class: URITemplate::Colon::Token::Static
   
-    &mdash; Documentation by YARD 0.7.3
+    &mdash; Documentation by YARD 0.8.2.1
   
 </title>
 
@@ -15,9 +15,11 @@
   <link rel="stylesheet" href="../../../css/common.css" type="text/css" media="screen" charset="utf-8" />
 
 <script type="text/javascript" charset="utf-8">
-  relpath = '../../..';
-  if (relpath != '') relpath += '/';
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '../../../';
+  framesUrl = "../../../frames.html#!" + escape(window.location.href);
 </script>
+
 
   <script type="text/javascript" charset="utf-8" src="../../../js/jquery.js"></script>
 
@@ -26,36 +28,41 @@
 
   </head>
   <body>
-    <script type="text/javascript" charset="utf-8">
-      if (window.top.frames.main) document.body.className = 'frames';
-    </script>
-    
     <div id="header">
       <div id="menu">
   
-    <a href="../../../_index.html">Index (S)</a> &raquo; 
+    <a href="../../../_index.html">Index (S)</a> &raquo;
     <span class='title'><span class='object_link'><a href="../../../URITemplate.html" title="URITemplate (module)">URITemplate</a></span></span> &raquo; <span class='title'><span class='object_link'><a href="../../Colon.html" title="URITemplate::Colon (class)">Colon</a></span></span> &raquo; <span class='title'><span class='object_link'><a href="../Token.html" title="URITemplate::Colon::Token (class)">Token</a></span></span>
      &raquo; 
     <span class="title">Static</span>
   
-  
+
   <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
 </div>
 
       <div id="search">
   
-    <a id="class_list_link" href="#">Class List</a>
+    <a class="full_list_link" id="class_list_link"
+        href="../../../class_list.html">
+      Class List
+    </a>
   
-    <a id="method_list_link" href="#">Method List</a>
+    <a class="full_list_link" id="method_list_link"
+        href="../../../method_list.html">
+      Method List
+    </a>
   
-    <a id="file_list_link" href="#">File List</a>
+    <a class="full_list_link" id="file_list_link"
+        href="../../../file_list.html">
+      File List
+    </a>
   
 </div>
       <div class="clear"></div>
     </div>
-    
+
     <iframe id="search_frame"></iframe>
-    
+
     <div id="content"><h1>Class: URITemplate::Colon::Token::Static
   
   
@@ -100,34 +107,15 @@
 
 
 
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
 
 
-  
-  
-  
+
+
   <h2>Instance Attribute Summary</h2>
   
   <h3 class="inherited">Attributes included from <span class='object_link'><a href="../../Literal.html" title="URITemplate::Literal (module)">Literal</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="../../Literal.html#string-instance_method" title="URITemplate::Literal#string (method)">string</a></span></p>
+  <p class="inherited"><span class='object_link'><a href="../../Literal.html#string-instance_method" title="URITemplate::Literal#string (method)">#string</a></span></p>
 
-  
-  
-  
-  
-  
-  
 
   
     <h2>
@@ -151,6 +139,7 @@
   
   
   
+  
 
   
     <span class="summary_desc"><div class='inline'></div></span>
@@ -166,6 +155,7 @@
 
     
   </span>
+  
   
     <span class="note title constructor">constructor</span>
   
@@ -197,6 +187,7 @@
   
   
   
+  
 
   
     <span class="summary_desc"><div class='inline'></div></span>
@@ -215,9 +206,11 @@
   
   
   
+  
   <h3 class="inherited">Methods included from <span class='object_link'><a href="../../Literal.html" title="URITemplate::Literal (module)">Literal</a></span></h3>
   <p class="inherited"><span class='object_link'><a href="../../Literal.html#expression%3F-instance_method" title="URITemplate::Literal#expression? (method)">#expression?</a></span>, <span class='object_link'><a href="../../Literal.html#literal%3F-instance_method" title="URITemplate::Literal#literal? (method)">#literal?</a></span>, <span class='object_link'><a href="../../Literal.html#size-instance_method" title="URITemplate::Literal#size (method)">#size</a></span>, <span class='object_link'><a href="../../Literal.html#variables-instance_method" title="URITemplate::Literal#variables (method)">#variables</a></span></p>
 
+  
   
   
   
@@ -232,17 +225,20 @@
   
   
   
+  
   <div id="constructor_details" class="method_details_list">
   <h2>Constructor Details</h2>
   
     <div class="method_details first">
-  <p class="signature first" id="initialize-instance_method">
+  <h3 class="signature first" id="initialize-instance_method">
   
     - (<tt><span class='object_link'><a href="" title="URITemplate::Colon::Token::Static (class)">Static</a></span></tt>) <strong>initialize</strong>(str) 
   
 
   
-</p><div class="docstring">
+
+  
+</h3><div class="docstring">
   <div class="discussion">
     
 <p>A new instance of Static</p>
@@ -266,8 +262,8 @@
     <td>
       <pre class="code"><span class="info file"># File 'lib/uri_template/colon.rb', line 60</span>
 
-<span class='kw'>def</span> <span class='id initialize'>initialize</span><span class='lparen'>(</span><span class='id str'>str</span><span class='rparen'>)</span>
-  <span class='ivar'>@string</span> <span class='op'>=</span> <span class='id str'>str</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_str'>str</span><span class='rparen'>)</span>
+  <span class='ivar'>@string</span> <span class='op'>=</span> <span class='id identifier rubyid_str'>str</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -279,16 +275,18 @@
 
   <div id="instance_method_details" class="method_details_list">
     <h2>Instance Method Details</h2>
-    
+
     
       <div class="method_details first">
-  <p class="signature first" id="expand-instance_method">
+  <h3 class="signature first" id="expand-instance_method">
   
     - (<tt>Object</tt>) <strong>expand</strong>(_) 
   
 
   
-</p><table class="source_code">
+
+  
+</h3><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
@@ -301,7 +299,7 @@
     <td>
       <pre class="code"><span class="info file"># File 'lib/uri_template/colon.rb', line 64</span>
 
-<span class='kw'>def</span> <span class='id expand'>expand</span><span class='lparen'>(</span><span class='id _'>_</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_expand'>expand</span><span class='lparen'>(</span><span class='id identifier rubyid__'>_</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='ivar'>@string</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -310,13 +308,15 @@
 </div>
     
       <div class="method_details ">
-  <p class="signature " id="to_r-instance_method">
+  <h3 class="signature " id="to_r-instance_method">
   
     - (<tt>Object</tt>) <strong>to_r</strong> 
   
 
   
-</p><table class="source_code">
+
+  
+</h3><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
@@ -329,8 +329,8 @@
     <td>
       <pre class="code"><span class="info file"># File 'lib/uri_template/colon.rb', line 68</span>
 
-<span class='kw'>def</span> <span class='id to_r'>to_r</span>
-  <span class='kw'>return</span> <span class='const'>Regexp</span><span class='period'>.</span><span class='id escape'>escape</span><span class='lparen'>(</span><span class='ivar'>@string</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_to_r'>to_r</span>
+  <span class='kw'>return</span> <span class='const'>Regexp</span><span class='period'>.</span><span class='id identifier rubyid_escape'>escape</span><span class='lparen'>(</span><span class='ivar'>@string</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -340,11 +340,11 @@
   </div>
 
 </div>
-    
+
     <div id="footer">
-  Generated on Sat Dec  3 15:47:46 2011 by 
+  Generated on Tue Jul  3 19:56:07 2012 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.7.3 (ruby-1.9.3).
+  0.8.2.1 (ruby-1.9.3).
 </div>
 
   </body>
