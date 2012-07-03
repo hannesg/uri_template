@@ -1,6 +1,6 @@
 = URITemplate - a uri template library
 
-{<img src="https://secure.travis-ci.org/hannesg/uri_template.png" />}[http://travis-ci.org/uri_template/uri_template] {<img src="https://gemnasium.com/hannesg/uri_template.png" />}[https://gemnasium.com/hannesg/uri_template]
+{<img src="https://secure.travis-ci.org/hannesg/uri_template.png" />}[http://travis-ci.org/hannesg/uri_template] {<img src="https://gemnasium.com/hannesg/uri_template.png" />}[https://gemnasium.com/hannesg/uri_template]
 
 With URITemplate you can generate URI based on simple templates. The syntax if defined by RFC 6570 ( http://tools.ietf.org/html/rfc6570 ).
 
