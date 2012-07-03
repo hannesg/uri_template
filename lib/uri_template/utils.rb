@@ -12,7 +12,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-#    (c) 2011 by Hannes Georg
+#    (c) 2011 - 2012 by Hannes Georg
 #
 
 module URITemplate
@@ -21,13 +21,13 @@ module URITemplate
   # Initialize with a regexp and pass a string to :each.
   # It will yield a string or a MatchData
   class RegexpEnumerator
-  
+
     include Enumerable
-    
+
     def initialize(regexp)
       @regexp = regexp
     end
-    
+
     def each(str)
       return Enumerator.new(self,:each,str) unless block_given?
       rest = str
@@ -49,19 +49,19 @@ module URITemplate
       end
       return self
     end
-  
+
   end
 
   # This error will be raised whenever an object could not be converted to a param string.
   class Unconvertable < StandardError
-  
+
     attr_reader :object
-  
+
     def initialize(object)
       @object = object
       super("Could not convert the given object (#{Object.instance_method(:inspect).bind(@object).call() rescue '<????>'}) to a param since it doesn't respond to :to_param or :to_s.")
     end
-  
+
   end
 
   # A collection of some utility methods.
@@ -69,145 +69,142 @@ module URITemplate
   # I will use the escape_utils library if available, but runs happily without.
   #
   module Utils
-  
+
     KCODE_UTF8 = (Regexp::KCODE_UTF8 rescue 0)
-    
+
     # Bundles some string encoding methods.
     module StringEncoding
-      
+
       # @method to_ascii(string)
       # converts a string to ascii
       # 
-      # This method checks which encoding method is available.
-      # @param String
+      # @param str [String]
       # @return String
       # @visibility public
       def to_ascii_encode(str)
         str.encode(Encoding::ASCII)
       end
-      
+
       # @method to_utf8(string)
       # converts a string to utf8
       # 
-      # This method checks which encoding method is available.
-      # @param String
+      # @param str [String]
       # @return String
       # @visibility public
       def to_utf8_encode(str)
         str.encode(Encoding::UTF_8)
       end
-      
+
       def to_ascii_fallback(str)
         str
       end
-      
+
       def to_utf8_fallback(str)
         str
       end
-      
+
       if "".respond_to?(:encode)
-        # @private
-        alias_method :to_ascii, :to_ascii_encode
-        # @private
-        alias_method :to_utf8, :to_utf8_encode
+        # @api private
+        send(:alias_method, :to_ascii, :to_ascii_encode)
+        # @api private
+        send(:alias_method, :to_utf8, :to_utf8_encode)
       else
-        # @private
-        alias_method :to_ascii, :to_ascii_fallback
-        # @private
-        alias_method :to_utf8, :to_utf8_fallback
+        # @api private
+        send(:alias_method, :to_ascii, :to_ascii_fallback)
+        # @api private
+        send(:alias_method, :to_utf8, :to_utf8_fallback)
       end
-      
+
       public :to_ascii
       public :to_utf8
-      
+
     end
-    
+
     module Escaping
-    
+
       # A pure escaping module, which implements escaping methods in pure ruby.
       # The performance is acceptable, but could be better with escape_utils.
       module Pure
-    
+
         include StringEncoding
-    
+
         # @private
         URL_ESCAPED = /([^A-Za-z0-9\-\._])/.freeze
-        
+
         # @private
         URI_ESCAPED = /([^A-Za-z0-9!$&'()*+,.\/:;=?@\[\]_~])/.freeze
-        
+
         # @private
-        PCT = /%(\h\h)/.freeze
-        
+        PCT = /%([0-9a-fA-F]{2})/.freeze
+
         def escape_url(s)
           to_utf8(s.to_s).gsub(URL_ESCAPED){
             '%'+$1.unpack('H2'*$1.bytesize).join('%').upcase
           }
         end
-        
+
         def escape_uri(s)
           to_utf8(s.to_s).gsub(URI_ESCAPED){
             '%'+$1.unpack('H2'*$1.bytesize).join('%').upcase
           }
         end
-        
+
         def unescape_url(s)
           to_utf8( s.to_s.gsub('+',' ').gsub(PCT){
             $1.to_i(16).chr
           } )
         end
-        
+
         def unescape_uri(s)
           to_utf8( s.to_s.gsub(PCT){
             $1.to_i(16).chr
           })
         end
-        
+
         def using_escape_utils?
           false
         end
-        
+
       end
-      
+
     if defined? EscapeUtils
-      
+
       # A escaping module, which is backed by escape_utils.
       # The performance is good, espacially for strings with many escaped characters.
       module EscapeUtils
-      
+
         include StringEncoding
-      
+
         include ::EscapeUtils
-    
+
         def using_escape_utils?
           true
         end
-        
+
         def escape_url(s)
           super(to_utf8(s)).gsub('+','%20')
         end
-        
+
         def escape_uri(s)
           super(to_utf8(s))
         end
-        
+
         def unescape_url(s)
           super(to_ascii(s))
         end
-        
+
         def unescape_uri(s)
           super(to_ascii(s))
         end
-      
+
       end
-    
+
     end
-    
-    
+
     end
-    
+
     include StringEncoding
-    
+
     if Escaping.const_defined? :EscapeUtils
       include Escaping::EscapeUtils
       puts "Using escape_utils." if $VERBOSE
@@ -215,7 +212,7 @@ module URITemplate
       include Escaping::Pure
       puts "Not using escape_utils." if $VERBOSE
     end
-    
+
     # Converts an object to a param value.
     # Tries to call :to_param and then :to_s on that object.
     # @raise Unconvertable if the object could not be converted.
@@ -237,8 +234,7 @@ module URITemplate
     rescue NoMethodError
       raise Unconvertable.new(object)
     end
-    
-    
+
     # Returns true when the given value is an array and it only consists of arrays with two items.
     # This useful when using a hash is not ideal, since it doesn't allow duplicate keys.
     # @example
@@ -268,15 +264,33 @@ module URITemplate
     # @param x the value to convert
     # @param careful [true,false] wheter to check every array item. Use this when you expect array with subarrays which are not pairs. Setting this to false however improves runtime by ~30% even with comparetivly short arrays.
     def pair_array_to_hash(x, careful = false )
-      if careful ? pair_array?(x) : (x.kind_of?(Array) and x.first.kind_of?(Array))
+      if careful ? pair_array?(x) : (x.kind_of?(Array) and ( x.empty? or x.first.kind_of?(Array) ) )
         return Hash[ *x.flatten(1) ]
       else
         return x
       end
     end
-    
+
     extend self
-  
+
+    # @api privat
+    def pair_array_to_hash2(x)
+      c = {}
+      result = []
+
+      x.each do | (k,v) |
+        e = c[k]
+        if !e
+          result << c[k] = [k,v]
+        else
+          e[1] = [e[1]] unless e[1].kind_of? Array
+          e[1] << v
+        end
+      end
+
+      return result
+    end
+
   end
 
 end

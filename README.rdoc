@@ -1,5 +1,7 @@
 = URITemplate - a uri template library
 
+{<img src="https://secure.travis-ci.org/hannesg/uri_template.png" />}[http://travis-ci.org/uri_template/uri_template] {<img src="https://gemnasium.com/hannesg/uri_template.png" />}[https://gemnasium.com/hannesg/uri_template]
+
 With URITemplate you can generate URI based on simple templates. The current implementation is based on draft 7 of the uri template spec ( http://tools.ietf.org/html/draft-gregorio-uritemplate-07 ). For the syntax read that spec. Draft 2 of that specification is implemented as addressable gem.
 
 It's currently planed to add newer versions of that spec when they emerge. Therefore the module URITemplate just defines one abstract method ( expand ) and some methods to access the actual implementations.

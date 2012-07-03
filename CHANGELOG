@@ -1,3 +1,11 @@
+# 0.3.0 - 24.05.2012
+* Implemented the final version. Default implementation is now RFC 6570
+* BUGFIX: variables with terminal dots were allowed
+* BUGFIX: lists of commas were parsed incorrectly
+
+# 0.2.1 - 30.12.2011
+* Compatibility: Works now with MRI 1.8.7 and REE
+
 # 0.2.0 - 03.12.2011
 * Reworked the escaping mechanism
 + escape_utils can now be used to boost escape/unescape performance

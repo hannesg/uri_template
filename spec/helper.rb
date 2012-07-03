@@ -12,7 +12,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-#    (c) 2011 by Hannes Georg
+#    (c) 2011 - 2012 by Hannes Georg
 #
 
 $LOAD_PATH << File.expand_path('../lib',File.dirname(__FILE__))
@@ -34,3 +34,79 @@ require 'uri_template'
 unless URITemplate::Utils.using_escape_utils?
   warn 'Not using escape_utils.'
 end
+
+
+class URITemplate::ExpansionMatcher
+
+  def initialize( variables, expected )
+    @variables = variables
+    @expected = expected
+  end
+
+  def matches?( actual )
+    @actual = actual
+    s = @actual.expand(@variables)
+    return Array(@expected).any?{|e| e === s }
+  end
+
+  def failure_message_for_should
+    return [@actual.inspect, ' should not expand to ', @actual.expand(@variables).inspect ,' but ', @expected.inspect, ' when given the following variables: ',"\n", @variables.inspect ].join 
+  end
+
+end
+
+class URITemplate::ExtractionMatcher
+
+  def initialize( variables, uri, fuzzy = true )
+    @variables = variables
+    @fuzzy = fuzzy
+    @uri = uri 
+  end
+
+  def matches?( actual )
+    @message = []
+    v = actual.extract(@uri)
+    if !@fuzzy
+      @message = [actual.inspect,' should extract ',@variables.inspect,' from ',@uri.inspect,' but got ',v.inspect]
+      return @variables == v
+    else
+      tpl_variable_names = actual.variables
+      diff = []
+      @variables.each do |key,val|
+        if tpl_variable_names.include? key
+          if val != v[key]
+            diff << [key, val, v[key] ]
+          end
+        end
+      end
+      v.each do |key,val|
+        if !@variables.key? key
+          diff << [key, nil, val]
+        end
+      end
+      if !diff.empty?
+        @message = [actual.inspect,' should extract ',@variables.inspect,' from ',@uri.inspect,' but got ',v.inspect]
+        diff.each do |key, should, actual|
+          @message << "\n\t" << key << ":\tshould: " << should.inspect << ", is: " << actual.inspect
+        end
+      end
+      return diff.empty?
+    end
+  end
+
+  def failure_message_for_should
+    return @message.join
+  end
+
+end
+
+RSpec::Matchers.class_eval do
+  def expand_to( variables,expected )
+    return URITemplate::ExpansionMatcher.new(variables, expected)
+  end
+
+  def extract_from( variables, uri)
+    return URITemplate::ExtractionMatcher.new(variables, uri)
+  end
+end
+

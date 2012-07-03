@@ -12,82 +12,97 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-#    (c) 2011 by Hannes Georg
+#    (c) 2011 - 2012 by Hannes Georg
 #
 
 # A base module for all implementations of a uri template.
 module URITemplate
 
+  # @private
+  # Should we use \u.... or \x.. in regexps?
+  SUPPORTS_UNICODE_CHARS = begin
+                             if "string".respond_to? :encoding
+                               rx = eval('Regexp.compile("\u0020")')
+                               !!(rx =~ " ")
+                             else
+                               rx = eval('/\u0020/')
+                               !!(rx =~ " ")
+                             end
+                           rescue SyntaxError
+                             false
+                           end
+
   # This should make it possible to do basic analysis independently from the concrete type.
   module Token
-  
+
     def size
       variables.size
     end
-  
+
   end
-  
+
   # A module which all literal tokens should include.
   module Literal
-    
+
     include Token
-    
+
     attr_reader :string
-    
+
     def literal?
       true
     end
-    
+
     def expression?
       false
     end
-    
+
     def variables
       []
     end
-    
+
     def size
       0
     end
-    
+
     def expand(*_)
       return string
     end
-    
+
   end
-  
-  
+
   # A module which all non-literal tokens should include.
   module Expression
-  
+
     include Token
-    
+
     attr_reader :variables
-    
+
     def literal?
       false
     end
-    
+
     def expression?
       true
     end
-  
+
   end
 
   autoload :Utils, 'uri_template/utils'
   autoload :Draft7, 'uri_template/draft7'
+  autoload :RFC6570, 'uri_template/rfc6570'
   autoload :Colon, 'uri_template/colon'
-  
+
   # A hash with all available implementations.
   # Currently the only implementation is :draft7. But there also aliases :default and :latest available. This should make it possible to add newer specs later.
   # @see resolve_class
   VERSIONS = {
     :draft7 => :Draft7,
+    :rfc6570 => :RFC6570,
     :default => :Draft7,
     :colon => :Colon,
-    :latest => :Draft7
+    :latest => :RFC6570
   }
-  
+
   # Looks up which implementation to use.
   # Extracts all symbols from args and looks up the first in {VERSIONS}.
   #
@@ -105,7 +120,7 @@ module URITemplate
     raise ArgumentError, "Unknown template version #{version.inspect}, defined versions: #{VERSIONS.keys.inspect}" unless VERSIONS.key?(version)
     return self.const_get(VERSIONS[version]), rest
   end
-  
+
   # Creates an uri template using an implementation.
   # The args should at least contain a pattern string.
   # Symbols in the args are used to determine the actual implementation.
@@ -121,7 +136,7 @@ module URITemplate
     klass, rest = resolve_class(*args)
     return klass.new(*rest)
   end
-  
+
   # Tries to convert the given argument into an {URITemplate}.
   # Returns nil if this fails.
   #
@@ -135,7 +150,7 @@ module URITemplate
       return nil
     end
   end
-  
+
   # Same as {.try_convert} but raises an ArgumentError when the given argument could not be converted.
   # 
   # @raise ArgumentError if the argument is unconvertable
@@ -147,7 +162,7 @@ module URITemplate
     end
     return o
   end
-  
+
   # Tries to coerce two URITemplates into a common representation.
   # Returns an array with two {URITemplate}s and two booleans indicating which of the two were converted or raises an ArgumentError.
   #
@@ -180,7 +195,7 @@ module URITemplate
     raise ArgumentError, "Expected at least on URITemplate, but got #{a.inspect} and #{b.inspect}" unless a.kind_of? URITemplate or b.kind_of? URITemplate
     raise ArgumentError, "Cannot coerce #{a.inspect} and #{b.inspect} into a common representation."
   end
-  
+
   # Applies a method to a URITemplate with another URITemplate as argument.
   # This is a useful shorthand since both URITemplates are automatically coerced.
   #
@@ -194,34 +209,40 @@ module URITemplate
     a,b,_,_ = self.coerce(a,b)
     a.send(method,b,*args)
   end
-  
+
   # A base class for all errors which will be raised upon invalid syntax.
   module Invalid
   end
-  
+
+  # A base class for all errors which will be raised when a variable value
+  # is not allowed for a certain expansion.
+  module InvalidValue
+  end
+
   # Expands this uri template with the given variables.
   # The variables should be converted to strings using {Utils#object_to_param}.
   # @raise {Unconvertable} if a variable could not be converted to a string.
   # @param variables Hash
   # @return String
   def expand(variables = {})
+    raise ArgumentError, "Expected something that returns to :[], but got: #{variables.inspect}" unless variables.respond_to? :[]
     tokens.map{|part|
       part.expand(variables)
     }.join
   end
-  
+
   # @abstract
   # Returns the type of this template. The type is a symbol which can be used in {.resolve_class} to resolve the type of this template.
   def type
     raise "Please implement #type on #{self.class.inspect}."
   end
-  
+
   # @abstract
   # Returns the tokens of this templates. Tokens should include either {Literal} or {Expression}.
   def tokens
     raise "Please implement #tokens on #{self.class.inspect}."
   end
-  
+
   # Returns an array containing all variables. Repeated variables are ignored. The concrete order of the variables may change.
   # @example
   #   URITemplate.new('{foo}{bar}{baz}').variables #=> ['foo','bar','baz']
@@ -231,7 +252,7 @@ module URITemplate
   def variables
     @variables ||= tokens.select(&:expression?).map(&:variables).flatten.uniq
   end
-  
+
   # Returns the number of static characters in this template.
   # This method is useful for routing, since it's often pointful to use the url with fewer variable characters.
   # For example 'static' and 'sta\\{var\\}' both match 'static', but in most cases 'static' should be prefered over 'sta\\{var\\}' since it's more specific.
@@ -245,7 +266,7 @@ module URITemplate
   def static_characters
     @static_characters ||= tokens.select(&:literal?).map{|t| t.string.size }.inject(0,:+)
   end
-  
+
   # Returns whether this uri-template is absolute.
   # This is detected by checking for "://".
   #
@@ -260,14 +281,14 @@ module URITemplate
       end
       if read_chars =~ /^[a-z]+:\/\//i
         return @absolute = true
-      elsif read_chars =~ /(?<!:|\/)\/(?!\/)/
+      elsif read_chars =~ /(^|[^:\/])\/(?!\/)/
         return @absolute = false
       end
     end
-    
+
     return @absolute = false
   end
-  
+
   # Opposite of {#absolute?}
   def relative?
     !absolute?

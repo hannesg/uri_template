@@ -12,7 +12,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-#    (c) 2011 by Hannes Georg
+#    (c) 2011 - 2012 by Hannes Georg
 #
 
 require 'uri_template'
@@ -27,7 +27,8 @@ variables = {
   'base' => "http://example.com/home/",
   'path' => "/foo/bar",
   'list' => [ "red", "green", "blue" ],
-  'keys' => { "semi" => ";" , "dot" => "." , "comma" => ","},
+  'keys' => [ ["semi",";"] , ["dot","."] , ["comma",","] ],
+  'keys2' => [ ["comma",","] , ["semi",";"] , ["dot","."] ],
   'v' => "6",
   'x' => "1024",
   'y' => "768",
@@ -38,7 +39,7 @@ variables = {
   'segments' => ["path","to"],
   'file' => "file",
   'ext' => "ext",
-  'args' => {"a"=>"b"}
+  'args' => [["a","b"]]
 }
 
 expansion_results = {"{var}"=>"value",
@@ -85,6 +86,7 @@ expansion_results = {"{var}"=>"value",
  "{#list}"=>"#red,green,blue",
  "{#list*}"=>"#red,green,blue",
  "{#keys}"=>"#semi,;,dot,.,comma,,",
+ "{#keys2}"=>"#comma,,,semi,;,dot,.",
  "{#keys*}"=>"#semi=;,dot=.,comma=,",
  "{.who}"=>".fred",
  "{.who,who}"=>".fred.fred",
@@ -147,11 +149,8 @@ expansion_results = {"{var}"=>"value",
  "{&list*}"=>"&red&green&blue",
  "{&keys}"=>"&keys=semi,%3B,dot,.,comma,%2C",
  "{&keys*}"=>"&semi=%3B&dot=.&comma=%2C",
- 
  "{&list,keys*}"=>"&list=red,green,blue&semi=%3B&dot=.&comma=%2C",
- 
  "{&hello}" => "&hello=Hello%20World%21",
- 
  "http://{+host}{/segments*}/{file}{.ext*}{?args*}" => "http://www.myhost.com/path/to/file.ext?a=b"
 }
 
@@ -199,6 +198,7 @@ extraction_results = {"{var}"=>[["var", "value"]],
  "{#list}"=>[["list", ["red", "green", "blue"]]],
  "{#list*}"=>[["list", ["red", "green", "blue"]]],
  "{#keys}"=>[["keys", ["semi", ";", "dot", ".", "comma",","]]],
+ "{#keys2}"=>[["keys2", [ "comma",",", "semi", ";", "dot", "."]]],
  "{#keys*}"=>[["keys", [["semi",";"], ["dot", "."], ["comma",","]]]],
  "{.who}"=>[["who", "fred"]],
  "{.who,who}"=>[["who", "fred"], ["who", "fred"]],
@@ -262,11 +262,8 @@ extraction_results = {"{var}"=>[["var", "value"]],
  "{&list*}"=>[["list", ["red", "green", "blue"]]],
  "{&keys}"=>[["keys", ["semi", ";", "dot", ".", "comma",","]]],
  "{&keys*}"=>[["keys", [["semi", ";"], ["dot", "."], ["comma", ","]]]],
- 
  "{&hello}" => [["hello","Hello World!"]],
- 
  "{&list,keys*}"=>[["list",["red","green","blue"]],["keys", [["semi", ";"], ["dot", "."], ["comma", ","]]]],
- 
  "http://{+host}{/segments*}/{file}{.ext*}{?args*}" => [ ['host','www.myhost.com'],['segments',['path','to']],['file','file'],['ext',['ext']],['args',[['a','b']]]]
 }
 
@@ -295,227 +292,232 @@ describe URITemplate::Draft7 do
   describe "levels" do
 
   expansion_levels.each{|pattern, exp|
-  
-    it "should expand #{pattern.inspect} to #{exp.inspect}" do
+
+    it "should say that #{pattern.inspect} is of level #{exp.inspect}" do
       p = URITemplate::Draft7.new(pattern)
       p.level.should == exp
     end
-    
+
   }
-  
+
   end
 
   describe "basic expansion" do
 
   expansion_results.each{|pattern, exp|
-  
+
     it "should expand #{pattern.inspect} to #{exp.inspect}" do
       p = URITemplate::Draft7.new(pattern)
       URITemplate::Draft7.valid?(pattern).should == true
-      s = p.expand(variables)
-      s.should == exp
+      p.should expand_to(variables, exp)
     end
-    
+
   }
-  
+
   end
-  
+
   describe "basic extraction" do
 
   extraction_results.each{|pattern, exp|
-  
+
     it "should extract #{pattern.inspect} from #{expansion_results[pattern].inspect}" do
       p = URITemplate::Draft7.new(pattern)
       v = p.extract_simple(expansion_results[pattern])
       v.should_not be_nil
       v.should == exp
-      
+
       # make some easy transformations
-      tv = p.extract(expansion_results[pattern])
+      tv = p.extract(expansion_results[pattern], URITemplate::Draft7::CONVERT_RESULT )
       p.expand(tv).should == expansion_results[pattern]
-      
+
     end
-    
+
   }
-  
+
   end
-  
+
   describe "edge-cases" do
-  
+
     it "should work with empty strings" do
-    
+
       p = URITemplate::Draft7.new('')
       p.should === ''
       p.should_not === 'x'
-      
+
     end
-    
+
     it "should raise on no template" do
-    
+
       lambda{ URITemplate::Draft7.new() }.should raise_error(ArgumentError)
-    
+
     end
-  
+
     it "should raise on random object" do
-    
+
       lambda{ URITemplate::Draft7.new(Object.new) }.should raise_error(ArgumentError)
-    
+
     end
-  
+
     it "should raise on foreign match data extraction", :if => //.match('').respond_to?(:regexp) do
-      
+
       tpl = URITemplate::Draft7.new('tpl')
       md = /something else/.match('something else')
       md.should_not be_nil
-      
+
       lambda{ tpl.extract(md) }.should raise_error(ArgumentError)
-    
+
     end
-    
+
     it "should pass nil thru extraction" do
-    
+
       tpl = URITemplate::Draft7.new('tpl')
       tpl.extract(nil).should be_nil
-    
+
     end
-    
+
     it "should extract from matchdata" do
-    
+
       tpl = URITemplate::Draft7.new('{var}')
-      
+
       tpl.extract( tpl.match('value') ).should == {'var'=>'value'}
-    
+
     end
-    
+
     it "should raise when extracting from foreign matchdata", :if => //.match('').respond_to?(:regexp) do
-    
+
       tpl = URITemplate::Draft7.new('{var}')
-      
+
       lambda{ tpl.extract( /.*/.match('value') ) }.should raise_error(ArgumentError)
-    
+
     end
-    
+
     it "should not extract newlines" do
-    
+
       tpl = URITemplate::Draft7.new('{x}')
       tpl.extract("\n").should be_nil
       tpl.extract("%0A").should == {'x'=>"\n"}
-    
+
     end
-    
+
     it "should accept pct-variablenames" do
-    
+
       tpl = URITemplate::Draft7.new('{?vars*}')
       tpl.extract("?v%0Aa=x").should == {'vars'=>{'v%0Aa'=>"x"}}
       tpl.extract("?v%0Aa&b=c").should == {'vars'=>{'v%0Aa'=>nil,'b'=>'c'}}
-    
+
     end
-    
+
+    it "should not expand complex values for length limited variables" do
+
+      tpl = URITemplate::Draft7.new('{?assoc:5}')
+      lambda{ tpl.expand("assoc"=>{'foo'=>'bar'}) }.should raise_error(URITemplate::Draft7::InvalidValue)
+
+    end
+
   end
-  
+
   describe "bogus templates" do
-  
+
     it "should raise on open expansions" do
-    
+
       lambda{ URITemplate::Draft7.new('bogus{var') }.should raise_error(URITemplate::Invalid)
       lambda{ URITemplate::Draft7.new('bogus}var') }.should raise_error(URITemplate::Invalid)
-    
+
     end
-    
+
     it "should raise on non-uri characters" do
-    
+
       lambda{ URITemplate::Draft7.new("\n") }.should raise_error(URITemplate::Invalid)
-      lambda{ URITemplate::Draft7.new(" ") }.should raise_error(URITemplate::Invalid)
+      lambda{ puts URITemplate::Draft7.new(" ").tokens.inspect }.should raise_error(URITemplate::Invalid)
       lambda{ URITemplate::Draft7.new("\r") }.should raise_error(URITemplate::Invalid)
-    
+
     end
-  
+
   end
-  
+
   describe "general usage" do
-  
+
     it "should parse variable names correctly" do
-      
+
       p = URITemplate::Draft7.new('{a,b,c}{x,y}{c,a,b}{b,c,a}')
       p.variables.should have(5).items
       ['x','y','b','c','a'].each do |i|
         p.variables.should be_include(i)
       end
-      
+
     end
-    
+
     it "should yield on extract correctly" do
-    
+
       p = URITemplate::Draft7.new('/foo/{bar}')
       fn = mock()
       fn.should_receive(:call).once
-      
+
       p.extract('/foo/baz'){|a|
         fn.call(a)
         a.should == {'bar'=>'baz'}
       }
-      
+
     end
-  
+
   end
-  
+
   describe "path concatenation" do
-  
+
     it "should insert slashes when needed" do
-    
+
       p = URITemplate::Draft7.new('/foo/bar')
-      
+
       (p / 'baz').should == URITemplate::Draft7.new('/foo/bar/baz')
-      
+
       (p / '{baz}').should == URITemplate::Draft7.new('/foo/bar/{baz}')
-    
+
     end
-    
+
     it "should not insert slashes when they aren't needed" do
-    
+
       p = URITemplate::Draft7.new('/foo/bar')
-      
+
       (p / '').should == URITemplate::Draft7.new('/foo/bar')
-      
+
       (p / '{/baz}').should == URITemplate::Draft7.new('/foo/bar{/baz}')
-    
+
     end
-    
+
     it "should strip slashes when they would double" do
-    
+
       p = URITemplate::Draft7.new('/foo/bar/')
-      
+
       (p / '/baz').should == URITemplate::Draft7.new('/foo/bar/baz')
-      
+
       (p / '{/baz}').should == URITemplate::Draft7.new('/foo/bar{/baz}')
-    
+
     end
-  
+
     it "should raise on absolute templates" do
-    
+
       p = URITemplate::Draft7.new('/foo/bar/')
-      
+
       lambda{ p / 'http://' }.should raise_error
-      
+
       lambda{ p / '{proto}://' }.should raise_error
-      
+
       lambda{ p / 'http{secure}://' }.should raise_error
-    
+
     end
-  
+
     it "should concatenate edge-literals" do
-    
+
       (URITemplate::Draft7.new('/foo/bar/') / 'baz').tokens.should have(1).item
-      
+
       (URITemplate::Draft7.new('/foo/bar') / '/baz').tokens.should have(1).item
-      
+
       (URITemplate::Draft7.new('/foo/bar') / 'baz').tokens.should have(1).item
-       
+
       (URITemplate::Draft7.new('{foo}') / 'baz').tokens.should have(2).item
-      
+
     end
-    
+
   end
 
 end
-
