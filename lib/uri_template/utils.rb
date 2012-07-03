@@ -78,7 +78,6 @@ module URITemplate
       # @method to_ascii(string)
       # converts a string to ascii
       # 
-      # This method checks which encoding method is available.
       # @param str [String]
       # @return String
       # @visibility public
@@ -89,7 +88,6 @@ module URITemplate
       # @method to_utf8(string)
       # converts a string to utf8
       # 
-      # This method checks which encoding method is available.
       # @param str [String]
       # @return String
       # @visibility public
@@ -106,15 +104,15 @@ module URITemplate
       end
 
       if "".respond_to?(:encode)
-        # @private
-        alias_method :to_ascii, :to_ascii_encode
-        # @private
-        alias_method :to_utf8, :to_utf8_encode
+        # @api private
+        send(:alias_method, :to_ascii, :to_ascii_encode)
+        # @api private
+        send(:alias_method, :to_utf8, :to_utf8_encode)
       else
-        # @private
-        alias_method :to_ascii, :to_ascii_fallback
-        # @private
-        alias_method :to_utf8, :to_utf8_fallback
+        # @api private
+        send(:alias_method, :to_ascii, :to_ascii_fallback)
+        # @api private
+        send(:alias_method, :to_utf8, :to_utf8_fallback)
       end
 
       public :to_ascii
