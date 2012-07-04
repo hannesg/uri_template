@@ -66,6 +66,10 @@ class URITemplate::ExtractionMatcher
   def matches?( actual )
     @message = []
     v = actual.extract(@uri)
+    if v.nil?
+      @message = [actual.inspect,' should extract ',@variables.inspect,' from ',@uri.inspect,' but didn\' extract anything.']
+      return false
+    end
     if !@fuzzy
       @message = [actual.inspect,' should extract ',@variables.inspect,' from ',@uri.inspect,' but got ',v.inspect]
       return @variables == v
