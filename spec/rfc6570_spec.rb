@@ -18,7 +18,7 @@ require 'uri_template'
 
 describe URITemplate::RFC6570 do
 
-  ['spec-examples.json', 'extended-tests.json'].each do |file_name|
+  ['spec-examples.json', 'extended-tests.json', 'negative-tests.json'].each do |file_name|
 
   describe "( in the examples from uritemplate-test " do
 
@@ -30,10 +30,20 @@ describe URITemplate::RFC6570 do
 
         spec['testcases'].each do | template, results |
 
+          # NOTE: this negative test case is not that cool
+          if template == '/vars/:var'
+            results = "/vars/:var"
+          end
+
           if results == false
  
             it " should say that #{template} is borked" do
-              lambda{ URITemplate::RFC6570.new(template) }.should raise_error(URITemplate::Invalid)
+              begin
+                URITemplate::RFC6570.new(template).expand(variables)
+              rescue URITemplate::Invalid, URITemplate::InvalidValue
+              else
+                fail "expected URITemplate::Invalid or URITemplate::InvalidValue but nothing was raised"
+              end
             end
 
           elsif results.kind_of? String or results.kind_of? Array
