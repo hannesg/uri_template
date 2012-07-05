@@ -118,6 +118,22 @@ describe URITemplate do
 
   end
 
+  describe "expand" do
+    it 'should expand variables from a hash where the keys are symbols' do
+      t = URITemplate.new("/foo{?bar}")
+      v = { :bar => 'qux' }
+
+      t.expand(v).should == '/foo?bar=qux'
+    end
+
+    it 'should expand variables from a hash with mixed key types' do
+      t = URITemplate.new("{/list*}/{?bar}")
+      v = { :bar => 'qux', "list" => ['a', :b] }
+
+      t.expand(v).should == '/a/b/?bar=qux'
+    end
+  end
+
   describe "docs" do
 
     gem 'yard'
