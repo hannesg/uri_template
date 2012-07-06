@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name = 'uri_template'
-  s.version = '0.3.0'
-  s.date = '2012-05-24'
+  s.version = '0.4.0'
+  s.date = '2012-07-06'
   s.authors = ["HannesG"]
   s.email = %q{hannes.georg@googlemail.com}
   s.summary = 'A templating system for URIs.'
