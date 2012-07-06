@@ -221,11 +221,19 @@ module URITemplate
 
   # Expands this uri template with the given variables.
   # The variables should be converted to strings using {Utils#object_to_param}.
+  #
+  # The keys in the variables hash are converted to
+  # strings in order to support the Ruby 1.9 hash syntax.
+  #
   # @raise {Unconvertable} if a variable could not be converted to a string.
   # @param variables Hash
   # @return String
   def expand(variables = {})
     raise ArgumentError, "Expected something that returns to :[], but got: #{variables.inspect}" unless variables.respond_to? :[]
+
+    # Stringify variables
+    variables = Hash[variables.map{ |k, v| [k.to_s, v] }]
+
     tokens.map{|part|
       part.expand(variables)
     }.join
