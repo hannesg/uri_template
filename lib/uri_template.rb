@@ -229,7 +229,7 @@ module URITemplate
   # @param variables Hash
   # @return String
   def expand(variables = {})
-    raise ArgumentError, "Expected something that returns to :[], but got: #{variables.inspect}" unless variables.respond_to? :[]
+    raise ArgumentError, "Expected something that returns to :map, but got: #{variables.inspect}" unless variables.respond_to? :map
 
     # Stringify variables
     variables = Hash[variables.map{ |k, v| [k.to_s, v] }]
