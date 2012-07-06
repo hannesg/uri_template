@@ -1,6 +1,6 @@
 # 0.4.0 - 06.07.2012
-+ expand now accepts symbols as keys
-+ expand now accepts arrays of pairs
++ expand now accepts symbols as keys ( thanks to @peterhellber )
++ expand now accepts arrays of pairs ( thanks to @peterhellber )
 * fixed some testing bugs
 
 # 0.3.0 - 24.05.2012
