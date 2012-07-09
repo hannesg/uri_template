@@ -1,3 +1,6 @@
+# HEAD
++ SinatraExtension enables sinatra to route URITemplates
+
 # 0.4.0 - 06.07.2012
 + expand now accepts symbols as keys ( thanks to @peterhellber )
 + expand now accepts arrays of pairs ( thanks to @peterhellber )

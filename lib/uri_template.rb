@@ -91,6 +91,7 @@ module URITemplate
   autoload :Draft7, 'uri_template/draft7'
   autoload :RFC6570, 'uri_template/rfc6570'
   autoload :Colon, 'uri_template/colon'
+  autoload :SinatraExtension, 'uri_template/sinatra_extension'
 
   # A hash with all available implementations.
   # Currently the only implementation is :draft7. But there also aliases :default and :latest available. This should make it possible to add newer specs later.
@@ -300,6 +301,10 @@ module URITemplate
   # Opposite of {#absolute?}
   def relative?
     !absolute?
+  end
+
+  def names
+    return variables
   end
 
 end
