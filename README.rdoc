@@ -33,7 +33,20 @@ From version 0.2.0, it will use escape_utils if available. This will significant
   # This will give: { 'host'=>'www.host.com','segments'=>['path','to','a'],'file'=>'file','extensions'=>['x','y']}
   tpl.extract('http://www.host.com/path/to/a/file.x.y')
   
+
+== Use with Sinatra
+
+Since version _HEAD_ uri templates can be used a sinatra routes. Just register +URITemplate::SinatraExtension+ !
+
+  require 'uri_template'
+  require 'sinatra'
   
+  register URITemplate::SinatraExtension
+  
+  get URITemplate.new('/{file}{.exts*}{?args*}') do |file, exts, args|
+    # ... YOUR CODE! ...
+  end
+
 == Benchmarks
 
  * System: Core 2 Duo T9300, 4 gb ram, ubuntu 12.04 64 bit, ruby 1.9.3, 100_000 repetitions
