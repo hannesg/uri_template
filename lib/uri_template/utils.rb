@@ -95,16 +95,16 @@ module URITemplate
         str.encode(Encoding::UTF_8)
       end
 
-      # @method force_utf8_encode(string)
-      # returns a string which contains the same
-      # bytes but uses UTF8 as encoding
-      #
+      # @method force_utf8(str)
+      # enforces UTF8 encoding
+      # 
       # @param str [String]
       # @return String
       # @visibility public
-      #
       def force_utf8_encode(str)
-        str.encoding == Encoding::UTF_8 ? str : str.dup.force_encoding(Encoding::UTF_8)
+        return str if str.encondig == Encoding::UTF_8
+        str = str.dup if str.frozen?
+        return str.force_encoding(Encoding::UTF_8)
       end
 
 
