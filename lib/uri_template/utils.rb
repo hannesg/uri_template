@@ -95,6 +95,19 @@ module URITemplate
         str.encode(Encoding::UTF_8)
       end
 
+      # @method force_utf8_encode(string)
+      # returns a string which contains the same
+      # bytes but uses UTF8 as encoding
+      #
+      # @param str [String]
+      # @return String
+      # @visibility public
+      #
+      def force_utf8_encode(str)
+        str.encoding == Encoding::UTF_8 ? str : str.dup.force_encoding(Encoding::UTF_8)
+      end
+
+
       def to_ascii_fallback(str)
         str
       end
@@ -103,16 +116,24 @@ module URITemplate
         str
       end
 
+      def force_utf8_fallback(str)
+        str
+      end
+
       if "".respond_to?(:encode)
         # @api private
         send(:alias_method, :to_ascii, :to_ascii_encode)
         # @api private
         send(:alias_method, :to_utf8, :to_utf8_encode)
+        # @api private
+        send(:alias_method, :force_utf8, :force_utf8_encode)
       else
         # @api private
         send(:alias_method, :to_ascii, :to_ascii_fallback)
         # @api private
         send(:alias_method, :to_utf8, :to_utf8_fallback)
+        # @api private
+        send(:alias_method, :force_utf8, :force_utf8_fallback)
       end
 
       public :to_ascii
@@ -150,13 +171,13 @@ module URITemplate
         end
 
         def unescape_url(s)
-          to_utf8( s.to_s.gsub('+',' ').gsub(PCT){
+          force_utf8( s.to_s.gsub('+',' ').gsub(PCT){
             $1.to_i(16).chr
           } )
         end
 
         def unescape_uri(s)
-          to_utf8( s.to_s.gsub(PCT){
+          force_utf8( s.to_s.gsub(PCT){
             $1.to_i(16).chr
           })
         end
