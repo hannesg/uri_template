@@ -299,7 +299,7 @@ __REGEXP__
             else
               rest = ''
             end
-            splitted << [ match[1], decode(match[2] + rest , false) ]
+            splitted << [ decode(match[1]), decode(match[2] + rest , false) ]
             rest = match.post_match
           end
           result = Utils.pair_array_to_hash2( splitted )
@@ -325,9 +325,9 @@ __REGEXP__
             end
             if match[1]
               found_value = true
-              splitted << [ match[1][0..-2], decode(match[2] + rest , false) ]
+              splitted << [ decode(match[1][0..-2]), decode(match[2] + rest , false) ]
             else
-              splitted << [ match[2] + rest, nil ]
+              splitted << [ decode(match[2] + rest), nil ]
             end
             rest = match.post_match
           end
@@ -356,7 +356,7 @@ __REGEXP__
             pair = "(#{CHARACTER_CLASSES[:varname][:class]})#{Regexp.escape(self::PAIR_CONNECTOR)}(#{value})"
           else
             pair = "(#{CHARACTER_CLASSES[:varname][:class]}#{Regexp.escape(self::PAIR_CONNECTOR)})?(#{value})"
-          end 
+          end
           source = "\\A#{Regexp.escape(self::SEPARATOR)}?" + pair + "(\\z|#{Regexp.escape(self::SEPARATOR)}(?!#{Regexp.escape(self::SEPARATOR)}))"
           Regexp.new( source , Utils::KCODE_UTF8)
         end
@@ -420,7 +420,7 @@ __REGEXP__
     end
 
     def pair(key, value, max_length = 0)
-      ek = escape(key)
+      ek = key
       ev = escape(value)
       if !self.class::PAIR_IF_EMPTY and ev.size == 0
         return ek
@@ -431,7 +431,7 @@ __REGEXP__
 
     def transform_hash(name, hsh, expand , max_length)
       if expand
-        hsh.map{|key,value| pair(key,value) }
+        hsh.map{|key,value| pair(escape(key),value) }
       elsif hsh.none?
         []
       else
