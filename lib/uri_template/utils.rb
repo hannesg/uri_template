@@ -102,7 +102,7 @@ module URITemplate
       # @return String
       # @visibility public
       def force_utf8_encode(str)
-        return str if str.encondig == Encoding::UTF_8
+        return str if str.encoding == Encoding::UTF_8
         str = str.dup if str.frozen?
         return str.force_encoding(Encoding::UTF_8)
       end
@@ -279,14 +279,14 @@ module URITemplate
     #   URITemplate::Utils.pair_array_to_hash( [ ['a',1],['a',2],['a',3] ] ) #=> {'a'=>3}
     #
     # @example Carful vs. Ignorant
-    #   URITemplate::Utils.pair_array_to_hash( [ ['a',1],'foo','bar'], false ) #=> {'a'=>1,'foo'=>'bar'}
+    #   URITemplate::Utils.pair_array_to_hash( [ ['a',1],'foo','bar'], false ) #=> {'a'=>1}
     #   URITemplate::Utils.pair_array_to_hash( [ ['a',1],'foo','bar'], true ) #=> [ ['a',1],'foo','bar']
     #
     # @param x the value to convert
     # @param careful [true,false] wheter to check every array item. Use this when you expect array with subarrays which are not pairs. Setting this to false however improves runtime by ~30% even with comparetivly short arrays.
     def pair_array_to_hash(x, careful = false )
       if careful ? pair_array?(x) : (x.kind_of?(Array) and ( x.empty? or x.first.kind_of?(Array) ) )
-        return Hash[ *x.flatten(1) ]
+        return Hash[ x ]
       else
         return x
       end
