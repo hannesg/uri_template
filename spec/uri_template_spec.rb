@@ -233,6 +233,7 @@ describe URITemplate do
           encode ? "a".encode('ISO-8859-1') : "a",
           "+",
           "%20%30%40",
+          "%C3%BC",
           # errors:
           "%",
           "%%%",
