@@ -280,7 +280,7 @@ module URITemplate
     #
     # @example Carful vs. Ignorant
     #   URITemplate::Utils.pair_array_to_hash( [ ['a',1],'foo','bar'], false ) #=> {'a'=>1}
-    #   URITemplate::Utils.pair_array_to_hash( [ ['a',1],'foo','bar'], true ) #=> [ ['a',1],'foo','bar']
+    #   URITemplate::Utils.pair_array_to_hash( [ ['a',1],'foo','bar'], true ) #  UNDEFINED!
     #
     # @param x the value to convert
     # @param careful [true,false] wheter to check every array item. Use this when you expect array with subarrays which are not pairs. Setting this to false however improves runtime by ~30% even with comparetivly short arrays.
