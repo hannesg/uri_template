@@ -38,7 +38,7 @@ end
 
 class URITemplate::ExpansionMatcher
 
-  def initialize( variables, expected )
+  def initialize( variables, expected = nil )
     @variables = variables
     @expected = expected
   end
@@ -49,6 +49,11 @@ class URITemplate::ExpansionMatcher
     return Array(@expected).any?{|e| e === s }
   end
 
+  def to(expected)
+    @expected = expected
+    return self
+  end
+
   def failure_message_for_should
     return [@actual.inspect, ' should not expand to ', @actual.expand(@variables).inspect ,' but ', @expected.inspect, ' when given the following variables: ',"\n", @variables.inspect ].join 
   end
@@ -57,10 +62,15 @@ end
 
 class URITemplate::ExtractionMatcher
 
-  def initialize( variables, uri, fuzzy = true )
-    @variables = variables
+  def initialize( variables, uri = '', fuzzy = true )
+    @variables = variables.nil? ? variables : Hash[ variables.map{|k,v| [k.to_s, v]} ]
     @fuzzy = fuzzy
     @uri = uri 
+  end
+
+  def from( uri )
+    @uri = uri
+    return self
   end
 
   def matches?( actual )
@@ -105,8 +115,17 @@ class URITemplate::ExtractionMatcher
 end
 
 RSpec::Matchers.class_eval do
+
+  def expand(variables = {})
+    return URITemplate::ExpansionMatcher.new(variables)
+  end
+
   def expand_to( variables,expected )
     return URITemplate::ExpansionMatcher.new(variables, expected)
+  end
+
+  def extract( variables = {} )
+    return URITemplate::ExtractionMatcher.new(variables)
   end
 
   def extract_from( variables, uri)
