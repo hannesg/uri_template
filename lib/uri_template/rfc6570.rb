@@ -653,6 +653,7 @@ __REGEXP__
       elsif x.kind_of? String and valid? x
         return new(x)
       elsif x.kind_of? URITemplate::Colon
+        return nil if x.tokens.any?{|tk| tk.kind_of? URITemplate::Colon::Token::Splat }
         return new( x.tokens.map{|tk|
           if tk.literal?
             Literal.new(tk.string)
