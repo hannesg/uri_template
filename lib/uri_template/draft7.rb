@@ -143,8 +143,6 @@ class URITemplate::Draft7 < URITemplate::RFC6570
     def transform_array(name, ary, expand , max_length)
       if expand
         ary.map{|value| escape(value) }
-      elsif ary.none?
-        []
       else
         [ (self.class::NAMED ? escape(name)+self.class::PAIR_CONNECTOR : '' ) + ary.map{|value| escape(value) }.join(self.class::LIST_CONNECTOR) ]
       end

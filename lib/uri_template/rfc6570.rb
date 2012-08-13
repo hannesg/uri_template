@@ -432,7 +432,7 @@ __REGEXP__
     def transform_hash(name, hsh, expand , max_length)
       if expand
         hsh.map{|key,value| pair(escape(key),value) }
-      elsif hsh.none?
+      elsif hsh.none? && !self.class::NAMED
         []
       else
         [ (self.class::NAMED ? escape(name)+self.class::PAIR_CONNECTOR : '' ) + hsh.map{|key,value| escape(key)+self.class::LIST_CONNECTOR+escape(value) }.join(self.class::LIST_CONNECTOR) ]
@@ -442,7 +442,7 @@ __REGEXP__
     def transform_array(name, ary, expand , max_length)
       if expand
         self.class::NAMED ? ary.map{|value| pair(name,value) } : ary.map{|value| escape(value) }
-      elsif ary.none?
+      elsif ary.none? && !self.class::NAMED
         []
       else
         [ (self.class::NAMED ? escape(name)+self.class::PAIR_CONNECTOR : '' ) + ary.map{|value| escape(value) }.join(self.class::LIST_CONNECTOR) ]
