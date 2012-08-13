@@ -89,6 +89,13 @@ describe URITemplate::RFC6570 do
 
     end
 
+    it "should refuse to expand a array variable with length limit" do
+
+      t = URITemplate::RFC6570.new("{?array:10}")
+      lambda{ t.expand("array"=>["a","b"]) }.should raise_error
+
+    end
+
   end
 
   describe "extraction" do
