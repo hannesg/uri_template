@@ -113,10 +113,26 @@ describe URITemplate::RFC6570 do
   describe "conversion" do
 
     it ' should convert most draft7 templates' do
-      
+
       URITemplate::RFC6570.try_convert( URITemplate::Draft7.new('{var}') ).should_not be_nil
 
     end
+
+    it ' should convert simple colon templates' do
+
+      URITemplate::RFC6570.try_convert( URITemplate::Colon.new(':var') ).should_not be_nil
+
+    end
+
+    it ' should convert colon templates with correct escaping' do
+
+      tpl = URITemplate::RFC6570.try_convert( URITemplate::Colon.new('öö') )
+      tpl.should_not be_nil
+
+      tpl.should extract.from('%C3%B6%C3%B6')
+
+    end
+
   end
 
 end
