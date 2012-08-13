@@ -57,7 +57,7 @@ class URITemplate::RFC6570
     },
 
     :varname => {
-      :class => '(?:[a-zA-Z_]|%[0-9a-fA-F]{2})(?:[a-zA-Z_\.]|%[0-9a-fA-F]{2})*?',
+      :class => '(?:[a-zA-Z0-9_]|%[0-9a-fA-F]{2})(?:\.?(?:[a-zA-Z0-9_]|%[0-9a-fA-F]{2}))*?',
       :class_name => 'c_vn_'
     }
 
