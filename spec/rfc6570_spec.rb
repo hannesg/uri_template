@@ -26,7 +26,7 @@ describe URITemplate::RFC6570 do
     data = MultiJson.load( f.read )
     data.each do |label, spec|
       describe "- #{label} )" do
-        variables = spec['variables']
+        variables = force_all_utf8( spec['variables'] )
 
         spec['testcases'].each do | template, results |
 
