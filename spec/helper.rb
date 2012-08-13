@@ -35,6 +35,24 @@ unless URITemplate::Utils.using_escape_utils?
   warn 'Not using escape_utils.'
 end
 
+if RUBY_DESCRIPTION =~ /\Ajruby/ and "".respond_to? :force_encoding
+  # jruby produces ascii encoded json hashes :(
+  def force_all_utf8(x)
+    if x.kind_of? String
+      return x.dup.force_encoding("UTF-8")
+    elsif x.kind_of? Array
+      return x.map{|a| force_all_utf8(a) }
+    elsif x.kind_of? Hash
+      return Hash[ x.map{|k,v| [force_all_utf8(k),force_all_utf8(v)]} ]
+    else
+      return x
+    end
+  end
+else
+  def force_all_utf8(x)
+    return x
+  end
+end
 
 class URITemplate::ExpansionMatcher
 
