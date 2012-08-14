@@ -22,7 +22,7 @@ describe URITemplate::RFC6570 do
 
   describe "( in the examples from uritemplate-test " do
 
-    f = File.new(File.expand_path(file_name, File.join(File.dirname(__FILE__),'uritemplate-test')))
+    f = File.new(File.expand_path(file_name, File.join(File.dirname(__FILE__),'../../uritemplate-test')))
     data = MultiJson.load( f.read )
     data.each do |label, spec|
       describe "- #{label} )" do
@@ -36,7 +36,7 @@ describe URITemplate::RFC6570 do
           end
 
           if results == false
- 
+
             it " should say that #{template} is borked" do
               begin
                 URITemplate::RFC6570.new(template).expand(variables)
@@ -96,6 +96,20 @@ describe URITemplate::RFC6570 do
 
     end
 
+    it 'should expand assocs with dots' do
+
+      t = URITemplate::RFC6570.new("{?assoc*}")
+      t.should expand("assoc" => {'.'=>'dot'}).to('?.=dot')
+
+    end
+
+    it 'should expand assocs with minus' do
+
+      t = URITemplate::RFC6570.new("{?assoc*}")
+      t.should expand("assoc" => {'-'=>'minus'}).to('?-=minus')
+
+    end
+
   end
 
   describe "extraction" do
@@ -105,6 +119,20 @@ describe URITemplate::RFC6570 do
       t = URITemplate::RFC6570.new("{?list*}")
       t.extract('?a&b&c').should be_nil
       t.should extract_from({'list'=>%w{a b c}}, '?list=a&list=b&list=c')
+
+    end
+
+    it 'should extract assocs with dots' do
+
+      t = URITemplate::RFC6570.new("{?assoc*}")
+      t.should extract("assoc" => {'.'=>'dot'}).from('?.=dot')
+
+    end
+
+    it 'should extract assocs with minus' do
+
+      t = URITemplate::RFC6570.new("{?assoc*}")
+      t.should extract("assoc" => {'-'=>'minus'}).from('?-=minus')
 
     end
 

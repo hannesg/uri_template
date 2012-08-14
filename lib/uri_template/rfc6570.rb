@@ -48,16 +48,20 @@ class URITemplate::RFC6570
   CHARACTER_CLASSES = {
 
     :unreserved => {
-      :class => '(?:[A-Za-z0-9\-\._]|%[0-9a-fA-F]{2})', 
+      :class => '(?:[A-Za-z0-9\-\._]|%[0-9a-fA-F]{2})',
+      :class_with_comma => '(?:[A-Za-z0-9\-\._,]|%[0-9a-fA-F]{2})',
+      :class_without_comma => '(?:[A-Za-z0-9\-\._]|%[0-9a-fA-F]{2})',
       :grabs_comma => false
     },
     :unreserved_reserved_pct => {
       :class => '(?:[A-Za-z0-9\-\._:\/?#\[\]@!\$%\'\(\)*+,;=]|%[0-9a-fA-F]{2})',
+      :class_with_comma => '(?:[A-Za-z0-9\-\._:\/?#\[\]@!\$%\'\(\)*+,;=]|%[0-9a-fA-F]{2})',
+      :class_without_comma => '(?:[A-Za-z0-9\-\._:\/?#\[\]@!\$%\'\(\)*+;=]|%[0-9a-fA-F]{2})',
       :grabs_comma => true
     },
 
     :varname => {
-      :class => '(?:[a-zA-Z0-9_]|%[0-9a-fA-F]{2})(?:\.?(?:[a-zA-Z0-9_]|%[0-9a-fA-F]{2}))*?',
+      :class => '(?:[A-Za-z0-9\-\._]|%[0-9a-fA-F]{2})+',
       :class_name => 'c_vn_'
     }
 
@@ -216,10 +220,10 @@ __REGEXP__
       i = 0
       if self.class::NAMED
         @variable_specs.each{| var, expand , max_length |
-          value = "(?:#{self.class::CHARACTER_CLASS[:class]}|,)#{(max_length > 0)?'{0,'+max_length.to_s+'}':'*'}"
+          value = self.class::CHARACTER_CLASS[:class_with_comma] + ( (max_length > 0) ? '{0,'+max_length.to_s+'}' : '*' )
           if expand
             #if self.class::PAIR_IF_EMPTY
-            pair = "#{CHARACTER_CLASSES[:varname][:class]}#{Regexp.escape(self.class::PAIR_CONNECTOR)}#{value}"
+            pair = "#{self.class::CHARACTER_CLASS[:class]}+?#{Regexp.escape(self.class::PAIR_CONNECTOR)}#{value}"
 
             if first
               source << "((?:#{pair})(?:#{Regexp.escape(self.class::SEPARATOR)}#{pair})*)"
@@ -248,18 +252,14 @@ __REGEXP__
           last = (vs == i)
           if expand
             # could be list or map, too
-            value = "#{self.class::CHARACTER_CLASS[:class]}#{(max_length > 0)?'{0,'+max_length.to_s+'}':'*'}"
+            value = self.class::CHARACTER_CLASS[:class] + ( (max_length > 0) ? '{0,'+max_length.to_s+'}' : '*' )
 
-            pair = "(?:#{CHARACTER_CLASSES[:varname][:class]}#{Regexp.escape(self.class::PAIR_CONNECTOR)})?#{value}"
+            pair = "(?:#{self.class::CHARACTER_CLASS[:class]}+?#{Regexp.escape(self.class::PAIR_CONNECTOR)})?#{value}"
 
             value = "#{pair}(?:#{Regexp.escape(self.class::SEPARATOR)}#{pair})*"
           elsif last
             # the last will slurp lists
-            if self.class::CHARACTER_CLASS[:grabs_comma]
-              value = "#{self.class::CHARACTER_CLASS[:class]}#{(max_length > 0)?'{0,'+max_length.to_s+'}':'*?'}"
-            else
-              value = "(?:#{self.class::CHARACTER_CLASS[:class]}|,)#{(max_length > 0)?'{0,'+max_length.to_s+'}':'*?'}"
-            end
+            value = "#{self.class::CHARACTER_CLASS[:class_with_comma]}#{(max_length > 0)?'{0,'+max_length.to_s+'}':'*?'}"
           else
             value = "#{self.class::CHARACTER_CLASS[:class]}#{(max_length > 0)?'{0,'+max_length.to_s+'}':'*?'}"
           end
@@ -353,9 +353,9 @@ __REGEXP__
         @hash_extractors[max_length] ||= begin
           value = "#{self::CHARACTER_CLASS[:class]}#{(max_length > 0)?'{0,'+max_length.to_s+'}':'*?'}"
           if self::NAMED
-            pair = "(#{CHARACTER_CLASSES[:varname][:class]})#{Regexp.escape(self::PAIR_CONNECTOR)}(#{value})"
+            pair = "(#{self::CHARACTER_CLASS[:class]}+?)#{Regexp.escape(self::PAIR_CONNECTOR)}(#{value})"
           else
-            pair = "(#{CHARACTER_CLASSES[:varname][:class]}#{Regexp.escape(self::PAIR_CONNECTOR)})?(#{value})"
+            pair = "(#{self::CHARACTER_CLASS[:class]}+?#{Regexp.escape(self::PAIR_CONNECTOR)})?(#{value})"
           end
           source = "\\A#{Regexp.escape(self::SEPARATOR)}?" + pair + "(\\z|#{Regexp.escape(self::SEPARATOR)}(?!#{Regexp.escape(self::SEPARATOR)}))"
           Regexp.new( source , Utils::KCODE_UTF8)
