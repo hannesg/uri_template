@@ -22,7 +22,7 @@ describe URITemplate::RFC6570 do
 
   describe "( in the examples from uritemplate-test " do
 
-    f = File.new(File.expand_path(file_name, File.join(File.dirname(__FILE__),'../../uritemplate-test')))
+    f = File.new(File.expand_path(file_name, File.join(File.dirname(__FILE__),'./uritemplate-test')))
     data = MultiJson.load( f.read )
     data.each do |label, spec|
       describe "- #{label} )" do
