@@ -275,11 +275,42 @@ module URITemplate
     @static_characters ||= tokens.select(&:literal?).map{|t| t.string.size }.inject(0,:+)
   end
 
-  # Returns whether this uri-template is absolute.
-  # This is detected by checking for "://".
+  # Returns whether this uri-template matches the host name
   #
-  def absolute?
-    return @absolute unless @absolute.nil?
+  # @example
+  #   URITemplate.new('/foo').host? #=> false
+  #   URITemplate.new('//example.com/foo').host? #=> true
+  #   URITemplate.new('//{host}/foo').host? #=> true
+  #   URITemplate.new('http://example.com/foo').host? #=> true
+  #
+  def host?
+    return @host unless @host.nil?
+    read_chars = ""
+    tokens.each do |token|
+      if token.expression?
+        read_chars << "x"
+      elsif token.literal?
+        read_chars << token.string
+      end
+      if read_chars =~ /^([a-z]+:)?\/\//i
+        return @host = true
+      elsif read_chars =~ /(^|[^:\/])\/(?!\/)/
+        return @host = false
+      end
+    end
+    return @host = false
+  end
+
+  # Returns whether this uri-template matches the proto
+  #
+  # @example
+  #   URITemplate.new('/foo').proto? #=> false
+  #   URITemplate.new('//example.com/foo').proto? #=> false
+  #   URITemplate.new('http://example.com/foo').proto? #=> true
+  #   URITemplate.new('{proto}://example.com/foo').proto? #=> true
+  #
+  def proto?
+    return @proto unless @proto.nil?
     read_chars = ""
     tokens.each do |token|
       if token.expression?
@@ -288,14 +319,17 @@ module URITemplate
         read_chars << token.string
       end
       if read_chars =~ /^[a-z]+:\/\//i
-        return @absolute = true
+        return @proto = true
       elsif read_chars =~ /(^|[^:\/])\/(?!\/)/
-        return @absolute = false
+        return @proto = false
       end
     end
 
-    return @absolute = false
+    return @proto = false
   end
+
+
+  alias absolute? host?
 
   # Opposite of {#absolute?}
   def relative?
