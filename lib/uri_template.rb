@@ -275,43 +275,47 @@ module URITemplate
     @static_characters ||= tokens.select(&:literal?).map{|t| t.string.size }.inject(0,:+)
   end
 
-  # Returns whether this uri-template matches the host name
+  # Returns whether this uri-template includes a host name
+  #
+  # This method is usefull to check wheter this template will generate 
+  # or match a uri with a host.
+  #
+  # @see #scheme?
   #
   # @example
   #   URITemplate.new('/foo').host? #=> false
   #   URITemplate.new('//example.com/foo').host? #=> true
   #   URITemplate.new('//{host}/foo').host? #=> true
   #   URITemplate.new('http://example.com/foo').host? #=> true
+  #   URITemplate.new('{scheme}://example.com/foo').host? #=> true
   #
   def host?
-    return @host unless @host.nil?
-    read_chars = ""
-    tokens.each do |token|
-      if token.expression?
-        read_chars << "x"
-      elsif token.literal?
-        read_chars << token.string
-      end
-      if read_chars =~ /^([a-z]+:)?\/\//i
-        return @host = true
-      elsif read_chars =~ /(^|[^:\/])\/(?!\/)/
-        return @host = false
-      end
-    end
-    return @host = false
+    return scheme_and_host[1]
   end
 
-  # Returns whether this uri-template matches the proto
+  # Returns whether this uri-template includes a scheme
+  #
+  # This method is usefull to check wheter this template will generate 
+  # or match a uri with a scheme.
+  # 
+  # @see #host?
   #
   # @example
-  #   URITemplate.new('/foo').proto? #=> false
-  #   URITemplate.new('//example.com/foo').proto? #=> false
-  #   URITemplate.new('http://example.com/foo').proto? #=> true
-  #   URITemplate.new('{proto}://example.com/foo').proto? #=> true
+  #   URITemplate.new('/foo').scheme? #=> false
+  #   URITemplate.new('//example.com/foo').scheme? #=> false
+  #   URITemplate.new('http://example.com/foo').scheme? #=> true
+  #   URITemplate.new('{scheme}://example.com/foo').scheme? #=> true
   #
-  def proto?
-    return @proto unless @proto.nil?
+  def scheme?
+    return scheme_and_host[0]
+  end
+
+
+  # @api private
+  def scheme_and_host
+    return @scheme_and_host if @scheme_and_host
     read_chars = ""
+    @scheme_and_host = [false,false ]
     tokens.each do |token|
       if token.expression?
         read_chars << "x"
@@ -319,15 +323,19 @@ module URITemplate
         read_chars << token.string
       end
       if read_chars =~ /^[a-z]+:\/\//i
-        return @proto = true
+        @scheme_and_host = [true, true]
+        break
+      elsif read_chars =~ /^\/\//i
+        @scheme_and_host[1] = true
+        break
       elsif read_chars =~ /(^|[^:\/])\/(?!\/)/
-        return @proto = false
+        break
       end
     end
-
-    return @proto = false
+    return @scheme_and_host
   end
 
+  private :scheme_and_host
 
   alias absolute? host?
 
