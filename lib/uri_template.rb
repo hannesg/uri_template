@@ -18,7 +18,7 @@
 # A base module for all implementations of a uri template.
 module URITemplate
 
-  # @private
+  # @api private
   # Should we use \u.... or \x.. in regexps?
   SUPPORTS_UNICODE_CHARS = begin
                              if "string".respond_to? :encoding
@@ -31,6 +31,15 @@ module URITemplate
                            rescue SyntaxError
                              false
                            end
+
+  # @api private
+  SCHEME_REGEX = /\A[a-z]+:/i.freeze
+
+  # @api private
+  HOST_REGEX = /\A(?:[a-z]+:)?\/\/[^\/]+/i.freeze
+
+  # @api private
+  URI_SPLIT = /\A(?:([a-z]+):)?+(?:\/\/)?+([^\/]+)?/i.freeze
 
   # This should make it possible to do basic analysis independently from the concrete type.
   module Token
@@ -83,6 +92,14 @@ module URITemplate
 
     def expression?
       true
+    end
+
+    def scheme?
+      false
+    end
+
+    def host?
+      false
     end
 
   end
@@ -226,7 +243,7 @@ module URITemplate
   # strings in order to support the Ruby 1.9 hash syntax.
   #
   # @raise {Unconvertable} if a variable could not be converted to a string.
-  # @param variables Hash
+  # @param variables [Hash]
   # @return String
   def expand(variables = {})
     raise ArgumentError, "Expected something that returns to :map, but got: #{variables.inspect}" unless variables.respond_to? :map
@@ -315,17 +332,24 @@ module URITemplate
   def scheme_and_host
     return @scheme_and_host if @scheme_and_host
     read_chars = ""
-    @scheme_and_host = [false,false ]
+    @scheme_and_host = [false,false]
     tokens.each do |token|
       if token.expression?
+        read_chars << "x"
+        if token.scheme?
+          read_chars << ':'
+        end
+        if token.host?
+          read_chars << '//'
+        end
         read_chars << "x"
       elsif token.literal?
         read_chars << token.string
       end
-      if read_chars =~ /^[a-z]+:\/\//i
+      if read_chars =~ SCHEME_REGEX
         @scheme_and_host = [true, true]
         break
-      elsif read_chars =~ /^\/\//i
+      elsif read_chars =~ HOST_REGEX
         @scheme_and_host[1] = true
         break
       elsif read_chars =~ /(^|[^:\/])\/(?!\/)/

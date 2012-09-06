@@ -178,6 +178,14 @@ class URITemplate::Draft7 < URITemplate::RFC6570
         Utils.unescape_uri(x)
       end
 
+      def scheme?
+        true
+      end
+
+      def host?
+        true
+      end
+
     end
 
     class Fragment < self

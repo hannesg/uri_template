@@ -163,5 +163,29 @@ describe URITemplate::RFC6570 do
 
   end
 
+  describe 'host?' do 
+
+    it 'should be true if a reserved expansion is present' do
+
+      tpl = URITemplate::RFC6570.new("{+foo}")
+
+      tpl.host?.should be_true
+
+    end
+
+  end
+
+  describe 'scheme?' do 
+
+    it 'should be true if a reserved expansion is present' do
+
+      tpl = URITemplate::RFC6570.new("{+foo}")
+
+      tpl.scheme?.should be_true
+
+    end
+
+  end
+
 end
 

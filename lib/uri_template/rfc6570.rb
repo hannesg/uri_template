@@ -463,6 +463,14 @@ __REGEXP__
         Utils.unescape_uri(x)
       end
 
+      def scheme?
+        true
+      end
+
+      def host?
+        true
+      end
+
     end
 
     class Fragment < self
@@ -718,7 +726,7 @@ __REGEXP__
 
   # @method expand(variables = {})
   # Expands the template with the given variables.
-  # The expansion should be compatible to uritemplate spec draft 7 ( http://tools.ietf.org/html/draft-gregorio-uritemplate-07 ).
+  # The expansion should be compatible to uritemplate spec rfc 6570 ( http://tools.ietf.org/html/rfc6570 ).
   # @note
   #   All keys of the supplied hash should be strings as anything else won't be recognised.
   # @note
@@ -856,7 +864,7 @@ __REGEXP__
     self.class::TYPE
   end
 
-  # Returns the level of this template according to the draft ( http://tools.ietf.org/html/draft-gregorio-uritemplate-07#section-1.2 ). Higher level means higher complexity.
+  # Returns the level of this template according to the rfc 6570 ( http://tools.ietf.org/html/rfc6570#section-1.2 ). Higher level means higher complexity.
   # Basically this is defined as:
   # 
   # * Level 1: no operators, one variable per expansion, no variable modifiers
