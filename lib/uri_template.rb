@@ -33,13 +33,24 @@ module URITemplate
                            end
 
   # @api private
+  # Should we use quantifier modifier in regexps?
+  SUPPORTS_QUANTIFIER_MODIFIER =  begin
+                                    /a+?/.match('aa').to_s == 1
+                                  rescue SyntaxError
+                                    false
+                                  end
+
+  # @api private
+  QUANTIFY_POSSESSIVE = SUPPORTS_QUANTIFIER_MODIFIER ? '+' : ''
+
+  # @api private
   SCHEME_REGEX = /\A[a-z]+:/i.freeze
 
   # @api private
   HOST_REGEX = /\A(?:[a-z]+:)?\/\/[^\/]+/i.freeze
 
   # @api private
-  URI_SPLIT = /\A(?:([a-z]+):)?+(?:\/\/)?+([^\/]+)?/i.freeze
+  URI_SPLIT = /\A(?:([a-z]+):)?#{QUANTIFY_POSSESSIVE}(?:\/\/)?#{QUANTIFY_POSSESSIVE}([^\/]+)?/i.freeze
 
   # This should make it possible to do basic analysis independently from the concrete type.
   module Token
