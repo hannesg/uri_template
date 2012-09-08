@@ -55,6 +55,13 @@ module URITemplate
   # This should make it possible to do basic analysis independently from the concrete type.
   module Token
 
+    EMPTY_ARRAY = [].freeze
+
+    def variables
+      EMPTY_ARRAY
+    end
+
+    # Number of variables in this token
     def size
       variables.size
     end
@@ -86,15 +93,11 @@ module URITemplate
       false
     end
 
-    def variables
-      []
-    end
-
     def size
       0
     end
 
-    def expand(*_)
+    def expand(_)
       return string
     end
 
@@ -131,6 +134,10 @@ module URITemplate
 
     def host?
       false
+    end
+
+    def expand(variables)
+      raise "Please implement #expand(variables) on #{self.class.inspect}."
     end
 
     def to_s

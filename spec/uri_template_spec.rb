@@ -67,6 +67,12 @@ describe URITemplate do
       }.to raise_error(/\APlease implement/)
     end
 
+    it 'should moarn about unimplemented Expression.expand(variables)' do
+      expect{
+        BadURITemplate::BadExpression.new.expand(nil)
+      }.to raise_error(/\APlease implement/)
+    end
+
   end
 
   describe 'resolving' do
