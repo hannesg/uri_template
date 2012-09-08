@@ -185,9 +185,6 @@ __REGEXP__
     end
 
     def each
-      if !block_given?
-        return Enumerator.new(self)
-      end
       scanner = StringScanner.new(@source)
       until scanner.eos?
         expression = scanner.scan(EXPRESSION)
