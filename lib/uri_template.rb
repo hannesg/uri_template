@@ -140,15 +140,12 @@ module URITemplate
   end
 
   autoload :Utils, 'uri_template/utils'
-  autoload :Draft7, 'uri_template/draft7'
   autoload :RFC6570, 'uri_template/rfc6570'
   autoload :Colon, 'uri_template/colon'
 
   # A hash with all available implementations.
-  # Currently the only implementation is :draft7. But there also aliases :default and :latest available. This should make it possible to add newer specs later.
   # @see resolve_class
   VERSIONS = {
-    :draft7 => :Draft7,
     :rfc6570 => :RFC6570,
     :default => :RFC6570,
     :colon => :Colon,
@@ -183,7 +180,7 @@ module URITemplate
   #   tpl.expand('x'=>'y') #=> 'y'
   #
   # @example
-  #   tpl = URITemplate.new(:draft7,'{x}') # a new template using the draft7 implementation
+  #   tpl = URITemplate.new(:colon,'/:x') # a new template using the colon implementation
   # 
   def self.new(*args)
     klass, rest = resolve_class(*args)

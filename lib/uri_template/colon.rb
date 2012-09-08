@@ -138,7 +138,7 @@ class Colon
   # Tries to convert the value into a colon-template.
   # @example
   #   URITemplate::Colon.try_convert('/foo/:bar/').pattern #=> '/foo/:bar/'
-  #   URITemplate::Colon.try_convert(URITemplate::Draft7.new('/foo/{bar}/')).pattern #=> '/foo/{:bar}/'
+  #   URITemplate::Colon.try_convert(URITemplate.new(:rfc6570, '/foo/{bar}/')).pattern #=> '/foo/{:bar}/'
   def self.try_convert(x)
     if x.kind_of? String
       return new(x)
@@ -152,6 +152,7 @@ class Colon
   end
 
   def initialize(pattern)
+    raise ArgumentError,"Expected a String but got #{pattern.inspect}" unless pattern.kind_of? String
     @pattern = pattern
   end
 
@@ -171,6 +172,9 @@ class Colon
       else
         result[tk.name] = Utils.unescape_url( md[i+1] )
       end
+    end
+    if block_given?
+      return yield(result)
     end
     return result
   end

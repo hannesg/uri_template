@@ -73,14 +73,7 @@ describe URITemplate do
 
     it 'should create templates' do
 
-      URITemplate.new('{x}').should == URITemplate::Draft7.new('{x}')
-
-    end
-
-    it 'should be able to select a template version' do
-
-      URITemplate.new(:draft7,'{x}').should == URITemplate::Draft7.new('{x}')
-      URITemplate.new('{x}',:draft7).should == URITemplate::Draft7.new('{x}')
+      URITemplate.new('{x}').should be_kind_of URITemplate
 
     end
 
@@ -131,7 +124,7 @@ describe URITemplate do
     it 'should not raise argument errors when convert succeds' do
 
       URITemplate.convert('tpl').should be_kind_of(URITemplate)
-      URITemplate.convert(URITemplate::Draft7.new('foo')).should be_kind_of(URITemplate)
+      URITemplate.convert(URITemplate.new('foo')).should be_kind_of(URITemplate)
 
     end
 
@@ -140,6 +133,7 @@ describe URITemplate do
       URITemplate::VERSIONS.each do |type|
         tpl = URITemplate.new(type, '/foo')
         URITemplate.new(tpl.type, tpl.pattern).should == tpl
+        URITemplate.new(tpl.pattern, tpl.type).should == tpl
       end
 
     end

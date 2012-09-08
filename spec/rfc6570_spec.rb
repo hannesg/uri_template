@@ -21,6 +21,8 @@ describe URITemplate::RFC6570 do
 
   it_should_behave_like "a uri template class"
 
+  it_should_behave_like "a uri template class with extraction"
+
   ['spec-examples.json', 'extended-tests.json', 'negative-tests.json'].each do |file_name|
 
   describe "( in the examples from uritemplate-test " do
@@ -149,12 +151,6 @@ describe URITemplate::RFC6570 do
   end
 
   describe "conversion" do
-
-    it ' should convert most draft7 templates' do
-
-      URITemplate::RFC6570.try_convert( URITemplate::Draft7.new('{var}') ).should_not be_nil
-
-    end
 
     it ' should convert simple colon templates' do
 

@@ -20,6 +20,8 @@ describe URITemplate::Colon do
 
   it_should_behave_like "a uri template class"
 
+  it_should_behave_like "a uri template class with extraction"
+
   describe "extraction" do
 
     it "should extract as expected" do
