@@ -158,21 +158,21 @@ describe URITemplate do
 
   describe "cross-type usability" do
 
-    it "should allow path-style concatenation between colon and draft7" do
+    it "should allow path-style concatenation between colon and rfc6570" do
 
-      (URITemplate.new(:draft7, '/prefix') / URITemplate.new(:colon, '/suffix')).pattern.should == '/prefix/suffix'
+      (URITemplate.new(:rfc6570, '/prefix') / URITemplate.new(:colon, '/suffix')).pattern.should == '/prefix/suffix'
 
-      (URITemplate.new(:colon, '/prefix') / URITemplate.new(:draft7, '/suffix')).pattern.should == '/prefix/suffix'
+      (URITemplate.new(:colon, '/prefix') / URITemplate.new(:rfc6570, '/suffix')).pattern.should == '/prefix/suffix'
 
-      (URITemplate.new(:draft7, '/{prefix}') / URITemplate.new(:colon, '/suffix')).pattern.should == '/{prefix}/suffix'
+      (URITemplate.new(:rfc6570, '/{prefix}') / URITemplate.new(:colon, '/suffix')).pattern.should == '/{prefix}/suffix'
 
-      (URITemplate.new(:draft7, '/prefix') / URITemplate.new(:colon, '/:suffix')).pattern.should == '/prefix/{suffix}'
+      (URITemplate.new(:rfc6570, '/prefix') / URITemplate.new(:colon, '/:suffix')).pattern.should == '/prefix/{suffix}'
 
-      (URITemplate.new(:colon, '/:prefix') / URITemplate.new(:draft7, '/suffix')).pattern.should == '/:prefix/suffix'
+      (URITemplate.new(:colon, '/:prefix') / URITemplate.new(:rfc6570, '/suffix')).pattern.should == '/:prefix/suffix'
 
-      (URITemplate.new(:colon, '/:prefix') / URITemplate.new(:draft7, '/{suffix}')).pattern.should == '/:prefix/{:suffix}'
+      (URITemplate.new(:colon, '/:prefix') / URITemplate.new(:rfc6570, '/{suffix}')).pattern.should == '/:prefix/:suffix'
 
-      (URITemplate.new(:colon, '/:prefix') / URITemplate.new(:draft7, '{/suffix}')).pattern.should == '/{prefix}{/suffix}'
+      (URITemplate.new(:colon, '/:prefix') / URITemplate.new(:rfc6570, '{/suffix}')).pattern.should == '/{prefix}{/suffix}'
 
     end
 

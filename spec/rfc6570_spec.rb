@@ -15,8 +15,11 @@
 #
 
 require 'uri_template'
+require 'uri_template_shared'
 
 describe URITemplate::RFC6570 do
+
+  it_should_behave_like "a uri template class"
 
   ['spec-examples.json', 'extended-tests.json', 'negative-tests.json'].each do |file_name|
 
@@ -118,7 +121,7 @@ describe URITemplate::RFC6570 do
 
       t = URITemplate::RFC6570.new("{?list*}")
       t.extract('?a&b&c').should be_nil
-      t.should extract_from({'list'=>%w{a b c}}, '?list=a&list=b&list=c')
+      t.should extract('list'=>%w{a b c}).from('?list=a&list=b&list=c')
 
     end
 
@@ -133,6 +136,13 @@ describe URITemplate::RFC6570 do
 
       t = URITemplate::RFC6570.new("{?assoc*}")
       t.should extract("assoc" => {'-'=>'minus'}).from('?-=minus')
+
+    end
+
+    it 'should extract from it\'s owns regex\' match ' do
+
+      t = URITemplate::RFC6570.new("{simple}")
+      t.should extract("simple" => "yes").from(t.to_r.match("yes"))
 
     end
 
@@ -161,6 +171,84 @@ describe URITemplate::RFC6570 do
 
     end
 
+    it ' should raise when conversion is not possible' do
+
+      expect{
+        URITemplate::RFC6570.convert( Object.new )
+      }.to raise_error
+
+    end
+
+  end
+
+  describe "level of" do
+
+    matcher :have_level do |expected|
+      match do |actual|
+        actual.level == expected
+      end
+      description do
+        "be a template with level #{expected} (according to RFC6570)"
+      end
+      failure_message_for_should do |actual|
+        "expected that #{actual.inspect} is a template with level #{expected}, but is #{actual.level}(according to RFC6570)"
+      end
+    end
+
+    it "should be correctly determined for {var}" do
+      URITemplate::RFC6570.new("{var}").should have_level(1)
+    end
+    it "should be correctly determined for O{empty}X" do
+      URITemplate::RFC6570.new("O{empty}X").should have_level(1)
+    end
+    it "should be correctly determined for {x,y}" do
+      URITemplate::RFC6570.new("{x,y}").should have_level(3)
+    end
+    it "should be correctly determined for {var:3}" do
+      URITemplate::RFC6570.new("{var:3}").should have_level(4)
+    end
+    it "should be correctly determined for {list*}" do
+      URITemplate::RFC6570.new("{list*}").should have_level(4)
+    end
+    it "should be correctly determined for {+var}" do
+      URITemplate::RFC6570.new("{+var}").should have_level(2)
+    end
+    it "should be correctly determined for {+x,hello,y}" do
+      URITemplate::RFC6570.new("{+x,hello,y}").should have_level(3)
+    end
+    it "should be correctly determined for {+path:6}/here" do
+      URITemplate::RFC6570.new("{+path:6}/here").should have_level(4)
+    end
+    it "should be correctly determined for {+list*}" do
+      URITemplate::RFC6570.new("{+list*}").should have_level(4)
+    end
+    it "should be correctly determined for {#var}" do
+      URITemplate::RFC6570.new("{#var}").should have_level(2)
+    end
+    it "should be correctly determined for {#x,hello,y}" do
+      URITemplate::RFC6570.new("{#x,hello,y}").should have_level(3)
+    end
+    it "should be correctly determined for {#path:6}/here" do
+      URITemplate::RFC6570.new("{#path:6}/here").should have_level(4)
+    end
+    it "should be correctly determined for {#list*}" do
+      URITemplate::RFC6570.new("{#list*}").should have_level(4)
+    end
+    it "should be correctly determined for {.who}" do
+      URITemplate::RFC6570.new("{.who}").should have_level(3)
+    end
+    it "should be correctly determined for {.who,who}" do
+      URITemplate::RFC6570.new("{.who,who}").should have_level(3)
+    end
+    it "should be correctly determined for X{.list*}" do
+      URITemplate::RFC6570.new("X{.list*}").should have_level(4)
+    end
+    it "should be correctly determined for {/who}" do
+      URITemplate::RFC6570.new("{/who}").should have_level(3)
+    end
+    it "should be correctly determined for {/who,who}" do
+      URITemplate::RFC6570.new("{/who,who}").should have_level(3)
+    end
   end
 
   describe 'host?' do 

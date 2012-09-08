@@ -59,12 +59,22 @@ module URITemplate
       variables.size
     end
 
+    def starts_with_slash?
+      false
+    end
+
+    def ends_with_slash?
+      false
+    end
+
   end
 
   # A module which all literal tokens should include.
   module Literal
 
     include Token
+
+    SLASH = ?/
 
     attr_reader :string
 
@@ -87,6 +97,16 @@ module URITemplate
     def expand(*_)
       return string
     end
+
+    def starts_with_slash?
+      string[0] == SLASH
+    end
+
+    def ends_with_slash?
+      string[-1] == SLASH
+    end
+
+    alias to_s string
 
   end
 
@@ -339,6 +359,60 @@ module URITemplate
     return scheme_and_host[0]
   end
 
+  # Returns the pattern for this template.
+  def pattern
+    @pattern ||= tokens.map(&:to_s).join
+  end
+
+  alias to_s pattern
+
+  # Compares two template patterns.
+  def ==(o)
+    this, other, this_converted, _ = URITemplate.coerce( self, o )
+    if this_converted
+      return this == other
+    end
+    return this.pattern == other.pattern
+  end
+
+  # Tries to concatenate two templates, as if they were path segments.
+  # Removes double slashes or insert one if they are missing.
+  #
+  # @example
+  #   tpl = URITemplate::RFC6570.new('/xy/')
+  #   (tpl / '/z/' ).pattern #=> '/xy/z/'
+  #   (tpl / 'z/' ).pattern #=> '/xy/z/'
+  #   (tpl / '{/z}' ).pattern #=> '/xy{/z}'
+  #   (tpl / 'a' / 'b' ).pattern #=> '/xy/a/b'
+  #
+  def /(o)
+    this, other, this_converted, _ = URITemplate.coerce( self, o )
+    if this_converted
+      return this / other
+    end
+    klass = self.class
+    if other.host? or other.scheme?
+      raise ArgumentError, "Expected to receive a relative template but got an absoulte one: #{other.inspect}. If you think this is a bug, please report it."
+    end
+
+    return self if other.tokens.none?
+    return other if self.tokens.none?
+    
+    if self.tokens.last.ends_with_slash? and other.tokens.first.starts_with_slash?
+      if self.tokens.last.literal?
+        return self.class.new( (self.tokens[0..-2] + [ self.tokens.last.to_s[0..-2] ] + other.tokens).join )
+      elsif other.tokens.first.literal?
+        return self.class.new( (self.tokens + [ other.tokens.first.to_s[1..-1] ] + other.tokens[1..-1]).join )
+      else
+        raise ArgumentError, "Cannot remove double slashes from #{self.inspect} and #{other.inspect}."
+      end
+    elsif !self.tokens.last.ends_with_slash? and !other.tokens.first.starts_with_slash?
+      return self.class.new( (self.tokens + ['/'] + other.tokens).join)
+    end
+    return self.class.new( (self.tokens + other.tokens).join )
+  end
+
+private
 
   # @api private
   def scheme_and_host

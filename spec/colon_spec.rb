@@ -13,7 +13,12 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #    (c) 2011 - 2012 by Hannes Georg
 #
+
+require 'uri_template_shared'
+
 describe URITemplate::Colon do
+
+  it_should_behave_like "a uri template class"
 
   describe "extraction" do
 
