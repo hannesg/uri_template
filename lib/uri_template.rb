@@ -267,6 +267,19 @@ module URITemplate
     a.send(method,b,*args)
   end
 
+  def self.coerce_first_arg(meth)
+    alias_method( (meth.to_s + '_without_coercion').to_sym , meth )
+    class_eval(<<-RUBY)
+def #{meth}(other, *args, &block)
+  this, other, this_converted, _ = URITemplate.coerce( self, other )
+  if this_converted
+    return this.#{meth}(other,*args, &block)
+  end
+  return #{meth}_without_coercion(other,*args, &block)
+end
+RUBY
+  end
+
   # A base class for all errors which will be raised upon invalid syntax.
   module Invalid
   end
@@ -375,13 +388,13 @@ module URITemplate
   alias to_s pattern
 
   # Compares two template patterns.
-  def ==(o)
-    this, other, this_converted, _ = URITemplate.coerce( self, o )
-    if this_converted
-      return this == other
-    end
-    return this.pattern == other.pattern
+  def eq(other)
+    return self.pattern == other.pattern
   end
+
+  coerce_first_arg :eq
+
+  alias == eq
 
   # Tries to concatenate two templates, as if they were path segments.
   # Removes double slashes or insert one if they are missing.
@@ -393,12 +406,7 @@ module URITemplate
   #   (tpl / '{/z}' ).pattern #=> '/xy{/z}'
   #   (tpl / 'a' / 'b' ).pattern #=> '/xy/a/b'
   #
-  def /(o)
-    this, other, this_converted, _ = URITemplate.coerce( self, o )
-    if this_converted
-      return this / other
-    end
-    klass = self.class
+  def path_concat(other)
     if other.host? or other.scheme?
       raise ArgumentError, "Expected to receive a relative template but got an absoulte one: #{other.inspect}. If you think this is a bug, please report it."
     end
@@ -419,6 +427,10 @@ module URITemplate
     end
     return self.class.new( (self.tokens + other.tokens).join )
   end
+
+  coerce_first_arg :path_concat
+
+  alias / path_concat
 
   # @api private
   def scheme_and_host
