@@ -186,22 +186,77 @@ describe URITemplate do
 
   describe "cross-type usability" do
 
-    it "should allow path-style concatenation between colon and rfc6570" do
+    describe "path concatenation" do
 
-      (URITemplate.new(:rfc6570, '/prefix') / URITemplate.new(:colon, '/suffix')).pattern.should == '/prefix/suffix'
+      it 'should be possible between RFC6570("/prefix") and COLON("/suffix")' do
+        (URITemplate.new(:rfc6570, '/prefix') / URITemplate.new(:colon, '/suffix')).pattern.should == '/prefix/suffix'
+      end
 
-      (URITemplate.new(:colon, '/prefix') / URITemplate.new(:rfc6570, '/suffix')).pattern.should == '/prefix/suffix'
+      it 'should be possible between COLON("/prefix") and RFC6570("/suffix")' do
+        (URITemplate.new(:colon, '/prefix') / URITemplate.new(:rfc6570, '/suffix')).pattern.should == '/prefix/suffix'
+      end
 
-      (URITemplate.new(:rfc6570, '/{prefix}') / URITemplate.new(:colon, '/suffix')).pattern.should == '/{prefix}/suffix'
+      it 'should be possible between RFC6570("/{prefix}") and COLON("/suffix")' do
+        (URITemplate.new(:rfc6570, '/{prefix}') / URITemplate.new(:colon, '/suffix')).pattern.should == '/{prefix}/suffix'
+      end
 
-      (URITemplate.new(:rfc6570, '/prefix') / URITemplate.new(:colon, '/:suffix')).pattern.should == '/prefix/{suffix}'
+      it 'should be possible between RFC6570("/prefix") and COLON("/:suffix")' do
+        (URITemplate.new(:rfc6570, '/prefix') / URITemplate.new(:colon, '/:suffix')).pattern.should == '/prefix/{suffix}'
+      end
 
-      (URITemplate.new(:colon, '/:prefix') / URITemplate.new(:rfc6570, '/suffix')).pattern.should == '/:prefix/suffix'
+      it 'should be possible between COLON("/:prefix") and RFC6570("/suffix")' do
+        (URITemplate.new(:colon, '/:prefix') / URITemplate.new(:rfc6570, '/suffix')).pattern.should == '/:prefix/suffix'
+      end
 
-      (URITemplate.new(:colon, '/:prefix') / URITemplate.new(:rfc6570, '/{suffix}')).pattern.should == '/:prefix/:suffix'
+      it 'should be possible between COLON("/:prefix") and RFC6570("/{suffix}")' do
+        (URITemplate.new(:colon, '/:prefix') / URITemplate.new(:rfc6570, '/{suffix}')).pattern.should == '/:prefix/:suffix'
+      end
 
-      (URITemplate.new(:colon, '/:prefix') / URITemplate.new(:rfc6570, '{/suffix}')).pattern.should == '/{prefix}{/suffix}'
+      it 'should be possible between COLON("/:prefix") and RFC6570("{/suffix}")' do
+        (URITemplate.new(:colon, '/:prefix') / URITemplate.new(:rfc6570, '{/suffix}')).pattern.should == '/{prefix}{/suffix}'
+      end
 
+    end
+
+  end
+
+  describe "path concatenation" do
+
+    it 'should be possible when the last template is empty' do
+      (URITemplate.new(:rfc6570, '/prefix') / URITemplate.new(:rfc6570, '')).pattern.should == '/prefix'
+    end
+
+    it 'should be possible when the first template is empty' do
+      (URITemplate.new(:rfc6570, '') / URITemplate.new(:rfc6570, '/suffix')).pattern.should == '/suffix'
+    end
+
+    it 'should raise when the last template contains a host' do
+      expect{
+        URITemplate.new(:rfc6570, '/prefix') / URITemplate.new(:rfc6570, '//host')
+      }.to raise_error(ArgumentError)
+    end
+
+    it 'should be possible when a slash has to be removed from the first template' do
+      (URITemplate.new(:rfc6570, '/') / URITemplate.new(:rfc6570, '{/a}')).pattern.should == '{/a}'
+    end
+
+    it 'should be possible when a slash has to be removed from the last template' do
+      tpl = URITemplate.new(:rfc6570, '{a}')
+      last_token = tpl.tokens.last
+      def last_token.ends_with_slash?
+        true
+      end
+      (tpl / URITemplate.new(:rfc6570, '/')).pattern.should == '{a}'
+    end
+
+    it 'should be possible when a slash has to be inserted' do
+      (URITemplate.new(:rfc6570, 'a') / URITemplate.new(:rfc6570, 'b')).pattern.should == 'a/b'
+    end
+
+    it 'should raise when the last template contains a scheme' do
+      expect{
+        URITemplate.new(:rfc6570, '/prefix') / URITemplate.new(:rfc6570, 'scheme:')
+      }.to raise_error(ArgumentError)
     end
 
   end
