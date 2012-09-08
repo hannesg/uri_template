@@ -242,11 +242,6 @@ __REGEXP__
             Expression.new([[tk.variables.first, false, 0]])
           end
         })
-      elsif defined?(URITemplate::Draft7) and
-          ( (x.class == URITemplate::Draft7 and self == URITemplate::RFC6570) or (x.class == URITemplate::RFC6570 and self == URITemplate::Draft7) )
-        if x.tokens.none?{|t| t.class::NAMED and t.expands? }
-          return self.new(x.to_s)
-        end
       else
         return nil
       end
