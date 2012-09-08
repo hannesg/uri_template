@@ -126,7 +126,7 @@ module URITemplate
   VERSIONS = {
     :draft7 => :Draft7,
     :rfc6570 => :RFC6570,
-    :default => :Draft7,
+    :default => :RFC6570,
     :colon => :Colon,
     :latest => :RFC6570
   }
@@ -135,10 +135,11 @@ module URITemplate
   # Extracts all symbols from args and looks up the first in {VERSIONS}.
   #
   # @return Array an array of the class to use and the unused parameters.
+  # 
   # @example
-  #   URITemplate.resolve_class() #=> [ URITemplate::Draft7, [] ]
-  #   URITemplate.resolve_class(:draft7) #=> [ URITemplate::Draft7, [] ]
-  #   URITemplate.resolve_class("template",:draft7) #=> [ URITemplate::Draft7, ["template"] ]
+  #   URITemplate.resolve_class() #=> [ URITemplate::RFC6570, [] ]
+  #   URITemplate.resolve_class(:colon) #=> [ URITemplate::Colon, [] ]
+  #   URITemplate.resolve_class("template",:rfc6570) #=> [ URITemplate::RFC6570, ["template"] ]
   # 
   # @raise ArgumentError when no class was found.
   #
@@ -195,8 +196,8 @@ module URITemplate
   # Returns an array with two {URITemplate}s and two booleans indicating which of the two were converted or raises an ArgumentError.
   #
   # @example
-  #   URITemplate.coerce( URITemplate.new(:draft7,'{x}'), '{y}' ) #=> [URITemplate.new(:draft7,'{x}'), URITemplate.new(:draft7,'{y}'), false, true]
-  #   URITemplate.coerce( '{y}', URITemplate.new(:draft7,'{x}') ) #=> [URITemplate.new(:draft7,'{y}'), URITemplate.new(:draft7,'{x}'), true, false]
+  #   URITemplate.coerce( URITemplate.new(:rfc6570,'{x}'), '{y}' ) #=> [URITemplate.new(:rfc6570,'{x}'), URITemplate.new(:rfc6570,'{y}'), false, true]
+  #   URITemplate.coerce( '{y}', URITemplate.new(:rfc6570,'{x}') ) #=> [URITemplate.new(:rfc6570,'{y}'), URITemplate.new(:rfc6570,'{x}'), true, false]
   def self.coerce(a,b)
     if a.kind_of? URITemplate
       if a.class == b.class
