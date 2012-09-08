@@ -133,6 +133,10 @@ module URITemplate
       false
     end
 
+    def to_s
+      raise "Please implement #to_s on #{self.class.inspect}."
+    end
+
   end
 
   autoload :Utils, 'uri_template/utils'
@@ -397,7 +401,7 @@ module URITemplate
 
     return self if other.tokens.none?
     return other if self.tokens.none?
-    
+
     if self.tokens.last.ends_with_slash? and other.tokens.first.starts_with_slash?
       if self.tokens.last.literal?
         return self.class.new( (self.tokens[0..-2] + [ self.tokens.last.to_s[0..-2] ] + other.tokens).join )

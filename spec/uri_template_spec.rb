@@ -23,6 +23,12 @@ describe URITemplate do
 
     include URITemplate
 
+    class BadExpression
+
+      include URITemplate::Expression
+
+    end
+
     attr_reader :pattern
 
     def self.try_convert(x)
@@ -37,6 +43,28 @@ describe URITemplate do
 
     def initialize(pattern)
       @pattern = pattern
+    end
+
+  end
+
+  describe 'done wrong' do
+
+    it 'should moarn about unimplemented .type' do
+      expect{
+        BadURITemplate.new("").type
+      }.to raise_error(/\APlease implement/)
+    end
+
+    it 'should moarn about unimplemented .tokens' do
+      expect{
+        BadURITemplate.new("").tokens
+      }.to raise_error(/\APlease implement/)
+    end
+
+    it 'should moarn about unimplemented Expression.to_s' do
+      expect{
+        BadURITemplate::BadExpression.new.to_s
+      }.to raise_error(/\APlease implement/)
     end
 
   end
