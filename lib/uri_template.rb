@@ -416,8 +416,6 @@ module URITemplate
     return self.class.new( (self.tokens + other.tokens).join )
   end
 
-private
-
   # @api private
   def scheme_and_host
     return @scheme_and_host if @scheme_and_host
