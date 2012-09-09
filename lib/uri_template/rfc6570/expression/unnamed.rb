@@ -19,21 +19,6 @@ require 'uri_template/rfc6570'
 
 class URITemplate::RFC6570::Expression::Unnamed < URITemplate::RFC6570::Expression
 
-  module ClassMethods
-
-    def generate_hash_extractor(max_length)
-      super(max_length) do |source|
-        source.capture do
-          source.character_class('+').reluctant
-          source.escaped_pair_connector
-        end.length('?')
-      end
-    end
-
-  end
-
-  extend ClassMethods
-
   def self_pair(_, value, max_length = 0,&block)
     if block
       ev = value.map(&block).join(self.class::LIST_CONNECTOR) 
@@ -76,6 +61,28 @@ class URITemplate::RFC6570::Expression::Unnamed < URITemplate::RFC6570::Expressi
       end
     end.length('?')
     return source.join
+  end
+
+  def extract(position,matched)
+    name, expand, max_length = @variable_specs[position]
+    if matched.nil?
+      return [[ name , matched ]]
+    end
+    if expand
+      it = URITemplate::RegexpEnumerator.new(self.class.hash_extractor(max_length))
+      splitted = it.each(matched)
+        .reject{|match| match[1].nil? }
+        .map do |match|
+          [ decode(match[1]), decode(match[2], false) ]
+        end
+      if splitted.none?{|_,b| b }
+        return [ [ name, splitted.map{|a,_| a } ] ]
+      else
+        return [ [ name, splitted ] ]
+      end
+    end
+
+    return [ [ name,  decode( matched ) ] ]
   end
 
 end

@@ -91,93 +91,31 @@ class URITemplate::RFC6570
       return '{' + self.class::OPERATOR + @variable_specs.map{|name,expand,max_length| name + (expand ? '*': '') + (max_length > 0 ? (':' + max_length.to_s) : '') }.join(',') + '}'
     end
 
-    def extract(position,matched)
-      name, expand, max_length = @variable_specs[position]
-      if matched.nil?
-        return [[ name , matched ]]
-      end
-      if expand
-        #TODO: do we really need this? - this could be stolen from rack
-        ex = self.class.hash_extractor(max_length)
-        rest = matched
-        splitted = []
-        if self.class::NAMED
-          # 1 = name
-          # 2 = value
-          # 3 = rest
-          until rest.size == 0
-            match = ex.match(rest)
-            if match.nil?
-              raise "Couldn't match #{rest.inspect} againts the hash extractor. This is definitly a Bug. Please report this ASAP!"
-            end
-            if match.post_match.size == 0
-              rest = match[3].to_s
-            else
-              rest = ''
-            end
-            splitted << [ decode(match[1]), decode(match[2] + rest , false) ]
-            rest = match.post_match
-          end
-          result = Utils.pair_array_to_hash2( splitted )
-          if result.size == 1 && result[0][0] == name
-            return result
-          else
-            return [ [ name , result ] ]
-          end
-        else
-          found_value = false
-          # 1 = name and seperator
-          # 2 = value
-          # 3 = rest
-          until rest.size == 0
-            match = ex.match(rest)
-            if match.nil?
-              raise "Couldn't match #{rest.inspect} againts the hash extractor. This is definitly a Bug. Please report this ASAP!"
-            end
-            if match.post_match.size == 0
-              rest = match[3].to_s
-            else
-              rest = ''
-            end
-            if match[1]
-              found_value = true
-              splitted << [ decode(match[1][0..-2]), decode(match[2] + rest , false) ]
-            else
-              splitted << [ decode(match[2] + rest), nil ]
-            end
-            rest = match.post_match
-          end
-          if !found_value
-            return [ [ name, splitted.map{|n,v| decode(n , false) } ] ]
-          else
-            return [ [ name, splitted ] ]
-          end
-        end
-      elsif self.class::NAMED
-        return [ [ name, decode( matched[1..-1] ) ] ]
-      end
-
-      return [ [ name,  decode( matched ) ] ]
-    end
-
   protected
 
     module ClassMethods
 
+      def hash_extractors
+        @hash_extractors ||= Hash.new{|hsh, key| hsh[key] = generate_hash_extractor(key) }
+      end
+
       def hash_extractor(max_length)
-        @hash_extractors ||= {}
-        @hash_extractors[max_length] ||= generate_hash_extractor(max_length)
+        return hash_extractors[max_length]
       end
 
       def generate_hash_extractor(max_length)
         source = regex_builder
         source.push('\\A')
-        source.escaped_separator.length('?')
-        yield source
         source.capture do
-          source.character_class(max_length).reluctant
+          source.character_class('+').reluctant
         end
         source.group do
+          source.escaped_pair_connector
+          source.capture do
+            source.character_class(max_length,0).reluctant
+          end
+        end.length('?')
+        source.capture do
           source.push '\\z'
           source.push '|'
           source.escaped_separator

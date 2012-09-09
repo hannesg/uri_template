@@ -81,6 +81,12 @@ class URITemplate::RFC6570
       self << ')'
     end
 
+    def lookahead
+      self << '(?='
+      yield
+      self << ')'
+    end
+
     def capture(&block)
       group(true, &block)
     end
