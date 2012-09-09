@@ -414,15 +414,14 @@ RUBY
     return self if other.tokens.none?
     return other if self.tokens.none?
 
-    if self.tokens.last.ends_with_slash? and other.tokens.first.starts_with_slash?
-      if self.tokens.last.literal?
-        return self.class.new( (self.tokens[0..-2] + [ self.tokens.last.to_s[0..-2] ] + other.tokens).join )
-      elsif other.tokens.first.literal?
-        return self.class.new( (self.tokens + [ other.tokens.first.to_s[1..-1] ] + other.tokens[1..-1]).join )
-      else
-        raise ArgumentError, "Cannot remove double slashes from #{self.inspect} and #{other.inspect}."
+    tail = self.tokens.last
+    head = other.tokens.first
+
+    if tail.ends_with_slash?
+      if head.starts_with_slash?
+        return self.class.new( remove_double_slash(self.tokens, other.tokens) )
       end
-    elsif !self.tokens.last.ends_with_slash? and !other.tokens.first.starts_with_slash?
+    elsif !head.starts_with_slash?
       return self.class.new( (self.tokens + ['/'] + other.tokens).join)
     end
     return self.class.new( (self.tokens + other.tokens).join )
@@ -431,6 +430,19 @@ RUBY
   coerce_first_arg :path_concat
 
   alias / path_concat
+
+  # @api private
+  def remove_double_slash( first_tokens, second_tokens )
+    if first_tokens.last.literal?
+      return first_tokens[0..-2] + [ first_tokens.last.to_s[0..-2] ] + second_tokens
+    elsif second_tokens.first.literal?
+      return first_tokens + [ second_tokens.first.to_s[1..-1] ] + second_tokens[1..-1]
+    else
+      raise ArgumentError, "Cannot remove double slashes from #{first_tokens.inspect} and #{second_tokens.inspect}."
+    end
+  end
+
+  private :remove_double_slash
 
   # @api private
   def scheme_and_host
