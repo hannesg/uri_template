@@ -28,7 +28,7 @@ class URITemplate::RFC6570::Expression::Named < URITemplate::RFC6570::Expression
       first = true
       @variable_specs.each do | var, expand , max_length |
         if expand
-          source.group(true) do
+          source.capture do
             source.separated_list(first) do
               source.character_class('+')
                 .escaped_pair_connector
@@ -39,9 +39,11 @@ class URITemplate::RFC6570::Expression::Named < URITemplate::RFC6570::Expression
           source.group do
             source.escaped_separator unless first
             source << Regexp.escape(var)
-            source.group(true) do
+            source.group do
               source.escaped_pair_connector
-              source.character_class_with_comma(max_length)
+              source.capture do
+                source.character_class_with_comma(max_length)
+              end
               source << '|' unless self.class::PAIR_IF_EMPTY
             end
           end.length('?')
@@ -52,27 +54,19 @@ class URITemplate::RFC6570::Expression::Named < URITemplate::RFC6570::Expression
     return source.join
   end
 
-  def extract(position,matched)
-    name, expand, max_length = @variable_specs[position]
-    if matched.nil?
-      return [[ name , matched ]]
-    end
-    if expand
-      it = URITemplate::RegexpEnumerator.new(self.class.hash_extractor(max_length))
-      splitted = it.each(matched)
-        .reject{|match| match[1].nil? }
-        .map do |match|
-          [ decode(match[1]), decode(match[2], false) ]
-        end
-      result = URITemplate::Utils.pair_array_to_hash2( splitted )
-      if result.size == 1 && result[0][0] == name
-        return result
-      else
-        return [ [ name , result ] ]
-      end
-    end
+private
 
-    return [ [ name, decode( matched[1..-1] ) ] ]
+  def extracted_nil
+    self.class::PAIR_IF_EMPTY ? nil : ""
+  end
+
+  def after_expand(name, splitted)
+    result = URITemplate::Utils.pair_array_to_hash2( splitted )
+    if result.size == 1 && result[0][0] == name
+      return result
+    else
+      return [ [ name , result ] ]
+    end
   end
 
 end

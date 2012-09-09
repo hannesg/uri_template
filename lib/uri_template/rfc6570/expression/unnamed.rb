@@ -63,26 +63,14 @@ class URITemplate::RFC6570::Expression::Unnamed < URITemplate::RFC6570::Expressi
     return source.join
   end
 
-  def extract(position,matched)
-    name, expand, max_length = @variable_specs[position]
-    if matched.nil?
-      return [[ name , matched ]]
-    end
-    if expand
-      it = URITemplate::RegexpEnumerator.new(self.class.hash_extractor(max_length))
-      splitted = it.each(matched)
-        .reject{|match| match[1].nil? }
-        .map do |match|
-          [ decode(match[1]), decode(match[2], false) ]
-        end
-      if splitted.none?{|_,b| b }
-        return [ [ name, splitted.map{|a,_| a } ] ]
-      else
-        return [ [ name, splitted ] ]
-      end
-    end
+private
 
-    return [ [ name,  decode( matched ) ] ]
+  def after_expand(name, splitted)
+    if splitted.none?{|_,b| b }
+      return [ [ name, splitted.map{|a,_| a } ] ]
+    else
+      return [ [ name, splitted ] ]
+    end
   end
 
 end

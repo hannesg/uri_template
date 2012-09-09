@@ -87,8 +87,32 @@ class URITemplate::RFC6570
       end
     end
 
+    def extract(position,matched)
+      name, expand, max_length = @variable_specs[position]
+      if matched.nil?
+        return [[ name , extracted_nil ]]
+      end
+      if expand
+        it = URITemplate::RegexpEnumerator.new(self.class.hash_extractor(max_length))
+        splitted = it.each(matched)
+          .reject{|match| match[1].nil? }
+          .map do |match|
+            [ decode(match[1]), decode(match[2], false) ]
+          end
+        return after_expand(name, splitted)
+      end
+
+      return [ [ name, decode( matched ) ] ]
+    end
+
     def to_s
       return '{' + self.class::OPERATOR + @variable_specs.map{|name,expand,max_length| name + (expand ? '*': '') + (max_length > 0 ? (':' + max_length.to_s) : '') }.join(',') + '}'
+    end
+
+  private
+
+    def extracted_nil
+      nil
     end
 
   protected
