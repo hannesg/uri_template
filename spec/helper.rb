@@ -81,7 +81,7 @@ end
 
 class URITemplate::ExtractionMatcher
 
-  def initialize( variables, uri = '', fuzzy = true )
+  def initialize( variables = nil, uri = '', fuzzy = true )
     @variables = variables.nil? ? variables : Hash[ variables.map{|k,v| [k.to_s, v]} ]
     @fuzzy = fuzzy
     @uri = uri 
@@ -98,6 +98,9 @@ class URITemplate::ExtractionMatcher
     if v.nil?
       @message = [actual.inspect,' should extract ',@variables.inspect,' from ',@uri.inspect,' but didn\' extract anything.']
       return false
+    end
+    if @variables.nil?
+      return true
     end
     if !@fuzzy
       @message = [actual.inspect,' should extract ',@variables.inspect,' from ',@uri.inspect,' but got ',v.inspect]
@@ -143,8 +146,8 @@ RSpec::Matchers.class_eval do
     return URITemplate::ExpansionMatcher.new(variables, expected)
   end
 
-  def extract( variables = {} )
-    return URITemplate::ExtractionMatcher.new(variables)
+  def extract( *args )
+    return URITemplate::ExtractionMatcher.new(*args)
   end
 
   def extract_from( variables, uri)

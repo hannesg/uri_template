@@ -35,38 +35,46 @@ describe URITemplate::RFC6570 do
 
         spec['testcases'].each do | template, results |
 
-          # NOTE: this negative test case is not that cool
-          if template == '/vars/:var'
-            results = "/vars/:var"
-          end
+          describe template do
 
-          if results == false
+            # NOTE: this negative test case is not that cool
+            if template == '/vars/:var'
+              results = "/vars/:var"
+            end
 
-            it " should say that #{template} is borked" do
-              begin
-                URITemplate::RFC6570.new(template).expand(variables)
-              rescue URITemplate::Invalid, URITemplate::InvalidValue
-              else
-                fail "expected URITemplate::Invalid or URITemplate::InvalidValue but nothing was raised"
+            if results == false
+
+              it " should say that #{template} is borked" do
+                begin
+                  URITemplate::RFC6570.new(template).expand(variables)
+                rescue URITemplate::Invalid, URITemplate::InvalidValue
+                else
+                  fail "expected URITemplate::Invalid or URITemplate::InvalidValue but nothing was raised"
+                end
               end
+
+            elsif results.kind_of? String or results.kind_of? Array
+
+              it " should expand #{template} correctly " do
+                results = Array(results)
+                t = URITemplate::RFC6570.new( template )
+                t.should expand(variables).to( results )
+              end
+
+              Array(results).each do |result|
+
+                it " should extract the variables from #{result} correctly " do
+                  t = URITemplate::RFC6570.new( template )
+                  t.should extract.from(result)
+                  t.should expand_to( t.extract(result) , RUBY_VERSION > "1.9" ? result : results )
+                end
+
+              end
+
+            else
+              warn "Ignoring template #{template}"
             end
 
-          elsif results.kind_of? String or results.kind_of? Array
-
-            it " should expand #{template} correctly " do
-              results = Array(results)
-              t = URITemplate::RFC6570.new( template )
-              t.should expand_to( variables, results )
-            end
-
-            it " should extract the variables from #{template} correctly " do
-              result = Array(results).first
-              t = URITemplate::RFC6570.new( template )
-              t.should expand_to( t.extract(result) , RUBY_VERSION > "1.9" ? result : results )
-            end
-
-          else
-            warn "Ignoring template #{template}"
           end
 
         end

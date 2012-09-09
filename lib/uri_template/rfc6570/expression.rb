@@ -174,24 +174,18 @@ class URITemplate::RFC6570
       self.class.regex_builder
     end
 
-    SPLITTER = /^(?:,(,*)|([^,]+))/
+    SPLITTER = /^(?:(,+)|([^,]+))/
 
     def decode(x, split = true)
       if x.nil?
-        if self.class::PAIR_IF_EMPTY
-          return x
-        else
-          return ''
-        end
+        return extracted_nil
       elsif split
         result = []
+        x = x.gsub(/,\z/,',,')
         URITemplate::RegexpEnumerator.new(SPLITTER, :rest => :raise).each(x) do |match|
-          if match[1] and match[1].size > 0
-            if match.post_match.size == 0
-              result << match[1]
-            else
-              result << match[1][0..-2]
-            end
+          if match[1]
+            next if match[1].size == 1
+            result << match[1][0..-3]
           elsif match[2]
             result << unescape(match[2])
           end

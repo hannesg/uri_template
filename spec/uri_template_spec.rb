@@ -176,7 +176,7 @@ describe URITemplate do
             "(#{$1}).should == #{$2}\n"
           }
           it "#{object.to_s} in #{object.file}:#{object.line} should have valid example #{(i+1).to_s}" do
-            lambda{ eval code }.should_not raise_error
+            eval code
           end
         end
       end
