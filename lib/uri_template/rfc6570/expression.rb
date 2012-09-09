@@ -98,7 +98,6 @@ class URITemplate::RFC6570
           matched = "#{self.class::SEPARATOR}#{matched}"
         end
         splitted = it.each(matched)\
-          .reject{|match| match[1].nil? }\
           .map do |match|
             raise match.inspect if match.kind_of? String
             [ decode(match[1]), decode(match[2], false) ]
