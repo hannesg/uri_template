@@ -166,16 +166,30 @@ class URITemplate::RFC6570
 
       def hash_extractor(max_length)
         @hash_extractors ||= {}
-        @hash_extractors[max_length] ||= begin
-          value = "#{self::CHARACTER_CLASS[:class]}#{(max_length > 0)?'{0,'+max_length.to_s+'}':'*?'}"
-          if self::NAMED
-            pair = "(#{self::CHARACTER_CLASS[:class]}+?)#{Regexp.escape(self::PAIR_CONNECTOR)}(#{value})"
-          else
-            pair = "(#{self::CHARACTER_CLASS[:class]}+?#{Regexp.escape(self::PAIR_CONNECTOR)})?(#{value})"
-          end
-          source = "\\A#{Regexp.escape(self::SEPARATOR)}?" + pair + "(\\z|#{Regexp.escape(self::SEPARATOR)}(?!#{Regexp.escape(self::SEPARATOR)}))"
-          Regexp.new( source , Utils::KCODE_UTF8)
+        @hash_extractors[max_length] ||= generate_hash_extractor(max_length)
+      end
+
+      def generate_hash_extractor(max_length)
+        source = regex_builder
+        source.push('\\A')
+        source.escaped_separator.length('?')
+        yield source
+        source.capture do
+          source.character_class(max_length).reluctant
         end
+        source.group do
+          source.push '\\z'
+          source.push '|'
+          source.escaped_separator
+          source.negative_lookahead do
+            source.escaped_separator
+          end
+        end
+        return Regexp.new( source.join , Utils::KCODE_UTF8)
+      end
+
+      def regex_builder
+        RegexBuilder.new(self)
       end
 
     end
@@ -190,6 +204,10 @@ class URITemplate::RFC6570
       Utils.unescape_url(x)
     end
 
+    def regex_builder
+      self.class.regex_builder
+    end
+
     SPLITTER = /^(?:,(,*)|([^,]+))/
 
     def decode(x, split = true)
@@ -200,25 +218,22 @@ class URITemplate::RFC6570
           return ''
         end
       elsif split
-        r = []
-        v = x
-        until v.size == 0
-          m = SPLITTER.match(v)
-          if m[1] and m[1].size > 0
-            if m.post_match.size == 0
-              r << m[1]
+        result = []
+        URITemplate::RegexpEnumerator.new(SPLITTER).each(x) do |match|
+          if match[1] and match[1].size > 0
+            if match.post_match.size == 0
+              result << match[1]
             else
-              r << m[1][0..-2]
+              result << match[1][0..-2]
             end
-          elsif m[2]
-            r << unescape(m[2])
+          elsif match[2]
+            result << unescape(match[2])
           end
-          v = m.post_match
         end
-        case(r.size)
+        case(result.size)
           when 0 then ''
-          when 1 then r.first
-          else r
+          when 1 then result.first
+          else result
         end
       else
         unescape(x)
@@ -228,16 +243,19 @@ class URITemplate::RFC6570
     def cut(str,chars)
       if chars > 0
         md = Regexp.compile("\\A#{self.class::CHARACTER_CLASS[:class]}{0,#{chars.to_s}}", Utils::KCODE_UTF8).match(str)
-        #TODO: handle invalid matches
         return md[0]
       else
         return str
       end
     end
 
-    def pair(key, value, max_length = 0)
+    def pair(key, value, max_length = 0, &block)
       ek = key
-      ev = escape(value)
+      if block
+        ev = value.map(&block).join(self.class::LIST_CONNECTOR) 
+      else
+        ev = escape(value)
+      end
       if !self.class::PAIR_IF_EMPTY and ev.size == 0
         return ek
       else
@@ -251,228 +269,118 @@ class URITemplate::RFC6570
       elsif hsh.none? && !self.class::NAMED
         []
       else
-        [ (self.class::NAMED ? escape(name)+self.class::PAIR_CONNECTOR : '' ) + hsh.map{|key,value| escape(key)+self.class::LIST_CONNECTOR+escape(value) }.join(self.class::LIST_CONNECTOR) ]
+        [ self_pair(name,hsh){|key,value| escape(key)+self.class::LIST_CONNECTOR+escape(value)} ]
       end
     end
 
     def transform_array(name, ary, expand , max_length)
       if expand
-        self.class::NAMED ? ary.map{|value| pair(name,value) } : ary.map{|value| escape(value) }
+        ary.map{|value| self_pair(name,value) }
       elsif ary.none? && !self.class::NAMED
         []
       else
-        [ (self.class::NAMED ? escape(name)+self.class::PAIR_CONNECTOR : '' ) + ary.map{|value| escape(value) }.join(self.class::LIST_CONNECTOR) ]
+        [ self_pair(name, ary){|value| escape(value) } ]
       end
     end
+  end
 
-    def escaped_pair_connector
-      Regexp.escape(self.class::PAIR_CONNECTOR)
+  require 'uri_template/rfc6570/expression/named'
+  require 'uri_template/rfc6570/expression/unnamed'
+
+  class Expression::Basic < Expression::Unnamed
+  end
+
+  class Expression::Reserved < Expression::Unnamed
+
+    CHARACTER_CLASS = CHARACTER_CLASSES[:unreserved_reserved_pct]
+    OPERATOR = '+'.freeze
+    BASE_LEVEL = 2
+
+    def escape(x)
+      Utils.escape_uri(Utils.object_to_param(x))
     end
 
-    def escaped_separator
-      Regexp.escape(self.class::SEPARATOR)
+    def unescape(x)
+      Utils.unescape_uri(x)
     end
 
-    def escaped_prefix
-      Regexp.escape(self.class::PREFIX)
+    def scheme?
+      true
     end
 
-    def format_length(len, min = 0)
-      return len if len.kind_of? String
-      return '{'+min.to_s+','+len.to_s+'}' if len.kind_of?(Numeric) and len > 0
-      return '*' if min == 0
-      return '+' if min == 1
-      return '{'+min.to_s+',}'
+    def host?
+      true
     end
 
-    def character_class_with_comma(max_length=0, min = 0)
-      self.class::CHARACTER_CLASS[:class_with_comma] + format_length(max_length, min)
+  end
+
+  class Expression::Fragment < Expression::Unnamed
+
+    CHARACTER_CLASS = CHARACTER_CLASSES[:unreserved_reserved_pct]
+    PREFIX = '#'.freeze
+    OPERATOR = '#'.freeze
+    BASE_LEVEL = 2
+
+    def escape(x)
+      Utils.escape_uri(Utils.object_to_param(x))
     end
 
-    def character_class(max_length=0, min = 0)
-      self.class::CHARACTER_CLASS[:class] + format_length(max_length, min)
+    def unescape(x)
+      Utils.unescape_uri(x)
     end
 
-    def separated_list(expression, first = true, length = 0, min = 1)
-      if first
-        [ *expression, '(?:', escaped_separator, *expression, ')', format_length(length, min - 1 ) ]
-      else
-        [ '(?:', escaped_separator, *expression, ')', format_length(length, min) ]
-      end
-    end
-  public
+  end
 
-    class Named < self
+  class Expression::Label < Expression::Unnamed
 
-      alias self_pair pair
+    SEPARATOR = '.'.freeze
+    PREFIX = '.'.freeze
+    OPERATOR = '.'.freeze
+    BASE_LEVEL = 3
 
-      def to_r_source
-        source = ['(?:', escaped_prefix]
-        first = true
-        @variable_specs.each do | var, expand , max_length |
-          if expand
-            source << '('
-            source.push(
-              *separated_list(
-                [ character_class('+'), escaped_pair_connector, character_class_with_comma(max_length) ],
-                first
-              )
-            )
-            source << ')'
-          else
-            source << '(?:'
-            source << escaped_separator unless first
-            source << Regexp.escape(var)
-            source << '('
-            source << escaped_pair_connector
-            source << character_class_with_comma(max_length)
-            source << '|' unless self.class::PAIR_IF_EMPTY
-            source << '))?'
-          end
-          first = false
-        end
-        source << ')?'
-        return source.join
-      end
+  end
 
+  class Expression::Path < Expression::Unnamed
+
+    SEPARATOR = '/'.freeze
+    PREFIX = '/'.freeze
+    OPERATOR = '/'.freeze
+    BASE_LEVEL = 3
+
+    def starts_with_slash?
+      true
     end
 
-    class Unnamed < self
+  end
 
-      def self_pair(_, value, max_length = 0)
-        cut( escape(value), max_length )
-      end
+  class Expression::PathParameters < Expression::Named
 
-      def to_r_source
-        source = ['(?:', escaped_prefix]
-        vs = @variable_specs.size - 1
-        i = 0
-        @variable_specs.each do | var, expand , max_length |
-          last = (vs == i)
-          first = (i == 0)
-          if expand
-            source << '('
-            source.push(
-              *separated_list(
-                [ '(?:',character_class('+?'), escaped_pair_connector,')?', character_class(max_length) ],
-                first
-              )
-            )
-          else
-            source << escaped_separator unless first
-            source << '('
-            if last
-              source.push( character_class_with_comma(max_length), '?' )
-            else
-              source.push( character_class(max_length) )
-            end
-          end
-          source << ')'
-          i = i+1
-        end
-        source << ')?'
-        return source.join
-      end
+    SEPARATOR = ';'.freeze
+    PREFIX = ';'.freeze
+    NAMED = true
+    PAIR_IF_EMPTY = false
+    OPERATOR = ';'.freeze
+    BASE_LEVEL = 3
 
-    end
+  end
 
-    class Basic < Unnamed
+  class Expression::FormQuery < Expression::Named
 
-    end
+    SEPARATOR = '&'.freeze
+    PREFIX = '?'.freeze
+    NAMED = true
+    OPERATOR = '?'.freeze
+    BASE_LEVEL = 3
 
-    class Reserved < Unnamed
+  end
 
-      CHARACTER_CLASS = CHARACTER_CLASSES[:unreserved_reserved_pct]
-      OPERATOR = '+'.freeze
-      BASE_LEVEL = 2
+  class Expression::FormQueryContinuation < Expression::Named
 
-      def escape(x)
-        Utils.escape_uri(Utils.object_to_param(x))
-      end
-
-      def unescape(x)
-        Utils.unescape_uri(x)
-      end
-
-      def scheme?
-        true
-      end
-
-      def host?
-        true
-      end
-
-    end
-
-    class Fragment < Unnamed
-
-      CHARACTER_CLASS = CHARACTER_CLASSES[:unreserved_reserved_pct]
-      PREFIX = '#'.freeze
-      OPERATOR = '#'.freeze
-      BASE_LEVEL = 2
-
-      def escape(x)
-        Utils.escape_uri(Utils.object_to_param(x))
-      end
-
-      def unescape(x)
-        Utils.unescape_uri(x)
-      end
-
-    end
-
-    class Label < Unnamed
-
-      SEPARATOR = '.'.freeze
-      PREFIX = '.'.freeze
-      OPERATOR = '.'.freeze
-      BASE_LEVEL = 3
-
-    end
-
-    class Path < Unnamed
-
-      SEPARATOR = '/'.freeze
-      PREFIX = '/'.freeze
-      OPERATOR = '/'.freeze
-      BASE_LEVEL = 3
-
-      def starts_with_slash?
-        true
-      end
-
-    end
-
-    class PathParameters < Named
-
-      SEPARATOR = ';'.freeze
-      PREFIX = ';'.freeze
-      NAMED = true
-      PAIR_IF_EMPTY = false
-      OPERATOR = ';'.freeze
-      BASE_LEVEL = 3
-
-    end
-
-    class FormQuery < Named
-
-      SEPARATOR = '&'.freeze
-      PREFIX = '?'.freeze
-      NAMED = true
-      OPERATOR = '?'.freeze
-      BASE_LEVEL = 3
-
-    end
-
-    class FormQueryContinuation < Named
-
-      SEPARATOR = '&'.freeze
-      PREFIX = '&'.freeze
-      NAMED = true
-      OPERATOR = '&'.freeze
-      BASE_LEVEL = 3
-
-    end
+    SEPARATOR = '&'.freeze
+    PREFIX = '&'.freeze
+    NAMED = true
+    OPERATOR = '&'.freeze
+    BASE_LEVEL = 3
 
   end
 

@@ -473,4 +473,5 @@ protected
 
 end
 
+require 'uri_template/rfc6570/regex_builder.rb'
 require 'uri_template/rfc6570/expression.rb'
