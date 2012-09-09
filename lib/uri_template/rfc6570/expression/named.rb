@@ -30,8 +30,8 @@ class URITemplate::RFC6570::Expression::Named < URITemplate::RFC6570::Expression
         if expand
           source.capture do
             source.separated_list(first) do
-              source.character_class('+')
-                .escaped_pair_connector
+              source.character_class('+')\
+                .escaped_pair_connector\
                 .character_class_with_comma(max_length)
             end
           end

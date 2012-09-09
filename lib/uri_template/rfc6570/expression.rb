@@ -94,9 +94,13 @@ class URITemplate::RFC6570
       end
       if expand
         it = URITemplate::RegexpEnumerator.new(self.class.hash_extractor(max_length))
-        splitted = it.each(matched)
-          .reject{|match| match[1].nil? }
+        if position == 0
+          matched = "#{self.class::SEPARATOR}#{matched}"
+        end
+        splitted = it.each(matched)\
+          .reject{|match| match[1].nil? }\
           .map do |match|
+            raise match.inspect if match.kind_of? String
             [ decode(match[1]), decode(match[2], false) ]
           end
         return after_expand(name, splitted)
@@ -130,6 +134,7 @@ class URITemplate::RFC6570
       def generate_hash_extractor(max_length)
         source = regex_builder
         source.push('\\A')
+        source.escaped_separator
         source.capture do
           source.character_class('+').reluctant
         end
@@ -139,13 +144,13 @@ class URITemplate::RFC6570
             source.character_class(max_length,0).reluctant
           end
         end.length('?')
-        source.capture do
+        source.lookahead do
           source.push '\\z'
           source.push '|'
           source.escaped_separator
-          source.negative_lookahead do
+          source.push '[^'
             source.escaped_separator
-          end
+          source.push ']'
         end
         return Regexp.new( source.join , Utils::KCODE_UTF8)
       end

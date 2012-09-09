@@ -29,6 +29,7 @@ module URITemplate
     end
 
     def each(str)
+      raise ArgumentError, "RegexpEnumerator#each expects a String, but got #{str.inspect}" unless str.kind_of? String
       return Enumerator.new(self,:each,str) unless block_given?
       rest = str
       loop do

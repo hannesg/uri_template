@@ -127,6 +127,13 @@ describe URITemplate::RFC6570 do
 
     end
 
+    it 'should extract multiple reserved lists' do
+
+      t = URITemplate::RFC6570.new("{+listA*,listB*}")
+      t.should extract('listA'=>%w{a b c},'listB'=>%w{d}).from('a,b,c,d')
+
+    end
+
     it 'should extract assocs with dots' do
 
       t = URITemplate::RFC6570.new("{?assoc*}")
