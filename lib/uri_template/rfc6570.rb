@@ -339,13 +339,12 @@ __REGEXP__
   # @example Extraction cruces
   #   two_lists = URITemplate::RFC6570.new('{listA*,listB*}')
   #   uri = two_lists.expand('listA'=>[1,2],'listB'=>[3,4]) #=> "1,2,3,4"
-  #   variables = two_lists.extract( uri ) #=> {'listA'=>["1","2","3","4"],'listB'=>nil}
+  #   variables = two_lists.extract( uri ) #=> {'listA'=>["1","2","3"],'listB'=>["4"]}
   #   # However, like said in the note:
   #   two_lists.expand( variables ) == uri #=> true
   #
   # @note
   #   The current implementation drops duplicated variables instead of checking them.
-  #   
   #   
   def extract(uri_or_match, post_processing = DEFAULT_PROCESSING )
     if uri_or_match.kind_of? String

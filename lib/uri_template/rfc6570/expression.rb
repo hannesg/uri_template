@@ -24,7 +24,7 @@ class URITemplate::RFC6570
 
     include URITemplate::Expression
 
-    attr_reader :variables, :max_length
+    attr_reader :variables
 
     def initialize(vars)
       @variable_specs = vars
@@ -68,15 +68,12 @@ class URITemplate::RFC6570
       result = []
       @variable_specs.each{| var, expand , max_length |
         unless vars[var].nil?
+          if max_length && max_length > 0 && ( vars[var].kind_of?(Array) || vars[var].kind_of?(Hash) )
+            raise InvalidValue::LengthLimitInapplicable.new(var,vars[var])
+          end
           if vars[var].kind_of?(Hash) or Utils.pair_array?(vars[var])
-            if max_length && max_length > 0
-              raise InvalidValue::LengthLimitInapplicable.new(var,vars[var])
-            end
             result.push( *transform_hash(var, vars[var], expand, max_length) )
           elsif vars[var].kind_of? Array
-            if max_length && max_length > 0
-              raise InvalidValue::LengthLimitInapplicable.new(var,vars[var])
-            end
             result.push( *transform_array(var, vars[var], expand, max_length) )
           else
             result.push( self_pair(var, vars[var], max_length) )
@@ -92,70 +89,6 @@ class URITemplate::RFC6570
 
     def to_s
       return '{' + self.class::OPERATOR + @variable_specs.map{|name,expand,max_length| name + (expand ? '*': '') + (max_length > 0 ? (':' + max_length.to_s) : '') }.join(',') + '}'
-    end
-
-    #TODO: certain things after a slurpy variable will never get matched. therefore, it's pointless to add expressions for them
-    #TODO: variables, which appear twice could be compacted, don't they?
-    def to_r_source
-      source = []
-      first = true
-      vs = @variable_specs.size - 1
-      i = 0
-      if self.class::NAMED
-        @variable_specs.each{| var, expand , max_length |
-          value = self.class::CHARACTER_CLASS[:class_with_comma] + ( (max_length > 0) ? '{0,'+max_length.to_s+'}' : '*' )
-          if expand
-            #if self.class::PAIR_IF_EMPTY
-            pair = "#{self.class::CHARACTER_CLASS[:class]}+?#{Regexp.escape(self.class::PAIR_CONNECTOR)}#{value}"
-
-            if first
-              source << "((?:#{pair})(?:#{Regexp.escape(self.class::SEPARATOR)}#{pair})*)"
-            else
-              source << "((?:#{Regexp.escape(self.class::SEPARATOR)}#{pair})*)"
-            end
-          else
-            if self.class::PAIR_IF_EMPTY
-              pair = "#{Regexp.escape(var)}(#{Regexp.escape(self.class::PAIR_CONNECTOR)}#{value})"
-            else
-              pair = "#{Regexp.escape(var)}(#{Regexp.escape(self.class::PAIR_CONNECTOR)}#{value}|)"
-            end
-
-            if first
-            source << "(?:#{pair})"
-            else
-              source << "(?:#{Regexp.escape(self.class::SEPARATOR)}#{pair})?"
-            end
-          end
-
-          first = false
-          i = i+1
-        }
-      else
-        @variable_specs.each{| var, expand , max_length |
-          last = (vs == i)
-          if expand
-            # could be list or map, too
-            value = self.class::CHARACTER_CLASS[:class] + ( (max_length > 0) ? '{0,'+max_length.to_s+'}' : '*' )
-
-            pair = "(?:#{self.class::CHARACTER_CLASS[:class]}+?#{Regexp.escape(self.class::PAIR_CONNECTOR)})?#{value}"
-
-            value = "#{pair}(?:#{Regexp.escape(self.class::SEPARATOR)}#{pair})*"
-          elsif last
-            # the last will slurp lists
-            value = "#{self.class::CHARACTER_CLASS[:class_with_comma]}#{(max_length > 0)?'{0,'+max_length.to_s+'}':'*?'}"
-          else
-            value = "#{self.class::CHARACTER_CLASS[:class]}#{(max_length > 0)?'{0,'+max_length.to_s+'}':'*?'}"
-          end
-          if first
-            source << "(#{value})"
-            first = false
-          else
-            source << "(?:#{Regexp.escape(self.class::SEPARATOR)}(#{value}))?"
-          end
-          i = i+1
-        }
-      end
-      return '(?:' + Regexp.escape(self.class::PREFIX) + source.join + ')?'
     end
 
     def extract(position,matched)
@@ -332,11 +265,75 @@ class URITemplate::RFC6570
       end
     end
 
+    def escaped_pair_connector
+      Regexp.escape(self.class::PAIR_CONNECTOR)
+    end
+
+    def escaped_separator
+      Regexp.escape(self.class::SEPARATOR)
+    end
+
+    def escaped_prefix
+      Regexp.escape(self.class::PREFIX)
+    end
+
+    def format_length(len, min = 0)
+      return len if len.kind_of? String
+      return '{'+min.to_s+','+len.to_s+'}' if len.kind_of?(Numeric) and len > 0
+      return '*' if min == 0
+      return '+' if min == 1
+      return '{'+min.to_s+',}'
+    end
+
+    def character_class_with_comma(max_length=0, min = 0)
+      self.class::CHARACTER_CLASS[:class_with_comma] + format_length(max_length, min)
+    end
+
+    def character_class(max_length=0, min = 0)
+      self.class::CHARACTER_CLASS[:class] + format_length(max_length, min)
+    end
+
+    def separated_list(expression, first = true, length = 0, min = 1)
+      if first
+        [ *expression, '(?:', escaped_separator, *expression, ')', format_length(length, min - 1 ) ]
+      else
+        [ '(?:', escaped_separator, *expression, ')', format_length(length, min) ]
+      end
+    end
   public
 
     class Named < self
 
       alias self_pair pair
+
+      def to_r_source
+        source = ['(?:', escaped_prefix]
+        first = true
+        @variable_specs.each do | var, expand , max_length |
+          if expand
+            source << '('
+            source.push(
+              *separated_list(
+                [ character_class('+'), escaped_pair_connector, character_class_with_comma(max_length) ],
+                first
+              )
+            )
+            source << ')'
+          else
+            source << '(?:'
+            source << escaped_separator unless first
+            source << Regexp.escape(var)
+            source << '('
+            source << escaped_pair_connector
+            source << character_class_with_comma(max_length)
+            source << '|' unless self.class::PAIR_IF_EMPTY
+            source << '))?'
+          end
+          first = false
+        end
+        source << ')?'
+        return source.join
+      end
 
     end
 
@@ -344,6 +341,37 @@ class URITemplate::RFC6570
 
       def self_pair(_, value, max_length = 0)
         cut( escape(value), max_length )
+      end
+
+      def to_r_source
+        source = ['(?:', escaped_prefix]
+        vs = @variable_specs.size - 1
+        i = 0
+        @variable_specs.each do | var, expand , max_length |
+          last = (vs == i)
+          first = (i == 0)
+          if expand
+            source << '('
+            source.push(
+              *separated_list(
+                [ '(?:',character_class('+?'), escaped_pair_connector,')?', character_class(max_length) ],
+                first
+              )
+            )
+          else
+            source << escaped_separator unless first
+            source << '('
+            if last
+              source.push( character_class_with_comma(max_length), '?' )
+            else
+              source.push( character_class(max_length) )
+            end
+          end
+          source << ')'
+          i = i+1
+        end
+        source << ')?'
+        return source.join
       end
 
     end
