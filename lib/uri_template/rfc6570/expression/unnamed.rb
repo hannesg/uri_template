@@ -51,7 +51,7 @@ class URITemplate::RFC6570::Expression::Unnamed < URITemplate::RFC6570::Expressi
           source.escaped_separator unless first
           source.group(true) do
             if last
-              source.character_class_with_comma(max_length).reluctant
+              source.character_class_with_comma(max_length)
             else
               source.character_class(max_length)
             end
