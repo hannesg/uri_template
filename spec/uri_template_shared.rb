@@ -38,6 +38,15 @@ shared_examples "a uri template class" do
     inst.expand('foo' => 'bar').should be_kind_of(String)
   end
 
+  it "should accept anything that responds to #map for expand" do
+    inst = described_class.new("")
+    obj = Object.new
+    def obj.map
+      yield "foo", "bar"
+    end
+    inst.expand(obj).should be_kind_of(String)
+  end
+
   it "should compare true if the pattern is the same" do
     described_class.new("").should == described_class.new("")
   end

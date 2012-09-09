@@ -296,7 +296,9 @@ RUBY
   # strings in order to support the Ruby 1.9 hash syntax.
   #
   # @raise {Unconvertable} if a variable could not be converted to a string.
-  # @param variables [Hash]
+  # @raise {InvalidValue} if a value is not suiteable for a certain variable ( e.g. a string when a list is expected ).
+  #
+  # @param variables [#map]
   # @return String
   def expand(variables = {})
     raise ArgumentError, "Expected something that returns to :map, but got: #{variables.inspect}" unless variables.respond_to? :map
@@ -328,7 +330,7 @@ RUBY
   #
   # @return Array
   def variables
-    @variables ||= tokens.select(&:expression?).map(&:variables).flatten.uniq
+    @variables ||= tokens.map(&:variables).flatten.uniq.freeze
   end
 
   # Returns the number of static characters in this template.
