@@ -24,8 +24,9 @@ module URITemplate
 
     include Enumerable
 
-    def initialize(regexp)
+    def initialize(regexp, options = {})
       @regexp = regexp
+      @rest = options.fetch(:rest){ :yield }
     end
 
     def each(str)
@@ -35,7 +36,10 @@ module URITemplate
       loop do
         m = @regexp.match(rest)
         if m.nil?
-          yield rest
+          if rest.size > 0
+            yield rest if @rest == :yield
+            raise "Unable to match #{rest.inspect} against #{@regexp.inspect}" if @rest == :raise
+          end
           break
         end
         yield m.pre_match if m.pre_match.size > 0
@@ -43,7 +47,10 @@ module URITemplate
         if m[0].size == 0
           # obviously matches empty string, so post_match will equal rest
           # terminate or this will loop forever
-          yield m.post_match
+          if m.post_match.size > 0
+            yield m.post_match if @rest == :yield
+            raise "#{@regexp.inspect} matched an empty string. The rest is #{m.post_match.inspect}." if @rest == :raise
+          end
           break
         end
         rest = m.post_match

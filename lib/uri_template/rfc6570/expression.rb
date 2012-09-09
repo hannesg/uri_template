@@ -93,7 +93,7 @@ class URITemplate::RFC6570
         return [[ name , extracted_nil ]]
       end
       if expand
-        it = URITemplate::RegexpEnumerator.new(self.class.hash_extractor(max_length))
+        it = URITemplate::RegexpEnumerator.new(self.class.hash_extractor(max_length), :rest => :raise)
         if position == 0
           matched = "#{self.class::SEPARATOR}#{matched}"
         end
@@ -186,7 +186,7 @@ class URITemplate::RFC6570
         end
       elsif split
         result = []
-        URITemplate::RegexpEnumerator.new(SPLITTER).each(x) do |match|
+        URITemplate::RegexpEnumerator.new(SPLITTER, :rest => :raise).each(x) do |match|
           if match[1] and match[1].size > 0
             if match.post_match.size == 0
               result << match[1]
