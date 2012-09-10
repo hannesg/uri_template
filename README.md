@@ -53,32 +53,4 @@ The way variables are inserted can be modified using operators. The operator is 
 Benchmarks
 -----------------------
 
- * System: Core 2 Duo T9300, 4 gb ram, ubuntu 12.04 64 bit, ruby 1.9.3, 100_000 repetitions
- * Implementation: RFC6570 ( version 0.3.0 ) vs. Addressable ( 2.2.8 )
- * Results marked with * means that the template object is reused.
-
-                                                       Addressable | Addressable* | RFC6570 | RFC6570* |
-    --Expansion-----------------------------------------------------------------------------------------
-    Empty string                                             8.505 |        8.439 |   0.539 |    0.064 |
-    One simple variable                                     19.717 |       19.721 |   3.031 |    1.169 |
-    One escaped variable                                    21.873 |       22.017 |   3.573 |    1.705 |
-    One missing variable                                     9.676 |       11.981 |   2.633 |    0.352 |
-    Path segments                                           29.901 |       31.698 |   4.929 |    3.051 |
-    Arguments                                               36.584 |       36.531 |   9.540 |    5.982 |
-    Full URI                                               109.102 |      116.458 |  19.806 |   10.548 |
-    Segments and Arguments                                 108.103 |      107.750 |  14.059 |    7.593 |
-    total                                                  343.461 |      354.596 |  58.109 |   30.464 |
-    --Extraction----------------------------------------------------------------------------------------
-    Empty string                                            21.422 |       21.843 |   3.122 |    0.804 |
-    One simple variable                                     39.860 |       43.840 |  10.671 |    2.874 |
-    One escaped variable                                    51.321 |       50.790 |  10.963 |    2.040 |
-    One missing variable                                    26.125 |       26.320 |   9.400 |    1.847 |
-    Path segments                                           62.712 |       64.191 |  18.502 |    4.518 |
-    Arguments                                               81.350 |       81.258 |  20.762 |    5.401 |
-    Full URI                                               145.339 |      141.795 |  45.306 |   11.096 |
-    Segments and Arguments                                 124.431 |      122.885 |  34.208 |    8.126 |
-    Segments and Arguments ( not extractable )              34.183 |       34.200 |  26.542 |    0.410 |
-    total                                                  586.743 |      587.122 | 179.476 |   37.116 |
-
-SUCCESS - URITemplate was faster in every test!
-
+Believe me, it's 5-10x faster than Addressable. I'm currently fine-tuning. There were some benchmarks here, but they were for older versions. I removed them because it's better to say that I have none than presenting irrelevant results.
