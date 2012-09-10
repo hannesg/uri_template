@@ -27,101 +27,10 @@ module URITemplate
   # @api private
   URI_SPLIT = /\A(?:([a-z]+):)?(?:\/\/)?([^\/]+)?/i.freeze
 
-  # This should make it possible to do basic analysis independently from the concrete type.
-  module Token
-
-    EMPTY_ARRAY = [].freeze
-
-    def variables
-      EMPTY_ARRAY
-    end
-
-    # Number of variables in this token
-    def size
-      variables.size
-    end
-
-    def starts_with_slash?
-      false
-    end
-
-    def ends_with_slash?
-      false
-    end
-
-  end
-
-  # A module which all literal tokens should include.
-  module Literal
-
-    include Token
-
-    SLASH = ?/
-
-    attr_reader :string
-
-    def literal?
-      true
-    end
-
-    def expression?
-      false
-    end
-
-    def size
-      0
-    end
-
-    def expand(_)
-      return string
-    end
-
-    def starts_with_slash?
-      string[0] == SLASH
-    end
-
-    def ends_with_slash?
-      string[-1] == SLASH
-    end
-
-    alias to_s string
-
-  end
-
-  # A module which all non-literal tokens should include.
-  module Expression
-
-    include Token
-
-    attr_reader :variables
-
-    def literal?
-      false
-    end
-
-    def expression?
-      true
-    end
-
-    def scheme?
-      false
-    end
-
-    def host?
-      false
-    end
-
-    def expand(variables)
-      raise "Please implement #expand(variables) on #{self.class.inspect}."
-    end
-
-    def to_s
-      raise "Please implement #to_s on #{self.class.inspect}."
-    end
-
-  end
-
   autoload :Utils, 'uri_template/utils'
+  autoload :Token, 'uri_template/token'
+  autoload :Literal, 'uri_template/literal'
+  autoload :Expression, 'uri_template/expression'
   autoload :RFC6570, 'uri_template/rfc6570'
   autoload :Colon, 'uri_template/colon'
 
@@ -364,6 +273,8 @@ RUBY
   end
 
   # Returns the pattern for this template.
+  #
+  # @return String
   def pattern
     @pattern ||= tokens.map(&:to_s).join
   end
@@ -389,6 +300,8 @@ RUBY
   #   (tpl / '{/z}' ).pattern #=> '/xy{/z}'
   #   (tpl / 'a' / 'b' ).pattern #=> '/xy/a/b'
   #
+  # @param other [URITemplate, String, ...]
+  # @return URITemplate
   def path_concat(other)
     if other.host? or other.scheme?
       raise ArgumentError, "Expected to receive a relative template but got an absoulte one: #{other.inspect}. If you think this is a bug, please report it."
