@@ -35,7 +35,7 @@ class URITemplate::RFC6570
   # @private
   Utils = URITemplate::Utils
 
-  if SUPPORTS_UNICODE_CHARS
+  if Utils.use_unicode?
     # @private
     #                           \/ - unicode ctrl-chars
     LITERAL = /([^"'%<>\\^`{|}\u0000-\u001F\u007F-\u009F\s]|%[0-9a-fA-F]{2})+/u

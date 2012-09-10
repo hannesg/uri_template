@@ -68,16 +68,7 @@ class URITemplate::RFC6570
       result = []
       @variable_specs.each{| var, expand , max_length |
         unless vars[var].nil?
-          if max_length && max_length > 0 && ( vars[var].kind_of?(Array) || vars[var].kind_of?(Hash) )
-            raise InvalidValue::LengthLimitInapplicable.new(var,vars[var])
-          end
-          if vars[var].kind_of?(Hash) or Utils.pair_array?(vars[var])
-            result.push( *transform_hash(var, vars[var], expand, max_length) )
-          elsif vars[var].kind_of? Array
-            result.push( *transform_array(var, vars[var], expand, max_length) )
-          else
-            result.push( self_pair(var, vars[var], max_length) )
-          end
+          result.push(*expand_one(var, vars[var], expand, max_length))
         end
       }
       if result.any?
@@ -113,6 +104,25 @@ class URITemplate::RFC6570
     end
 
   private
+
+    def expand_one( name, value, expand, max_length)
+      if length_limited?(max_length)
+        if value.kind_of?(Array) or value.kind_of?(Hash)
+          raise InvalidValue::LengthLimitInapplicable.new(name,value)
+        end
+      end
+      if value.kind_of?(Hash) or Utils.pair_array?(value)
+        return transform_hash(name, value, expand, max_length)
+      elsif value.kind_of? Array
+        return transform_array(name, value, expand, max_length)
+      else
+        return self_pair(name, value, max_length)
+      end
+    end
+
+    def length_limited?(max_length)
+      max_length > 0
+    end
 
     def extracted_nil
       nil

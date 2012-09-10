@@ -19,38 +19,13 @@
 module URITemplate
 
   # @api private
-  # Should we use \u.... or \x.. in regexps?
-  SUPPORTS_UNICODE_CHARS = begin
-                             if "string".respond_to? :encoding
-                               rx = eval('Regexp.compile("\u0020")')
-                               !!(rx =~ " ")
-                             else
-                               rx = eval('/\u0020/')
-                               !!(rx =~ " ")
-                             end
-                           rescue SyntaxError
-                             false
-                           end
-
-  # @api private
-  # Should we use quantifier modifier in regexps?
-  SUPPORTS_QUANTIFIER_MODIFIER =  begin
-                                    /a+?/.match('aa').to_s == 1
-                                  rescue SyntaxError
-                                    false
-                                  end
-
-  # @api private
-  QUANTIFY_POSSESSIVE = SUPPORTS_QUANTIFIER_MODIFIER ? '+' : ''
-
-  # @api private
   SCHEME_REGEX = /\A[a-z]+:/i.freeze
 
   # @api private
   HOST_REGEX = /\A(?:[a-z]+:)?\/\/[^\/]+/i.freeze
 
   # @api private
-  URI_SPLIT = /\A(?:([a-z]+):)?#{QUANTIFY_POSSESSIVE}(?:\/\/)?#{QUANTIFY_POSSESSIVE}([^\/]+)?/i.freeze
+  URI_SPLIT = /\A(?:([a-z]+):)?(?:\/\/)?([^\/]+)?/i.freeze
 
   # This should make it possible to do basic analysis independently from the concrete type.
   module Token
@@ -226,6 +201,8 @@ module URITemplate
   # @example
   #   URITemplate.coerce( URITemplate.new(:rfc6570,'{x}'), '{y}' ) #=> [URITemplate.new(:rfc6570,'{x}'), URITemplate.new(:rfc6570,'{y}'), false, true]
   #   URITemplate.coerce( '{y}', URITemplate.new(:rfc6570,'{x}') ) #=> [URITemplate.new(:rfc6570,'{y}'), URITemplate.new(:rfc6570,'{x}'), true, false]
+  #
+  # @return [Tuple<URITemplate,URITemplate,Bool,Bool>]
   def self.coerce(a,b)
     if a.kind_of? URITemplate
       if a.class == b.class
@@ -313,12 +290,16 @@ RUBY
 
   # @abstract
   # Returns the type of this template. The type is a symbol which can be used in {.resolve_class} to resolve the type of this template.
+  #
+  # @return [Symbol]
   def type
     raise "Please implement #type on #{self.class.inspect}."
   end
 
   # @abstract
   # Returns the tokens of this templates. Tokens should include either {Literal} or {Expression}.
+  #
+  # @return [Array<URITemplate::Token>]
   def tokens
     raise "Please implement #tokens on #{self.class.inspect}."
   end
@@ -328,7 +309,7 @@ RUBY
   #   URITemplate.new('{foo}{bar}{baz}').variables #=> ['foo','bar','baz']
   #   URITemplate.new('{a}{c}{a}{b}').variables #=> ['a','c','b']
   #
-  # @return Array
+  # @return [Array<String>]
   def variables
     @variables ||= tokens.map(&:variables).flatten.uniq.freeze
   end

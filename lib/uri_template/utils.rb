@@ -264,6 +264,14 @@ module URITemplate
       raise Unconvertable.new(object)
     end
 
+    # @api private
+    # Should we use \u.... or \x.. in regexps?
+    def use_unicode?
+      return eval('/\u0020/') =~ " "
+    rescue SyntaxError
+      false
+    end
+
     # Returns true when the given value is an array and it only consists of arrays with two items.
     # This useful when using a hash is not ideal, since it doesn't allow duplicate keys.
     # @example
