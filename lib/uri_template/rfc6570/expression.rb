@@ -184,14 +184,19 @@ class URITemplate::RFC6570
       self.class.regex_builder
     end
 
-    SPLITTER = /^(?:(,+)|([^,]+))/
+    SPLITTER = /^(,+)|([^,]+)/
+
+    COMMA = ",".freeze
 
     def decode(x, split = true)
       if x.nil?
         return extracted_nil
       elsif split
         result = []
-        x = x.gsub(/,\z/,',,')
+        # Add a comma if the last character is a comma
+        # seems weird but is more compatible than changing
+        # the regex.
+        x += COMMA if x[-1..-1] == COMMA
         URITemplate::RegexpEnumerator.new(SPLITTER, :rest => :raise).each(x) do |match|
           if match[1]
             next if match[1].size == 1

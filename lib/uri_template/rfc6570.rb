@@ -448,25 +448,22 @@ protected
       i = 0
       pa = part.arity
       while i < pa
-        vars << part.extract(i, matchdata[bc])
+        vars.push( *part.extract(i, matchdata[bc]) )
         bc += 1
         i += 1
       end
     }
     if post_processing.include? :convert_result
       if post_processing.include? :convert_values
-        vars.flatten!(1)
-        return Hash[*vars.map!{|k,v| [k,Utils.pair_array_to_hash(v)] }.flatten(1) ]
+        return Hash[ vars.map!{|k,v| [k,Utils.pair_array_to_hash(v)] } ]
       else
-        vars.flatten!(2)
-        return Hash[*vars]
+        return Hash[vars]
       end
     else
       if post_processing.include? :convert_value
-        vars.flatten!(1)
         return vars.collect{|k,v| [k,Utils.pair_array_to_hash(v)] }
       else
-        return vars.flatten(1)
+        return vars
       end
     end
   end
