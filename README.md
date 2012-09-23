@@ -53,4 +53,4 @@ The way variables are inserted can be modified using operators. The operator is 
 Benchmarks
 -----------------------
 
-I have assembled one benchmark based on the uritemplate-test examples. You can find them in the "benchmarks" folder. The short result: uri_template is 2-10x as fast as addressable on ruby 1.9.3.
+I have assembled one benchmark based on the uritemplate-test examples. You can find them in the "benchmarks" folder. The short result: uri_template is 2-10x faster than addressable on ruby 1.9.3.
