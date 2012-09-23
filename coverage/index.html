@@ -23,7 +23,7 @@
       <img src="./assets/0.5.3/loading.gif" alt="loading"/>
     </div>
     <div id="wrapper" style="display:none;">
-      <div class="timestamp">Generated <abbr class="timeago" title="2012-09-23T18:50:11+02:00">2012-09-23T18:50:11+02:00</abbr></div>
+      <div class="timestamp">Generated <abbr class="timeago" title="2012-09-23T19:36:15+02:00">2012-09-23T19:36:15+02:00</abbr></div>
       <ul class="group_tabs"></ul>
 
       <div id="content">
@@ -34,7 +34,7 @@
      covered at
      <span class="covered_strength">
        <span class="green">
-         112.62
+         112.77
        </span>
     </span> hits/line)
   </h2>
@@ -66,7 +66,7 @@
         <td>133</td>
         <td>130</td>
         <td>3</td>
-        <td>35.2</td>
+        <td>35.5</td>
       </tr>
       
       <tr>
@@ -96,7 +96,7 @@
         <td>17</td>
         <td>16</td>
         <td>1</td>
-        <td>15.2</td>
+        <td>15.5</td>
       </tr>
       
       <tr>
@@ -106,7 +106,7 @@
         <td>155</td>
         <td>145</td>
         <td>10</td>
-        <td>133.9</td>
+        <td>134.9</td>
       </tr>
       
       <tr>
@@ -116,7 +116,7 @@
         <td>196</td>
         <td>194</td>
         <td>2</td>
-        <td>141.5</td>
+        <td>141.6</td>
       </tr>
       
       <tr>
@@ -547,26 +547,26 @@
           <code class="ruby">  def self.resolve_class(*args)</code>
         </li>
       
-        <li class="covered" data-hits="265" data-linenumber="59">
-          <span class="hits">265</span>
+        <li class="covered" data-hits="271" data-linenumber="59">
+          <span class="hits">271</span>
           
           <code class="ruby">    symbols, rest = args.partition{|x| x.kind_of? Symbol }</code>
         </li>
       
-        <li class="covered" data-hits="99" data-linenumber="60">
-          <span class="hits">99</span>
+        <li class="covered" data-hits="101" data-linenumber="60">
+          <span class="hits">101</span>
           
           <code class="ruby">    version = symbols.fetch(0, :default)</code>
         </li>
       
-        <li class="covered" data-hits="99" data-linenumber="61">
-          <span class="hits">99</span>
+        <li class="covered" data-hits="101" data-linenumber="61">
+          <span class="hits">101</span>
           
           <code class="ruby">    raise ArgumentError, &quot;Unknown template version #{version.inspect}, defined versions: #{VERSIONS.keys.inspect}&quot; unless VERSIONS.key?(version)</code>
         </li>
       
-        <li class="covered" data-hits="98" data-linenumber="62">
-          <span class="hits">98</span>
+        <li class="covered" data-hits="100" data-linenumber="62">
+          <span class="hits">100</span>
           
           <code class="ruby">    return self.const_get(VERSIONS[version]), rest</code>
         </li>
@@ -655,14 +655,14 @@
           <code class="ruby">  def self.new(*args)</code>
         </li>
       
-        <li class="covered" data-hits="96" data-linenumber="77">
-          <span class="hits">96</span>
+        <li class="covered" data-hits="98" data-linenumber="77">
+          <span class="hits">98</span>
           
           <code class="ruby">    klass, rest = resolve_class(*args)</code>
         </li>
       
-        <li class="covered" data-hits="95" data-linenumber="78">
-          <span class="hits">95</span>
+        <li class="covered" data-hits="97" data-linenumber="78">
+          <span class="hits">97</span>
           
           <code class="ruby">    return klass.new(*rest)</code>
         </li>
@@ -889,20 +889,20 @@
           <code class="ruby">  def self.coerce(a,b)</code>
         </li>
       
-        <li class="covered" data-hits="59" data-linenumber="116">
-          <span class="hits">59</span>
+        <li class="covered" data-hits="60" data-linenumber="116">
+          <span class="hits">60</span>
           
           <code class="ruby">    if a.kind_of? URITemplate</code>
         </li>
       
-        <li class="covered" data-hits="54" data-linenumber="117">
-          <span class="hits">54</span>
+        <li class="covered" data-hits="55" data-linenumber="117">
+          <span class="hits">55</span>
           
           <code class="ruby">      if a.class == b.class</code>
         </li>
       
-        <li class="covered" data-hits="29" data-linenumber="118">
-          <span class="hits">29</span>
+        <li class="covered" data-hits="30" data-linenumber="118">
+          <span class="hits">30</span>
           
           <code class="ruby">        return [a,b,false,false]</code>
         </li>
@@ -1723,8 +1723,8 @@
           <code class="ruby">  def host?</code>
         </li>
       
-        <li class="covered" data-hits="41" data-linenumber="255">
-          <span class="hits">41</span>
+        <li class="covered" data-hits="42" data-linenumber="255">
+          <span class="hits">42</span>
           
           <code class="ruby">    return scheme_and_host[1]</code>
         </li>
@@ -1825,8 +1825,8 @@
           <code class="ruby">  def scheme?</code>
         </li>
       
-        <li class="covered" data-hits="33" data-linenumber="272">
-          <span class="hits">33</span>
+        <li class="covered" data-hits="34" data-linenumber="272">
+          <span class="hits">34</span>
           
           <code class="ruby">    return scheme_and_host[0]</code>
         </li>
@@ -1867,8 +1867,8 @@
           <code class="ruby">  def pattern</code>
         </li>
       
-        <li class="covered" data-hits="553" data-linenumber="279">
-          <span class="hits">553</span>
+        <li class="covered" data-hits="562" data-linenumber="279">
+          <span class="hits">562</span>
           
           <code class="ruby">    @pattern ||= tokens.map(&amp;:to_s).join</code>
         </li>
@@ -2029,8 +2029,8 @@
           <code class="ruby">  def path_concat(other)</code>
         </li>
       
-        <li class="covered" data-hits="27" data-linenumber="306">
-          <span class="hits">27</span>
+        <li class="covered" data-hits="28" data-linenumber="306">
+          <span class="hits">28</span>
           
           <code class="ruby">    if other.host? or other.scheme?</code>
         </li>
@@ -2053,14 +2053,14 @@
           <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="25" data-linenumber="310">
-          <span class="hits">25</span>
+        <li class="covered" data-hits="26" data-linenumber="310">
+          <span class="hits">26</span>
           
           <code class="ruby">    return self if other.tokens.none?</code>
         </li>
       
-        <li class="covered" data-hits="24" data-linenumber="311">
-          <span class="hits">24</span>
+        <li class="covered" data-hits="25" data-linenumber="311">
+          <span class="hits">25</span>
           
           <code class="ruby">    return other if self.tokens.none?</code>
         </li>
@@ -2071,14 +2071,14 @@
           <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="23" data-linenumber="313">
-          <span class="hits">23</span>
+        <li class="covered" data-hits="24" data-linenumber="313">
+          <span class="hits">24</span>
           
           <code class="ruby">    tail = self.tokens.last</code>
         </li>
       
-        <li class="covered" data-hits="23" data-linenumber="314">
-          <span class="hits">23</span>
+        <li class="covered" data-hits="24" data-linenumber="314">
+          <span class="hits">24</span>
           
           <code class="ruby">    head = other.tokens.first</code>
         </li>
@@ -2089,22 +2089,22 @@
           <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="23" data-linenumber="316">
-          <span class="hits">23</span>
+        <li class="covered" data-hits="24" data-linenumber="316">
+          <span class="hits">24</span>
           
           <code class="ruby">    if tail.ends_with_slash?</code>
         </li>
       
-        <li class="covered" data-hits="10" data-linenumber="317">
-          <span class="hits">10</span>
+        <li class="covered" data-hits="11" data-linenumber="317">
+          <span class="hits">11</span>
           
           <code class="ruby">      if head.starts_with_slash?</code>
         </li>
       
-        <li class="covered" data-hits="6" data-linenumber="318">
-          <span class="hits">6</span>
+        <li class="covered" data-hits="7" data-linenumber="318">
+          <span class="hits">7</span>
           
-          <code class="ruby">        return self.class.new( remove_double_slash(self.tokens, other.tokens) )</code>
+          <code class="ruby">        return self.class.new( remove_double_slash(self.tokens, other.tokens).join )</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="319">
@@ -2323,14 +2323,14 @@
           <code class="ruby">  def remove_double_slash( first_tokens, second_tokens )</code>
         </li>
       
-        <li class="covered" data-hits="6" data-linenumber="355">
-          <span class="hits">6</span>
+        <li class="covered" data-hits="7" data-linenumber="355">
+          <span class="hits">7</span>
           
           <code class="ruby">    if first_tokens.last.literal?</code>
         </li>
       
-        <li class="covered" data-hits="5" data-linenumber="356">
-          <span class="hits">5</span>
+        <li class="covered" data-hits="6" data-linenumber="356">
+          <span class="hits">6</span>
           
           <code class="ruby">      return first_tokens[0..-2] + [ first_tokens.last.to_s[0..-2] ] + second_tokens</code>
         </li>
@@ -2401,32 +2401,32 @@
           <code class="ruby">  def scheme_and_host</code>
         </li>
       
-        <li class="covered" data-hits="74" data-linenumber="368">
-          <span class="hits">74</span>
+        <li class="covered" data-hits="76" data-linenumber="368">
+          <span class="hits">76</span>
           
           <code class="ruby">    return @scheme_and_host if @scheme_and_host</code>
         </li>
       
-        <li class="covered" data-hits="46" data-linenumber="369">
-          <span class="hits">46</span>
+        <li class="covered" data-hits="47" data-linenumber="369">
+          <span class="hits">47</span>
           
           <code class="ruby">    read_chars = &quot;&quot;</code>
         </li>
       
-        <li class="covered" data-hits="46" data-linenumber="370">
-          <span class="hits">46</span>
+        <li class="covered" data-hits="47" data-linenumber="370">
+          <span class="hits">47</span>
           
           <code class="ruby">    @scheme_and_host = [false,false]</code>
         </li>
       
-        <li class="covered" data-hits="46" data-linenumber="371">
-          <span class="hits">46</span>
+        <li class="covered" data-hits="47" data-linenumber="371">
+          <span class="hits">47</span>
           
           <code class="ruby">    tokens.each do |token|</code>
         </li>
       
-        <li class="covered" data-hits="50" data-linenumber="372">
-          <span class="hits">50</span>
+        <li class="covered" data-hits="51" data-linenumber="372">
+          <span class="hits">51</span>
           
           <code class="ruby">      if token.expression?</code>
         </li>
@@ -2485,8 +2485,8 @@
           <code class="ruby">      elsif token.literal?</code>
         </li>
       
-        <li class="covered" data-hits="36" data-linenumber="382">
-          <span class="hits">36</span>
+        <li class="covered" data-hits="37" data-linenumber="382">
+          <span class="hits">37</span>
           
           <code class="ruby">        read_chars &lt;&lt; token.string</code>
         </li>
@@ -2497,8 +2497,8 @@
           <code class="ruby">      end</code>
         </li>
       
-        <li class="covered" data-hits="50" data-linenumber="384">
-          <span class="hits">50</span>
+        <li class="covered" data-hits="51" data-linenumber="384">
+          <span class="hits">51</span>
           
           <code class="ruby">      if read_chars =~ SCHEME_REGEX</code>
         </li>
@@ -2539,8 +2539,8 @@
           <code class="ruby">      elsif read_chars =~ /(^|[^:\/])\/(?!\/)/</code>
         </li>
       
-        <li class="covered" data-hits="15" data-linenumber="391">
-          <span class="hits">15</span>
+        <li class="covered" data-hits="16" data-linenumber="391">
+          <span class="hits">16</span>
           
           <code class="ruby">        break</code>
         </li>
@@ -2557,8 +2557,8 @@
           <code class="ruby">    end</code>
         </li>
       
-        <li class="covered" data-hits="46" data-linenumber="394">
-          <span class="hits">46</span>
+        <li class="covered" data-hits="47" data-linenumber="394">
+          <span class="hits">47</span>
           
           <code class="ruby">    return @scheme_and_host</code>
         </li>
@@ -4327,8 +4327,8 @@
           <code class="ruby">  def literal?</code>
         </li>
       
-        <li class="covered" data-hits="116" data-linenumber="28">
-          <span class="hits">116</span>
+        <li class="covered" data-hits="118" data-linenumber="28">
+          <span class="hits">118</span>
           
           <code class="ruby">    true</code>
         </li>
@@ -4351,8 +4351,8 @@
           <code class="ruby">  def expression?</code>
         </li>
       
-        <li class="covered" data-hits="36" data-linenumber="32">
-          <span class="hits">36</span>
+        <li class="covered" data-hits="37" data-linenumber="32">
+          <span class="hits">37</span>
           
           <code class="ruby">    false</code>
         </li>
@@ -4423,8 +4423,8 @@
           <code class="ruby">  def starts_with_slash?</code>
         </li>
       
-        <li class="covered" data-hits="19" data-linenumber="44">
-          <span class="hits">19</span>
+        <li class="covered" data-hits="20" data-linenumber="44">
+          <span class="hits">20</span>
           
           <code class="ruby">    string[0] == SLASH</code>
         </li>
@@ -4447,8 +4447,8 @@
           <code class="ruby">  def ends_with_slash?</code>
         </li>
       
-        <li class="covered" data-hits="18" data-linenumber="48">
-          <span class="hits">18</span>
+        <li class="covered" data-hits="19" data-linenumber="48">
+          <span class="hits">19</span>
           
           <code class="ruby">    string[-1] == SLASH</code>
         </li>
@@ -5161,8 +5161,8 @@
           <code class="ruby">    def initialize(string)</code>
         </li>
       
-        <li class="covered" data-hits="180" data-linenumber="111">
-          <span class="hits">180</span>
+        <li class="covered" data-hits="187" data-linenumber="111">
+          <span class="hits">187</span>
           
           <code class="ruby">      @string = string</code>
         </li>
@@ -5257,8 +5257,8 @@
           <code class="ruby">    def to_s</code>
         </li>
       
-        <li class="covered" data-hits="35" data-linenumber="127">
-          <span class="hits">35</span>
+        <li class="covered" data-hits="37" data-linenumber="127">
+          <span class="hits">37</span>
           
           <code class="ruby">      @string</code>
         </li>
@@ -5593,14 +5593,14 @@
           <code class="ruby">    def initialize(source, ops)</code>
         </li>
       
-        <li class="covered" data-hits="468" data-linenumber="183">
-          <span class="hits">468</span>
+        <li class="covered" data-hits="477" data-linenumber="183">
+          <span class="hits">477</span>
           
           <code class="ruby">      @source = source</code>
         </li>
       
-        <li class="covered" data-hits="468" data-linenumber="184">
-          <span class="hits">468</span>
+        <li class="covered" data-hits="477" data-linenumber="184">
+          <span class="hits">477</span>
           
           <code class="ruby">      @operators = ops</code>
         </li>
@@ -5623,38 +5623,38 @@
           <code class="ruby">    def each</code>
         </li>
       
-        <li class="covered" data-hits="468" data-linenumber="188">
-          <span class="hits">468</span>
+        <li class="covered" data-hits="477" data-linenumber="188">
+          <span class="hits">477</span>
           
           <code class="ruby">      scanner = StringScanner.new(@source)</code>
         </li>
       
-        <li class="covered" data-hits="468" data-linenumber="189">
-          <span class="hits">468</span>
+        <li class="covered" data-hits="477" data-linenumber="189">
+          <span class="hits">477</span>
           
           <code class="ruby">      until scanner.eos?</code>
         </li>
       
-        <li class="covered" data-hits="593" data-linenumber="190">
-          <span class="hits">593</span>
+        <li class="covered" data-hits="606" data-linenumber="190">
+          <span class="hits">606</span>
           
           <code class="ruby">        expression = scanner.scan(EXPRESSION)</code>
         </li>
       
-        <li class="covered" data-hits="593" data-linenumber="191">
-          <span class="hits">593</span>
+        <li class="covered" data-hits="606" data-linenumber="191">
+          <span class="hits">606</span>
           
           <code class="ruby">        if expression</code>
         </li>
       
-        <li class="covered" data-hits="394" data-linenumber="192">
-          <span class="hits">394</span>
+        <li class="covered" data-hits="400" data-linenumber="192">
+          <span class="hits">400</span>
           
           <code class="ruby">          vars = scanner[2].split(',').map{|name|</code>
         </li>
       
-        <li class="covered" data-hits="505" data-linenumber="193">
-          <span class="hits">505</span>
+        <li class="covered" data-hits="511" data-linenumber="193">
+          <span class="hits">511</span>
           
           <code class="ruby">            match = VAR.match(name)</code>
         </li>
@@ -5677,8 +5677,8 @@
           <code class="ruby">            # 3 = length</code>
         </li>
       
-        <li class="covered" data-hits="505" data-linenumber="197">
-          <span class="hits">505</span>
+        <li class="covered" data-hits="511" data-linenumber="197">
+          <span class="hits">511</span>
           
           <code class="ruby">            [ match[1], match[2] == '*', match[3].to_i ]</code>
         </li>
@@ -5689,8 +5689,8 @@
           <code class="ruby">          }</code>
         </li>
       
-        <li class="covered" data-hits="394" data-linenumber="199">
-          <span class="hits">394</span>
+        <li class="covered" data-hits="400" data-linenumber="199">
+          <span class="hits">400</span>
           
           <code class="ruby">          yield @operators[scanner[1]].new(vars)</code>
         </li>
@@ -5701,20 +5701,20 @@
           <code class="ruby">        else</code>
         </li>
       
-        <li class="covered" data-hits="199" data-linenumber="201">
-          <span class="hits">199</span>
+        <li class="covered" data-hits="206" data-linenumber="201">
+          <span class="hits">206</span>
           
           <code class="ruby">          literal = scanner.scan(LITERAL)</code>
         </li>
       
-        <li class="covered" data-hits="199" data-linenumber="202">
-          <span class="hits">199</span>
+        <li class="covered" data-hits="206" data-linenumber="202">
+          <span class="hits">206</span>
           
           <code class="ruby">          if literal</code>
         </li>
       
-        <li class="covered" data-hits="175" data-linenumber="203">
-          <span class="hits">175</span>
+        <li class="covered" data-hits="182" data-linenumber="203">
+          <span class="hits">182</span>
           
           <code class="ruby">            yield(Literal.new(literal))</code>
         </li>
@@ -6091,38 +6091,38 @@
           <code class="ruby">  def initialize(pattern_or_tokens,options={})</code>
         </li>
       
-        <li class="covered" data-hits="486" data-linenumber="266">
-          <span class="hits">486</span>
+        <li class="covered" data-hits="489" data-linenumber="266">
+          <span class="hits">489</span>
           
           <code class="ruby">    @options = options.dup.freeze</code>
         </li>
       
-        <li class="covered" data-hits="486" data-linenumber="267">
-          <span class="hits">486</span>
+        <li class="covered" data-hits="489" data-linenumber="267">
+          <span class="hits">489</span>
           
           <code class="ruby">    if pattern_or_tokens.kind_of? String</code>
         </li>
       
-        <li class="covered" data-hits="468" data-linenumber="268">
-          <span class="hits">468</span>
+        <li class="covered" data-hits="477" data-linenumber="268">
+          <span class="hits">477</span>
           
           <code class="ruby">      @pattern = pattern_or_tokens.dup</code>
         </li>
       
-        <li class="covered" data-hits="468" data-linenumber="269">
-          <span class="hits">468</span>
+        <li class="covered" data-hits="477" data-linenumber="269">
+          <span class="hits">477</span>
           
           <code class="ruby">      @pattern.freeze</code>
         </li>
       
-        <li class="covered" data-hits="468" data-linenumber="270">
-          <span class="hits">468</span>
+        <li class="covered" data-hits="477" data-linenumber="270">
+          <span class="hits">477</span>
           
           <code class="ruby">      unless @options[:lazy]</code>
         </li>
       
-        <li class="covered" data-hits="468" data-linenumber="271">
-          <span class="hits">468</span>
+        <li class="covered" data-hits="477" data-linenumber="271">
+          <span class="hits">477</span>
           
           <code class="ruby">        self.tokens</code>
         </li>
@@ -6133,20 +6133,20 @@
           <code class="ruby">      end</code>
         </li>
       
-        <li class="covered" data-hits="18" data-linenumber="273">
-          <span class="hits">18</span>
+        <li class="covered" data-hits="12" data-linenumber="273">
+          <span class="hits">12</span>
           
           <code class="ruby">    elsif pattern_or_tokens.kind_of? Array</code>
         </li>
       
-        <li class="covered" data-hits="17" data-linenumber="274">
-          <span class="hits">17</span>
+        <li class="covered" data-hits="11" data-linenumber="274">
+          <span class="hits">11</span>
           
           <code class="ruby">      @tokens = pattern_or_tokens.dup</code>
         </li>
       
-        <li class="covered" data-hits="17" data-linenumber="275">
-          <span class="hits">17</span>
+        <li class="covered" data-hits="11" data-linenumber="275">
+          <span class="hits">11</span>
           
           <code class="ruby">      @tokens.freeze</code>
         </li>
@@ -7069,8 +7069,8 @@
           <code class="ruby">  def tokens</code>
         </li>
       
-        <li class="covered" data-hits="1564" data-linenumber="429">
-          <span class="hits">1564</span>
+        <li class="covered" data-hits="1575" data-linenumber="429">
+          <span class="hits">1575</span>
           
           <code class="ruby">    @tokens ||= tokenize!</code>
         </li>
@@ -7105,8 +7105,8 @@
           <code class="ruby">  def tokenize!</code>
         </li>
       
-        <li class="covered" data-hits="468" data-linenumber="435">
-          <span class="hits">468</span>
+        <li class="covered" data-hits="477" data-linenumber="435">
+          <span class="hits">477</span>
           
           <code class="ruby">    self.class::Tokenizer.new(pattern, self.class::OPERATORS).to_a</code>
         </li>
@@ -7537,20 +7537,20 @@
           <code class="ruby">    def initialize(vars)</code>
         </li>
       
-        <li class="covered" data-hits="398" data-linenumber="30">
-          <span class="hits">398</span>
+        <li class="covered" data-hits="404" data-linenumber="30">
+          <span class="hits">404</span>
           
           <code class="ruby">      @variable_specs = vars</code>
         </li>
       
-        <li class="covered" data-hits="398" data-linenumber="31">
-          <span class="hits">398</span>
+        <li class="covered" data-hits="404" data-linenumber="31">
+          <span class="hits">404</span>
           
           <code class="ruby">      @variables = vars.map(&amp;:first)</code>
         </li>
       
-        <li class="covered" data-hits="398" data-linenumber="32">
-          <span class="hits">398</span>
+        <li class="covered" data-hits="404" data-linenumber="32">
+          <span class="hits">404</span>
           
           <code class="ruby">      @variables.uniq!</code>
         </li>
@@ -7975,8 +7975,8 @@
           <code class="ruby">    def to_s</code>
         </li>
       
-        <li class="covered" data-hits="18" data-linenumber="103">
-          <span class="hits">18</span>
+        <li class="covered" data-hits="20" data-linenumber="103">
+          <span class="hits">20</span>
           
           <code class="ruby">      return '{' + self.class::OPERATOR + @variable_specs.map{|name,expand,max_length| name + (expand ? '*': '') + (max_length &gt; 0 ? (':' + max_length.to_s) : '') }.join(',') + '}'</code>
         </li>
