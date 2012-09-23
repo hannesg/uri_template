@@ -259,6 +259,13 @@ describe URITemplate do
       }.to raise_error(ArgumentError)
     end
 
+    it 'should not barf when an absolute uri is the first template' do
+      merged = (URITemplate.new(:rfc6570, 'http://foo.bar/') / URITemplate.new(:rfc6570, '/{+file}'))
+      merged.tokens.each do |tk|
+        expect(tk).to be_a(URITemplate::Token)
+      end
+    end
+
   end
 
   describe "utils" do
