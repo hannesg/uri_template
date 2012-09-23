@@ -1,3 +1,6 @@
+# 0.5.1 - 23.09.2012
+  - * f*** bug.
+
 # 0.5.0 - 23.09.2012
   - - Removed draft7
   - - splitted absoulte? method into host? and scheme?
