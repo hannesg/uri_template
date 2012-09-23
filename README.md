@@ -53,4 +53,4 @@ The way variables are inserted can be modified using operators. The operator is 
 Benchmarks
 -----------------------
 
-Believe me, it's 5-10x faster than Addressable. I'm currently fine-tuning. There were some benchmarks here, but they were for older versions. I removed them because it's better to say that I have none than presenting irrelevant results.
+I have assembled one benchmark based on the uritemplate-test examples. You can find them in the "benchmarks" folder. The short result: uri_template is 2-10x as fast as addressable on ruby 1.9.3.
