@@ -315,7 +315,7 @@ RUBY
 
     if tail.ends_with_slash?
       if head.starts_with_slash?
-        return self.class.new( remove_double_slash(self.tokens, other.tokens) )
+        return self.class.new( remove_double_slash(self.tokens, other.tokens).join )
       end
     elsif !head.starts_with_slash?
       return self.class.new( (self.tokens + ['/'] + other.tokens).join)
