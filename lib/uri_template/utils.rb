@@ -267,8 +267,8 @@ module URITemplate
     # @api private
     # Should we use \u.... or \x.. in regexps?
     def use_unicode?
-      return ( eval('/\u0020/') =~ " " or eval('/\u0020/') =~ "\u0020" )
-    rescue SyntaxError
+      return Regexp.compile('\u0020'.encode("UTF-8")) =~ " "
+    rescue SyntaxError, NoMethodError
       false
     end
 
