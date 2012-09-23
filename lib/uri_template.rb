@@ -327,6 +327,29 @@ RUBY
 
   alias / path_concat
 
+  # Concatenate two template with conversion.
+  #
+  # @example
+  #   tpl = URITemplate::RFC6570.new('foo')
+  #   (tpl + '{bar}' ).pattern #=> 'foo{bar}'
+  #
+  # @param other [URITemplate, String, ...]
+  # @return URITemplate
+  def concat(other)
+    if other.host? or other.scheme?
+      raise ArgumentError, "Expected to receive a relative template but got an absoulte one: #{other.inspect}. If you think this is a bug, please report it."
+    end
+
+    return self if other.tokens.none?
+    return other if self.tokens.none?
+    return self.class.new( self.to_s + other.to_s )
+  end
+
+  coerce_first_arg :concat
+
+  alias + concat
+  alias >> concat
+
   # @api private
   def remove_double_slash( first_tokens, second_tokens )
     if first_tokens.last.literal?
