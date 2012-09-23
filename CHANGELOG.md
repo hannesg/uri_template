@@ -2,7 +2,8 @@
   - - Removed draft7
   - - splitted absoulte? method into host? and scheme?
   - + the URITemplate interface is now much stronger
-  - * code quality significantly improved
+  - * code quality _significantly_ improved
+  - + concat method
 
 # 0.4.0 - 06.07.2012
   - + expand now accepts symbols as keys ( thanks to @peterhellber )
