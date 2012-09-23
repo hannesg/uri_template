@@ -19,15 +19,16 @@ $LOAD_PATH << File.expand_path('../lib',File.dirname(__FILE__))
 
 require 'bundler'
 Bundler.setup(:default,:development)
-Bundler.require(:default,:development)
 
 begin
   require 'simplecov'
-  SimpleCov.add_filter('spec')
+  SimpleCov.add_filter('/spec')
   SimpleCov.start
 rescue LoadError
   warn 'Not using simplecov.'
 end
+
+Bundler.require(:default,:development)
 
 require 'uri_template'
 
@@ -35,10 +36,28 @@ unless URITemplate::Utils.using_escape_utils?
   warn 'Not using escape_utils.'
 end
 
+if RUBY_DESCRIPTION =~ /\Ajruby/ and "".respond_to? :force_encoding
+  # jruby produces ascii encoded json hashes :(
+  def force_all_utf8(x)
+    if x.kind_of? String
+      return x.dup.force_encoding("UTF-8")
+    elsif x.kind_of? Array
+      return x.map{|a| force_all_utf8(a) }
+    elsif x.kind_of? Hash
+      return Hash[ x.map{|k,v| [force_all_utf8(k),force_all_utf8(v)]} ]
+    else
+      return x
+    end
+  end
+else
+  def force_all_utf8(x)
+    return x
+  end
+end
 
 class URITemplate::ExpansionMatcher
 
-  def initialize( variables, expected )
+  def initialize( variables, expected = nil )
     @variables = variables
     @expected = expected
   end
@@ -49,6 +68,11 @@ class URITemplate::ExpansionMatcher
     return Array(@expected).any?{|e| e === s }
   end
 
+  def to(expected)
+    @expected = expected
+    return self
+  end
+
   def failure_message_for_should
     return [@actual.inspect, ' should not expand to ', @actual.expand(@variables).inspect ,' but ', @expected.inspect, ' when given the following variables: ',"\n", @variables.inspect ].join 
   end
@@ -57,15 +81,27 @@ end
 
 class URITemplate::ExtractionMatcher
 
-  def initialize( variables, uri, fuzzy = true )
-    @variables = variables
+  def initialize( variables = nil, uri = '', fuzzy = true )
+    @variables = variables.nil? ? variables : Hash[ variables.map{|k,v| [k.to_s, v]} ]
     @fuzzy = fuzzy
     @uri = uri 
+  end
+
+  def from( uri )
+    @uri = uri
+    return self
   end
 
   def matches?( actual )
     @message = []
     v = actual.extract(@uri)
+    if v.nil?
+      @message = [actual.inspect,' should extract ',@variables.inspect,' from ',@uri.inspect,' but didn\' extract anything.']
+      return false
+    end
+    if @variables.nil?
+      return true
+    end
     if !@fuzzy
       @message = [actual.inspect,' should extract ',@variables.inspect,' from ',@uri.inspect,' but got ',v.inspect]
       return @variables == v
@@ -101,8 +137,17 @@ class URITemplate::ExtractionMatcher
 end
 
 RSpec::Matchers.class_eval do
+
+  def expand(variables = {})
+    return URITemplate::ExpansionMatcher.new(variables)
+  end
+
   def expand_to( variables,expected )
     return URITemplate::ExpansionMatcher.new(variables, expected)
+  end
+
+  def extract( *args )
+    return URITemplate::ExtractionMatcher.new(*args)
   end
 
   def extract_from( variables, uri)

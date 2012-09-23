@@ -24,17 +24,22 @@ module URITemplate
 
     include Enumerable
 
-    def initialize(regexp)
+    def initialize(regexp, options = {})
       @regexp = regexp
+      @rest = options.fetch(:rest){ :yield }
     end
 
     def each(str)
+      raise ArgumentError, "RegexpEnumerator#each expects a String, but got #{str.inspect}" unless str.kind_of? String
       return Enumerator.new(self,:each,str) unless block_given?
       rest = str
       loop do
         m = @regexp.match(rest)
         if m.nil?
-          yield rest
+          if rest.size > 0
+            yield rest if @rest == :yield
+            raise "Unable to match #{rest.inspect} against #{@regexp.inspect}" if @rest == :raise
+          end
           break
         end
         yield m.pre_match if m.pre_match.size > 0
@@ -42,7 +47,10 @@ module URITemplate
         if m[0].size == 0
           # obviously matches empty string, so post_match will equal rest
           # terminate or this will loop forever
-          yield m.post_match
+          if m.post_match.size > 0
+            yield m.post_match if @rest == :yield
+            raise "#{@regexp.inspect} matched an empty string. The rest is #{m.post_match.inspect}." if @rest == :raise
+          end
           break
         end
         rest = m.post_match
@@ -95,6 +103,19 @@ module URITemplate
         str.encode(Encoding::UTF_8)
       end
 
+      # @method force_utf8(str)
+      # enforces UTF8 encoding
+      # 
+      # @param str [String]
+      # @return String
+      # @visibility public
+      def force_utf8_encode(str)
+        return str if str.encoding == Encoding::UTF_8
+        str = str.dup if str.frozen?
+        return str.force_encoding(Encoding::UTF_8)
+      end
+
+
       def to_ascii_fallback(str)
         str
       end
@@ -103,16 +124,24 @@ module URITemplate
         str
       end
 
+      def force_utf8_fallback(str)
+        str
+      end
+
       if "".respond_to?(:encode)
         # @api private
         send(:alias_method, :to_ascii, :to_ascii_encode)
         # @api private
         send(:alias_method, :to_utf8, :to_utf8_encode)
+        # @api private
+        send(:alias_method, :force_utf8, :force_utf8_encode)
       else
         # @api private
         send(:alias_method, :to_ascii, :to_ascii_fallback)
         # @api private
         send(:alias_method, :to_utf8, :to_utf8_fallback)
+        # @api private
+        send(:alias_method, :force_utf8, :force_utf8_fallback)
       end
 
       public :to_ascii
@@ -150,13 +179,13 @@ module URITemplate
         end
 
         def unescape_url(s)
-          to_utf8( s.to_s.gsub('+',' ').gsub(PCT){
+          force_utf8( to_ascii(s).gsub('+',' ').gsub(PCT){
             $1.to_i(16).chr
           } )
         end
 
         def unescape_uri(s)
-          to_utf8( s.to_s.gsub(PCT){
+          force_utf8( to_ascii(s).gsub(PCT){
             $1.to_i(16).chr
           })
         end
@@ -190,11 +219,11 @@ module URITemplate
         end
 
         def unescape_url(s)
-          super(to_ascii(s))
+          force_utf8(super(to_ascii(s)))
         end
 
         def unescape_uri(s)
-          super(to_ascii(s))
+          force_utf8(super(to_ascii(s)))
         end
 
       end
@@ -235,6 +264,14 @@ module URITemplate
       raise Unconvertable.new(object)
     end
 
+    # @api private
+    # Should we use \u.... or \x.. in regexps?
+    def use_unicode?
+      return eval('Regexp.compile("\u0020")') =~ " "
+    rescue SyntaxError
+      false
+    end
+
     # Returns true when the given value is an array and it only consists of arrays with two items.
     # This useful when using a hash is not ideal, since it doesn't allow duplicate keys.
     # @example
@@ -258,14 +295,14 @@ module URITemplate
     #   URITemplate::Utils.pair_array_to_hash( [ ['a',1],['a',2],['a',3] ] ) #=> {'a'=>3}
     #
     # @example Carful vs. Ignorant
-    #   URITemplate::Utils.pair_array_to_hash( [ ['a',1],'foo','bar'], false ) #=> {'a'=>1,'foo'=>'bar'}
-    #   URITemplate::Utils.pair_array_to_hash( [ ['a',1],'foo','bar'], true ) #=> [ ['a',1],'foo','bar']
+    #   URITemplate::Utils.pair_array_to_hash( [ ['a',1],'foo','bar'], false ) #UNDEFINED!
+    #   URITemplate::Utils.pair_array_to_hash( [ ['a',1],'foo','bar'], true )  #=> [ ['a',1], 'foo', 'bar']
     #
     # @param x the value to convert
     # @param careful [true,false] wheter to check every array item. Use this when you expect array with subarrays which are not pairs. Setting this to false however improves runtime by ~30% even with comparetivly short arrays.
     def pair_array_to_hash(x, careful = false )
       if careful ? pair_array?(x) : (x.kind_of?(Array) and ( x.empty? or x.first.kind_of?(Array) ) )
-        return Hash[ *x.flatten(1) ]
+        return Hash[ x ]
       else
         return x
       end

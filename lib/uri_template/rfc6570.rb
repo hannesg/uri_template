@@ -35,7 +35,7 @@ class URITemplate::RFC6570
   # @private
   Utils = URITemplate::Utils
 
-  if SUPPORTS_UNICODE_CHARS
+  if Utils.use_unicode?
     # @private
     #                           \/ - unicode ctrl-chars
     LITERAL = /([^"'%<>\\^`{|}\u0000-\u001F\u007F-\u009F\s]|%[0-9a-fA-F]{2})+/u
@@ -48,16 +48,20 @@ class URITemplate::RFC6570
   CHARACTER_CLASSES = {
 
     :unreserved => {
-      :class => '(?:[A-Za-z0-9\-\._]|%[0-9a-fA-F]{2})', 
+      :class => '(?:[A-Za-z0-9\-\._]|%[0-9a-fA-F]{2})',
+      :class_with_comma => '(?:[A-Za-z0-9\-\._,]|%[0-9a-fA-F]{2})',
+      :class_without_comma => '(?:[A-Za-z0-9\-\._]|%[0-9a-fA-F]{2})',
       :grabs_comma => false
     },
     :unreserved_reserved_pct => {
       :class => '(?:[A-Za-z0-9\-\._:\/?#\[\]@!\$%\'\(\)*+,;=]|%[0-9a-fA-F]{2})',
+      :class_with_comma => '(?:[A-Za-z0-9\-\._:\/?#\[\]@!\$%\'\(\)*+,;=]|%[0-9a-fA-F]{2})',
+      :class_without_comma => '(?:[A-Za-z0-9\-\._:\/?#\[\]@!\$%\'\(\)*+;=]|%[0-9a-fA-F]{2})',
       :grabs_comma => true
     },
 
     :varname => {
-      :class => '(?:[a-zA-Z_]|%[0-9a-fA-F]{2})(?:[a-zA-Z_\.]|%[0-9a-fA-F]{2})*?',
+      :class => '(?:[A-Za-z0-9\-\._]|%[0-9a-fA-F]{2})+',
       :class_name => 'c_vn_'
     }
 
@@ -94,8 +98,6 @@ __REGEXP__
 \\A(#{LITERAL.source}|#{EXPRESSION.source})*\\z
 __REGEXP__
 
-  SLASH = ?/
-
   # @private
   class Token
   end
@@ -126,424 +128,6 @@ __REGEXP__
     end
 
   end
-
-
-  # @private
-  class Expression < Token
-
-    include URITemplate::Expression
-
-    attr_reader :variables, :max_length
-
-    def initialize(vars)
-      @variable_specs = vars
-      @variables = vars.map(&:first)
-      @variables.uniq!
-    end
-
-    PREFIX = ''.freeze
-    SEPARATOR = ','.freeze
-    PAIR_CONNECTOR = '='.freeze
-    PAIR_IF_EMPTY = true
-    LIST_CONNECTOR = ','.freeze
-    BASE_LEVEL = 1
-
-    CHARACTER_CLASS = CHARACTER_CLASSES[:unreserved]
-
-    NAMED = false
-    OPERATOR = ''
-
-    def level
-      if @variable_specs.none?{|_,expand,ml| expand || (ml > 0) }
-        if @variable_specs.size == 1
-          return self.class::BASE_LEVEL
-        else
-          return 3
-        end
-      else
-        return 4
-      end
-    end
-
-    def expands?
-      @variable_specs.any?{|_,expand,_| expand }
-    end
-
-    def arity
-      @variable_specs.size
-    end
-
-    def expand( vars )
-      result = []
-      @variable_specs.each{| var, expand , max_length |
-        unless vars[var].nil?
-          if vars[var].kind_of?(Hash) or Utils.pair_array?(vars[var])
-            if max_length && max_length > 0
-              raise InvalidValue::LengthLimitInapplicable.new(var,vars[var])
-            end
-            result.push( *transform_hash(var, vars[var], expand, max_length) )
-          elsif vars[var].kind_of? Array
-            if max_length && max_length > 0
-              raise InvalidValue::LengthLimitInapplicable.new(var,vars[var])
-            end
-            result.push( *transform_array(var, vars[var], expand, max_length) )
-          else
-            if self.class::NAMED
-              result.push( pair(var, vars[var], max_length) )
-            else
-              result.push( cut( escape(vars[var]), max_length ) )
-            end
-          end
-        end
-      }
-      if result.any?
-        return (self.class::PREFIX + result.join(self.class::SEPARATOR))
-      else
-        return ''
-      end
-    end
-
-    def to_s
-      return '{' + self.class::OPERATOR + @variable_specs.map{|name,expand,max_length| name + (expand ? '*': '') + (max_length > 0 ? (':' + max_length.to_s) : '') }.join(',') + '}'
-    end
-
-    #TODO: certain things after a slurpy variable will never get matched. therefore, it's pointless to add expressions for them
-    #TODO: variables, which appear twice could be compacted, don't they?
-    def to_r_source
-      source = []
-      first = true
-      vs = @variable_specs.size - 1
-      i = 0
-      if self.class::NAMED
-        @variable_specs.each{| var, expand , max_length |
-          value = "(?:#{self.class::CHARACTER_CLASS[:class]}|,)#{(max_length > 0)?'{0,'+max_length.to_s+'}':'*'}"
-          if expand
-            #if self.class::PAIR_IF_EMPTY
-            pair = "#{CHARACTER_CLASSES[:varname][:class]}#{Regexp.escape(self.class::PAIR_CONNECTOR)}#{value}"
-
-            if first
-              source << "((?:#{pair})(?:#{Regexp.escape(self.class::SEPARATOR)}#{pair})*)"
-            else
-              source << "((?:#{Regexp.escape(self.class::SEPARATOR)}#{pair})*)"
-            end
-          else
-            if self.class::PAIR_IF_EMPTY
-              pair = "#{Regexp.escape(var)}(#{Regexp.escape(self.class::PAIR_CONNECTOR)}#{value})"
-            else
-              pair = "#{Regexp.escape(var)}(#{Regexp.escape(self.class::PAIR_CONNECTOR)}#{value}|)"
-            end
-
-            if first
-            source << "(?:#{pair})"
-            else
-              source << "(?:#{Regexp.escape(self.class::SEPARATOR)}#{pair})?"
-            end
-          end
-
-          first = false
-          i = i+1
-        }
-      else
-        @variable_specs.each{| var, expand , max_length |
-          last = (vs == i)
-          if expand
-            # could be list or map, too
-            value = "#{self.class::CHARACTER_CLASS[:class]}#{(max_length > 0)?'{0,'+max_length.to_s+'}':'*'}"
-
-            pair = "(?:#{CHARACTER_CLASSES[:varname][:class]}#{Regexp.escape(self.class::PAIR_CONNECTOR)})?#{value}"
-
-            value = "#{pair}(?:#{Regexp.escape(self.class::SEPARATOR)}#{pair})*"
-          elsif last
-            # the last will slurp lists
-            if self.class::CHARACTER_CLASS[:grabs_comma]
-              value = "#{self.class::CHARACTER_CLASS[:class]}#{(max_length > 0)?'{0,'+max_length.to_s+'}':'*?'}"
-            else
-              value = "(?:#{self.class::CHARACTER_CLASS[:class]}|,)#{(max_length > 0)?'{0,'+max_length.to_s+'}':'*?'}"
-            end
-          else
-            value = "#{self.class::CHARACTER_CLASS[:class]}#{(max_length > 0)?'{0,'+max_length.to_s+'}':'*?'}"
-          end
-          if first
-            source << "(#{value})"
-            first = false
-          else
-            source << "(?:#{Regexp.escape(self.class::SEPARATOR)}(#{value}))?"
-          end
-          i = i+1
-        }
-      end
-      return '(?:' + Regexp.escape(self.class::PREFIX) + source.join + ')?'
-    end
-
-    def extract(position,matched)
-      name, expand, max_length = @variable_specs[position]
-      if matched.nil?
-        return [[ name , matched ]]
-      end
-      if expand
-        #TODO: do we really need this? - this could be stolen from rack
-        ex = self.class.hash_extractor(max_length)
-        rest = matched
-        splitted = []
-        if self.class::NAMED
-          # 1 = name
-          # 2 = value
-          # 3 = rest
-          until rest.size == 0
-            match = ex.match(rest)
-            if match.nil?
-              raise "Couldn't match #{rest.inspect} againts the hash extractor. This is definitly a Bug. Please report this ASAP!"
-            end
-            if match.post_match.size == 0
-              rest = match[3].to_s
-            else
-              rest = ''
-            end
-            splitted << [ match[1], decode(match[2] + rest , false) ]
-            rest = match.post_match
-          end
-          result = Utils.pair_array_to_hash2( splitted )
-          if result.size == 1 && result[0][0] == name
-            return result
-          else
-            return [ [ name , result ] ]
-          end
-        else
-          found_value = false
-          # 1 = name and seperator
-          # 2 = value
-          # 3 = rest
-          until rest.size == 0
-            match = ex.match(rest)
-            if match.nil?
-              raise "Couldn't match #{rest.inspect} againts the hash extractor. This is definitly a Bug. Please report this ASAP!"
-            end
-            if match.post_match.size == 0
-              rest = match[3].to_s
-            else
-              rest = ''
-            end
-            if match[1]
-              found_value = true
-              splitted << [ match[1][0..-2], decode(match[2] + rest , false) ]
-            else
-              splitted << [ match[2] + rest, nil ]
-            end
-            rest = match.post_match
-          end
-          if !found_value
-            return [ [ name, splitted.map{|n,v| decode(n , false) } ] ]
-          else
-            return [ [ name, splitted ] ]
-          end
-        end
-      elsif self.class::NAMED
-        return [ [ name, decode( matched[1..-1] ) ] ]
-      end
-
-      return [ [ name,  decode( matched ) ] ]
-    end
-
-  protected
-
-    module ClassMethods
-
-      def hash_extractor(max_length)
-        @hash_extractors ||= {}
-        @hash_extractors[max_length] ||= begin
-          value = "#{self::CHARACTER_CLASS[:class]}#{(max_length > 0)?'{0,'+max_length.to_s+'}':'*?'}"
-          if self::NAMED
-            pair = "(#{CHARACTER_CLASSES[:varname][:class]})#{Regexp.escape(self::PAIR_CONNECTOR)}(#{value})"
-          else
-            pair = "(#{CHARACTER_CLASSES[:varname][:class]}#{Regexp.escape(self::PAIR_CONNECTOR)})?(#{value})"
-          end 
-          source = "\\A#{Regexp.escape(self::SEPARATOR)}?" + pair + "(\\z|#{Regexp.escape(self::SEPARATOR)}(?!#{Regexp.escape(self::SEPARATOR)}))"
-          Regexp.new( source , Utils::KCODE_UTF8)
-        end
-      end
-
-    end
-
-    extend ClassMethods
-
-    def escape(x)
-      Utils.escape_url(Utils.object_to_param(x))
-    end
-
-    def unescape(x)
-      Utils.unescape_url(x)
-    end
-
-    SPLITTER = /^(?:,(,*)|([^,]+))/
-
-    def decode(x, split = true)
-      if x.nil?
-        if self.class::PAIR_IF_EMPTY
-          return x
-        else
-          return ''
-        end
-      elsif split
-        r = []
-        v = x
-        until v.size == 0
-          m = SPLITTER.match(v)
-          if m[1] and m[1].size > 0
-            if m.post_match.size == 0
-              r << m[1]
-            else
-              r << m[1][0..-2]
-            end
-          elsif m[2]
-            r << unescape(m[2])
-          end
-          v = m.post_match
-        end
-        case(r.size)
-          when 0 then ''
-          when 1 then r.first
-          else r
-        end
-      else
-        unescape(x)
-      end
-    end
-
-    def cut(str,chars)
-      if chars > 0
-        md = Regexp.compile("\\A#{self.class::CHARACTER_CLASS[:class]}{0,#{chars.to_s}}", Utils::KCODE_UTF8).match(str)
-        #TODO: handle invalid matches
-        return md[0]
-      else
-        return str
-      end
-    end
-
-    def pair(key, value, max_length = 0)
-      ek = escape(key)
-      ev = escape(value)
-      if !self.class::PAIR_IF_EMPTY and ev.size == 0
-        return ek
-      else
-        return ek + self.class::PAIR_CONNECTOR + cut( ev, max_length )
-      end
-    end
-
-    def transform_hash(name, hsh, expand , max_length)
-      if expand
-        hsh.map{|key,value| pair(key,value) }
-      elsif hsh.none?
-        []
-      else
-        [ (self.class::NAMED ? escape(name)+self.class::PAIR_CONNECTOR : '' ) + hsh.map{|key,value| escape(key)+self.class::LIST_CONNECTOR+escape(value) }.join(self.class::LIST_CONNECTOR) ]
-      end
-    end
-
-    def transform_array(name, ary, expand , max_length)
-      if expand
-        self.class::NAMED ? ary.map{|value| pair(name,value) } : ary.map{|value| escape(value) }
-      elsif ary.none?
-        []
-      else
-        [ (self.class::NAMED ? escape(name)+self.class::PAIR_CONNECTOR : '' ) + ary.map{|value| escape(value) }.join(self.class::LIST_CONNECTOR) ]
-      end
-    end
-
-    class Reserved < self
-
-      CHARACTER_CLASS = CHARACTER_CLASSES[:unreserved_reserved_pct]
-      OPERATOR = '+'.freeze
-      BASE_LEVEL = 2
-
-      def escape(x)
-        Utils.escape_uri(Utils.object_to_param(x))
-      end
-
-      def unescape(x)
-        Utils.unescape_uri(x)
-      end
-
-    end
-
-    class Fragment < self
-
-      CHARACTER_CLASS = CHARACTER_CLASSES[:unreserved_reserved_pct]
-      PREFIX = '#'.freeze
-      OPERATOR = '#'.freeze
-      BASE_LEVEL = 2
-
-      def escape(x)
-        Utils.escape_uri(Utils.object_to_param(x))
-      end
-
-      def unescape(x)
-        Utils.unescape_uri(x)
-      end
-
-    end
-
-    class Label < self
-
-      SEPARATOR = '.'.freeze
-      PREFIX = '.'.freeze
-      OPERATOR = '.'.freeze
-      BASE_LEVEL = 3
-
-    end
-
-    class Path < self
-
-      SEPARATOR = '/'.freeze
-      PREFIX = '/'.freeze
-      OPERATOR = '/'.freeze
-      BASE_LEVEL = 3
-
-    end
-
-    class PathParameters < self
-
-      SEPARATOR = ';'.freeze
-      PREFIX = ';'.freeze
-      NAMED = true
-      PAIR_IF_EMPTY = false
-      OPERATOR = ';'.freeze
-      BASE_LEVEL = 3
-
-    end
-
-    class FormQuery < self
-
-      SEPARATOR = '&'.freeze
-      PREFIX = '?'.freeze
-      NAMED = true
-      OPERATOR = '?'.freeze
-      BASE_LEVEL = 3
-
-    end
-
-    class FormQueryContinuation < self
-
-      SEPARATOR = '&'.freeze
-      PREFIX = '&'.freeze
-      NAMED = true
-      OPERATOR = '&'.freeze
-      BASE_LEVEL = 3
-
-    end
-
-  end
-
-  # @private
-  OPERATORS = {
-    ''  => Expression,
-    '+' => Expression::Reserved,
-    '#' => Expression::Fragment,
-    '.' => Expression::Label,
-    '/' => Expression::Path,
-    ';' => Expression::PathParameters,
-    '?' => Expression::FormQuery,
-    '&' => Expression::FormQueryContinuation
-  }
 
   # This error is raised when an invalid pattern was given.
   class Invalid < StandardError
@@ -601,9 +185,6 @@ __REGEXP__
     end
 
     def each
-      if !block_given?
-        return Enumerator.new(self)
-      end
       scanner = StringScanner.new(@source)
       until scanner.eos?
         expression = scanner.scan(EXPRESSION)
@@ -641,9 +222,6 @@ __REGEXP__
     #   URITemplate::RFC6570.try_convert( tpl ) #=> tpl
     #   URITemplate::RFC6570.try_convert('{foo}') #=> tpl
     #   URITemplate::RFC6570.try_convert(URITemplate.new(:colon, ':foo')) #=> tpl
-    #   URITemplate::RFC6570.try_convert(URITemplate.new(:draft7, '{foo}')) #=> tpl
-    #   # Draft7 and RFC6570 handle expansion of named variables a bit differently:
-    #   URITemplate::RFC6570.try_convert(URITemplate.new(:draft7, '{?list*}')) #=> nil
     #   # This pattern is invalid, so it wont be parsed:
     #   URITemplate::RFC6570.try_convert('{foo') #=> nil
     #
@@ -653,6 +231,7 @@ __REGEXP__
       elsif x.kind_of? String and valid? x
         return new(x)
       elsif x.kind_of? URITemplate::Colon
+        return nil if x.tokens.any?{|tk| tk.kind_of? URITemplate::Colon::Token::Splat }
         return new( x.tokens.map{|tk|
           if tk.literal?
             Literal.new(tk.string)
@@ -660,24 +239,8 @@ __REGEXP__
             Expression.new([[tk.variables.first, false, 0]])
           end
         })
-      elsif (x.class == URITemplate::Draft7 and self == URITemplate::RFC6570) or (x.class == URITemplate::RFC6570 and self == URITemplate::Draft7)
-        if x.tokens.none?{|t| t.class::NAMED and t.expands? }
-          return self.new(x.to_s)
-        end
       else
         return nil
-      end
-    end
-
-    # Like {.try_convert}, but raises an ArgumentError, when the conversion failed.
-    # 
-    # @raise ArgumentError
-    def convert(x)
-      o = self.try_convert(x)
-      if o.nil?
-        raise ArgumentError, "Expected to receive something that can be converted to an #{self.class}, but got: #{x.inspect}."
-      else
-        return o
       end
     end
 
@@ -717,7 +280,7 @@ __REGEXP__
 
   # @method expand(variables = {})
   # Expands the template with the given variables.
-  # The expansion should be compatible to uritemplate spec draft 7 ( http://tools.ietf.org/html/draft-gregorio-uritemplate-07 ).
+  # The expansion should be compatible to uritemplate spec rfc 6570 ( http://tools.ietf.org/html/rfc6570 ).
   # @note
   #   All keys of the supplied hash should be strings as anything else won't be recognised.
   # @note
@@ -776,13 +339,12 @@ __REGEXP__
   # @example Extraction cruces
   #   two_lists = URITemplate::RFC6570.new('{listA*,listB*}')
   #   uri = two_lists.expand('listA'=>[1,2],'listB'=>[3,4]) #=> "1,2,3,4"
-  #   variables = two_lists.extract( uri ) #=> {'listA'=>["1","2","3","4"],'listB'=>nil}
+  #   variables = two_lists.extract( uri ) #=> {'listA'=>["1","2","3"],'listB'=>["4"]}
   #   # However, like said in the note:
   #   two_lists.expand( variables ) == uri #=> true
   #
   # @note
   #   The current implementation drops duplicated variables instead of checking them.
-  #   
   #   
   def extract(uri_or_match, post_processing = DEFAULT_PROCESSING )
     if uri_or_match.kind_of? String
@@ -816,22 +378,6 @@ __REGEXP__
     extract( uri_or_match, NO_PROCESSING )
   end
 
-  # Returns the pattern for this template.
-  def pattern
-    @pattern ||= tokens.map(&:to_s).join
-  end
-
-  alias to_s pattern
-
-  # Compares two template patterns.
-  def ==(o)
-    this, other, this_converted, _ = URITemplate.coerce( self, o )
-    if this_converted
-      return this == other
-    end
-    return this.pattern == other.pattern
-  end
-
   # @method ===(uri)
   # Alias for to_r.=== . Tests whether this template matches a given uri.
   # @return TrueClass, FalseClass
@@ -855,7 +401,7 @@ __REGEXP__
     self.class::TYPE
   end
 
-  # Returns the level of this template according to the draft ( http://tools.ietf.org/html/draft-gregorio-uritemplate-07#section-1.2 ). Higher level means higher complexity.
+  # Returns the level of this template according to the rfc 6570 ( http://tools.ietf.org/html/rfc6570#section-1.2 ). Higher level means higher complexity.
   # Basically this is defined as:
   # 
   # * Level 1: no operators, one variable per expansion, no variable modifiers
@@ -876,70 +422,6 @@ __REGEXP__
   #
   def level
     tokens.map(&:level).max
-  end
-
-  # Tries to concatenate two templates, as if they were path segments.
-  # Removes double slashes or insert one if they are missing.
-  #
-  # @example
-  #   tpl = URITemplate::RFC6570.new('/xy/')
-  #   (tpl / '/z/' ).pattern #=> '/xy/z/'
-  #   (tpl / 'z/' ).pattern #=> '/xy/z/'
-  #   (tpl / '{/z}' ).pattern #=> '/xy{/z}'
-  #   (tpl / 'a' / 'b' ).pattern #=> '/xy/a/b'
-  #
-  def /(o)
-    this, other, this_converted, _ = URITemplate.coerce( self, o )
-    if this_converted
-      return this / other
-    end
-    klass = self.class
-    if other.absolute?
-      raise ArgumentError, "Expected to receive a relative template but got an absoulte one: #{other.inspect}. If you think this is a bug, please report it."
-    end
-
-    if other.pattern == ''
-      return self
-    end
-    # Merge!
-    # Analyze the last token of this an the first token of the next and try to merge them
-    if self.tokens.last.kind_of?(klass::Literal)
-      if self.tokens.last.string[-1] == SLASH # the last token ends with an /
-        if other.tokens.first.kind_of? klass::Literal
-          # both seems to be paths, merge them!
-          if other.tokens.first.string[0] == SLASH
-            # strip one '/'
-            return self.class.new( self.tokens[0..-2] + [ klass::Literal.new(self.tokens.last.string + other.tokens.first.string[1..-1]) ] + other.tokens[1..-1] )
-          else
-            # no problem, but we can merge them
-            return self.class.new( self.tokens[0..-2] + [ klass::Literal.new(self.tokens.last.string + other.tokens.first.string) ] + other.tokens[1..-1] )
-          end
-        elsif other.tokens.first.kind_of? klass::Expression::Path
-          # this will automatically insert '/'
-          # so we can strip one '/'
-          return self.class.new( self.tokens[0..-2] + [ klass::Literal.new(self.tokens.last.string[0..-2]) ] + other.tokens )
-        end
-      elsif other.tokens.first.kind_of? klass::Literal
-        # okay, this template does not end with /, but the next starts with a literal => merge them!
-        if other.tokens.first.string[0] == SLASH
-          return self.class.new( self.tokens[0..-2] + [ klass::Literal.new(self.tokens.last.string + other.tokens.first.string)] + other.tokens[1..-1] )
-        else
-          return self.class.new( self.tokens[0..-2] + [ klass::Literal.new(self.tokens.last.string + '/' + other.tokens.first.string)] + other.tokens[1..-1] )
-        end
-      end
-    end
-
-    if other.tokens.first.kind_of?(klass::Literal)
-      if other.tokens.first.string[0] == SLASH
-        return self.class.new( self.tokens + other.tokens )
-      else
-        return self.class.new( self.tokens + [ klass::Literal.new('/' + other.tokens.first.string)]+ other.tokens[1..-1] )
-      end
-    elsif other.tokens.first.kind_of?(klass::Expression::Path)
-      return self.class.new( self.tokens + other.tokens )
-    else
-      return self.class.new( self.tokens + [ klass::Literal.new('/')] + other.tokens )
-    end
   end
 
   # Returns an array containing a the template tokens.
@@ -966,27 +448,27 @@ protected
       i = 0
       pa = part.arity
       while i < pa
-        vars << part.extract(i, matchdata[bc])
+        vars.push( *part.extract(i, matchdata[bc]) )
         bc += 1
         i += 1
       end
     }
     if post_processing.include? :convert_result
       if post_processing.include? :convert_values
-        vars.flatten!(1)
-        return Hash[*vars.map!{|k,v| [k,Utils.pair_array_to_hash(v)] }.flatten(1) ]
+        return Hash[ vars.map!{|k,v| [k,Utils.pair_array_to_hash(v)] } ]
       else
-        vars.flatten!(2)
-        return Hash[*vars]
+        return Hash[vars]
       end
     else
       if post_processing.include? :convert_value
-        vars.flatten!(1)
         return vars.collect{|k,v| [k,Utils.pair_array_to_hash(v)] }
       else
-        return vars.flatten(1)
+        return vars
       end
     end
   end
 
 end
+
+require 'uri_template/rfc6570/regex_builder.rb'
+require 'uri_template/rfc6570/expression.rb'

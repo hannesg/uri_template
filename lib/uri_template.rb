@@ -18,87 +18,27 @@
 # A base module for all implementations of a uri template.
 module URITemplate
 
-  # @private
-  # Should we use \u.... or \x.. in regexps?
-  SUPPORTS_UNICODE_CHARS = begin
-                             if "string".respond_to? :encoding
-                               rx = eval('Regexp.compile("\u0020")')
-                               !!(rx =~ " ")
-                             else
-                               rx = eval('/\u0020/')
-                               !!(rx =~ " ")
-                             end
-                           rescue SyntaxError
-                             false
-                           end
+  # @api private
+  SCHEME_REGEX = /\A[a-z]+:/i.freeze
 
-  # This should make it possible to do basic analysis independently from the concrete type.
-  module Token
+  # @api private
+  HOST_REGEX = /\A(?:[a-z]+:)?\/\/[^\/]+/i.freeze
 
-    def size
-      variables.size
-    end
-
-  end
-
-  # A module which all literal tokens should include.
-  module Literal
-
-    include Token
-
-    attr_reader :string
-
-    def literal?
-      true
-    end
-
-    def expression?
-      false
-    end
-
-    def variables
-      []
-    end
-
-    def size
-      0
-    end
-
-    def expand(*_)
-      return string
-    end
-
-  end
-
-  # A module which all non-literal tokens should include.
-  module Expression
-
-    include Token
-
-    attr_reader :variables
-
-    def literal?
-      false
-    end
-
-    def expression?
-      true
-    end
-
-  end
+  # @api private
+  URI_SPLIT = /\A(?:([a-z]+):)?(?:\/\/)?([^\/]+)?/i.freeze
 
   autoload :Utils, 'uri_template/utils'
-  autoload :Draft7, 'uri_template/draft7'
+  autoload :Token, 'uri_template/token'
+  autoload :Literal, 'uri_template/literal'
+  autoload :Expression, 'uri_template/expression'
   autoload :RFC6570, 'uri_template/rfc6570'
   autoload :Colon, 'uri_template/colon'
 
   # A hash with all available implementations.
-  # Currently the only implementation is :draft7. But there also aliases :default and :latest available. This should make it possible to add newer specs later.
   # @see resolve_class
   VERSIONS = {
-    :draft7 => :Draft7,
     :rfc6570 => :RFC6570,
-    :default => :Draft7,
+    :default => :RFC6570,
     :colon => :Colon,
     :latest => :RFC6570
   }
@@ -107,10 +47,11 @@ module URITemplate
   # Extracts all symbols from args and looks up the first in {VERSIONS}.
   #
   # @return Array an array of the class to use and the unused parameters.
+  # 
   # @example
-  #   URITemplate.resolve_class() #=> [ URITemplate::Draft7, [] ]
-  #   URITemplate.resolve_class(:draft7) #=> [ URITemplate::Draft7, [] ]
-  #   URITemplate.resolve_class("template",:draft7) #=> [ URITemplate::Draft7, ["template"] ]
+  #   URITemplate.resolve_class() #=> [ URITemplate::RFC6570, [] ]
+  #   URITemplate.resolve_class(:colon) #=> [ URITemplate::Colon, [] ]
+  #   URITemplate.resolve_class("template",:rfc6570) #=> [ URITemplate::RFC6570, ["template"] ]
   # 
   # @raise ArgumentError when no class was found.
   #
@@ -130,7 +71,7 @@ module URITemplate
   #   tpl.expand('x'=>'y') #=> 'y'
   #
   # @example
-  #   tpl = URITemplate.new(:draft7,'{x}') # a new template using the draft7 implementation
+  #   tpl = URITemplate.new(:colon,'/:x') # a new template using the colon implementation
   # 
   def self.new(*args)
     klass, rest = resolve_class(*args)
@@ -167,8 +108,10 @@ module URITemplate
   # Returns an array with two {URITemplate}s and two booleans indicating which of the two were converted or raises an ArgumentError.
   #
   # @example
-  #   URITemplate.coerce( URITemplate.new(:draft7,'{x}'), '{y}' ) #=> [URITemplate.new(:draft7,'{x}'), URITemplate.new(:draft7,'{y}'), false, true]
-  #   URITemplate.coerce( '{y}', URITemplate.new(:draft7,'{x}') ) #=> [URITemplate.new(:draft7,'{y}'), URITemplate.new(:draft7,'{x}'), true, false]
+  #   URITemplate.coerce( URITemplate.new(:rfc6570,'{x}'), '{y}' ) #=> [URITemplate.new(:rfc6570,'{x}'), URITemplate.new(:rfc6570,'{y}'), false, true]
+  #   URITemplate.coerce( '{y}', URITemplate.new(:rfc6570,'{x}') ) #=> [URITemplate.new(:rfc6570,'{y}'), URITemplate.new(:rfc6570,'{x}'), true, false]
+  #
+  # @return [Tuple<URITemplate,URITemplate,Bool,Bool>]
   def self.coerce(a,b)
     if a.kind_of? URITemplate
       if a.class == b.class
@@ -210,6 +153,19 @@ module URITemplate
     a.send(method,b,*args)
   end
 
+  def self.coerce_first_arg(meth)
+    alias_method( (meth.to_s + '_without_coercion').to_sym , meth )
+    class_eval(<<-RUBY)
+def #{meth}(other, *args, &block)
+  this, other, this_converted, _ = URITemplate.coerce( self, other )
+  if this_converted
+    return this.#{meth}(other,*args, &block)
+  end
+  return #{meth}_without_coercion(other,*args, &block)
+end
+RUBY
+  end
+
   # A base class for all errors which will be raised upon invalid syntax.
   module Invalid
   end
@@ -221,11 +177,21 @@ module URITemplate
 
   # Expands this uri template with the given variables.
   # The variables should be converted to strings using {Utils#object_to_param}.
+  #
+  # The keys in the variables hash are converted to
+  # strings in order to support the Ruby 1.9 hash syntax.
+  #
   # @raise {Unconvertable} if a variable could not be converted to a string.
-  # @param variables Hash
+  # @raise {InvalidValue} if a value is not suiteable for a certain variable ( e.g. a string when a list is expected ).
+  #
+  # @param variables [#map]
   # @return String
   def expand(variables = {})
-    raise ArgumentError, "Expected something that returns to :[], but got: #{variables.inspect}" unless variables.respond_to? :[]
+    raise ArgumentError, "Expected something that returns to :map, but got: #{variables.inspect}" unless variables.respond_to? :map
+
+    # Stringify variables
+    variables = Hash[variables.map{ |k, v| [k.to_s, v] }]
+
     tokens.map{|part|
       part.expand(variables)
     }.join
@@ -233,12 +199,16 @@ module URITemplate
 
   # @abstract
   # Returns the type of this template. The type is a symbol which can be used in {.resolve_class} to resolve the type of this template.
+  #
+  # @return [Symbol]
   def type
     raise "Please implement #type on #{self.class.inspect}."
   end
 
   # @abstract
   # Returns the tokens of this templates. Tokens should include either {Literal} or {Expression}.
+  #
+  # @return [Array<URITemplate::Token>]
   def tokens
     raise "Please implement #tokens on #{self.class.inspect}."
   end
@@ -248,9 +218,9 @@ module URITemplate
   #   URITemplate.new('{foo}{bar}{baz}').variables #=> ['foo','bar','baz']
   #   URITemplate.new('{a}{c}{a}{b}').variables #=> ['a','c','b']
   #
-  # @return Array
+  # @return [Array<String>]
   def variables
-    @variables ||= tokens.select(&:expression?).map(&:variables).flatten.uniq
+    @variables ||= tokens.map(&:variables).flatten.uniq.freeze
   end
 
   # Returns the number of static characters in this template.
@@ -267,27 +237,166 @@ module URITemplate
     @static_characters ||= tokens.select(&:literal?).map{|t| t.string.size }.inject(0,:+)
   end
 
-  # Returns whether this uri-template is absolute.
-  # This is detected by checking for "://".
+  # Returns whether this uri-template includes a host name
   #
-  def absolute?
-    return @absolute unless @absolute.nil?
+  # This method is usefull to check wheter this template will generate 
+  # or match a uri with a host.
+  #
+  # @see #scheme?
+  #
+  # @example
+  #   URITemplate.new('/foo').host? #=> false
+  #   URITemplate.new('//example.com/foo').host? #=> true
+  #   URITemplate.new('//{host}/foo').host? #=> true
+  #   URITemplate.new('http://example.com/foo').host? #=> true
+  #   URITemplate.new('{scheme}://example.com/foo').host? #=> true
+  #
+  def host?
+    return scheme_and_host[1]
+  end
+
+  # Returns whether this uri-template includes a scheme
+  #
+  # This method is usefull to check wheter this template will generate 
+  # or match a uri with a scheme.
+  # 
+  # @see #host?
+  #
+  # @example
+  #   URITemplate.new('/foo').scheme? #=> false
+  #   URITemplate.new('//example.com/foo').scheme? #=> false
+  #   URITemplate.new('http://example.com/foo').scheme? #=> true
+  #   URITemplate.new('{scheme}://example.com/foo').scheme? #=> true
+  #
+  def scheme?
+    return scheme_and_host[0]
+  end
+
+  # Returns the pattern for this template.
+  #
+  # @return String
+  def pattern
+    @pattern ||= tokens.map(&:to_s).join
+  end
+
+  alias to_s pattern
+
+  # Compares two template patterns.
+  def eq(other)
+    return self.pattern == other.pattern
+  end
+
+  coerce_first_arg :eq
+
+  alias == eq
+
+  # Tries to concatenate two templates, as if they were path segments.
+  # Removes double slashes or insert one if they are missing.
+  #
+  # @example
+  #   tpl = URITemplate::RFC6570.new('/xy/')
+  #   (tpl / '/z/' ).pattern #=> '/xy/z/'
+  #   (tpl / 'z/' ).pattern #=> '/xy/z/'
+  #   (tpl / '{/z}' ).pattern #=> '/xy{/z}'
+  #   (tpl / 'a' / 'b' ).pattern #=> '/xy/a/b'
+  #
+  # @param other [URITemplate, String, ...]
+  # @return URITemplate
+  def path_concat(other)
+    if other.host? or other.scheme?
+      raise ArgumentError, "Expected to receive a relative template but got an absoulte one: #{other.inspect}. If you think this is a bug, please report it."
+    end
+
+    return self if other.tokens.none?
+    return other if self.tokens.none?
+
+    tail = self.tokens.last
+    head = other.tokens.first
+
+    if tail.ends_with_slash?
+      if head.starts_with_slash?
+        return self.class.new( remove_double_slash(self.tokens, other.tokens) )
+      end
+    elsif !head.starts_with_slash?
+      return self.class.new( (self.tokens + ['/'] + other.tokens).join)
+    end
+    return self.class.new( (self.tokens + other.tokens).join )
+  end
+
+  coerce_first_arg :path_concat
+
+  alias / path_concat
+
+  # Concatenate two template with conversion.
+  #
+  # @example
+  #   tpl = URITemplate::RFC6570.new('foo')
+  #   (tpl + '{bar}' ).pattern #=> 'foo{bar}'
+  #
+  # @param other [URITemplate, String, ...]
+  # @return URITemplate
+  def concat(other)
+    if other.host? or other.scheme?
+      raise ArgumentError, "Expected to receive a relative template but got an absoulte one: #{other.inspect}. If you think this is a bug, please report it."
+    end
+
+    return self if other.tokens.none?
+    return other if self.tokens.none?
+    return self.class.new( self.to_s + other.to_s )
+  end
+
+  coerce_first_arg :concat
+
+  alias + concat
+  alias >> concat
+
+  # @api private
+  def remove_double_slash( first_tokens, second_tokens )
+    if first_tokens.last.literal?
+      return first_tokens[0..-2] + [ first_tokens.last.to_s[0..-2] ] + second_tokens
+    elsif second_tokens.first.literal?
+      return first_tokens + [ second_tokens.first.to_s[1..-1] ] + second_tokens[1..-1]
+    else
+      raise ArgumentError, "Cannot remove double slashes from #{first_tokens.inspect} and #{second_tokens.inspect}."
+    end
+  end
+
+  private :remove_double_slash
+
+  # @api private
+  def scheme_and_host
+    return @scheme_and_host if @scheme_and_host
     read_chars = ""
+    @scheme_and_host = [false,false]
     tokens.each do |token|
       if token.expression?
+        read_chars << "x"
+        if token.scheme?
+          read_chars << ':'
+        end
+        if token.host?
+          read_chars << '//'
+        end
         read_chars << "x"
       elsif token.literal?
         read_chars << token.string
       end
-      if read_chars =~ /^[a-z]+:\/\//i
-        return @absolute = true
+      if read_chars =~ SCHEME_REGEX
+        @scheme_and_host = [true, true]
+        break
+      elsif read_chars =~ HOST_REGEX
+        @scheme_and_host[1] = true
+        break
       elsif read_chars =~ /(^|[^:\/])\/(?!\/)/
-        return @absolute = false
+        break
       end
     end
-
-    return @absolute = false
+    return @scheme_and_host
   end
+
+  private :scheme_and_host
+
+  alias absolute? host?
 
   # Opposite of {#absolute?}
   def relative?
