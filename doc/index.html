@@ -61,30 +61,15 @@
 
     <iframe id="search_frame"></iframe>
 
-    <div id="content"><div id='filecontents'>
-<h1>URITemplate - a uri template library</h1>
+    <div id="content"><div id='filecontents'><h1>URITemplate - a uri template library</h1>
 
-<p>With URITemplate you can generate URI based on simple templates. The syntax
-if defined by RFC 6570 ( <a
-href="http://tools.ietf.org/html/rfc6570">tools.ietf.org/html/rfc6570</a>
-).</p>
+<p><a href="http://travis-ci.org/hannesg/uri_template"><img src="https://secure.travis-ci.org/hannesg/uri_template.png" alt="Build Status"></a>
+<a href="https://gemnasium.com/hannesg/uri_template"><img src="https://gemnasium.com/hannesg/uri_template.png" alt="Dependency Status"></a>
+<a href="https://codeclimate.com/github/hannesg/uri_template"><img src="https://codeclimate.com/badge.png" alt="Code Climate"></a></p>
 
-<p>For backward compatibility, there is an implementation based on draft 7 of
-the uri template spec ( <a
-href="http://tools.ietf.org/html/draft-gregorio-uritemplate-07">tools.ietf.org/html/draft-gregorio-uritemplate-07</a>
-), too. For the syntax read that spec. Draft 2 of that specification is
-implemented as addressable gem.</p>
+<p>With URITemplate you can generate URIs based on simple templates and extract variables from URIs using the same templates. There are currently two syntaxes defined. Namely the one defined in <a href="http://tools.ietf.org/html/rfc6570">RFC 6570</a> and a colon based syntax, similiar to the one used by sinatra.</p>
 
-<p>It’s currently planed to add newer versions of that spec when they emerge.
-Therefore the module URITemplate just defines one abstract method ( expand
-) and some methods to access the actual implementations.</p>
-
-<p>From version 0.2.0, it will use escape_utils if available. This will
-significantly boost uri-escape/unescape performance if more characters need
-to be escaped ( may be slightly slower in trivial cases. working on that …
-), but does not run everywhere. To enable this, do the following:</p>
-
-<p>““ruby</p>
+<p>From version 0.2.0, it will use escape_utils if available. This will significantly boost uri-escape/unescape performance if more characters need to be escaped ( may be slightly slower in trivial cases. working on that ... ), but does not run everywhere. To enable this, do the following:</p>
 
 <pre class="code ruby"><code><span class='comment'># escape_utils has to be loaded when uri_templates is loaded
 </span><span class='id identifier rubyid_gem'>gem</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>escape_utils</span><span class='tstring_end'>'</span></span>
@@ -93,7 +78,8 @@ to be escaped ( may be slightly slower in trivial cases. working on that …
 <span class='id identifier rubyid_gem'>gem</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>uri_template</span><span class='tstring_end'>'</span></span>
 <span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>uri_template</span><span class='tstring_end'>'</span></span>
 
-<span class='const'>UriTemplate</span><span class='op'>::</span><span class='const'>Utils</span><span class='period'>.</span><span class='id identifier rubyid_using_escape_utils?'>using_escape_utils?</span> <span class='comment'>#=&gt; true</span></code></pre>
+<span class='const'>UriTemplate</span><span class='op'>::</span><span class='const'>Utils</span><span class='period'>.</span><span class='id identifier rubyid_using_escape_utils?'>using_escape_utils?</span> <span class='comment'>#=&gt; true
+</span></code></pre>
 
 <h2>Examples</h2>
 
@@ -105,42 +91,34 @@ to be escaped ( may be slightly slower in trivial cases. working on that …
 </span><span class='id identifier rubyid_tpl'>tpl</span><span class='period'>.</span><span class='id identifier rubyid_expand'>expand</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>host</span><span class='tstring_end'>'</span></span><span class='op'>=&gt;</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>www.host.com</span><span class='tstring_end'>'</span></span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>segments</span><span class='tstring_end'>'</span></span><span class='op'>=&gt;</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>path</span><span class='tstring_end'>'</span></span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>to</span><span class='tstring_end'>'</span></span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>a</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>file</span><span class='tstring_end'>'</span></span><span class='op'>=&gt;</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>file</span><span class='tstring_end'>'</span></span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>extensions</span><span class='tstring_end'>'</span></span><span class='op'>=&gt;</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>x</span><span class='tstring_end'>'</span></span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>y</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='rparen'>)</span>
 
 <span class='comment'># This will give: { 'host'=&gt;'www.host.com','segments'=&gt;['path','to','a'],'file'=&gt;'file','extensions'=&gt;['x','y']}
-</span><span class='id identifier rubyid_tpl'>tpl</span><span class='period'>.</span><span class='id identifier rubyid_extract'>extract</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>http://www.host.com/path/to/a/file.x.y</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span></code></pre>
+</span><span class='id identifier rubyid_tpl'>tpl</span><span class='period'>.</span><span class='id identifier rubyid_extract'>extract</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>http://www.host.com/path/to/a/file.x.y</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
+
+<span class='comment'># If you like colon templates more:
+</span><span class='id identifier rubyid_tpl2'>tpl2</span> <span class='op'>=</span> <span class='const'>URITemplate</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='symbol'>:colon</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>/:x/y</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
+
+<span class='comment'># This will give: {'x' =&gt; 'z'}
+</span><span class='id identifier rubyid_tpl2'>tpl2</span><span class='period'>.</span><span class='id identifier rubyid_extract'>extract</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>/z/y</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
+</code></pre>
+
+<h2>RFC 6570 Syntax</h2>
+
+<p>The syntax defined by <a href="http://tools.ietf.org/html/rfc6570">RFC 6570</a> is pretty straight forward. Basically anything surrounded by curly brackets is interpreted as variable.</p>
+
+<pre class="code ruby"><code><span class='const'>URITemplate</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>{variable}</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_expand'>expand</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>variable</span><span class='tstring_end'>'</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>value</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span> <span class='comment'>#=&gt; &quot;value&quot;
+</span></code></pre>
+
+<p>The way variables are inserted can be modified using operators. The operator is the first character between the curly brackets. There are seven operators defined <code>#</code>, <code>+</code>, <code>;</code>, <code>?</code>, <code>&amp;</code>, <code>/</code> and <code>.</code>. So if you want to create a form-style query do this:</p>
+
+<pre class="code ruby"><code><span class='const'>URITemplate</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>{?variable}</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_expand'>expand</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>variable</span><span class='tstring_end'>'</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>value</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span> <span class='comment'>#=&gt; &quot;?variable=value&quot;
+</span></code></pre>
 
 <h2>Benchmarks</h2>
 
-<pre class="code ruby"><code>* System: Core 2 Duo T9300, 4 gb ram, ubuntu 12.04 64 bit, ruby 1.9.3, 100_000 repetitions
-* Implementation: RFC6570 ( version 0.3.0 ) vs. Addressable ( 2.2.8 )
-* Results marked with * means that the template object is reused.
-
-                                                      Addressable | Addressable* | RFC6570 | RFC6570* |
-   --Expansion-----------------------------------------------------------------------------------------
-   Empty string                                             8.505 |        8.439 |   0.539 |    0.064 |
-   One simple variable                                     19.717 |       19.721 |   3.031 |    1.169 |
-   One escaped variable                                    21.873 |       22.017 |   3.573 |    1.705 |
-   One missing variable                                     9.676 |       11.981 |   2.633 |    0.352 |
-   Path segments                                           29.901 |       31.698 |   4.929 |    3.051 |
-   Arguments                                               36.584 |       36.531 |   9.540 |    5.982 |
-   Full URI                                               109.102 |      116.458 |  19.806 |   10.548 |
-   Segments and Arguments                                 108.103 |      107.750 |  14.059 |    7.593 |
-   total                                                  343.461 |      354.596 |  58.109 |   30.464 |
-   --Extraction----------------------------------------------------------------------------------------
-   Empty string                                            21.422 |       21.843 |   3.122 |    0.804 |
-   One simple variable                                     39.860 |       43.840 |  10.671 |    2.874 |
-   One escaped variable                                    51.321 |       50.790 |  10.963 |    2.040 |
-   One missing variable                                    26.125 |       26.320 |   9.400 |    1.847 |
-   Path segments                                           62.712 |       64.191 |  18.502 |    4.518 |
-   Arguments                                               81.350 |       81.258 |  20.762 |    5.401 |
-   Full URI                                               145.339 |      141.795 |  45.306 |   11.096 |
-   Segments and Arguments                                 124.431 |      122.885 |  34.208 |    8.126 |
-   Segments and Arguments ( not extractable )              34.183 |       34.200 |  26.542 |    0.410 |
-   total                                                  586.743 |      587.122 | 179.476 |   37.116 |</code></pre>
-
-<p>SUCCESS - URITemplate was faster in every test!</p>
+<p>I have assembled one benchmark based on the uritemplate-test examples. You can find them in the &quot;benchmarks&quot; folder. The short result: uri_template is 2-10x faster than addressable on ruby 1.9.3.</p>
 </div></div>
 
     <div id="footer">
-  Generated on Tue Jul  3 19:56:07 2012 by
+  Generated on Sun Sep 23 18:49:42 2012 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.2.1 (ruby-1.9.3).
 </div>

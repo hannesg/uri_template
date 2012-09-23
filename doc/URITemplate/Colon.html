@@ -103,13 +103,36 @@
 </dl>
 <div class="clear"></div>
 
-<h2>Defined Under Namespace</h2>
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>A colon based template denotes variables with a colon.</p>
+
+<p>This template type is somewhat compatible with sinatra.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><span class='id identifier rubyid_tpl'>tpl</span> <span class='op'>=</span> <span class='const'>URITemplate</span><span class='op'>::</span><span class='const'>Colon</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>/foo/:bar</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
+<span class='id identifier rubyid_tpl'>tpl</span><span class='period'>.</span><span class='id identifier rubyid_extract'>extract</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>/foo/baz</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span> <span class='comment'>#=&gt; {'bar'=&gt;'baz'}
+</span><span class='id identifier rubyid_tpl'>tpl</span><span class='period'>.</span><span class='id identifier rubyid_expand'>expand</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>bar</span><span class='tstring_end'>'</span></span><span class='op'>=&gt;</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>boom</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span> <span class='comment'>#=&gt; '/foo/boom'</span></pre>
+    
+  </div>
+
+
+</div><h2>Defined Under Namespace</h2>
 <p class="children">
   
     
   
     
-      <strong class="classes">Classes:</strong> <span class='object_link'><a href="Colon/Token.html" title="URITemplate::Colon::Token (class)">Token</a></span>
+      <strong class="classes">Classes:</strong> <span class='object_link'><a href="Colon/InvalidValue.html" title="URITemplate::Colon::InvalidValue (class)">InvalidValue</a></span>, <span class='object_link'><a href="Colon/Token.html" title="URITemplate::Colon::Token (class)">Token</a></span>
     
   
 </p>
@@ -121,7 +144,7 @@
         <dt id="VAR-constant" class="">VAR =
           
         </dt>
-        <dd><pre class="code"><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>(?:\{:([a-z]+)\}|:([a-z]+)(?![a-z]))</span><span class='regexp_end'>/u</span></span></pre></dd>
+        <dd><pre class="code"><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>(?:\{:([a-z]+)\}|:([a-z]+)(?![a-z])|\*)</span><span class='regexp_end'>/u</span></span></pre></dd>
       
     </dl>
   
@@ -132,7 +155,7 @@
   
   <h3 class="inherited">Constants included
      from <span class='object_link'><a href="../URITemplate.html" title="URITemplate (module)">URITemplate</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="../URITemplate.html#VERSIONS-constant" title="URITemplate::VERSIONS (constant)">VERSIONS</a></span></p>
+  <p class="inherited"><span class='object_link'><a href="../URITemplate.html#HOST_REGEX-constant" title="URITemplate::HOST_REGEX (constant)">HOST_REGEX</a></span>, <span class='object_link'><a href="../URITemplate.html#SCHEME_REGEX-constant" title="URITemplate::SCHEME_REGEX (constant)">SCHEME_REGEX</a></span>, <span class='object_link'><a href="../URITemplate.html#URI_SPLIT-constant" title="URITemplate::URI_SPLIT (constant)">URI_SPLIT</a></span>, <span class='object_link'><a href="../URITemplate.html#VERSIONS-constant" title="URITemplate::VERSIONS (constant)">VERSIONS</a></span></p>
 
 
   <h2>Instance Attribute Summary <small>(<a href="#" class="summary_toggle">collapse</a>)</small></h2>
@@ -212,30 +235,6 @@
     </h2>
 
     <ul class="summary">
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#%2F-instance_method" title="#/ (instance method)">- (Object) <strong>/</strong>(o) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Tries to concatenate two templates, as if they were path segments.</p>
-</div></span>
-  
-</li>
-
       
         <li class="public ">
   <span class="summary_signature">
@@ -366,7 +365,7 @@
   
   
   <h3 class="inherited">Methods included from <span class='object_link'><a href="../URITemplate.html" title="URITemplate (module)">URITemplate</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="../URITemplate.html#absolute%3F-instance_method" title="URITemplate#absolute? (method)">#absolute?</a></span>, <span class='object_link'><a href="../URITemplate.html#apply-class_method" title="URITemplate.apply (method)">apply</a></span>, <span class='object_link'><a href="../URITemplate.html#coerce-class_method" title="URITemplate.coerce (method)">coerce</a></span>, <span class='object_link'><a href="../URITemplate.html#convert-class_method" title="URITemplate.convert (method)">convert</a></span>, <span class='object_link'><a href="../URITemplate.html#expand-instance_method" title="URITemplate#expand (method)">#expand</a></span>, <span class='object_link'><a href="../URITemplate.html#new-class_method" title="URITemplate.new (method)">new</a></span>, <span class='object_link'><a href="../URITemplate.html#relative%3F-instance_method" title="URITemplate#relative? (method)">#relative?</a></span>, <span class='object_link'><a href="../URITemplate.html#resolve_class-class_method" title="URITemplate.resolve_class (method)">resolve_class</a></span>, <span class='object_link'><a href="../URITemplate.html#static_characters-instance_method" title="URITemplate#static_characters (method)">#static_characters</a></span>, <span class='object_link'><a href="../URITemplate.html#variables-instance_method" title="URITemplate#variables (method)">#variables</a></span></p>
+  <p class="inherited"><span class='object_link'><a href="../URITemplate.html#apply-class_method" title="URITemplate.apply (method)">apply</a></span>, <span class='object_link'><a href="../URITemplate.html#coerce-class_method" title="URITemplate.coerce (method)">coerce</a></span>, <span class='object_link'><a href="../URITemplate.html#coerce_first_arg-class_method" title="URITemplate.coerce_first_arg (method)">coerce_first_arg</a></span>, <span class='object_link'><a href="../URITemplate.html#concat-instance_method" title="URITemplate#concat (method)">#concat</a></span>, <span class='object_link'><a href="../URITemplate.html#convert-class_method" title="URITemplate.convert (method)">convert</a></span>, <span class='object_link'><a href="../URITemplate.html#eq-instance_method" title="URITemplate#eq (method)">#eq</a></span>, <span class='object_link'><a href="../URITemplate.html#expand-instance_method" title="URITemplate#expand (method)">#expand</a></span>, <span class='object_link'><a href="../URITemplate.html#host%3F-instance_method" title="URITemplate#host? (method)">#host?</a></span>, <span class='object_link'><a href="../URITemplate.html#new-class_method" title="URITemplate.new (method)">new</a></span>, <span class='object_link'><a href="../URITemplate.html#path_concat-instance_method" title="URITemplate#path_concat (method)">#path_concat</a></span>, <span class='object_link'><a href="../URITemplate.html#relative%3F-instance_method" title="URITemplate#relative? (method)">#relative?</a></span>, <span class='object_link'><a href="../URITemplate.html#resolve_class-class_method" title="URITemplate.resolve_class (method)">resolve_class</a></span>, <span class='object_link'><a href="../URITemplate.html#scheme%3F-instance_method" title="URITemplate#scheme? (method)">#scheme?</a></span>, <span class='object_link'><a href="../URITemplate.html#static_characters-instance_method" title="URITemplate#static_characters (method)">#static_characters</a></span>, <span class='object_link'><a href="../URITemplate.html#variables-instance_method" title="URITemplate#variables (method)">#variables</a></span></p>
 <div id="constructor_details" class="method_details_list">
   <h2>Constructor Details</h2>
   
@@ -389,6 +388,19 @@
 </div>
 <div class="tags">
   
+<p class="tag_title">Raises:</p>
+<ul class="raise">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>ArgumentError</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -396,14 +408,16 @@
       <pre class="lines">
 
 
-94
-95
-96</pre>
+154
+155
+156
+157</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/colon.rb', line 94</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/colon.rb', line 154</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_pattern'>pattern</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Expected a String but got </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_pattern'>pattern</span><span class='period'>.</span><span class='id identifier rubyid_inspect'>inspect</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>unless</span> <span class='id identifier rubyid_pattern'>pattern</span><span class='period'>.</span><span class='id identifier rubyid_kind_of?'>kind_of?</span> <span class='const'>String</span>
   <span class='ivar'>@pattern</span> <span class='op'>=</span> <span class='id identifier rubyid_pattern'>pattern</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -444,12 +458,12 @@
       <pre class="lines">
 
 
-76
-77
-78</pre>
+136
+137
+138</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/colon.rb', line 76</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/colon.rb', line 136</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_pattern'>pattern</span>
   <span class='ivar'>@pattern</span>
@@ -490,7 +504,7 @@
     
       
       <pre class="example code"><span class='const'>URITemplate</span><span class='op'>::</span><span class='const'>Colon</span><span class='period'>.</span><span class='id identifier rubyid_try_convert'>try_convert</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>/foo/:bar/</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_pattern'>pattern</span> <span class='comment'>#=&gt; '/foo/:bar/'
-</span><span class='const'>URITemplate</span><span class='op'>::</span><span class='const'>Colon</span><span class='period'>.</span><span class='id identifier rubyid_try_convert'>try_convert</span><span class='lparen'>(</span><span class='const'>URITemplate</span><span class='op'>::</span><span class='const'>Draft7</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>/foo/{bar}/</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_pattern'>pattern</span> <span class='comment'>#=&gt; '/foo/{:bar}/'</span></pre>
+</span><span class='const'>URITemplate</span><span class='op'>::</span><span class='const'>Colon</span><span class='period'>.</span><span class='id identifier rubyid_try_convert'>try_convert</span><span class='lparen'>(</span><span class='const'>URITemplate</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='symbol'>:rfc6570</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>/foo/{bar}/</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_pattern'>pattern</span> <span class='comment'>#=&gt; '/foo/{:bar}/'</span></pre>
     
   </div>
 
@@ -501,27 +515,27 @@
       <pre class="lines">
 
 
-82
-83
-84
-85
-86
-87
-88
-89
-90
-91
-92</pre>
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/colon.rb', line 82</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/colon.rb', line 142</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_try_convert'>try_convert</span><span class='lparen'>(</span><span class='id identifier rubyid_x'>x</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='id identifier rubyid_x'>x</span><span class='period'>.</span><span class='id identifier rubyid_kind_of?'>kind_of?</span> <span class='const'>String</span>
     <span class='kw'>return</span> <span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_x'>x</span><span class='rparen'>)</span>
   <span class='kw'>elsif</span> <span class='id identifier rubyid_x'>x</span><span class='period'>.</span><span class='id identifier rubyid_kind_of?'>kind_of?</span> <span class='kw'>self</span>
     <span class='kw'>return</span> <span class='id identifier rubyid_x'>x</span>
-  <span class='kw'>elsif</span> <span class='id identifier rubyid_x'>x</span><span class='period'>.</span><span class='id identifier rubyid_kind_of?'>kind_of?</span> <span class='const'>URITemplate</span><span class='op'>::</span><span class='const'>Draft7</span> <span class='kw'>and</span> <span class='id identifier rubyid_x'>x</span><span class='period'>.</span><span class='id identifier rubyid_level'>level</span> <span class='op'>==</span> <span class='int'>1</span>
+  <span class='kw'>elsif</span> <span class='id identifier rubyid_x'>x</span><span class='period'>.</span><span class='id identifier rubyid_kind_of?'>kind_of?</span> <span class='const'>URITemplate</span><span class='op'>::</span><span class='const'>RFC6570</span> <span class='kw'>and</span> <span class='id identifier rubyid_x'>x</span><span class='period'>.</span><span class='id identifier rubyid_level'>level</span> <span class='op'>==</span> <span class='int'>1</span>
     <span class='kw'>return</span> <span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span> <span class='id identifier rubyid_x'>x</span><span class='period'>.</span><span class='id identifier rubyid_pattern'>pattern</span><span class='period'>.</span><span class='id identifier rubyid_gsub'>gsub</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\{(.*?)\}</span><span class='regexp_end'>/u</span></span><span class='rparen'>)</span><span class='lbrace'>{</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>{:</span><span class='embexpr_beg'>#{</span><span class='backref'>$1</span><span class='rbrace'>}</span><span class='tstring_content'>}</span><span class='tstring_end'>&quot;</span></span> <span class='rbrace'>}</span> <span class='rparen'>)</span>
   <span class='kw'>else</span>
     <span class='kw'>return</span> <span class='kw'>nil</span>
@@ -539,69 +553,7 @@
 
     
       <div class="method_details first">
-  <h3 class="signature first" id="/-instance_method">
-  
-    - (<tt>Object</tt>) <strong>/</strong>(o) 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Tries to concatenate two templates, as if they were path segments. Removes
-double slashes or inserts one if they are missing.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><span class='id identifier rubyid_tpl'>tpl</span> <span class='op'>=</span> <span class='const'>URITemplate</span><span class='op'>::</span><span class='const'>Colon</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>/xy/</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
-<span class='lparen'>(</span><span class='id identifier rubyid_tpl'>tpl</span> <span class='op'>/</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>/z/</span><span class='tstring_end'>'</span></span> <span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_pattern'>pattern</span> <span class='comment'>#=&gt; '/xy/z/'
-</span><span class='lparen'>(</span><span class='id identifier rubyid_tpl'>tpl</span> <span class='op'>/</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>z/</span><span class='tstring_end'>'</span></span> <span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_pattern'>pattern</span> <span class='comment'>#=&gt; '/xy/z/'
-</span><span class='lparen'>(</span><span class='id identifier rubyid_tpl'>tpl</span> <span class='op'>/</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>:z</span><span class='tstring_end'>'</span></span> <span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_pattern'>pattern</span> <span class='comment'>#=&gt; '/xy/:z'
-</span><span class='lparen'>(</span><span class='id identifier rubyid_tpl'>tpl</span> <span class='op'>/</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>:a</span><span class='tstring_end'>'</span></span> <span class='op'>/</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>b</span><span class='tstring_end'>'</span></span> <span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_pattern'>pattern</span> <span class='comment'>#=&gt; '/xy/:a/b'</span></pre>
-    
-  </div>
-
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-132
-133
-134
-135
-136
-137
-138</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/colon.rb', line 132</span>
-
-<span class='kw'>def</span> <span class='op'>/</span><span class='lparen'>(</span><span class='id identifier rubyid_o'>o</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_this'>this</span><span class='comma'>,</span> <span class='id identifier rubyid_other'>other</span><span class='comma'>,</span> <span class='id identifier rubyid_this_converted'>this_converted</span><span class='comma'>,</span> <span class='id identifier rubyid_other_converted'>other_converted</span> <span class='op'>=</span> <span class='const'>URITemplate</span><span class='period'>.</span><span class='id identifier rubyid_coerce'>coerce</span><span class='lparen'>(</span> <span class='kw'>self</span><span class='comma'>,</span> <span class='id identifier rubyid_o'>o</span> <span class='rparen'>)</span>
-  <span class='kw'>if</span> <span class='id identifier rubyid_this_converted'>this_converted</span>
-    <span class='kw'>return</span> <span class='id identifier rubyid_this'>this</span> <span class='op'>/</span> <span class='id identifier rubyid_other'>other</span>
-  <span class='kw'>end</span>
-  <span class='kw'>return</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span> <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span> <span class='id identifier rubyid_this'>this</span><span class='period'>.</span><span class='id identifier rubyid_pattern'>pattern</span><span class='comma'>,</span> <span class='id identifier rubyid_other'>other</span><span class='period'>.</span><span class='id identifier rubyid_pattern'>pattern</span> <span class='rparen'>)</span> <span class='rparen'>)</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="extract-instance_method">
+  <h3 class="signature first" id="extract-instance_method">
   
     - (<tt>Object</tt>) <strong>extract</strong>(uri) 
   
@@ -659,23 +611,45 @@ double slashes or inserts one if they are missing.</p>
       <pre class="lines">
 
 
-102
-103
-104
-105
-106
-107
-108</pre>
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/colon.rb', line 102</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/colon.rb', line 163</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_extract'>extract</span><span class='lparen'>(</span><span class='id identifier rubyid_uri'>uri</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_md'>md</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_to_r'>to_r</span><span class='period'>.</span><span class='id identifier rubyid_match'>match</span><span class='lparen'>(</span><span class='id identifier rubyid_uri'>uri</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='kw'>nil</span> <span class='kw'>unless</span> <span class='id identifier rubyid_md'>md</span>
-  <span class='kw'>return</span> <span class='const'>Hash</span><span class='lbracket'>[</span> <span class='op'>*</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_variables'>variables</span><span class='period'>.</span><span class='id identifier rubyid_each_with_index'>each_with_index</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_v'>v</span><span class='comma'>,</span><span class='id identifier rubyid_i'>i</span><span class='op'>|</span>
-    <span class='lbracket'>[</span><span class='id identifier rubyid_v'>v</span><span class='comma'>,</span> <span class='const'>Utils</span><span class='period'>.</span><span class='id identifier rubyid_unescape_url'>unescape_url</span><span class='lparen'>(</span><span class='id identifier rubyid_md'>md</span><span class='lbracket'>[</span><span class='id identifier rubyid_i'>i</span><span class='op'>+</span><span class='int'>1</span><span class='rbracket'>]</span><span class='rparen'>)</span><span class='rbracket'>]</span>
-  <span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_flatten'>flatten</span><span class='lparen'>(</span><span class='int'>1</span><span class='rparen'>)</span> <span class='rbracket'>]</span>
+  <span class='id identifier rubyid_result'>result</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+  <span class='id identifier rubyid_splat'>splat</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
+  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_tokens'>tokens</span><span class='period'>.</span><span class='id identifier rubyid_select'>select</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_tk'>tk</span><span class='op'>|</span> <span class='id identifier rubyid_tk'>tk</span><span class='period'>.</span><span class='id identifier rubyid_kind_of?'>kind_of?</span> <span class='const'>URITemplate</span><span class='op'>::</span><span class='const'>Expression</span> <span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_each_with_index'>each_with_index</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_tk'>tk</span><span class='comma'>,</span><span class='id identifier rubyid_i'>i</span><span class='op'>|</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_tk'>tk</span><span class='period'>.</span><span class='id identifier rubyid_kind_of?'>kind_of?</span> <span class='const'>Token</span><span class='op'>::</span><span class='const'>Splat</span>
+      <span class='id identifier rubyid_splat'>splat</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_md'>md</span><span class='lbracket'>[</span><span class='id identifier rubyid_i'>i</span><span class='op'>+</span><span class='int'>1</span><span class='rbracket'>]</span>
+      <span class='id identifier rubyid_result'>result</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>splat</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_splat'>splat</span> <span class='kw'>unless</span> <span class='id identifier rubyid_result'>result</span><span class='period'>.</span><span class='id identifier rubyid_key?'>key?</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>splat</span><span class='tstring_end'>'</span></span>
+    <span class='kw'>else</span>
+      <span class='id identifier rubyid_result'>result</span><span class='lbracket'>[</span><span class='id identifier rubyid_tk'>tk</span><span class='period'>.</span><span class='id identifier rubyid_name'>name</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='const'>Utils</span><span class='period'>.</span><span class='id identifier rubyid_unescape_url'>unescape_url</span><span class='lparen'>(</span> <span class='id identifier rubyid_md'>md</span><span class='lbracket'>[</span><span class='id identifier rubyid_i'>i</span><span class='op'>+</span><span class='int'>1</span><span class='rbracket'>]</span> <span class='rparen'>)</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_block_given?'>block_given?</span>
+    <span class='kw'>return</span> <span class='kw'>yield</span><span class='lparen'>(</span><span class='id identifier rubyid_result'>result</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_result'>result</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -697,12 +671,12 @@ double slashes or inserts one if they are missing.</p>
       <pre class="lines">
 
 
-114
-115
-116</pre>
+186
+187
+188</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/colon.rb', line 114</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/colon.rb', line 186</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_to_r'>to_r</span>
   <span class='ivar'>@regexp</span> <span class='op'>||=</span> <span class='const'>Regexp</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>\A</span><span class='tstring_end'>'</span></span> <span class='op'>+</span> <span class='id identifier rubyid_tokens'>tokens</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:to_r</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>\z</span><span class='tstring_end'>'</span></span><span class='comma'>,</span> <span class='const'>Utils</span><span class='op'>::</span><span class='const'>KCODE_UTF8</span><span class='rparen'>)</span>
@@ -727,12 +701,12 @@ double slashes or inserts one if they are missing.</p>
       <pre class="lines">
 
 
-118
-119
-120</pre>
+190
+191
+192</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/colon.rb', line 118</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/colon.rb', line 190</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_tokens'>tokens</span>
   <span class='ivar'>@tokens</span> <span class='op'>||=</span> <span class='id identifier rubyid_tokenize!'>tokenize!</span>
@@ -757,12 +731,12 @@ double slashes or inserts one if they are missing.</p>
       <pre class="lines">
 
 
-110
-111
-112</pre>
+182
+183
+184</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/colon.rb', line 110</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/colon.rb', line 182</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_type'>type</span>
   <span class='symbol'>:colon</span>
@@ -777,7 +751,7 @@ double slashes or inserts one if they are missing.</p>
 </div>
 
     <div id="footer">
-  Generated on Tue Jul  3 19:56:07 2012 by
+  Generated on Sun Sep 23 18:49:43 2012 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.2.1 (ruby-1.9.3).
 </div>

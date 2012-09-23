@@ -106,7 +106,22 @@
 <div class="clear"></div>
 
 
+  <h2>Constant Summary</h2>
+  
 
+
+
+  <h2>Constant Summary</h2>
+  
+  <h3 class="inherited">Constants included
+     from <span class='object_link'><a href="../../Literal.html" title="URITemplate::Literal (module)">Literal</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="../../Literal.html#SLASH-constant" title="URITemplate::Literal::SLASH (constant)">Literal::SLASH</a></span></p>
+
+  
+  
+  <h3 class="inherited">Constants included
+     from <span class='object_link'><a href="../../Token.html" title="URITemplate::Token (module)">Token</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="../../Token.html#EMPTY_ARRAY-constant" title="URITemplate::Token::EMPTY_ARRAY (constant)">Token::EMPTY_ARRAY</a></span></p>
 
 
 
@@ -208,7 +223,7 @@
   
   
   <h3 class="inherited">Methods included from <span class='object_link'><a href="../../Literal.html" title="URITemplate::Literal (module)">Literal</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="../../Literal.html#expression%3F-instance_method" title="URITemplate::Literal#expression? (method)">#expression?</a></span>, <span class='object_link'><a href="../../Literal.html#literal%3F-instance_method" title="URITemplate::Literal#literal? (method)">#literal?</a></span>, <span class='object_link'><a href="../../Literal.html#size-instance_method" title="URITemplate::Literal#size (method)">#size</a></span>, <span class='object_link'><a href="../../Literal.html#variables-instance_method" title="URITemplate::Literal#variables (method)">#variables</a></span></p>
+  <p class="inherited"><span class='object_link'><a href="../../Literal.html#ends_with_slash%3F-instance_method" title="URITemplate::Literal#ends_with_slash? (method)">#ends_with_slash?</a></span>, <span class='object_link'><a href="../../Literal.html#expression%3F-instance_method" title="URITemplate::Literal#expression? (method)">#expression?</a></span>, <span class='object_link'><a href="../../Literal.html#literal%3F-instance_method" title="URITemplate::Literal#literal? (method)">#literal?</a></span>, <span class='object_link'><a href="../../Literal.html#size-instance_method" title="URITemplate::Literal#size (method)">#size</a></span>, <span class='object_link'><a href="../../Literal.html#starts_with_slash%3F-instance_method" title="URITemplate::Literal#starts_with_slash? (method)">#starts_with_slash?</a></span></p>
 
   
   
@@ -219,7 +234,7 @@
   
   
   <h3 class="inherited">Methods included from <span class='object_link'><a href="../../Token.html" title="URITemplate::Token (module)">Token</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="../../Token.html#size-instance_method" title="URITemplate::Token#size (method)">#size</a></span></p>
+  <p class="inherited"><span class='object_link'><a href="../../Token.html#ends_with_slash%3F-instance_method" title="URITemplate::Token#ends_with_slash? (method)">#ends_with_slash?</a></span>, <span class='object_link'><a href="../../Token.html#host%3F-instance_method" title="URITemplate::Token#host? (method)">#host?</a></span>, <span class='object_link'><a href="../../Token.html#scheme%3F-instance_method" title="URITemplate::Token#scheme? (method)">#scheme?</a></span>, <span class='object_link'><a href="../../Token.html#size-instance_method" title="URITemplate::Token#size (method)">#size</a></span>, <span class='object_link'><a href="../../Token.html#starts_with_slash%3F-instance_method" title="URITemplate::Token#starts_with_slash? (method)">#starts_with_slash?</a></span>, <span class='object_link'><a href="../../Token.html#to_s-instance_method" title="URITemplate::Token#to_s (method)">#to_s</a></span>, <span class='object_link'><a href="../../Token.html#variables-instance_method" title="URITemplate::Token#variables (method)">#variables</a></span></p>
 
   
   
@@ -255,12 +270,12 @@
       <pre class="lines">
 
 
-60
-61
-62</pre>
+120
+121
+122</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/colon.rb', line 60</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/colon.rb', line 120</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_str'>str</span><span class='rparen'>)</span>
   <span class='ivar'>@string</span> <span class='op'>=</span> <span class='id identifier rubyid_str'>str</span>
@@ -292,12 +307,12 @@
       <pre class="lines">
 
 
-64
-65
-66</pre>
+124
+125
+126</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/colon.rb', line 64</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/colon.rb', line 124</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_expand'>expand</span><span class='lparen'>(</span><span class='id identifier rubyid__'>_</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='ivar'>@string</span>
@@ -322,12 +337,12 @@
       <pre class="lines">
 
 
-68
-69
-70</pre>
+128
+129
+130</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/colon.rb', line 68</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/colon.rb', line 128</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_to_r'>to_r</span>
   <span class='kw'>return</span> <span class='const'>Regexp</span><span class='period'>.</span><span class='id identifier rubyid_escape'>escape</span><span class='lparen'>(</span><span class='ivar'>@string</span><span class='rparen'>)</span>
@@ -342,7 +357,7 @@
 </div>
 
     <div id="footer">
-  Generated on Tue Jul  3 19:56:07 2012 by
+  Generated on Sun Sep 23 18:49:43 2012 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.2.1 (ruby-1.9.3).
 </div>

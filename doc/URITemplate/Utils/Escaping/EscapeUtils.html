@@ -243,7 +243,7 @@ good, espacially for strings with many escaped characters.</p>
   
   
   <h3 class="inherited">Methods included from <span class='object_link'><a href="../StringEncoding.html" title="URITemplate::Utils::StringEncoding (module)">StringEncoding</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="../StringEncoding.html#to_ascii-instance_method" title="URITemplate::Utils::StringEncoding#to_ascii (method)">#to_ascii</a></span>, <span class='object_link'><a href="../StringEncoding.html#to_ascii_encode-instance_method" title="URITemplate::Utils::StringEncoding#to_ascii_encode (method)">#to_ascii_encode</a></span>, <span class='object_link'><a href="../StringEncoding.html#to_ascii_fallback-instance_method" title="URITemplate::Utils::StringEncoding#to_ascii_fallback (method)">#to_ascii_fallback</a></span>, <span class='object_link'><a href="../StringEncoding.html#to_utf8-instance_method" title="URITemplate::Utils::StringEncoding#to_utf8 (method)">#to_utf8</a></span>, <span class='object_link'><a href="../StringEncoding.html#to_utf8_encode-instance_method" title="URITemplate::Utils::StringEncoding#to_utf8_encode (method)">#to_utf8_encode</a></span>, <span class='object_link'><a href="../StringEncoding.html#to_utf8_fallback-instance_method" title="URITemplate::Utils::StringEncoding#to_utf8_fallback (method)">#to_utf8_fallback</a></span></p>
+  <p class="inherited"><span class='object_link'><a href="../StringEncoding.html#force_utf8-instance_method" title="URITemplate::Utils::StringEncoding#force_utf8 (method)">#force_utf8</a></span>, <span class='object_link'><a href="../StringEncoding.html#force_utf8_encode-instance_method" title="URITemplate::Utils::StringEncoding#force_utf8_encode (method)">#force_utf8_encode</a></span>, <span class='object_link'><a href="../StringEncoding.html#force_utf8_fallback-instance_method" title="URITemplate::Utils::StringEncoding#force_utf8_fallback (method)">#force_utf8_fallback</a></span>, <span class='object_link'><a href="../StringEncoding.html#to_ascii-instance_method" title="URITemplate::Utils::StringEncoding#to_ascii (method)">#to_ascii</a></span>, <span class='object_link'><a href="../StringEncoding.html#to_ascii_encode-instance_method" title="URITemplate::Utils::StringEncoding#to_ascii_encode (method)">#to_ascii_encode</a></span>, <span class='object_link'><a href="../StringEncoding.html#to_ascii_fallback-instance_method" title="URITemplate::Utils::StringEncoding#to_ascii_fallback (method)">#to_ascii_fallback</a></span>, <span class='object_link'><a href="../StringEncoding.html#to_utf8-instance_method" title="URITemplate::Utils::StringEncoding#to_utf8 (method)">#to_utf8</a></span>, <span class='object_link'><a href="../StringEncoding.html#to_utf8_encode-instance_method" title="URITemplate::Utils::StringEncoding#to_utf8_encode (method)">#to_utf8_encode</a></span>, <span class='object_link'><a href="../StringEncoding.html#to_utf8_fallback-instance_method" title="URITemplate::Utils::StringEncoding#to_utf8_fallback (method)">#to_utf8_fallback</a></span></p>
 
 
   <div id="instance_method_details" class="method_details_list">
@@ -265,12 +265,12 @@ good, espacially for strings with many escaped characters.</p>
       <pre class="lines">
 
 
-188
-189
-190</pre>
+217
+218
+219</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/utils.rb', line 188</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/utils.rb', line 217</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_escape_uri'>escape_uri</span><span class='lparen'>(</span><span class='id identifier rubyid_s'>s</span><span class='rparen'>)</span>
   <span class='kw'>super</span><span class='lparen'>(</span><span class='id identifier rubyid_to_utf8'>to_utf8</span><span class='lparen'>(</span><span class='id identifier rubyid_s'>s</span><span class='rparen'>)</span><span class='rparen'>)</span>
@@ -295,12 +295,12 @@ good, espacially for strings with many escaped characters.</p>
       <pre class="lines">
 
 
-184
-185
-186</pre>
+213
+214
+215</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/utils.rb', line 184</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/utils.rb', line 213</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_escape_url'>escape_url</span><span class='lparen'>(</span><span class='id identifier rubyid_s'>s</span><span class='rparen'>)</span>
   <span class='kw'>super</span><span class='lparen'>(</span><span class='id identifier rubyid_to_utf8'>to_utf8</span><span class='lparen'>(</span><span class='id identifier rubyid_s'>s</span><span class='rparen'>)</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_gsub'>gsub</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>+</span><span class='tstring_end'>'</span></span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>%20</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
@@ -325,15 +325,15 @@ good, espacially for strings with many escaped characters.</p>
       <pre class="lines">
 
 
-196
-197
-198</pre>
+225
+226
+227</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/utils.rb', line 196</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/utils.rb', line 225</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_unescape_uri'>unescape_uri</span><span class='lparen'>(</span><span class='id identifier rubyid_s'>s</span><span class='rparen'>)</span>
-  <span class='kw'>super</span><span class='lparen'>(</span><span class='id identifier rubyid_to_ascii'>to_ascii</span><span class='lparen'>(</span><span class='id identifier rubyid_s'>s</span><span class='rparen'>)</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_force_utf8'>force_utf8</span><span class='lparen'>(</span><span class='kw'>super</span><span class='lparen'>(</span><span class='id identifier rubyid_to_ascii'>to_ascii</span><span class='lparen'>(</span><span class='id identifier rubyid_s'>s</span><span class='rparen'>)</span><span class='rparen'>)</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -355,15 +355,15 @@ good, espacially for strings with many escaped characters.</p>
       <pre class="lines">
 
 
-192
-193
-194</pre>
+221
+222
+223</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/utils.rb', line 192</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/utils.rb', line 221</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_unescape_url'>unescape_url</span><span class='lparen'>(</span><span class='id identifier rubyid_s'>s</span><span class='rparen'>)</span>
-  <span class='kw'>super</span><span class='lparen'>(</span><span class='id identifier rubyid_to_ascii'>to_ascii</span><span class='lparen'>(</span><span class='id identifier rubyid_s'>s</span><span class='rparen'>)</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_force_utf8'>force_utf8</span><span class='lparen'>(</span><span class='kw'>super</span><span class='lparen'>(</span><span class='id identifier rubyid_to_ascii'>to_ascii</span><span class='lparen'>(</span><span class='id identifier rubyid_s'>s</span><span class='rparen'>)</span><span class='rparen'>)</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -407,12 +407,12 @@ good, espacially for strings with many escaped characters.</p>
       <pre class="lines">
 
 
-180
-181
-182</pre>
+209
+210
+211</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/utils.rb', line 180</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/utils.rb', line 209</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_using_escape_utils?'>using_escape_utils?</span>
   <span class='kw'>true</span>
@@ -427,7 +427,7 @@ good, espacially for strings with many escaped characters.</p>
 </div>
 
     <div id="footer">
-  Generated on Tue Jul  3 19:56:07 2012 by
+  Generated on Sun Sep 23 18:49:42 2012 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.2.1 (ruby-1.9.3).
 </div>

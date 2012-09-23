@@ -156,7 +156,7 @@ MatchData</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#initialize-instance_method" title="#initialize (instance method)">- (RegexpEnumerator) <strong>initialize</strong>(regexp) </a>
+      <a href="#initialize-instance_method" title="#initialize (instance method)">- (RegexpEnumerator) <strong>initialize</strong>(regexp, options = {}) </a>
     
 
     
@@ -189,7 +189,7 @@ MatchData</p>
     <div class="method_details first">
   <h3 class="signature first" id="initialize-instance_method">
   
-    - (<tt><span class='object_link'><a href="" title="URITemplate::RegexpEnumerator (class)">RegexpEnumerator</a></span></tt>) <strong>initialize</strong>(regexp) 
+    - (<tt><span class='object_link'><a href="" title="URITemplate::RegexpEnumerator (class)">RegexpEnumerator</a></span></tt>) <strong>initialize</strong>(regexp, options = {}) 
   
 
   
@@ -214,13 +214,15 @@ MatchData</p>
 
 27
 28
-29</pre>
+29
+30</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/uri_template/utils.rb', line 27</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_regexp'>regexp</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_regexp'>regexp</span><span class='comma'>,</span> <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='ivar'>@regexp</span> <span class='op'>=</span> <span class='id identifier rubyid_regexp'>regexp</span>
+  <span class='ivar'>@rest</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:rest</span><span class='rparen'>)</span><span class='lbrace'>{</span> <span class='symbol'>:yield</span> <span class='rbrace'>}</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -243,13 +245,34 @@ MatchData</p>
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Raises:</p>
+<ul class="raise">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>ArgumentError</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-31
 32
 33
 34
@@ -269,18 +292,30 @@ MatchData</p>
 48
 49
 50
-51</pre>
+51
+52
+53
+54
+55
+56
+57
+58
+59</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/utils.rb', line 31</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/utils.rb', line 32</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_each'>each</span><span class='lparen'>(</span><span class='id identifier rubyid_str'>str</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>RegexpEnumerator#each expects a String, but got </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_str'>str</span><span class='period'>.</span><span class='id identifier rubyid_inspect'>inspect</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>unless</span> <span class='id identifier rubyid_str'>str</span><span class='period'>.</span><span class='id identifier rubyid_kind_of?'>kind_of?</span> <span class='const'>String</span>
   <span class='kw'>return</span> <span class='const'>Enumerator</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='kw'>self</span><span class='comma'>,</span><span class='symbol'>:each</span><span class='comma'>,</span><span class='id identifier rubyid_str'>str</span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id identifier rubyid_block_given?'>block_given?</span>
   <span class='id identifier rubyid_rest'>rest</span> <span class='op'>=</span> <span class='id identifier rubyid_str'>str</span>
   <span class='id identifier rubyid_loop'>loop</span> <span class='kw'>do</span>
     <span class='id identifier rubyid_m'>m</span> <span class='op'>=</span> <span class='ivar'>@regexp</span><span class='period'>.</span><span class='id identifier rubyid_match'>match</span><span class='lparen'>(</span><span class='id identifier rubyid_rest'>rest</span><span class='rparen'>)</span>
     <span class='kw'>if</span> <span class='id identifier rubyid_m'>m</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
-      <span class='kw'>yield</span> <span class='id identifier rubyid_rest'>rest</span>
+      <span class='kw'>if</span> <span class='id identifier rubyid_rest'>rest</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span> <span class='op'>&gt;</span> <span class='int'>0</span>
+        <span class='kw'>yield</span> <span class='id identifier rubyid_rest'>rest</span> <span class='kw'>if</span> <span class='ivar'>@rest</span> <span class='op'>==</span> <span class='symbol'>:yield</span>
+        <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Unable to match </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_rest'>rest</span><span class='period'>.</span><span class='id identifier rubyid_inspect'>inspect</span><span class='rbrace'>}</span><span class='tstring_content'> against </span><span class='embexpr_beg'>#{</span><span class='ivar'>@regexp</span><span class='period'>.</span><span class='id identifier rubyid_inspect'>inspect</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>if</span> <span class='ivar'>@rest</span> <span class='op'>==</span> <span class='symbol'>:raise</span>
+      <span class='kw'>end</span>
       <span class='kw'>break</span>
     <span class='kw'>end</span>
     <span class='kw'>yield</span> <span class='id identifier rubyid_m'>m</span><span class='period'>.</span><span class='id identifier rubyid_pre_match'>pre_match</span> <span class='kw'>if</span> <span class='id identifier rubyid_m'>m</span><span class='period'>.</span><span class='id identifier rubyid_pre_match'>pre_match</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span> <span class='op'>&gt;</span> <span class='int'>0</span>
@@ -288,7 +323,10 @@ MatchData</p>
     <span class='kw'>if</span> <span class='id identifier rubyid_m'>m</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span> <span class='op'>==</span> <span class='int'>0</span>
       <span class='comment'># obviously matches empty string, so post_match will equal rest
 </span>      <span class='comment'># terminate or this will loop forever
-</span>      <span class='kw'>yield</span> <span class='id identifier rubyid_m'>m</span><span class='period'>.</span><span class='id identifier rubyid_post_match'>post_match</span>
+</span>      <span class='kw'>if</span> <span class='id identifier rubyid_m'>m</span><span class='period'>.</span><span class='id identifier rubyid_post_match'>post_match</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span> <span class='op'>&gt;</span> <span class='int'>0</span>
+        <span class='kw'>yield</span> <span class='id identifier rubyid_m'>m</span><span class='period'>.</span><span class='id identifier rubyid_post_match'>post_match</span> <span class='kw'>if</span> <span class='ivar'>@rest</span> <span class='op'>==</span> <span class='symbol'>:yield</span>
+        <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='ivar'>@regexp</span><span class='period'>.</span><span class='id identifier rubyid_inspect'>inspect</span><span class='rbrace'>}</span><span class='tstring_content'> matched an empty string. The rest is </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_m'>m</span><span class='period'>.</span><span class='id identifier rubyid_post_match'>post_match</span><span class='period'>.</span><span class='id identifier rubyid_inspect'>inspect</span><span class='rbrace'>}</span><span class='tstring_content'>.</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>if</span> <span class='ivar'>@rest</span> <span class='op'>==</span> <span class='symbol'>:raise</span>
+      <span class='kw'>end</span>
       <span class='kw'>break</span>
     <span class='kw'>end</span>
     <span class='id identifier rubyid_rest'>rest</span> <span class='op'>=</span> <span class='id identifier rubyid_m'>m</span><span class='period'>.</span><span class='id identifier rubyid_post_match'>post_match</span>
@@ -305,7 +343,7 @@ MatchData</p>
 </div>
 
     <div id="footer">
-  Generated on Tue Jul  3 19:56:07 2012 by
+  Generated on Sun Sep 23 18:49:43 2012 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.2.1 (ruby-1.9.3).
 </div>

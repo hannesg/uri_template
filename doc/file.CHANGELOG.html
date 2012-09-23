@@ -61,78 +61,99 @@
 
     <iframe id="search_frame"></iframe>
 
-    <div id="content"><div id='filecontents'>
-<p># 0.3.0 - 24.05.2012</p>
-<ul><li>
-<p>Implemented the final version. Default implementation is now RFC 6570</p>
-</li><li>
-<p>BUGFIX: variables with terminal dots were allowed</p>
-</li><li>
-<p>BUGFIX: lists of commas were parsed incorrectly</p>
-</li></ul>
+    <div id="content"><div id='filecontents'><h1>0.5.0 - 23.09.2012</h1>
 
-<p># 0.2.1 - 30.12.2011</p>
-<ul><li>
-<p>Compatibility: Works now with MRI 1.8.7 and REE</p>
-</li></ul>
+<ul>
+<li>- Removed draft7</li>
+<li>- splitted absoulte? method into host? and scheme?</li>
+<li>+ the URITemplate interface is now much stronger</li>
+<li>* code quality <em>significantly</em> improved</li>
+<li>+ concat method</li>
+</ul>
 
-<p># 0.2.0 - 03.12.2011</p>
-<ul><li>
-<p>Reworked the escaping mechanism</p>
-</li></ul>
+<h1>0.4.0 - 06.07.2012</h1>
 
-<p>+ escape_utils can now be used to boost escape/unescape performance</p>
+<ul>
+<li>+ expand now accepts symbols as keys ( thanks to @peterhellber )</li>
+<li>+ expand now accepts arrays of pairs ( thanks to @peterhellber )</li>
+<li>* fixed some testing bugs</li>
+</ul>
 
-<p># 0.1.4 - 19.11.2011</p>
-<ul><li>
-<p>Compatiblity: Works now with MRI 1.9.3, Rubinius and JRuby</p>
-</li><li>
-<p>Various (significant!) performance improvements</p>
-</li></ul>
+<h1>0.3.0 - 24.05.2012</h1>
 
-<p># 0.1.3 - 15.11.2011</p>
-<ul><li>
-<p>BUGFIX: Draft7./ now concatenates literals correctly</p>
-</li><li>
-<p>BUGFIX: Draft7.tokens is now public</p>
-</li></ul>
+<ul>
+<li>+ Implemented the final version. Default implementation is now RFC 6570</li>
+<li>* BUGFIX: variables with terminal dots were allowed</li>
+<li>* BUGFIX: lists of commas were parsed incorrectly</li>
+</ul>
 
-<p># 0.1.2 - 10.11.2011 + added a new template-type: Colon</p>
+<h1>0.2.1 - 30.12.2011</h1>
 
-<pre class="code ruby"><code>this should allow (some day) to  rails-like routing tables</code></pre>
+<ul>
+<li>* Compatibility: Works now with MRI 1.8.7 and REE</li>
+</ul>
 
-<p>+ made the tokens-method mandatory and added two interfaces for tokens.</p>
+<h1>0.2.0 - 03.12.2011</h1>
 
-<pre class="code ruby"><code>this allows cross-type features like variable anaylisis</code></pre>
+<ul>
+<li>* Reworked the escaping mechanism</li>
+<li>+ escape_utils can now be used to boost escape/unescape performance</li>
+</ul>
 
-<p># 0.1.1 -  4.11.2011 + added a bunch of useful helper methods</p>
+<h1>0.1.4 - 19.11.2011</h1>
 
-<p># 0.1.0 -  2.11.2011</p>
-<ul><li>
-<p>Removed Sections. They made too many headaches.</p>
-</li></ul>
+<ul>
+<li>* Compatiblity: Works now with MRI 1.9.3, Rubinius and JRuby</li>
+<li>* Various (significant!) performance improvements</li>
+</ul>
 
-<p>+ Made draft7 template concatenateable. This should replace sections.</p>
-<ul><li>
-<p>BUGFIX: multiline uris were matched</p>
-</li><li>
-<p>BUGFIX: variablenames were decoded when this was not appreciated</p>
-</li></ul>
+<h1>0.1.3 - 15.11.2011</h1>
 
-<p># 0.0.2 -  1.11.2011</p>
-<ul><li>
-<p>BUGFIX: Concatenating empty sections no more leads to catch-all templates,
-when an emtpy template was appreciated.</p>
-</li></ul>
+<ul>
+<li>* BUGFIX: Draft7./ now concatenates literals correctly</li>
+<li>* BUGFIX: Draft7.tokens is now public</li>
+</ul>
 
-<p>+ The extracted variables now contains the keys :suffix and :prefix if the
-match didn’t consume the whole uri.</p>
+<h1>0.1.2 - 10.11.2011</h1>
 
-<p># 0.0.1 - 30.10.2011 Initial version</p>
+<ul>
+<li>+ added a new template-type: Colon
+this should allow (some day) to  rails-like routing tables</li>
+<li>+ made the tokens-method mandatory and added two interfaces for tokens.
+this allows cross-type features like variable anaylisis</li>
+</ul>
+
+<h1>0.1.1 -  4.11.2011</h1>
+
+<ul>
+<li>+ added a bunch of useful helper methods</li>
+</ul>
+
+<h1>0.1.0 -  2.11.2011</h1>
+
+<ul>
+<li>- Removed Sections. They made too many headaches.</li>
+<li>+ Made draft7 template concatenateable. This should replace sections.</li>
+<li>* BUGFIX: multiline uris were matched</li>
+<li>* BUGFIX: variablenames were decoded when this was not appreciated</li>
+</ul>
+
+<h1>0.0.2 -  1.11.2011</h1>
+
+<ul>
+<li>* BUGFIX: Concatenating empty sections no more leads to catch-all templates, when an emtpy template was appreciated.</li>
+<li>+ The extracted variables now contains the keys :suffix and :prefix if the match didn&#39;t consume the whole uri.</li>
+</ul>
+
+<h1>0.0.1 - 30.10.2011</h1>
+
+<ul>
+<li>Initial version</li>
+</ul>
 </div></div>
 
     <div id="footer">
-  Generated on Tue Jul  3 19:56:07 2012 by
+  Generated on Sun Sep 23 18:49:42 2012 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.2.1 (ruby-1.9.3).
 </div>

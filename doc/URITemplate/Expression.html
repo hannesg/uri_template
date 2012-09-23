@@ -87,7 +87,7 @@
   
   
     <dt class="r1 last">Defined in:</dt>
-    <dd class="r1 last">lib/uri_template.rb</dd>
+    <dd class="r1 last">lib/uri_template/expression.rb</dd>
   
 </dl>
 <div class="clear"></div>
@@ -104,7 +104,16 @@
   
 
 </div>
+  <h2>Constant Summary</h2>
+  
 
+
+
+  <h2>Constant Summary</h2>
+  
+  <h3 class="inherited">Constants included
+     from <span class='object_link'><a href="Token.html" title="URITemplate::Token (module)">Token</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="Token.html#EMPTY_ARRAY-constant" title="URITemplate::Token::EMPTY_ARRAY (constant)">Token::EMPTY_ARRAY</a></span></p>
 
 
   <h2>Instance Attribute Summary <small>(<a href="#" class="summary_toggle">collapse</a>)</small></h2>
@@ -209,7 +218,7 @@
   
   
   <h3 class="inherited">Methods included from <span class='object_link'><a href="Token.html" title="URITemplate::Token (module)">Token</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="Token.html#size-instance_method" title="URITemplate::Token#size (method)">#size</a></span></p>
+  <p class="inherited"><span class='object_link'><a href="Token.html#ends_with_slash%3F-instance_method" title="URITemplate::Token#ends_with_slash? (method)">#ends_with_slash?</a></span>, <span class='object_link'><a href="Token.html#expand-instance_method" title="URITemplate::Token#expand (method)">#expand</a></span>, <span class='object_link'><a href="Token.html#host%3F-instance_method" title="URITemplate::Token#host? (method)">#host?</a></span>, <span class='object_link'><a href="Token.html#scheme%3F-instance_method" title="URITemplate::Token#scheme? (method)">#scheme?</a></span>, <span class='object_link'><a href="Token.html#size-instance_method" title="URITemplate::Token#size (method)">#size</a></span>, <span class='object_link'><a href="Token.html#starts_with_slash%3F-instance_method" title="URITemplate::Token#starts_with_slash? (method)">#starts_with_slash?</a></span>, <span class='object_link'><a href="Token.html#to_s-instance_method" title="URITemplate::Token#to_s (method)">#to_s</a></span></p>
 
   <div id="instance_attr_details" class="attr_details">
     <h2>Instance Attribute Details</h2>
@@ -242,12 +251,12 @@
       <pre class="lines">
 
 
-78
-79
-80</pre>
+23
+24
+25</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template.rb', line 78</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/expression.rb', line 23</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_variables'>variables</span>
   <span class='ivar'>@variables</span>
@@ -301,12 +310,12 @@
       <pre class="lines">
 
 
-84
-85
-86</pre>
+29
+30
+31</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template.rb', line 84</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/expression.rb', line 29</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_expression?'>expression?</span>
   <span class='kw'>true</span>
@@ -353,12 +362,12 @@
       <pre class="lines">
 
 
-80
-81
-82</pre>
+25
+26
+27</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template.rb', line 80</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/expression.rb', line 25</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_literal?'>literal?</span>
   <span class='kw'>false</span>
@@ -373,7 +382,7 @@
 </div>
 
     <div id="footer">
-  Generated on Tue Jul  3 19:56:07 2012 by
+  Generated on Sun Sep 23 18:49:43 2012 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.2.1 (ruby-1.9.3).
 </div>

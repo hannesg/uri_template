@@ -117,6 +117,76 @@
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="#force_utf8-instance_method" title="#force_utf8 (instance method)">- (Object) <strong>force_utf8</strong>(str) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>enforces UTF8 encoding.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#force_utf8_encode-instance_method" title="#force_utf8_encode (instance method)">- (Object) <strong>force_utf8_encode</strong>(str) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>enforces UTF8 encoding.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#force_utf8_fallback-instance_method" title="#force_utf8_fallback (instance method)">- (Object) <strong>force_utf8_fallback</strong>(str) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#to_ascii-instance_method" title="#to_ascii (instance method)">- (Object) <strong>to_ascii</strong>(string) </a>
     
 
@@ -264,7 +334,193 @@
 
     
       <div class="method_details first">
-  <h3 class="signature first" id="to_ascii-instance_method">
+  <h3 class="signature first" id="force_utf8-instance_method">
+  
+    - (<tt>Object</tt>) <strong>force_utf8</strong>(str) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>enforces UTF8 encoding</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>str</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'></span>
+      
+      
+      
+        
+        <div class='inline'>
+<p>String</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+112
+113
+114
+115
+116</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/utils.rb', line 112</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_force_utf8_encode'>force_utf8_encode</span><span class='lparen'>(</span><span class='id identifier rubyid_str'>str</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_str'>str</span> <span class='kw'>if</span> <span class='id identifier rubyid_str'>str</span><span class='period'>.</span><span class='id identifier rubyid_encoding'>encoding</span> <span class='op'>==</span> <span class='const'>Encoding</span><span class='op'>::</span><span class='const'>UTF_8</span>
+  <span class='id identifier rubyid_str'>str</span> <span class='op'>=</span> <span class='id identifier rubyid_str'>str</span><span class='period'>.</span><span class='id identifier rubyid_dup'>dup</span> <span class='kw'>if</span> <span class='id identifier rubyid_str'>str</span><span class='period'>.</span><span class='id identifier rubyid_frozen?'>frozen?</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_str'>str</span><span class='period'>.</span><span class='id identifier rubyid_force_encoding'>force_encoding</span><span class='lparen'>(</span><span class='const'>Encoding</span><span class='op'>::</span><span class='const'>UTF_8</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="force_utf8_encode-instance_method">
+  
+    - (<tt>Object</tt>) <strong>force_utf8_encode</strong>(str) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>enforces UTF8 encoding</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>str</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'></span>
+      
+      
+      
+        
+        <div class='inline'>
+<p>String</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+112
+113
+114
+115
+116</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/utils.rb', line 112</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_force_utf8_encode'>force_utf8_encode</span><span class='lparen'>(</span><span class='id identifier rubyid_str'>str</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_str'>str</span> <span class='kw'>if</span> <span class='id identifier rubyid_str'>str</span><span class='period'>.</span><span class='id identifier rubyid_encoding'>encoding</span> <span class='op'>==</span> <span class='const'>Encoding</span><span class='op'>::</span><span class='const'>UTF_8</span>
+  <span class='id identifier rubyid_str'>str</span> <span class='op'>=</span> <span class='id identifier rubyid_str'>str</span><span class='period'>.</span><span class='id identifier rubyid_dup'>dup</span> <span class='kw'>if</span> <span class='id identifier rubyid_str'>str</span><span class='period'>.</span><span class='id identifier rubyid_frozen?'>frozen?</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_str'>str</span><span class='period'>.</span><span class='id identifier rubyid_force_encoding'>force_encoding</span><span class='lparen'>(</span><span class='const'>Encoding</span><span class='op'>::</span><span class='const'>UTF_8</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="force_utf8_fallback-instance_method">
+  
+    - (<tt>Object</tt>) <strong>force_utf8_fallback</strong>(str) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+127
+128
+129</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/utils.rb', line 127</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_force_utf8_fallback'>force_utf8_fallback</span><span class='lparen'>(</span><span class='id identifier rubyid_str'>str</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_str'>str</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="to_ascii-instance_method">
   
     - (<tt>Object</tt>) <strong>to_ascii</strong>(string) 
   
@@ -322,12 +578,12 @@
       <pre class="lines">
 
 
-84
-85
-86</pre>
+92
+93
+94</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/utils.rb', line 84</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/utils.rb', line 92</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_to_ascii_encode'>to_ascii_encode</span><span class='lparen'>(</span><span class='id identifier rubyid_str'>str</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_str'>str</span><span class='period'>.</span><span class='id identifier rubyid_encode'>encode</span><span class='lparen'>(</span><span class='const'>Encoding</span><span class='op'>::</span><span class='const'>ASCII</span><span class='rparen'>)</span>
@@ -396,12 +652,12 @@
       <pre class="lines">
 
 
-84
-85
-86</pre>
+92
+93
+94</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/utils.rb', line 84</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/utils.rb', line 92</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_to_ascii_encode'>to_ascii_encode</span><span class='lparen'>(</span><span class='id identifier rubyid_str'>str</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_str'>str</span><span class='period'>.</span><span class='id identifier rubyid_encode'>encode</span><span class='lparen'>(</span><span class='const'>Encoding</span><span class='op'>::</span><span class='const'>ASCII</span><span class='rparen'>)</span>
@@ -426,12 +682,12 @@
       <pre class="lines">
 
 
-98
-99
-100</pre>
+119
+120
+121</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/utils.rb', line 98</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/utils.rb', line 119</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_to_ascii_fallback'>to_ascii_fallback</span><span class='lparen'>(</span><span class='id identifier rubyid_str'>str</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_str'>str</span>
@@ -500,12 +756,12 @@
       <pre class="lines">
 
 
-94
-95
-96</pre>
+102
+103
+104</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/utils.rb', line 94</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/utils.rb', line 102</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_to_utf8_encode'>to_utf8_encode</span><span class='lparen'>(</span><span class='id identifier rubyid_str'>str</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_str'>str</span><span class='period'>.</span><span class='id identifier rubyid_encode'>encode</span><span class='lparen'>(</span><span class='const'>Encoding</span><span class='op'>::</span><span class='const'>UTF_8</span><span class='rparen'>)</span>
@@ -574,12 +830,12 @@
       <pre class="lines">
 
 
-94
-95
-96</pre>
+102
+103
+104</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/utils.rb', line 94</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/utils.rb', line 102</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_to_utf8_encode'>to_utf8_encode</span><span class='lparen'>(</span><span class='id identifier rubyid_str'>str</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_str'>str</span><span class='period'>.</span><span class='id identifier rubyid_encode'>encode</span><span class='lparen'>(</span><span class='const'>Encoding</span><span class='op'>::</span><span class='const'>UTF_8</span><span class='rparen'>)</span>
@@ -604,12 +860,12 @@
       <pre class="lines">
 
 
-102
-103
-104</pre>
+123
+124
+125</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/utils.rb', line 102</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/utils.rb', line 123</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_to_utf8_fallback'>to_utf8_fallback</span><span class='lparen'>(</span><span class='id identifier rubyid_str'>str</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_str'>str</span>
@@ -624,7 +880,7 @@
 </div>
 
     <div id="footer">
-  Generated on Tue Jul  3 19:56:07 2012 by
+  Generated on Sun Sep 23 18:49:42 2012 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.2.1 (ruby-1.9.3).
 </div>

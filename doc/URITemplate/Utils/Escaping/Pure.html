@@ -245,7 +245,7 @@ performance is acceptable, but could be better with escape_utils.</p>
   
   
   <h3 class="inherited">Methods included from <span class='object_link'><a href="../StringEncoding.html" title="URITemplate::Utils::StringEncoding (module)">StringEncoding</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="../StringEncoding.html#to_ascii-instance_method" title="URITemplate::Utils::StringEncoding#to_ascii (method)">#to_ascii</a></span>, <span class='object_link'><a href="../StringEncoding.html#to_ascii_encode-instance_method" title="URITemplate::Utils::StringEncoding#to_ascii_encode (method)">#to_ascii_encode</a></span>, <span class='object_link'><a href="../StringEncoding.html#to_ascii_fallback-instance_method" title="URITemplate::Utils::StringEncoding#to_ascii_fallback (method)">#to_ascii_fallback</a></span>, <span class='object_link'><a href="../StringEncoding.html#to_utf8-instance_method" title="URITemplate::Utils::StringEncoding#to_utf8 (method)">#to_utf8</a></span>, <span class='object_link'><a href="../StringEncoding.html#to_utf8_encode-instance_method" title="URITemplate::Utils::StringEncoding#to_utf8_encode (method)">#to_utf8_encode</a></span>, <span class='object_link'><a href="../StringEncoding.html#to_utf8_fallback-instance_method" title="URITemplate::Utils::StringEncoding#to_utf8_fallback (method)">#to_utf8_fallback</a></span></p>
+  <p class="inherited"><span class='object_link'><a href="../StringEncoding.html#force_utf8-instance_method" title="URITemplate::Utils::StringEncoding#force_utf8 (method)">#force_utf8</a></span>, <span class='object_link'><a href="../StringEncoding.html#force_utf8_encode-instance_method" title="URITemplate::Utils::StringEncoding#force_utf8_encode (method)">#force_utf8_encode</a></span>, <span class='object_link'><a href="../StringEncoding.html#force_utf8_fallback-instance_method" title="URITemplate::Utils::StringEncoding#force_utf8_fallback (method)">#force_utf8_fallback</a></span>, <span class='object_link'><a href="../StringEncoding.html#to_ascii-instance_method" title="URITemplate::Utils::StringEncoding#to_ascii (method)">#to_ascii</a></span>, <span class='object_link'><a href="../StringEncoding.html#to_ascii_encode-instance_method" title="URITemplate::Utils::StringEncoding#to_ascii_encode (method)">#to_ascii_encode</a></span>, <span class='object_link'><a href="../StringEncoding.html#to_ascii_fallback-instance_method" title="URITemplate::Utils::StringEncoding#to_ascii_fallback (method)">#to_ascii_fallback</a></span>, <span class='object_link'><a href="../StringEncoding.html#to_utf8-instance_method" title="URITemplate::Utils::StringEncoding#to_utf8 (method)">#to_utf8</a></span>, <span class='object_link'><a href="../StringEncoding.html#to_utf8_encode-instance_method" title="URITemplate::Utils::StringEncoding#to_utf8_encode (method)">#to_utf8_encode</a></span>, <span class='object_link'><a href="../StringEncoding.html#to_utf8_fallback-instance_method" title="URITemplate::Utils::StringEncoding#to_utf8_fallback (method)">#to_utf8_fallback</a></span></p>
 
 
   <div id="instance_method_details" class="method_details_list">
@@ -267,14 +267,14 @@ performance is acceptable, but could be better with escape_utils.</p>
       <pre class="lines">
 
 
-146
-147
-148
-149
-150</pre>
+175
+176
+177
+178
+179</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/utils.rb', line 146</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/utils.rb', line 175</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_escape_uri'>escape_uri</span><span class='lparen'>(</span><span class='id identifier rubyid_s'>s</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_to_utf8'>to_utf8</span><span class='lparen'>(</span><span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_gsub'>gsub</span><span class='lparen'>(</span><span class='const'>URI_ESCAPED</span><span class='rparen'>)</span><span class='lbrace'>{</span>
@@ -301,14 +301,14 @@ performance is acceptable, but could be better with escape_utils.</p>
       <pre class="lines">
 
 
-140
-141
-142
-143
-144</pre>
+169
+170
+171
+172
+173</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/utils.rb', line 140</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/utils.rb', line 169</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_escape_url'>escape_url</span><span class='lparen'>(</span><span class='id identifier rubyid_s'>s</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_to_utf8'>to_utf8</span><span class='lparen'>(</span><span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_gsub'>gsub</span><span class='lparen'>(</span><span class='const'>URL_ESCAPED</span><span class='rparen'>)</span><span class='lbrace'>{</span>
@@ -335,17 +335,17 @@ performance is acceptable, but could be better with escape_utils.</p>
       <pre class="lines">
 
 
-158
-159
-160
-161
-162</pre>
+187
+188
+189
+190
+191</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/utils.rb', line 158</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/utils.rb', line 187</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_unescape_uri'>unescape_uri</span><span class='lparen'>(</span><span class='id identifier rubyid_s'>s</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_to_utf8'>to_utf8</span><span class='lparen'>(</span> <span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='period'>.</span><span class='id identifier rubyid_gsub'>gsub</span><span class='lparen'>(</span><span class='const'>PCT</span><span class='rparen'>)</span><span class='lbrace'>{</span>
+  <span class='id identifier rubyid_force_utf8'>force_utf8</span><span class='lparen'>(</span> <span class='id identifier rubyid_to_ascii'>to_ascii</span><span class='lparen'>(</span><span class='id identifier rubyid_s'>s</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_gsub'>gsub</span><span class='lparen'>(</span><span class='const'>PCT</span><span class='rparen'>)</span><span class='lbrace'>{</span>
     <span class='backref'>$1</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span><span class='lparen'>(</span><span class='int'>16</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_chr'>chr</span>
   <span class='rbrace'>}</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
@@ -369,17 +369,17 @@ performance is acceptable, but could be better with escape_utils.</p>
       <pre class="lines">
 
 
-152
-153
-154
-155
-156</pre>
+181
+182
+183
+184
+185</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/utils.rb', line 152</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/utils.rb', line 181</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_unescape_url'>unescape_url</span><span class='lparen'>(</span><span class='id identifier rubyid_s'>s</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_to_utf8'>to_utf8</span><span class='lparen'>(</span> <span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='period'>.</span><span class='id identifier rubyid_gsub'>gsub</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>+</span><span class='tstring_end'>'</span></span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'> </span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_gsub'>gsub</span><span class='lparen'>(</span><span class='const'>PCT</span><span class='rparen'>)</span><span class='lbrace'>{</span>
+  <span class='id identifier rubyid_force_utf8'>force_utf8</span><span class='lparen'>(</span> <span class='id identifier rubyid_to_ascii'>to_ascii</span><span class='lparen'>(</span><span class='id identifier rubyid_s'>s</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_gsub'>gsub</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>+</span><span class='tstring_end'>'</span></span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'> </span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_gsub'>gsub</span><span class='lparen'>(</span><span class='const'>PCT</span><span class='rparen'>)</span><span class='lbrace'>{</span>
     <span class='backref'>$1</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span><span class='lparen'>(</span><span class='int'>16</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_chr'>chr</span>
   <span class='rbrace'>}</span> <span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
@@ -425,12 +425,12 @@ performance is acceptable, but could be better with escape_utils.</p>
       <pre class="lines">
 
 
-164
-165
-166</pre>
+193
+194
+195</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/utils.rb', line 164</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/utils.rb', line 193</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_using_escape_utils?'>using_escape_utils?</span>
   <span class='kw'>false</span>
@@ -445,7 +445,7 @@ performance is acceptable, but could be better with escape_utils.</p>
 </div>
 
     <div id="footer">
-  Generated on Tue Jul  3 19:56:07 2012 by
+  Generated on Sun Sep 23 18:49:42 2012 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.2.1 (ruby-1.9.3).
 </div>

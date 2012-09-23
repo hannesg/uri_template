@@ -102,7 +102,9 @@
   
   
     <dt class="r2 last">Defined in:</dt>
-    <dd class="r2 last">lib/uri_template/rfc6570.rb</dd>
+    <dd class="r2 last">lib/uri_template/rfc6570.rb<span class="defines">,<br />
+  lib/uri_template/rfc6570/expression.rb,<br /> lib/uri_template/rfc6570/regex_builder.rb</span>
+</dd>
   
 </dl>
 <div class="clear"></div>
@@ -131,11 +133,7 @@ href="http://tools.ietf.org/html/rfc6570">tools.ietf.org/html/rfc6570</a>
 <div class="tags">
   
 
-</div><div id="subclasses">
-  <h2>Direct Known Subclasses</h2>
-  <p class="children"><span class='object_link'><a href="Draft7.html" title="URITemplate::Draft7 (class)">Draft7</a></span></p>
-</div>
-<h2>Defined Under Namespace</h2>
+</div><h2>Defined Under Namespace</h2>
 <p class="children">
   
     
@@ -143,7 +141,7 @@ href="http://tools.ietf.org/html/rfc6570">tools.ietf.org/html/rfc6570</a>
     
   
     
-      <strong class="classes">Classes:</strong> <span class='object_link'><a href="RFC6570/Invalid.html" title="URITemplate::RFC6570::Invalid (class)">Invalid</a></span>, <span class='object_link'><a href="RFC6570/InvalidValue.html" title="URITemplate::RFC6570::InvalidValue (class)">InvalidValue</a></span>
+      <strong class="classes">Classes:</strong> <span class='object_link'><a href="RFC6570/Invalid.html" title="URITemplate::RFC6570::Invalid (class)">Invalid</a></span>, <span class='object_link'><a href="RFC6570/InvalidValue.html" title="URITemplate::RFC6570::InvalidValue (class)">InvalidValue</a></span>, <span class='object_link'><a href="RFC6570/RegexBuilder.html" title="URITemplate::RFC6570::RegexBuilder (class)">RegexBuilder</a></span>
     
   
 </p>
@@ -249,11 +247,6 @@ href="http://tools.ietf.org/html/rfc6570">tools.ietf.org/html/rfc6570</a>
         </dt>
         <dd><pre class="code"><span class='const'>CONVERT_VALUES</span> <span class='op'>+</span> <span class='const'>CONVERT_RESULT</span></pre></dd>
       
-        <dt id="SLASH-constant" class="">SLASH =
-          
-        </dt>
-        <dd><pre class="code"><span class='CHAR'>?/</span></pre></dd>
-      
     </dl>
   
 
@@ -263,7 +256,7 @@ href="http://tools.ietf.org/html/rfc6570">tools.ietf.org/html/rfc6570</a>
   
   <h3 class="inherited">Constants included
      from <span class='object_link'><a href="../URITemplate.html" title="URITemplate (module)">URITemplate</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="../URITemplate.html#VERSIONS-constant" title="URITemplate::VERSIONS (constant)">VERSIONS</a></span></p>
+  <p class="inherited"><span class='object_link'><a href="../URITemplate.html#HOST_REGEX-constant" title="URITemplate::HOST_REGEX (constant)">HOST_REGEX</a></span>, <span class='object_link'><a href="../URITemplate.html#SCHEME_REGEX-constant" title="URITemplate::SCHEME_REGEX (constant)">SCHEME_REGEX</a></span>, <span class='object_link'><a href="../URITemplate.html#URI_SPLIT-constant" title="URITemplate::URI_SPLIT (constant)">URI_SPLIT</a></span>, <span class='object_link'><a href="../URITemplate.html#VERSIONS-constant" title="URITemplate::VERSIONS (constant)">VERSIONS</a></span></p>
 
 
   <h2>Instance Attribute Summary <small>(<a href="#" class="summary_toggle">collapse</a>)</small></h2>
@@ -310,54 +303,6 @@ href="http://tools.ietf.org/html/rfc6570">tools.ietf.org/html/rfc6570</a>
     </h2>
 
     <ul class="summary">
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#%2F-instance_method" title="#/ (instance method)">- (Object) <strong>/</strong>(o) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Tries to concatenate two templates, as if they were path segments.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#%3D%3D-instance_method" title="#== (instance method)">- (Object) <strong>==</strong>(o) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Compares two template patterns.</p>
-</div></span>
-  
-</li>
-
       
         <li class="public ">
   <span class="summary_signature">
@@ -502,8 +447,8 @@ whether pair arrays should be converted to hashes..</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Returns the level of this template according to the draft ( <a
-href="http://tools.ietf.org/html/draft-gregorio-uritemplate-07#section-1.2">tools.ietf.org/html/draft-gregorio-uritemplate-07#section-1.2</a>
+<p>Returns the level of this template according to the rfc 6570 ( <a
+href="http://tools.ietf.org/html/rfc6570#section-1.2">tools.ietf.org/html/rfc6570#section-1.2</a>
 ).</p>
 </div></span>
   
@@ -529,32 +474,6 @@ href="http://tools.ietf.org/html/draft-gregorio-uritemplate-07#section-1.2">tool
   
     <span class="summary_desc"><div class='inline'>
 <p>Alias for to_r.match .</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#pattern-instance_method" title="#pattern (instance method)">- (Object) <strong>pattern</strong> </a>
-    
-
-    
-      (also: #to_s)
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Returns the pattern for this template.</p>
 </div></span>
   
 </li>
@@ -646,7 +565,7 @@ whether a given uri matches this template.</p>
   
   
   <h3 class="inherited">Methods included from <span class='object_link'><a href="RFC6570/ClassMethods.html" title="URITemplate::RFC6570::ClassMethods (module)">ClassMethods</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="RFC6570/ClassMethods.html#convert-instance_method" title="URITemplate::RFC6570::ClassMethods#convert (method)">convert</a></span>, <span class='object_link'><a href="RFC6570/ClassMethods.html#try_convert-instance_method" title="URITemplate::RFC6570::ClassMethods#try_convert (method)">try_convert</a></span>, <span class='object_link'><a href="RFC6570/ClassMethods.html#valid%3F-instance_method" title="URITemplate::RFC6570::ClassMethods#valid? (method)">valid?</a></span></p>
+  <p class="inherited"><span class='object_link'><a href="RFC6570/ClassMethods.html#try_convert-instance_method" title="URITemplate::RFC6570::ClassMethods#try_convert (method)">try_convert</a></span>, <span class='object_link'><a href="RFC6570/ClassMethods.html#valid%3F-instance_method" title="URITemplate::RFC6570::ClassMethods#valid? (method)">valid?</a></span></p>
 
   
   
@@ -658,7 +577,7 @@ whether a given uri matches this template.</p>
   
   
   <h3 class="inherited">Methods included from <span class='object_link'><a href="../URITemplate.html" title="URITemplate (module)">URITemplate</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="../URITemplate.html#absolute%3F-instance_method" title="URITemplate#absolute? (method)">#absolute?</a></span>, <span class='object_link'><a href="../URITemplate.html#apply-class_method" title="URITemplate.apply (method)">apply</a></span>, <span class='object_link'><a href="../URITemplate.html#coerce-class_method" title="URITemplate.coerce (method)">coerce</a></span>, <span class='object_link'><a href="../URITemplate.html#convert-class_method" title="URITemplate.convert (method)">convert</a></span>, <span class='object_link'><a href="../URITemplate.html#new-class_method" title="URITemplate.new (method)">new</a></span>, <span class='object_link'><a href="../URITemplate.html#relative%3F-instance_method" title="URITemplate#relative? (method)">#relative?</a></span>, <span class='object_link'><a href="../URITemplate.html#resolve_class-class_method" title="URITemplate.resolve_class (method)">resolve_class</a></span>, <span class='object_link'><a href="../URITemplate.html#static_characters-instance_method" title="URITemplate#static_characters (method)">#static_characters</a></span>, <span class='object_link'><a href="../URITemplate.html#try_convert-class_method" title="URITemplate.try_convert (method)">try_convert</a></span>, <span class='object_link'><a href="../URITemplate.html#variables-instance_method" title="URITemplate#variables (method)">#variables</a></span></p>
+  <p class="inherited"><span class='object_link'><a href="../URITemplate.html#apply-class_method" title="URITemplate.apply (method)">apply</a></span>, <span class='object_link'><a href="../URITemplate.html#coerce-class_method" title="URITemplate.coerce (method)">coerce</a></span>, <span class='object_link'><a href="../URITemplate.html#coerce_first_arg-class_method" title="URITemplate.coerce_first_arg (method)">coerce_first_arg</a></span>, <span class='object_link'><a href="../URITemplate.html#concat-instance_method" title="URITemplate#concat (method)">#concat</a></span>, <span class='object_link'><a href="../URITemplate.html#convert-class_method" title="URITemplate.convert (method)">convert</a></span>, <span class='object_link'><a href="../URITemplate.html#eq-instance_method" title="URITemplate#eq (method)">#eq</a></span>, <span class='object_link'><a href="../URITemplate.html#host%3F-instance_method" title="URITemplate#host? (method)">#host?</a></span>, <span class='object_link'><a href="../URITemplate.html#new-class_method" title="URITemplate.new (method)">new</a></span>, <span class='object_link'><a href="../URITemplate.html#path_concat-instance_method" title="URITemplate#path_concat (method)">#path_concat</a></span>, <span class='object_link'><a href="../URITemplate.html#pattern-instance_method" title="URITemplate#pattern (method)">#pattern</a></span>, <span class='object_link'><a href="../URITemplate.html#relative%3F-instance_method" title="URITemplate#relative? (method)">#relative?</a></span>, <span class='object_link'><a href="../URITemplate.html#resolve_class-class_method" title="URITemplate.resolve_class (method)">resolve_class</a></span>, <span class='object_link'><a href="../URITemplate.html#scheme%3F-instance_method" title="URITemplate#scheme? (method)">#scheme?</a></span>, <span class='object_link'><a href="../URITemplate.html#static_characters-instance_method" title="URITemplate#static_characters (method)">#static_characters</a></span>, <span class='object_link'><a href="../URITemplate.html#try_convert-class_method" title="URITemplate.try_convert (method)">try_convert</a></span>, <span class='object_link'><a href="../URITemplate.html#variables-instance_method" title="URITemplate#variables (method)">#variables</a></span></p>
 <div id="constructor_details" class="method_details_list">
   <h2>Constructor Details</h2>
   
@@ -748,24 +667,24 @@ whether a given uri matches this template.</p>
       <pre class="lines">
 
 
-702
-703
-704
-705
-706
-707
-708
-709
-710
-711
-712
-713
-714
-715
-716</pre>
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/rfc6570.rb', line 702</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/rfc6570.rb', line 265</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_pattern_or_tokens'>pattern_or_tokens</span><span class='comma'>,</span><span class='id identifier rubyid_options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='ivar'>@options</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_dup'>dup</span><span class='period'>.</span><span class='id identifier rubyid_freeze'>freeze</span>
@@ -820,12 +739,12 @@ whether a given uri matches this template.</p>
       <pre class="lines">
 
 
-697
-698
-699</pre>
+260
+261
+262</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/rfc6570.rb', line 697</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/rfc6570.rb', line 260</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_options'>options</span>
   <span class='ivar'>@options</span>
@@ -843,210 +762,7 @@ whether a given uri matches this template.</p>
 
     
       <div class="method_details first">
-  <h3 class="signature first" id="/-instance_method">
-  
-    - (<tt>Object</tt>) <strong>/</strong>(o) 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Tries to concatenate two templates, as if they were path segments. Removes
-double slashes or insert one if they are missing.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><span class='id identifier rubyid_tpl'>tpl</span> <span class='op'>=</span> <span class='const'>URITemplate</span><span class='op'>::</span><span class='const'>RFC6570</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>/xy/</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
-<span class='lparen'>(</span><span class='id identifier rubyid_tpl'>tpl</span> <span class='op'>/</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>/z/</span><span class='tstring_end'>'</span></span> <span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_pattern'>pattern</span> <span class='comment'>#=&gt; '/xy/z/'
-</span><span class='lparen'>(</span><span class='id identifier rubyid_tpl'>tpl</span> <span class='op'>/</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>z/</span><span class='tstring_end'>'</span></span> <span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_pattern'>pattern</span> <span class='comment'>#=&gt; '/xy/z/'
-</span><span class='lparen'>(</span><span class='id identifier rubyid_tpl'>tpl</span> <span class='op'>/</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>{/z}</span><span class='tstring_end'>'</span></span> <span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_pattern'>pattern</span> <span class='comment'>#=&gt; '/xy{/z}'
-</span><span class='lparen'>(</span><span class='id identifier rubyid_tpl'>tpl</span> <span class='op'>/</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>a</span><span class='tstring_end'>'</span></span> <span class='op'>/</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>b</span><span class='tstring_end'>'</span></span> <span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_pattern'>pattern</span> <span class='comment'>#=&gt; '/xy/a/b'</span></pre>
-    
-  </div>
-
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-891
-892
-893
-894
-895
-896
-897
-898
-899
-900
-901
-902
-903
-904
-905
-906
-907
-908
-909
-910
-911
-912
-913
-914
-915
-916
-917
-918
-919
-920
-921
-922
-923
-924
-925
-926
-927
-928
-929
-930
-931
-932
-933
-934
-935
-936
-937
-938
-939
-940
-941
-942
-943</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/rfc6570.rb', line 891</span>
-
-<span class='kw'>def</span> <span class='op'>/</span><span class='lparen'>(</span><span class='id identifier rubyid_o'>o</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_this'>this</span><span class='comma'>,</span> <span class='id identifier rubyid_other'>other</span><span class='comma'>,</span> <span class='id identifier rubyid_this_converted'>this_converted</span><span class='comma'>,</span> <span class='id identifier rubyid__'>_</span> <span class='op'>=</span> <span class='const'>URITemplate</span><span class='period'>.</span><span class='id identifier rubyid_coerce'>coerce</span><span class='lparen'>(</span> <span class='kw'>self</span><span class='comma'>,</span> <span class='id identifier rubyid_o'>o</span> <span class='rparen'>)</span>
-  <span class='kw'>if</span> <span class='id identifier rubyid_this_converted'>this_converted</span>
-    <span class='kw'>return</span> <span class='id identifier rubyid_this'>this</span> <span class='op'>/</span> <span class='id identifier rubyid_other'>other</span>
-  <span class='kw'>end</span>
-  <span class='id identifier rubyid_klass'>klass</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span>
-  <span class='kw'>if</span> <span class='id identifier rubyid_other'>other</span><span class='period'>.</span><span class='id identifier rubyid_absolute?'>absolute?</span>
-    <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Expected to receive a relative template but got an absoulte one: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_other'>other</span><span class='period'>.</span><span class='id identifier rubyid_inspect'>inspect</span><span class='rbrace'>}</span><span class='tstring_content'>. If you think this is a bug, please report it.</span><span class='tstring_end'>&quot;</span></span>
-  <span class='kw'>end</span>
-
-  <span class='kw'>if</span> <span class='id identifier rubyid_other'>other</span><span class='period'>.</span><span class='id identifier rubyid_pattern'>pattern</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_end'>'</span></span>
-    <span class='kw'>return</span> <span class='kw'>self</span>
-  <span class='kw'>end</span>
-  <span class='comment'># Merge!
-</span>  <span class='comment'># Analyze the last token of this an the first token of the next and try to merge them
-</span>  <span class='kw'>if</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_tokens'>tokens</span><span class='period'>.</span><span class='id identifier rubyid_last'>last</span><span class='period'>.</span><span class='id identifier rubyid_kind_of?'>kind_of?</span><span class='lparen'>(</span><span class='id identifier rubyid_klass'>klass</span><span class='op'>::</span><span class='const'>Literal</span><span class='rparen'>)</span>
-    <span class='kw'>if</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_tokens'>tokens</span><span class='period'>.</span><span class='id identifier rubyid_last'>last</span><span class='period'>.</span><span class='id identifier rubyid_string'>string</span><span class='lbracket'>[</span><span class='op'>-</span><span class='int'>1</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='const'>SLASH</span> <span class='comment'># the last token ends with an /
-</span>      <span class='kw'>if</span> <span class='id identifier rubyid_other'>other</span><span class='period'>.</span><span class='id identifier rubyid_tokens'>tokens</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span><span class='period'>.</span><span class='id identifier rubyid_kind_of?'>kind_of?</span> <span class='id identifier rubyid_klass'>klass</span><span class='op'>::</span><span class='const'>Literal</span>
-        <span class='comment'># both seems to be paths, merge them!
-</span>        <span class='kw'>if</span> <span class='id identifier rubyid_other'>other</span><span class='period'>.</span><span class='id identifier rubyid_tokens'>tokens</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span><span class='period'>.</span><span class='id identifier rubyid_string'>string</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='const'>SLASH</span>
-          <span class='comment'># strip one '/'
-</span>          <span class='kw'>return</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_tokens'>tokens</span><span class='lbracket'>[</span><span class='int'>0</span><span class='op'>..</span><span class='op'>-</span><span class='int'>2</span><span class='rbracket'>]</span> <span class='op'>+</span> <span class='lbracket'>[</span> <span class='id identifier rubyid_klass'>klass</span><span class='op'>::</span><span class='const'>Literal</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_tokens'>tokens</span><span class='period'>.</span><span class='id identifier rubyid_last'>last</span><span class='period'>.</span><span class='id identifier rubyid_string'>string</span> <span class='op'>+</span> <span class='id identifier rubyid_other'>other</span><span class='period'>.</span><span class='id identifier rubyid_tokens'>tokens</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span><span class='period'>.</span><span class='id identifier rubyid_string'>string</span><span class='lbracket'>[</span><span class='int'>1</span><span class='op'>..</span><span class='op'>-</span><span class='int'>1</span><span class='rbracket'>]</span><span class='rparen'>)</span> <span class='rbracket'>]</span> <span class='op'>+</span> <span class='id identifier rubyid_other'>other</span><span class='period'>.</span><span class='id identifier rubyid_tokens'>tokens</span><span class='lbracket'>[</span><span class='int'>1</span><span class='op'>..</span><span class='op'>-</span><span class='int'>1</span><span class='rbracket'>]</span> <span class='rparen'>)</span>
-        <span class='kw'>else</span>
-          <span class='comment'># no problem, but we can merge them
-</span>          <span class='kw'>return</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_tokens'>tokens</span><span class='lbracket'>[</span><span class='int'>0</span><span class='op'>..</span><span class='op'>-</span><span class='int'>2</span><span class='rbracket'>]</span> <span class='op'>+</span> <span class='lbracket'>[</span> <span class='id identifier rubyid_klass'>klass</span><span class='op'>::</span><span class='const'>Literal</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_tokens'>tokens</span><span class='period'>.</span><span class='id identifier rubyid_last'>last</span><span class='period'>.</span><span class='id identifier rubyid_string'>string</span> <span class='op'>+</span> <span class='id identifier rubyid_other'>other</span><span class='period'>.</span><span class='id identifier rubyid_tokens'>tokens</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span><span class='period'>.</span><span class='id identifier rubyid_string'>string</span><span class='rparen'>)</span> <span class='rbracket'>]</span> <span class='op'>+</span> <span class='id identifier rubyid_other'>other</span><span class='period'>.</span><span class='id identifier rubyid_tokens'>tokens</span><span class='lbracket'>[</span><span class='int'>1</span><span class='op'>..</span><span class='op'>-</span><span class='int'>1</span><span class='rbracket'>]</span> <span class='rparen'>)</span>
-        <span class='kw'>end</span>
-      <span class='kw'>elsif</span> <span class='id identifier rubyid_other'>other</span><span class='period'>.</span><span class='id identifier rubyid_tokens'>tokens</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span><span class='period'>.</span><span class='id identifier rubyid_kind_of?'>kind_of?</span> <span class='id identifier rubyid_klass'>klass</span><span class='op'>::</span><span class='const'>Expression</span><span class='op'>::</span><span class='const'>Path</span>
-        <span class='comment'># this will automatically insert '/'
-</span>        <span class='comment'># so we can strip one '/'
-</span>        <span class='kw'>return</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_tokens'>tokens</span><span class='lbracket'>[</span><span class='int'>0</span><span class='op'>..</span><span class='op'>-</span><span class='int'>2</span><span class='rbracket'>]</span> <span class='op'>+</span> <span class='lbracket'>[</span> <span class='id identifier rubyid_klass'>klass</span><span class='op'>::</span><span class='const'>Literal</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_tokens'>tokens</span><span class='period'>.</span><span class='id identifier rubyid_last'>last</span><span class='period'>.</span><span class='id identifier rubyid_string'>string</span><span class='lbracket'>[</span><span class='int'>0</span><span class='op'>..</span><span class='op'>-</span><span class='int'>2</span><span class='rbracket'>]</span><span class='rparen'>)</span> <span class='rbracket'>]</span> <span class='op'>+</span> <span class='id identifier rubyid_other'>other</span><span class='period'>.</span><span class='id identifier rubyid_tokens'>tokens</span> <span class='rparen'>)</span>
-      <span class='kw'>end</span>
-    <span class='kw'>elsif</span> <span class='id identifier rubyid_other'>other</span><span class='period'>.</span><span class='id identifier rubyid_tokens'>tokens</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span><span class='period'>.</span><span class='id identifier rubyid_kind_of?'>kind_of?</span> <span class='id identifier rubyid_klass'>klass</span><span class='op'>::</span><span class='const'>Literal</span>
-      <span class='comment'># okay, this template does not end with /, but the next starts with a literal =&gt; merge them!
-</span>      <span class='kw'>if</span> <span class='id identifier rubyid_other'>other</span><span class='period'>.</span><span class='id identifier rubyid_tokens'>tokens</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span><span class='period'>.</span><span class='id identifier rubyid_string'>string</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='const'>SLASH</span>
-        <span class='kw'>return</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_tokens'>tokens</span><span class='lbracket'>[</span><span class='int'>0</span><span class='op'>..</span><span class='op'>-</span><span class='int'>2</span><span class='rbracket'>]</span> <span class='op'>+</span> <span class='lbracket'>[</span> <span class='id identifier rubyid_klass'>klass</span><span class='op'>::</span><span class='const'>Literal</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_tokens'>tokens</span><span class='period'>.</span><span class='id identifier rubyid_last'>last</span><span class='period'>.</span><span class='id identifier rubyid_string'>string</span> <span class='op'>+</span> <span class='id identifier rubyid_other'>other</span><span class='period'>.</span><span class='id identifier rubyid_tokens'>tokens</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span><span class='period'>.</span><span class='id identifier rubyid_string'>string</span><span class='rparen'>)</span><span class='rbracket'>]</span> <span class='op'>+</span> <span class='id identifier rubyid_other'>other</span><span class='period'>.</span><span class='id identifier rubyid_tokens'>tokens</span><span class='lbracket'>[</span><span class='int'>1</span><span class='op'>..</span><span class='op'>-</span><span class='int'>1</span><span class='rbracket'>]</span> <span class='rparen'>)</span>
-      <span class='kw'>else</span>
-        <span class='kw'>return</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_tokens'>tokens</span><span class='lbracket'>[</span><span class='int'>0</span><span class='op'>..</span><span class='op'>-</span><span class='int'>2</span><span class='rbracket'>]</span> <span class='op'>+</span> <span class='lbracket'>[</span> <span class='id identifier rubyid_klass'>klass</span><span class='op'>::</span><span class='const'>Literal</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_tokens'>tokens</span><span class='period'>.</span><span class='id identifier rubyid_last'>last</span><span class='period'>.</span><span class='id identifier rubyid_string'>string</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>/</span><span class='tstring_end'>'</span></span> <span class='op'>+</span> <span class='id identifier rubyid_other'>other</span><span class='period'>.</span><span class='id identifier rubyid_tokens'>tokens</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span><span class='period'>.</span><span class='id identifier rubyid_string'>string</span><span class='rparen'>)</span><span class='rbracket'>]</span> <span class='op'>+</span> <span class='id identifier rubyid_other'>other</span><span class='period'>.</span><span class='id identifier rubyid_tokens'>tokens</span><span class='lbracket'>[</span><span class='int'>1</span><span class='op'>..</span><span class='op'>-</span><span class='int'>1</span><span class='rbracket'>]</span> <span class='rparen'>)</span>
-      <span class='kw'>end</span>
-    <span class='kw'>end</span>
-  <span class='kw'>end</span>
-
-  <span class='kw'>if</span> <span class='id identifier rubyid_other'>other</span><span class='period'>.</span><span class='id identifier rubyid_tokens'>tokens</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span><span class='period'>.</span><span class='id identifier rubyid_kind_of?'>kind_of?</span><span class='lparen'>(</span><span class='id identifier rubyid_klass'>klass</span><span class='op'>::</span><span class='const'>Literal</span><span class='rparen'>)</span>
-    <span class='kw'>if</span> <span class='id identifier rubyid_other'>other</span><span class='period'>.</span><span class='id identifier rubyid_tokens'>tokens</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span><span class='period'>.</span><span class='id identifier rubyid_string'>string</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='const'>SLASH</span>
-      <span class='kw'>return</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_tokens'>tokens</span> <span class='op'>+</span> <span class='id identifier rubyid_other'>other</span><span class='period'>.</span><span class='id identifier rubyid_tokens'>tokens</span> <span class='rparen'>)</span>
-    <span class='kw'>else</span>
-      <span class='kw'>return</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_tokens'>tokens</span> <span class='op'>+</span> <span class='lbracket'>[</span> <span class='id identifier rubyid_klass'>klass</span><span class='op'>::</span><span class='const'>Literal</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>/</span><span class='tstring_end'>'</span></span> <span class='op'>+</span> <span class='id identifier rubyid_other'>other</span><span class='period'>.</span><span class='id identifier rubyid_tokens'>tokens</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span><span class='period'>.</span><span class='id identifier rubyid_string'>string</span><span class='rparen'>)</span><span class='rbracket'>]</span><span class='op'>+</span> <span class='id identifier rubyid_other'>other</span><span class='period'>.</span><span class='id identifier rubyid_tokens'>tokens</span><span class='lbracket'>[</span><span class='int'>1</span><span class='op'>..</span><span class='op'>-</span><span class='int'>1</span><span class='rbracket'>]</span> <span class='rparen'>)</span>
-    <span class='kw'>end</span>
-  <span class='kw'>elsif</span> <span class='id identifier rubyid_other'>other</span><span class='period'>.</span><span class='id identifier rubyid_tokens'>tokens</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span><span class='period'>.</span><span class='id identifier rubyid_kind_of?'>kind_of?</span><span class='lparen'>(</span><span class='id identifier rubyid_klass'>klass</span><span class='op'>::</span><span class='const'>Expression</span><span class='op'>::</span><span class='const'>Path</span><span class='rparen'>)</span>
-    <span class='kw'>return</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_tokens'>tokens</span> <span class='op'>+</span> <span class='id identifier rubyid_other'>other</span><span class='period'>.</span><span class='id identifier rubyid_tokens'>tokens</span> <span class='rparen'>)</span>
-  <span class='kw'>else</span>
-    <span class='kw'>return</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_tokens'>tokens</span> <span class='op'>+</span> <span class='lbracket'>[</span> <span class='id identifier rubyid_klass'>klass</span><span class='op'>::</span><span class='const'>Literal</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>/</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='rbracket'>]</span> <span class='op'>+</span> <span class='id identifier rubyid_other'>other</span><span class='period'>.</span><span class='id identifier rubyid_tokens'>tokens</span> <span class='rparen'>)</span>
-  <span class='kw'>end</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="==-instance_method">
-  
-    - (<tt>Object</tt>) <strong>==</strong>(o) 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Compares two template patterns.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-827
-828
-829
-830
-831
-832
-833</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/rfc6570.rb', line 827</span>
-
-<span class='kw'>def</span> <span class='op'>==</span><span class='lparen'>(</span><span class='id identifier rubyid_o'>o</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_this'>this</span><span class='comma'>,</span> <span class='id identifier rubyid_other'>other</span><span class='comma'>,</span> <span class='id identifier rubyid_this_converted'>this_converted</span><span class='comma'>,</span> <span class='id identifier rubyid__'>_</span> <span class='op'>=</span> <span class='const'>URITemplate</span><span class='period'>.</span><span class='id identifier rubyid_coerce'>coerce</span><span class='lparen'>(</span> <span class='kw'>self</span><span class='comma'>,</span> <span class='id identifier rubyid_o'>o</span> <span class='rparen'>)</span>
-  <span class='kw'>if</span> <span class='id identifier rubyid_this_converted'>this_converted</span>
-    <span class='kw'>return</span> <span class='id identifier rubyid_this'>this</span> <span class='op'>==</span> <span class='id identifier rubyid_other'>other</span>
-  <span class='kw'>end</span>
-  <span class='kw'>return</span> <span class='id identifier rubyid_this'>this</span><span class='period'>.</span><span class='id identifier rubyid_pattern'>pattern</span> <span class='op'>==</span> <span class='id identifier rubyid_other'>other</span><span class='period'>.</span><span class='id identifier rubyid_pattern'>pattern</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="===-instance_method">
+  <h3 class="signature first" id="===-instance_method">
   
     - (<tt>Object</tt>) <strong>===</strong>(uri) 
   
@@ -1089,10 +805,10 @@ double slashes or insert one if they are missing.</p>
       <pre class="lines">
 
 
-838</pre>
+384</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/rfc6570.rb', line 838</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/rfc6570.rb', line 384</span>
 
 <span class='id identifier rubyid_def_delegators'>def_delegators</span> <span class='symbol'>:to_r</span><span class='comma'>,</span> <span class='symbol'>:===</span></pre>
     </td>
@@ -1131,8 +847,8 @@ undefined variables are handled.</p>
 
 
 <p>Expands the template with the given variables. The expansion should be
-compatible to uritemplate spec draft 7 ( <a
-href="http://tools.ietf.org/html/draft-gregorio-uritemplate-07">tools.ietf.org/html/draft-gregorio-uritemplate-07</a>
+compatible to uritemplate spec rfc 6570 ( <a
+href="http://tools.ietf.org/html/rfc6570">tools.ietf.org/html/rfc6570</a>
 ).</p>
 
 
@@ -1193,7 +909,7 @@ href="http://tools.ietf.org/html/draft-gregorio-uritemplate-07">tools.ietf.org/h
 </pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/rfc6570.rb', line 718</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/rfc6570.rb', line 281</span>
 
 </pre>
     </td>
@@ -1272,7 +988,7 @@ whether pair arrays should be converted to hashes.</p>
       
       <pre class="example code"><span class='id identifier rubyid_two_lists'>two_lists</span> <span class='op'>=</span> <span class='const'>URITemplate</span><span class='op'>::</span><span class='const'>RFC6570</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>{listA*,listB*}</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
 <span class='id identifier rubyid_uri'>uri</span> <span class='op'>=</span> <span class='id identifier rubyid_two_lists'>two_lists</span><span class='period'>.</span><span class='id identifier rubyid_expand'>expand</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>listA</span><span class='tstring_end'>'</span></span><span class='op'>=&gt;</span><span class='lbracket'>[</span><span class='int'>1</span><span class='comma'>,</span><span class='int'>2</span><span class='rbracket'>]</span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>listB</span><span class='tstring_end'>'</span></span><span class='op'>=&gt;</span><span class='lbracket'>[</span><span class='int'>3</span><span class='comma'>,</span><span class='int'>4</span><span class='rbracket'>]</span><span class='rparen'>)</span> <span class='comment'>#=&gt; &quot;1,2,3,4&quot;
-</span><span class='id identifier rubyid_variables'>variables</span> <span class='op'>=</span> <span class='id identifier rubyid_two_lists'>two_lists</span><span class='period'>.</span><span class='id identifier rubyid_extract'>extract</span><span class='lparen'>(</span> <span class='id identifier rubyid_uri'>uri</span> <span class='rparen'>)</span> <span class='comment'>#=&gt; {'listA'=&gt;[&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;],'listB'=&gt;nil}
+</span><span class='id identifier rubyid_variables'>variables</span> <span class='op'>=</span> <span class='id identifier rubyid_two_lists'>two_lists</span><span class='period'>.</span><span class='id identifier rubyid_extract'>extract</span><span class='lparen'>(</span> <span class='id identifier rubyid_uri'>uri</span> <span class='rparen'>)</span> <span class='comment'>#=&gt; {'listA'=&gt;[&quot;1&quot;,&quot;2&quot;,&quot;3&quot;],'listB'=&gt;[&quot;4&quot;]}
 </span><span class='comment'># However, like said in the note:
 </span><span class='id identifier rubyid_two_lists'>two_lists</span><span class='period'>.</span><span class='id identifier rubyid_expand'>expand</span><span class='lparen'>(</span> <span class='id identifier rubyid_variables'>variables</span> <span class='rparen'>)</span> <span class='op'>==</span> <span class='id identifier rubyid_uri'>uri</span> <span class='comment'>#=&gt; true</span></pre>
     
@@ -1373,33 +1089,33 @@ utf-8.</p>
       <pre class="lines">
 
 
-787
-788
-789
-790
-791
-792
-793
-794
-795
-796
-797
-798
-799
-800
-801
-802
-803
-804
-805
-806
-807
-808
-809
-810</pre>
+349
+350
+351
+352
+353
+354
+355
+356
+357
+358
+359
+360
+361
+362
+363
+364
+365
+366
+367
+368
+369
+370
+371
+372</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/rfc6570.rb', line 787</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/rfc6570.rb', line 349</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_extract'>extract</span><span class='lparen'>(</span><span class='id identifier rubyid_uri_or_match'>uri_or_match</span><span class='comma'>,</span> <span class='id identifier rubyid_post_processing'>post_processing</span> <span class='op'>=</span> <span class='const'>DEFAULT_PROCESSING</span> <span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='id identifier rubyid_uri_or_match'>uri_or_match</span><span class='period'>.</span><span class='id identifier rubyid_kind_of?'>kind_of?</span> <span class='const'>String</span>
@@ -1464,12 +1180,12 @@ utf-8.</p>
       <pre class="lines">
 
 
-815
-816
-817</pre>
+377
+378
+379</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/rfc6570.rb', line 815</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/rfc6570.rb', line 377</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_extract_simple'>extract_simple</span><span class='lparen'>(</span><span class='id identifier rubyid_uri_or_match'>uri_or_match</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_extract'>extract</span><span class='lparen'>(</span> <span class='id identifier rubyid_uri_or_match'>uri_or_match</span><span class='comma'>,</span> <span class='const'>NO_PROCESSING</span> <span class='rparen'>)</span>
@@ -1491,8 +1207,8 @@ utf-8.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns the level of this template according to the draft ( <a
-href="http://tools.ietf.org/html/draft-gregorio-uritemplate-07#section-1.2">tools.ietf.org/html/draft-gregorio-uritemplate-07#section-1.2</a>
+<p>Returns the level of this template according to the rfc 6570 ( <a
+href="http://tools.ietf.org/html/rfc6570#section-1.2">tools.ietf.org/html/rfc6570#section-1.2</a>
 ). Higher level means higher complexity. Basically this is defined as:</p>
 <ul><li>
 <p>Level 1: no operators, one variable per expansion, no variable modifiers</p>
@@ -1538,12 +1254,12 @@ expansions.</p>
       <pre class="lines">
 
 
-877
-878
-879</pre>
+423
+424
+425</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/rfc6570.rb', line 877</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/rfc6570.rb', line 423</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_level'>level</span>
   <span class='id identifier rubyid_tokens'>tokens</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:level</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_max'>max</span>
@@ -1615,57 +1331,12 @@ expansions.</p>
       <pre class="lines">
 
 
-844</pre>
+390</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/rfc6570.rb', line 844</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/rfc6570.rb', line 390</span>
 
 <span class='id identifier rubyid_def_delegators'>def_delegators</span> <span class='symbol'>:to_r</span><span class='comma'>,</span> <span class='symbol'>:match</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="pattern-instance_method">
-  
-    - (<tt>Object</tt>) <strong>pattern</strong> 
-  
-
-  
-    <span class="aliases">Also known as:
-    <span class="names"><span id='to_s-instance_method'>to_s</span></span>
-    </span>
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns the pattern for this template.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-820
-821
-822</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/rfc6570.rb', line 820</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_pattern'>pattern</span>
-  <span class='ivar'>@pattern</span> <span class='op'>||=</span> <span class='id identifier rubyid_tokens'>tokens</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:to_s</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span>
-<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -1728,17 +1399,17 @@ whether a given uri matches this template. This template is also used for
       <pre class="lines">
 
 
-742
-743
-744
-745
-746
-747
-748
-749</pre>
+305
+306
+307
+308
+309
+310
+311
+312</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/rfc6570.rb', line 742</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/rfc6570.rb', line 305</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_to_r'>to_r</span>
   <span class='ivar'>@regexp</span> <span class='op'>||=</span> <span class='kw'>begin</span>
@@ -1779,12 +1450,12 @@ whether a given uri matches this template. This template is also used for
       <pre class="lines">
 
 
-946
-947
-948</pre>
+428
+429
+430</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/rfc6570.rb', line 946</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/rfc6570.rb', line 428</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_tokens'>tokens</span>
   <span class='ivar'>@tokens</span> <span class='op'>||=</span> <span class='id identifier rubyid_tokenize!'>tokenize!</span>
@@ -1837,12 +1508,12 @@ whether a given uri matches this template. This template is also used for
       <pre class="lines">
 
 
-854
-855
-856</pre>
+400
+401
+402</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/uri_template/rfc6570.rb', line 854</span>
+      <pre class="code"><span class="info file"># File 'lib/uri_template/rfc6570.rb', line 400</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_type'>type</span>
   <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='op'>::</span><span class='const'>TYPE</span>
@@ -1857,7 +1528,7 @@ whether a given uri matches this template. This template is also used for
 </div>
 
     <div id="footer">
-  Generated on Tue Jul  3 19:56:08 2012 by
+  Generated on Sun Sep 23 18:49:43 2012 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.2.1 (ruby-1.9.3).
 </div>
