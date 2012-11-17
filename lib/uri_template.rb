@@ -187,10 +187,14 @@ RUBY
   # @param variables [#map]
   # @return String
   def expand(variables = {})
-    raise ArgumentError, "Expected something that returns to :map, but got: #{variables.inspect}" unless variables.respond_to? :map
+    raise ArgumentError, "Expected something that responds to :map, but got: #{variables.inspect}" unless variables.respond_to? :map
 
     # Stringify variables
-    variables = Hash[variables.map{ |k, v| [k.to_s, v] }]
+    arg = variables.map{ |k, v| [k.to_s, v] }
+    if arg.any?{|elem| !elem.kind_of?(Array) }
+      raise ArgumentError, "Expected the output of variables.map to return an array of arrays but got #{arg.inspect}"
+    end
+    variables = Hash[arg]
 
     tokens.map{|part|
       part.expand(variables)

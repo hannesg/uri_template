@@ -42,7 +42,7 @@ shared_examples "a uri template class" do
     inst = described_class.new("")
     obj = Object.new
     def obj.map
-      yield "foo", "bar"
+      return [ yield("foo", "bar") ]
     end
     inst.expand(obj).should be_kind_of(String)
   end
