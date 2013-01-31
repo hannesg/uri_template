@@ -328,6 +328,11 @@ module URITemplate
       return result
     end
 
+    # @api private
+    def compact_regexp(rx)
+      rx.split("\n").map(&:strip).join
+    end
+
   end
 
 end
