@@ -63,6 +63,52 @@ shared_examples "a uri template class" do
     described_class.instance_method(:type).owner.should_not eq(URITemplate)
   end
 
+  it "should #try_convert an instance into it self" do
+    inst = described_class.new("")
+    described_class.try_convert(inst).should == inst
+  end
+
+  it "should #try_convert a string into an instance" do
+    described_class.try_convert("").should == described_class.new("")
+  end
+
+  it "should refuse #try_covert for an arbitrary object" do
+    described_class.try_convert(Object.new).should be_nil
+  end
+
+  it "should refuse #try_covert for an unrelated uritemplate" do
+    o = Object.new
+    def o.kind_of?(k)
+      super || ( k == URITemplate )
+    end
+    described_class.try_convert(o).should be_nil
+  end
+
+  it "should #convert an instance into it self" do
+    inst = described_class.new("")
+    described_class.convert(inst).should == inst
+  end
+
+  it "should #convert a string into an instance" do
+    described_class.convert("").should == described_class.new("")
+  end
+
+  it "should refuse #covert for an arbitrary object" do
+    expect{
+      described_class.convert(Object.new)
+    }.to raise_error(ArgumentError,/converted into a URITemplate/)
+  end
+
+  it "should refuse #try_covert for an unrelated uritemplate" do
+    o = Object.new
+    def o.kind_of?(k)
+      super || ( k == URITemplate )
+    end
+    expect{
+      described_class.convert(o)
+    }.to raise_error(ArgumentError,/converted into a URITemplate/)
+  end
+
 end
 
 

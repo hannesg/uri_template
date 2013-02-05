@@ -18,6 +18,42 @@
 # A base module for all implementations of a uri template.
 module URITemplate
 
+  # Helper module which defines class methods for all uri template
+  # classes.
+  module ClassMethods
+    # Tries to convert the given argument into an {URITemplate}.
+    # Returns nil if this fails.
+    #
+    # @return [nil|{URITemplate}]
+    def try_convert(x)
+      if x.kind_of? self
+        return x
+      elsif x.kind_of? String
+        return self.new(x)
+      else
+        return nil
+      end
+    end
+
+    # Same as {.try_convert} but raises an ArgumentError when the given argument could not be converted.
+    # 
+    # @raise ArgumentError if the argument is unconvertable
+    # @return {URITemplate}
+    def convert(x)
+      o = self.try_convert(x)
+      if o.nil?
+        raise ArgumentError, "Expected to receive something that can be converted into a URITemplate of type #{self.inspect}, but got #{x.inspect}"
+      end
+      return o
+    end
+
+    def included(base)
+      base.extend(ClassMethods)
+    end
+  end
+
+  extend ClassMethods
+
   # @api private
   SCHEME_REGEX = /\A[a-z]+:/i.freeze
 
@@ -78,32 +114,6 @@ module URITemplate
     return klass.new(*rest)
   end
 
-  # Tries to convert the given argument into an {URITemplate}.
-  # Returns nil if this fails.
-  #
-  # @return [nil|{URITemplate}]
-  def self.try_convert(x)
-    if x.kind_of? URITemplate
-      return x
-    elsif x.kind_of? String
-      return URITemplate.new(x)
-    else
-      return nil
-    end
-  end
-
-  # Same as {.try_convert} but raises an ArgumentError when the given argument could not be converted.
-  # 
-  # @raise ArgumentError if the argument is unconvertable
-  # @return {URITemplate}
-  def self.convert(x)
-    o = self.try_convert(x)
-    if o.nil?
-      raise ArgumentError, "Expected to receive something that can be converted to an URITemplate, but got #{x.inspect}"
-    end
-    return o
-  end
-
   # Tries to coerce two URITemplates into a common representation.
   # Returns an array with two {URITemplate}s and two booleans indicating which of the two were converted or raises an ArgumentError.
   #
@@ -153,6 +163,7 @@ module URITemplate
     a.send(method,b,*args)
   end
 
+  # @api private
   def self.coerce_first_arg(meth)
     alias_method( (meth.to_s + '_without_coercion').to_sym , meth )
     class_eval(<<-RUBY)
