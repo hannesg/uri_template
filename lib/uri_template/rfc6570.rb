@@ -385,7 +385,6 @@ __REGEXP__
       if block_given?
         return yield result
       end
-
       return result
     end
   end

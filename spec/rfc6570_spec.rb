@@ -123,6 +123,11 @@ describe URITemplate::RFC6570 do
 
     end
 
+    it 'should expand empty arrays' do
+      t = URITemplate::RFC6570.new("{arr}")
+      t.should expand('arr' => []).to("")
+    end
+
   end
 
   describe "extraction" do

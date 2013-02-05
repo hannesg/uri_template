@@ -65,6 +65,16 @@ class URITemplate::RFC6570::Expression::Unnamed < URITemplate::RFC6570::Expressi
 
 private
 
+  def transform_hash(name, hsh, expand , max_length)
+    return [] if hsh.none?
+    super
+  end
+
+  def transform_array(name, ary, expand , max_length)
+    return [] if ary.none?
+    super
+  end
+
   def after_expand(name, splitted)
     if splitted.none?{|_,b| b }
       return [ [ name, splitted.map{|a,_| a } ] ]

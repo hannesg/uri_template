@@ -20,12 +20,15 @@ $LOAD_PATH << File.expand_path('../lib',File.dirname(__FILE__))
 require 'bundler'
 Bundler.setup(:default,:development)
 
-begin
-  require 'simplecov'
-  SimpleCov.add_filter('/spec')
-  SimpleCov.start
-rescue LoadError
-  warn 'Not using simplecov.'
+if $0 !~ /mutant\z/
+  # using simplecov in mutant is pointless
+  begin
+    require 'simplecov'
+    SimpleCov.add_filter('/spec')
+    SimpleCov.start
+  rescue LoadError
+    warn 'Not using simplecov.'
+  end
 end
 
 Bundler.require(:default,:development)

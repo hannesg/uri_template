@@ -23,10 +23,12 @@ describe URITemplate do
 
     include URITemplate
 
-    class BadExpression
+    class BadToken
+      include URITemplate::Token
+    end
 
+    class BadExpression < BadToken
       include URITemplate::Expression
-
     end
 
     attr_reader :pattern
@@ -71,6 +73,22 @@ describe URITemplate do
       expect{
         BadURITemplate::BadExpression.new.expand(nil)
       }.to raise_error(/\APlease implement/)
+    end
+
+    describe "at least" do
+
+      it "has token size 0" do
+        BadURITemplate::BadToken.new.size.should == 0
+      end
+
+      it "has empty variable array" do
+        BadURITemplate::BadToken.new.variables.should == []
+      end
+
+      it "doesn't start with slash" do
+        BadURITemplate::BadToken.new.should_not be_starts_with_slash
+      end
+
     end
 
   end

@@ -56,10 +56,6 @@ class URITemplate::RFC6570
       end
     end
 
-    def expands?
-      @variable_specs.any?{|_,expand,_| expand }
-    end
-
     def arity
       @variable_specs.size
     end
@@ -241,8 +237,6 @@ class URITemplate::RFC6570
     def transform_hash(name, hsh, expand , max_length)
       if expand
         hsh.map{|key,value| pair(escape(key),value) }
-      elsif hsh.none? && !self.class::NAMED
-        []
       else
         [ self_pair(name,hsh){|key,value| escape(key)+self.class::LIST_CONNECTOR+escape(value)} ]
       end
@@ -251,8 +245,6 @@ class URITemplate::RFC6570
     def transform_array(name, ary, expand , max_length)
       if expand
         ary.map{|value| self_pair(name,value) }
-      elsif ary.none? && !self.class::NAMED
-        []
       else
         [ self_pair(name, ary){|value| escape(value) } ]
       end

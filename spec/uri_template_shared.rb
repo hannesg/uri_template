@@ -33,6 +33,11 @@ shared_examples "a uri template class" do
     }.to raise_error(ArgumentError)
   end
 
+  it "should have expand without args" do
+    inst = described_class.new("")
+    inst.expand().should be_kind_of(String)
+  end
+
   it "should accept a hash for expand" do
     inst = described_class.new("")
     inst.expand('foo' => 'bar').should be_kind_of(String)
@@ -45,6 +50,17 @@ shared_examples "a uri template class" do
       return [ yield("foo", "bar") ]
     end
     inst.expand(obj).should be_kind_of(String)
+  end
+
+  it "should raise if the argument responds to #map but returns garbage" do
+    inst = described_class.new("")
+    obj = Object.new
+    def obj.map
+      return [ Object.new ]
+    end
+    expect{
+      inst.expand(obj)
+    }.to raise_error(ArgumentError, /variables.map/)
   end
 
   it "should compare true if the pattern is the same" do
@@ -126,21 +142,26 @@ shared_examples "a uri template class with extraction" do
     described_class.new("x").should extract.from("x")
   end
 
-  it "should return not yield if a pattern didn't match" do
-    called = false
-    described_class.new("x").extract("y") do |match|
-      called = true
-    end
-    called.should be_false
+  it "should return nil if passed nil" do
+    described_class.new("x").extract(nil).should be_nil
+  end
+
+  it "should not yield if a pattern didn't match" do
+    expect{|b|
+      described_class.new("x").extract("y", &b)
+    }.not_to yield_control
+  end
+
+  it "should not yield if passed nil" do
+    expect{|b|
+      described_class.new("x").extract(nil, &b)
+    }.not_to yield_control
   end
 
   it "should yield a hash if a pattern did match" do
-    called = false
-    described_class.new("x").extract("x") do |match|
-      called = true
-      match.should be_kind_of(Hash)
-    end
-    called.should be_true
+    expect{|b|
+     described_class.new("x").extract("x", &b)
+    }.to yield_with_args(Hash)
   end
 
   it "should return the result of the block" do
