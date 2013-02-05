@@ -37,8 +37,7 @@ module URITemplate
         m = @regexp.match(rest)
         if m.nil?
           if rest.size > 0
-            yield rest if @rest == :yield
-            raise "Unable to match #{rest.inspect} against #{@regexp.inspect}" if @rest == :raise
+            yield rest
           end
           break
         end

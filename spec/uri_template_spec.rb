@@ -340,6 +340,35 @@ describe URITemplate do
 
     end
 
+    describe URITemplate::RegexpEnumerator do
+
+      subject{URITemplate::RegexpEnumerator}
+
+      it "yields if called with block" do
+        enum = subject.new(/b/)
+        expect{|b| enum.each("aba",&b) }.to yield_successive_args("a", MatchData, "a")
+      end
+
+      it "returns an iterator if called without block" do
+        enum = subject.new(/b/).each("aba")
+        enum.should be_a(Enumerable)
+        expect{|b| enum.each(&b) }.to yield_successive_args("a", MatchData, "a")
+      end
+
+      it "should yield the rest if match is empty" do
+        enum = subject.new(//)
+        expect{|b| enum.each("foo",&b) }.to yield_successive_args(MatchData, "foo")
+      end
+
+      it "should raise if match is empty and told to do so" do
+        enum = subject.new(//, :rest => :raise)
+        expect{
+          enum.each("foo"){}
+        }.to raise_error(/matched an empty string/)
+      end
+
+    end
+
   end
 
 end
