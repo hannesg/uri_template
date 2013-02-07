@@ -68,7 +68,9 @@ class URITemplate::ExpansionMatcher
   def matches?( actual )
     @actual = actual
     s = @actual.expand(@variables)
-    return Array(@expected).any?{|e| e === s }
+    # only in 1.8.7 Array("") is []
+    ex = @expected == "" ? [""] : Array(@expected)
+    return ex.any?{|e| e === s }
   end
 
   def to(expected)
