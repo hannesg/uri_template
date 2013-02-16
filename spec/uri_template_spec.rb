@@ -317,6 +317,10 @@ describe URITemplate do
         pure.extend(URITemplate::Utils::Escaping::Pure)
         escape_utils = Object.new
         escape_utils.extend(URITemplate::Utils::Escaping::EscapeUtils)
+        object_with_to_s = Object.new
+        def object_with_to_s.to_s
+          "object_with_to_s"
+        end
 
         [
           "",
@@ -326,9 +330,10 @@ describe URITemplate do
           encode ? "a".encode('ISO-8859-1') : "a",
           encode ? "öüä".encode('ISO-8859-1') : "öüä",
           "+",
-          "öäü"
+          "öäü",
+          object_with_to_s
         ].each do |str|
-          it "should correctly escape #{str.inspect} ( encoding: #{encode ? str.encoding : '--'} )" do
+          it "should correctly escape #{str.inspect} ( encoding: #{encode ? str.to_s.encoding : '--'} )" do
             escape_utils.escape_uri(str).should == pure.escape_uri(str)
             escape_utils.escape_url(str).should == pure.escape_url(str)
           end
@@ -346,9 +351,10 @@ describe URITemplate do
           "%",
           "%%%",
           "%gh",
-          "%a"
+          "%a",
+          object_with_to_s
         ].each do |str|
-          it "should correctly unescape #{str.inspect} ( encoding: #{encode ? str.encoding : '--'} )" do
+          it "should correctly unescape #{str.inspect} ( encoding: #{encode ? str.to_s.encoding : '--'} )" do
             escape_utils.unescape_uri(str).should == pure.unescape_uri(str)
             escape_utils.unescape_url(str).should == pure.unescape_url(str)
           end

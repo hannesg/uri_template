@@ -172,13 +172,13 @@ module URITemplate
         end
 
         def unescape_url(s)
-          force_utf8( to_ascii(s).gsub('+',' ').gsub(PCT){
+          force_utf8( to_ascii(s.to_s).gsub('+',' ').gsub(PCT){
             $1.to_i(16).chr
           } )
         end
 
         def unescape_uri(s)
-          force_utf8( to_ascii(s).gsub(PCT){
+          force_utf8( to_ascii(s.to_s).gsub(PCT){
             $1.to_i(16).chr
           })
         end
@@ -204,19 +204,19 @@ module URITemplate
         end
 
         def escape_url(s)
-          super(to_utf8(s)).gsub('+','%20')
+          super(to_utf8(s.to_s)).gsub('+','%20')
         end
 
         def escape_uri(s)
-          super(to_utf8(s))
+          super(to_utf8(s.to_s))
         end
 
         def unescape_url(s)
-          force_utf8(super(to_ascii(s)))
+          force_utf8(super(to_ascii(s.to_s)))
         end
 
         def unescape_uri(s)
-          force_utf8(super(to_ascii(s)))
+          force_utf8(super(to_ascii(s.to_s)))
         end
 
       end
