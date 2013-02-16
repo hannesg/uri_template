@@ -4,6 +4,7 @@ URITemplate - a uri template library
 [![Build Status](https://secure.travis-ci.org/hannesg/uri_template.png)](http://travis-ci.org/hannesg/uri_template)
 [![Dependency Status](https://gemnasium.com/hannesg/uri_template.png)](https://gemnasium.com/hannesg/uri_template)
 [![Code Climate](https://codeclimate.com/github/hannesg/uri_template.png)](https://codeclimate.com/github/hannesg/uri_template)
+[![Coverage](https://coveralls.io/repos/hannesg/uri_template/badge.png?branch=master)]
 
 With URITemplate you can generate URIs based on simple templates and extract variables from URIs using the same templates. There are currently two syntaxes defined. Namely the one defined in [RFC 6570]( http://tools.ietf.org/html/rfc6570 ) and a colon based syntax, similiar to the one used by sinatra.
 

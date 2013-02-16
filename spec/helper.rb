@@ -21,9 +21,11 @@ require 'bundler'
 Bundler.setup(:default,:development)
 
 if $0 !~ /mutant\z/
-  # using simplecov in mutant is pointless
+  # using coverage in mutant is pointless
   begin
     require 'simplecov'
+    require 'coveralls'
+    SimpleCov.formatter = Coveralls::SimpleCov::Formatter
     SimpleCov.add_filter('/spec')
     SimpleCov.start
   rescue LoadError
@@ -38,7 +40,6 @@ require 'uri_template'
 unless URITemplate::Utils.using_escape_utils?
   warn 'Not using escape_utils.'
 end
-
 if RUBY_DESCRIPTION =~ /\Ajruby/ and "".respond_to? :force_encoding
   # jruby produces ascii encoded json hashes :(
   def force_all_utf8(x)

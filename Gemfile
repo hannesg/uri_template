@@ -4,7 +4,10 @@ gemspec
 
 group :development do
   gem 'escape_utils', :platforms => [:mri_19, :mri_18]
-  gem 'simplecov', :platforms => [:mri_19]
+  gem 'coveralls', :require => false, :platforms => [:mri_19]
+end
+
+group :masochism do
   gem 'mutant', :platforms => [:ruby]
 end
 
