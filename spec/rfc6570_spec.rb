@@ -168,6 +168,25 @@ describe URITemplate::RFC6570 do
 
     end
 
+    it "accepts CONVERT_VALUES arg" do
+      t = URITemplate::RFC6570.new('{?assoc*}')
+      t.extract('?a=b&c=d', URITemplate::RFC6570::CONVERT_RESULT).should == {'assoc' => [['a','b'],['c','d']] }
+    end
+    
+    it "accepts CONVERT_RESULT arg" do
+      t = URITemplate::RFC6570.new('{?assoc*}')
+      t.extract('?a=b&c=d', URITemplate::RFC6570::CONVERT_VALUES).should == [['assoc', {'a'=>'b','c'=>'d'}]]
+    end
+
+  end
+
+  describe "extract_simple" do
+
+    it "extracts without postproccessing" do
+      t = URITemplate::RFC6570.new('{?assoc*}')
+      t.extract_simple('?a=b&c=d').should == [['assoc',[['a','b'],['c','d']]]]
+    end
+
   end
 
   describe "conversion" do

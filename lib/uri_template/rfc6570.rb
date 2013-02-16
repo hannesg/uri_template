@@ -474,7 +474,7 @@ protected
         return Hash[vars]
       end
     else
-      if post_processing.include? :convert_value
+      if post_processing.include? :convert_values
         return vars.collect{|k,v| [k,Utils.pair_array_to_hash(v)] }
       else
         return vars
