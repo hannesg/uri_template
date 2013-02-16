@@ -453,10 +453,6 @@ protected
     self.class::Tokenizer.new(pattern, self.class::OPERATORS).to_a
   end
 
-  def arity
-    @arity ||= tokens.inject(0){|a,t| a + t.arity }
-  end
-
   # @private
   def extract_matchdata(matchdata, post_processing)
     bc = 1
