@@ -82,69 +82,63 @@ module URITemplate
     # Bundles some string encoding methods.
     module StringEncoding
 
-      # @method to_ascii(string)
-      # converts a string to ascii
-      # 
-      # @param str [String]
-      # @return String
-      # @visibility public
-      def to_ascii_encode(str)
-        str.encode(Encoding::ASCII)
+      # Methods which do actual encoding.
+      module Encode
+        # converts a string to ascii
+        # 
+        # @param str [String]
+        # @return String
+        # @visibility public
+        def to_ascii(str)
+          str.encode(Encoding::ASCII)
+        end
+
+        # converts a string to utf8
+        # 
+        # @param str [String]
+        # @return String
+        # @visibility public
+        def to_utf8(str)
+          str.encode(Encoding::UTF_8)
+        end
+
+        # enforces UTF8 encoding
+        # 
+        # @param str [String]
+        # @return String
+        # @visibility public
+        def force_utf8(str)
+          return str if str.encoding == Encoding::UTF_8
+          str = str.dup if str.frozen?
+          return str.force_encoding(Encoding::UTF_8)
+        end
+
       end
 
-      # @method to_utf8(string)
-      # converts a string to utf8
-      # 
-      # @param str [String]
-      # @return String
-      # @visibility public
-      def to_utf8_encode(str)
-        str.encode(Encoding::UTF_8)
-      end
+      # Fallback methods to be used in pre 1.9 rubies.
+      module Fallback
 
-      # @method force_utf8(str)
-      # enforces UTF8 encoding
-      # 
-      # @param str [String]
-      # @return String
-      # @visibility public
-      def force_utf8_encode(str)
-        return str if str.encoding == Encoding::UTF_8
-        str = str.dup if str.frozen?
-        return str.force_encoding(Encoding::UTF_8)
-      end
+        def to_ascii(str)
+          str
+        end
 
+        def to_utf8(str)
+          str
+        end
 
-      def to_ascii_fallback(str)
-        str
-      end
+        def force_utf8(str)
+          str
+        end
 
-      def to_utf8_fallback(str)
-        str
-      end
-
-      def force_utf8_fallback(str)
-        str
       end
 
       if "".respond_to?(:encode)
-        # @api private
-        send(:alias_method, :to_ascii, :to_ascii_encode)
-        # @api private
-        send(:alias_method, :to_utf8, :to_utf8_encode)
-        # @api private
-        send(:alias_method, :force_utf8, :force_utf8_encode)
+        include Encode
       else
-        # @api private
-        send(:alias_method, :to_ascii, :to_ascii_fallback)
-        # @api private
-        send(:alias_method, :to_utf8, :to_utf8_fallback)
-        # @api private
-        send(:alias_method, :force_utf8, :force_utf8_fallback)
+        include Fallback
       end
 
-      public :to_ascii
-      public :to_utf8
+      private :force_utf8
 
     end
 

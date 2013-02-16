@@ -358,6 +358,46 @@ describe URITemplate do
 
     end
 
+    describe "string encoding" do
+
+      if "".respond_to? :encoding
+
+      describe "real" do
+
+        subject{ o = Object.new; o.extend(URITemplate::Utils::StringEncoding::Encode); o }
+
+        it "converts to ascii" do
+          result = subject.to_ascii("foo".encode(Encoding::UTF_8))
+          result.encoding.should == Encoding::ASCII
+          result.should == "foo".encode(Encoding::ASCII)
+        end
+
+        it "converts to utf8" do
+          result = subject.to_utf8("foo".encode(Encoding::ASCII))
+          result.encoding.should == Encoding::UTF_8
+          result.should == "foo".encode(Encoding::UTF_8)
+        end
+
+      end
+
+      end
+
+      describe "fallback" do
+
+        subject{ o = Object.new; o.extend(URITemplate::Utils::StringEncoding::Fallback); o }
+
+        it "passes thru to_ascii" do
+          subject.to_ascii("foo").should == "foo"
+        end
+
+        it "converts to utf8" do
+          subject.to_utf8("foo").should == "foo"
+        end
+
+      end
+
+    end
+
     describe URITemplate::RegexpEnumerator do
 
       subject{URITemplate::RegexpEnumerator}
