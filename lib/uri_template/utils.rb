@@ -14,7 +14,6 @@
 #
 #    (c) 2011 - 2012 by Hannes Georg
 #
-
 module URITemplate
 
   # An awesome little helper which helps iterating over a string.
@@ -132,11 +131,13 @@ module URITemplate
 
       end
 
+      # :nocov:
       if "".respond_to?(:encode)
         include Encode
       else
         include Fallback
       end
+      # :nocov:
 
       private :force_utf8
 
@@ -226,7 +227,7 @@ module URITemplate
     end
 
     include StringEncoding
-
+    # :nocov:
     if Escaping.const_defined? :EscapeUtils
       include Escaping::EscapeUtils
       puts "Using escape_utils." if $VERBOSE
@@ -234,6 +235,7 @@ module URITemplate
       include Escaping::Pure
       puts "Not using escape_utils." if $VERBOSE
     end
+    # :nocov:
 
     # Converts an object to a param value.
     # Tries to call :to_param and then :to_s on that object.
@@ -260,9 +262,7 @@ module URITemplate
     # @api private
     # Should we use \u.... or \x.. in regexps?
     def use_unicode?
-      return eval('Regexp.compile("\u0020")') =~ " "
-    rescue SyntaxError
-      false
+      eval('Regexp.compile("\u0020")') =~ " " rescue false
     end
 
     # Returns true when the given value is an array and it only consists of arrays with two items.

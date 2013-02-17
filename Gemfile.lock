@@ -25,6 +25,7 @@ GEM
       adamantium (~> 0.0.5)
       backports (~> 2.7.0)
     escape_utils (0.2.4)
+    hirb (0.7.1)
     ice_nine (0.6.0)
     json (1.7.7)
     mbj-inflector (0.0.2)
@@ -56,6 +57,10 @@ GEM
     simplecov (0.7.1)
       multi_json (~> 1.0)
       simplecov-html (~> 0.7.1)
+    simplecov-console (0.1.1)
+      colorize
+      hirb
+      simplecov
     simplecov-html (0.7.1)
     thor (0.17.0)
     to_source (0.2.18)
@@ -79,5 +84,6 @@ DEPENDENCIES
   rake
   redcarpet
   rspec
+  simplecov-console
   uri_template!
   yard

@@ -15,8 +15,6 @@
 #    (c) 2011 - 2012 by Hannes Georg
 #
 
-$LOAD_PATH << File.expand_path('../lib',File.dirname(__FILE__))
-
 require 'bundler'
 Bundler.setup(:default,:development)
 
@@ -24,10 +22,19 @@ if $0 !~ /mutant\z/
   # using coverage in mutant is pointless
   begin
     require 'simplecov'
+    require 'simplecov-console'
     require 'coveralls'
-    SimpleCov.formatter = Coveralls::SimpleCov::Formatter
-    SimpleCov.add_filter('/spec')
-    SimpleCov.start
+    # the console output needs this to work:
+    ROOT = File.expand_path('../lib',File.dirname(__FILE__))
+    SimpleCov.start do
+      add_filter '/spec'
+      formatter SimpleCov::Formatter::MultiFormatter[
+        Coveralls::SimpleCov::Formatter,
+        SimpleCov::Formatter::Console
+      ]
+      refuse_coverage_drop
+      nocov_token "nocov"
+    end
   rescue LoadError
     warn 'Not using simplecov.'
   end
