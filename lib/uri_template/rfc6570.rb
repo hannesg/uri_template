@@ -35,6 +35,7 @@ class URITemplate::RFC6570
   # @private
   Utils = URITemplate::Utils
 
+  # :nocov:
   if Utils.use_unicode?
     # @private
     #                           \/ - unicode ctrl-chars
@@ -43,6 +44,7 @@ class URITemplate::RFC6570
     # @private
     LITERAL = Regexp.compile('([^"\'%<>\\\\^`{|}\x00-\x1F\x7F-\x9F\s]|%[0-9a-fA-F]{2})+',Utils::KCODE_UTF8)
   end
+  # :nocov:
 
   # @private
   CHARACTER_CLASSES = {
@@ -132,10 +134,6 @@ __REGEXP__
 
     def level
       1
-    end
-
-    def arity
-      0
     end
 
     def to_r_source(*_)
