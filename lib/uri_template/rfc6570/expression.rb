@@ -41,7 +41,6 @@ class URITemplate::RFC6570
 
     CHARACTER_CLASS = CHARACTER_CLASSES[:unreserved]
 
-    NAMED = false
     OPERATOR = ''
 
     def level
@@ -324,7 +323,6 @@ class URITemplate::RFC6570
 
     SEPARATOR = ';'.freeze
     PREFIX = ';'.freeze
-    NAMED = true
     PAIR_IF_EMPTY = false
     OPERATOR = ';'.freeze
     BASE_LEVEL = 3
@@ -335,7 +333,6 @@ class URITemplate::RFC6570
 
     SEPARATOR = '&'.freeze
     PREFIX = '?'.freeze
-    NAMED = true
     OPERATOR = '?'.freeze
     BASE_LEVEL = 3
 
@@ -345,7 +342,6 @@ class URITemplate::RFC6570
 
     SEPARATOR = '&'.freeze
     PREFIX = '&'.freeze
-    NAMED = true
     OPERATOR = '&'.freeze
     BASE_LEVEL = 3
 
