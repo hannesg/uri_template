@@ -170,3 +170,79 @@ shared_examples "a uri template class with extraction" do
   end
 
 end
+
+shared_examples "a string util helper" do
+
+  it "escapes an empty string correctly" do
+    subject.escape_uri("").should == ""
+    subject.escape_url("").should == ""
+  end
+
+  it "escapes an all-ascii string correctly" do
+    subject.escape_uri("abcdef123").should == "abcdef123"
+    subject.escape_url("abcdef123").should == "abcdef123"
+  end
+
+  it "escapes a multibyte pct string correctly" do
+    subject.escape_uri("ü").should == "%C3%BC"
+    subject.escape_url("ü").should == "%C3%BC"
+  end
+
+  it "escapes a space correctly" do
+    subject.escape_uri(" ").should == "%20"
+    subject.escape_url(" ").should == "%20"
+  end
+
+  it "escapes a object with to_s correctly" do
+    o = Object.new
+    def o.to_s
+      "o.to_s"
+    end
+    subject.escape_uri(o).should == "o.to_s"
+    subject.escape_url(o).should == "o.to_s"
+  end
+
+  it "unescapes an empty string correctly" do
+    subject.unescape_uri("").should == ""
+    subject.unescape_url("").should == ""
+  end
+
+  it "unescapes an all-ascii string correctly" do
+    subject.unescape_uri("abcdef123").should == "abcdef123"
+    subject.unescape_url("abcdef123").should == "abcdef123"
+  end
+
+  it "unescapes a simple pct string correctly" do
+    subject.unescape_uri("%20%30%40").should == " 0@"
+    subject.unescape_url("%20%30%40").should == " 0@"
+  end
+
+  it "unescapes a plus correctly" do
+    subject.unescape_uri("+").should == "+"
+    subject.unescape_url("+").should == " "
+  end
+
+  it "unescapes a object with to_s correctly" do
+    o = Object.new
+    def o.to_s
+      "o.to_s"
+    end
+    subject.unescape_uri(o).should == "o.to_s"
+    subject.unescape_url(o).should == "o.to_s"
+  end
+
+  it "unescapes a single %" do
+    subject.unescape_uri("%").should == "%"
+    subject.unescape_url("%").should == "%"
+  end
+
+  it "unescapes a borked pct" do
+    subject.unescape_uri("%fg").should == "%fg"
+    subject.unescape_url("%fg").should == "%fg"
+  end
+
+  it "unescapes a too short pct" do
+    subject.unescape_uri("%f").should == "%f"
+    subject.unescape_url("%f").should == "%f"
+  end
+end

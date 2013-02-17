@@ -30,6 +30,7 @@ if $0 !~ /mutant\z/
       add_filter '/spec'
       formatter SimpleCov::Formatter::MultiFormatter[
         Coveralls::SimpleCov::Formatter,
+        SimpleCov::Formatter::HTMLFormatter,
         SimpleCov::Formatter::Console
       ]
       refuse_coverage_drop

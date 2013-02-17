@@ -149,8 +149,6 @@ module URITemplate
       # The performance is acceptable, but could be better with escape_utils.
       module Pure
 
-        include StringEncoding
-
         # @private
         URL_ESCAPED = /([^A-Za-z0-9\-\._])/.freeze
 
@@ -195,8 +193,6 @@ module URITemplate
       # A escaping module, which is backed by escape_utils.
       # The performance is good, espacially for strings with many escaped characters.
       module EscapeUtils
-
-        include StringEncoding
 
         include ::EscapeUtils
 
