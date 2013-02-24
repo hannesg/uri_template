@@ -22,6 +22,15 @@ describe URITemplate::Colon do
 
   it_should_behave_like "a uri template class with extraction"
 
+  describe "syntax" do
+
+    it "should support variable names with underscores" do
+      tpl = URITemplate.new(:colon, '/foo/:foo_bar/')
+      tpl.variables.should == ['foo_bar']
+    end
+
+  end
+
   describe "extraction" do
 
     it "should extract as expected" do

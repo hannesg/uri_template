@@ -35,7 +35,7 @@ class Colon
 
   include URITemplate
 
-  VAR = /(?:\{:([a-z]+)\}|:([a-z]+)(?![a-z])|\*)/u
+  VAR = /(?:\{:(\w+)\}|:(\w+)(?!\w)|\*)/u
 
   class InvalidValue < StandardError
 
