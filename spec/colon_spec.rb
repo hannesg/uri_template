@@ -22,6 +22,12 @@ describe URITemplate::Colon do
 
   it_should_behave_like "a uri template class with extraction"
 
+  describe "general" do
+    it "says it's of type :colon" do
+      URITemplate.new(:colon, '/foo').type.should == :colon
+    end
+  end
+
   describe "syntax" do
 
     it "should support variable names with underscores" do
