@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = 'uri_template'
-  s.version = '0.5.1'
+  s.version = '0.5.2'
   s.date = Time.now.strftime('%Y-%m-%d')
   s.authors = ["HannesG"]
   s.email = %q{hannes.georg@googlemail.com}
