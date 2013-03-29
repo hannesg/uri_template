@@ -178,6 +178,11 @@ describe URITemplate do
 
       t.expand(v).should == '/a/b/?bar=qux'
     end
+
+    it 'should expand variables from an array' do
+      t = URITemplate.new("/{foo}{/list*}/{?bar}")
+      t.should expand(['bar', ['a', :b], 'qux']).to '/bar/a/b/?bar=qux'
+    end
   end
 
   describe "docs" do

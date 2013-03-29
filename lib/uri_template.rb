@@ -192,13 +192,19 @@ RUBY
   # The keys in the variables hash are converted to
   # strings in order to support the Ruby 1.9 hash syntax.
   #
+  # If the variables are given as an array, they will be matched against the variables in the template based on their order.
+  #
   # @raise {Unconvertable} if a variable could not be converted to a string.
   # @raise {InvalidValue} if a value is not suiteable for a certain variable ( e.g. a string when a list is expected ).
   #
-  # @param variables [#map]
+  # @param variables [#map, Array]
   # @return String
   def expand(variables = {})
     raise ArgumentError, "Expected something that responds to :map, but got: #{variables.inspect}" unless variables.respond_to? :map
+
+    if variables.kind_of?(Array)
+      variables = Hash[self.variables.uniq.zip(variables)]
+    end
 
     # Stringify variables
     arg = variables.map{ |k, v| [k.to_s, v] }
