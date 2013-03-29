@@ -148,6 +148,12 @@ describe URITemplate::Colon do
       tpl = URITemplate.new(:colon, '/*/*.*')
 
       tpl.should expand('splat' => ['dir','b/c','ext'] ).to('/dir/b/c.ext')
+    end
+
+    it 'should support splats using array expansion' do
+
+      tpl = URITemplate.new(:colon, '/*/*.*')
+      tpl.should expand([['dir','b/c','ext']] ).to('/dir/b/c.ext')
 
     end
 
