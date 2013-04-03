@@ -1,3 +1,13 @@
+# 0.6.0 - TBD
+  - * You can now pass variables as an Array to URITemplate#expand ( thanks to @bmaland )
+      Example:
+
+        tpl = URITemplate.new("/{var}/")
+        tpl.expand(["value"]) # => '/value/'
+
+# 0.5.2 - 24.02.2013
+  - + The colon based uri templates now allow more characters in variable names.
+
 # 0.5.1 - 23.09.2012
   - * f*** bug.
 
