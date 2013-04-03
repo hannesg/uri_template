@@ -200,6 +200,13 @@ RUBY
   def expand(variables = {})
     raise ArgumentError, "Expected something that responds to :map, but got: #{variables.inspect}" unless variables.respond_to? :map
 
+    if variables.kind_of? Array
+      warn <<WARN
+Passing variables as an Array to URITemplate#expand will have a different semantic in the next version of uri_template.
+Please convert your variables into a Hash or use some ducktyping.
+WARN
+    end
+
     # Stringify variables
     arg = variables.map{ |k, v| [k.to_s, v] }
     if arg.any?{|elem| !elem.kind_of?(Array) }

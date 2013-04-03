@@ -52,6 +52,16 @@ shared_examples "a uri template class" do
     inst.expand(obj).should be_kind_of(String)
   end
 
+  it "should warn if expand is called with an array" do
+    inst = described_class.new("")
+    inst.should_receive(:warn) do |message|
+      message.should =~ /Passing variables as an Array to URITemplate#expand/
+      nil
+    end
+    inst.expand([]).should be_kind_of(String)
+  end
+
+
   it "should raise if the argument responds to #map but returns garbage" do
     inst = described_class.new("")
     obj = Object.new
