@@ -203,15 +203,15 @@ RUBY
     raise ArgumentError, "Expected something that responds to :map, but got: #{variables.inspect}" unless variables.respond_to? :map
 
     if variables.kind_of?(Array)
-      variables = Hash[self.variables.uniq.zip(variables)]
+      variables = Hash[self.variables.zip(variables)]
+    else
+      # Stringify variables
+      arg = variables.map{ |k, v| [k.to_s, v] }
+      if arg.any?{|elem| !elem.kind_of?(Array) }
+        raise ArgumentError, "Expected the output of variables.map to return an array of arrays but got #{arg.inspect}"
+      end
+      variables = Hash[arg]
     end
-
-    # Stringify variables
-    arg = variables.map{ |k, v| [k.to_s, v] }
-    if arg.any?{|elem| !elem.kind_of?(Array) }
-      raise ArgumentError, "Expected the output of variables.map to return an array of arrays but got #{arg.inspect}"
-    end
-    variables = Hash[arg]
 
     tokens.map{|part|
       part.expand(variables)
