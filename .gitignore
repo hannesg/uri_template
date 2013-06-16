@@ -1,3 +1,6 @@
 .rbx
 .yardoc
 *.gem
+coverage/assets
+coverage/.resultset.json
+coverage/index.html
