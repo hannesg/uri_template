@@ -3,9 +3,9 @@ source "http://rubygems.org"
 gemspec
 
 group :development do
-  gem 'escape_utils', :platforms => [:mri_19, :mri_18]
-  gem 'coveralls', :require => false, :platforms => [:mri_19]
-  gem 'simplecov-console', :platforms => [:mri_19]
+  gem 'escape_utils', :platforms => [:ruby_20, :ruby_19, :ruby_18]
+  gem 'coveralls', :require => false, :platforms => [:ruby_20, :ruby_19, :jruby]
+  gem 'simplecov-console', :platforms => [:ruby_20, :ruby_19]
 end
 
 group :masochism do
