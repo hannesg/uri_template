@@ -61,11 +61,11 @@ class URITemplate::RFC6570
 
     def expand( vars )
       result = []
-      @variable_specs.each{| var, expand , max_length |
-        unless vars[var].nil?
+      @variable_specs.each do | var, expand , max_length |
+        if Utils.def? vars[var]
           result.push(*expand_one(var, vars[var], expand, max_length))
         end
-      }
+      end
       if result.any?
         return (self.class::PREFIX + result.join(self.class::SEPARATOR))
       else

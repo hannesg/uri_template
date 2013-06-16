@@ -33,7 +33,41 @@ class URITemplate::RFC6570
   extend Forwardable
 
   # @private
-  Utils = URITemplate::Utils
+  module Utils
+
+    include URITemplate::Utils
+
+    # Returns true iff the value is `defined` [RFC6570 Section 2.3](http://tools.ietf.org/html/rfc6570#section-2.3)
+    # 
+    # The only undefined things are:
+    # - nil
+    # - arrays containing no defined value
+    # - associative arrays/hashes containing no defined value
+    #
+    # Things that are always defined:
+    # - Strings, independent of the length
+    def def?( value )
+      case( value )
+      when nil  then
+        false
+      when Hash then
+        value.any?{|_, v| !v.nil? }
+      when Array then
+        if value.none?
+          false
+        elsif value[0].kind_of?(Array)
+          value.any?{|_,v| !v.nil? }
+        else
+          value.any?{|v| !v.nil? }
+        end
+      else
+        true
+      end
+    end
+
+    extend self
+
+  end
 
   # :nocov:
   if Utils.use_unicode?
