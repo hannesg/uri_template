@@ -4,6 +4,7 @@
 
         tpl = URITemplate.new("/{var}/")
         tpl.expand(["value"]) # => '/value/'
+  - * BUGFIX: Expanding arrays/hashes with a length limit now actually works
 
 # 0.5.2 - 24.02.2013
   - + The colon based uri templates now allow more characters in variable names.

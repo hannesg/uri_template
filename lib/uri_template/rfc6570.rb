@@ -195,34 +195,6 @@ __REGEXP__
 
   end
 
-  class InvalidValue < StandardError
-
-    include URITemplate::InvalidValue
-
-    attr_reader :variable, :value
-
-    def initialize(variable, value)
-      @variable = variable
-      @value = value
-      super(generate_message())
-    end
-  protected
-
-    def generate_message()
-      return "The template variable " + variable.inspect + " cannot expand the given value "+ value.inspect
-    end
-
-  end
-
-  class InvalidValue::LengthLimitInapplicable < InvalidValue
-
-  protected
-    def generate_message()
-      return "The template variable "+variable.inspect+" has a length limit and therefore cannot expand an associative value ("+value.inspect+")."
-    end
-
-  end
-
   # @private
   class Tokenizer
 

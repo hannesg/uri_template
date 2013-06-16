@@ -97,15 +97,15 @@ describe URITemplate::RFC6570 do
 
     it "should refuse to expand a complex variable with length limit" do
 
-      t = URITemplate::RFC6570.new("{?assoc:10}")
-      lambda{ t.expand("assoc"=>{'foo'=>'bar'}) }.should raise_error
+      t = URITemplate::RFC6570.new("{?assoc:1}")
+      t.should expand("assoc"=>{'foo'=>'bar'}).to('?assoc=f')
 
     end
 
     it "should refuse to expand a array variable with length limit" do
 
-      t = URITemplate::RFC6570.new("{?array:10}")
-      lambda{ t.expand("array"=>["a","b"]) }.should raise_error
+      t = URITemplate::RFC6570.new("{?array:1}")
+      t.should expand("array"=>["a","b"]).to('?array=a')
 
     end
 

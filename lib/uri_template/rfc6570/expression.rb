@@ -101,11 +101,6 @@ class URITemplate::RFC6570
   private
 
     def expand_one( name, value, expand, max_length)
-      if length_limited?(max_length)
-        if value.kind_of?(Array) or value.kind_of?(Hash)
-          raise InvalidValue::LengthLimitInapplicable.new(name,value)
-        end
-      end
       if value.kind_of?(Hash) or Utils.pair_array?(value)
         return transform_hash(name, value, expand, max_length)
       elsif value.kind_of? Array
@@ -237,7 +232,7 @@ class URITemplate::RFC6570
       if expand
         hsh.map{|key,value| pair(escape(key),value) }
       else
-        [ self_pair(name,hsh){|key,value| escape(key)+self.class::LIST_CONNECTOR+escape(value)} ]
+        [ self_pair(name,hsh, max_length ){|key,value| escape(key)+self.class::LIST_CONNECTOR+escape(value)} ]
       end
     end
 
@@ -245,7 +240,7 @@ class URITemplate::RFC6570
       if expand
         ary.map{|value| self_pair(name,value) }
       else
-        [ self_pair(name, ary){|value| escape(value) } ]
+        [ self_pair(name, ary, max_length){|value| escape(value) } ]
       end
     end
   end
