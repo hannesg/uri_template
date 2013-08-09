@@ -1,18 +1,17 @@
 PATH
   remote: .
   specs:
-    uri_template (0.6.0)
+    uri_template (0.6.1)
 
 GEM
   remote: http://rubygems.org/
   specs:
-    abstract_type (0.0.5)
-      backports (~> 3.0, >= 3.0.3)
+    abstract_type (0.0.6)
     adamantium (0.0.7)
       backports (~> 3.0, >= 3.0.3)
       ice_nine (~> 0.7.0)
-    addressable (2.3.4)
-    backports (3.3.2)
+    addressable (2.3.5)
+    backports (3.3.3)
     colorize (0.5.8)
     coveralls (0.6.7)
       colorize
@@ -30,7 +29,7 @@ GEM
     ice_nine (0.7.0)
     inflecto (0.0.2)
     mime-types (1.23)
-    multi_json (1.7.7)
+    multi_json (1.7.8)
     mutant (0.2.20)
       abstract_type (~> 0.0.3)
       adamantium (~> 0.0.7)
@@ -43,8 +42,8 @@ GEM
       rspec (~> 2.13.0)
       to_source (~> 0.2.19)
     mutant-melbourne (2.0.3)
-    rake (10.0.4)
-    redcarpet (2.3.0)
+    rake (10.1.0)
+    redcarpet (3.0.0)
     rest-client (1.6.7)
       mime-types (>= 1.16)
     rspec (2.13.0)
@@ -69,7 +68,7 @@ GEM
       adamantium (~> 0.0.7)
       equalizer (~> 0.0.5)
       mutant-melbourne (~> 2.0.3)
-    yard (0.8.6.1)
+    yard (0.8.7)
 
 PLATFORMS
   java

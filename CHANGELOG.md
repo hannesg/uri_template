@@ -1,4 +1,4 @@
-# 0.6.0 - TBD
+# 0.6.0 - 09.08.2013
 
 * [FEATURE] partial expansion
 * [FEATURE] You can now pass variables as an Array to URITemplate#expand ( thanks to @bmaland )
