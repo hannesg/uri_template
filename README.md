@@ -38,7 +38,9 @@ Examples
     
     # This will give: {'x' => 'z'}
     tpl2.extract('/z/y')
-
+    
+    # This will give a new uri template with just the host expanded:
+    tpl.expand_partial(host: "www.host.com")
 
 RFC 6570 Syntax
 --------------------

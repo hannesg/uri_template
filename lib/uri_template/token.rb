@@ -57,6 +57,11 @@ module URITemplate::Token
   end
 
   # @abstract
+  def expand_partial(variables)
+    raise "Please implement #expand_partial(variables) on #{self.class.inspect}."
+  end
+
+  # @abstract
   def to_s
     raise "Please implement #to_s on #{self.class.inspect}."
   end

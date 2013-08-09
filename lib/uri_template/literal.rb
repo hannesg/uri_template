@@ -40,6 +40,10 @@ module URITemplate::Literal
     return string
   end
 
+  def expand_partial(_)
+    return [self]
+  end
+
   def starts_with_slash?
     string[0] == SLASH
   end

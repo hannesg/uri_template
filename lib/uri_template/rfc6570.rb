@@ -313,8 +313,17 @@ __REGEXP__
   #   URITemplate::RFC6570.new('{?args*}').expand('args'=>{'key'=>'value'}) #=> '?key=value'
   #   URITemplate::RFC6570.new('{undef}').expand() #=> ''
   #
-  # @param variables [Hash]
+  # @param variables [Hash, Array]
   # @return String
+
+  # @method expand_partial(variables = {})
+  # Works like expand but keeps missing variables in place.
+  # @example
+  #   URITemplate::RFC6570.new('{foo}').expand_partial('foo'=>'bar') #=> URITemplate::RFC6570.new('bar')
+  #   URITemplate::RFC6570.new('{undef}').expand_partial() #=> URITemplate::RFC6570.new('{undef}')
+  #
+  # @param variables [Hash,Array]
+  # @return URITemplate
 
   # Compiles this template into a regular expression which can be used to test whether a given uri matches this template. This template is also used for {#===}.
   #

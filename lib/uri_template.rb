@@ -200,23 +200,42 @@ RUBY
   # @param variables [#map, Array]
   # @return String
   def expand(variables = {})
-    raise ArgumentError, "Expected something that responds to :map, but got: #{variables.inspect}" unless variables.respond_to? :map
+    variables = normalize_variables(variables)
+    tokens.map{|part|
+      part.expand(variables)
+    }.join
+  end
 
+  # Works like #expand with two differences:
+  #
+  #  - the result is a uri template instead of string
+  #  - undefined variables are left in the template
+  # 
+  # @see {#expand}
+  # @param variables [#map, Array]
+  # @return [URITemplate]
+  def expand_partial(variables = {})
+    variables = normalize_variables(variables)
+    self.class.new(tokens.map{|part|
+      part.expand_partial(variables)
+    }.flatten(1))
+  end
+
+  def normalize_variables( variables )
+    raise ArgumentError, "Expected something that responds to :map, but got: #{variables.inspect}" unless variables.respond_to? :map
     if variables.kind_of?(Array)
-      variables = Hash[self.variables.zip(variables)]
+      return Hash[self.variables.zip(variables)]
     else
       # Stringify variables
       arg = variables.map{ |k, v| [k.to_s, v] }
       if arg.any?{|elem| !elem.kind_of?(Array) }
         raise ArgumentError, "Expected the output of variables.map to return an array of arrays but got #{arg.inspect}"
       end
-      variables = Hash[arg]
+      return Hash[arg]
     end
-
-    tokens.map{|part|
-      part.expand(variables)
-    }.join
   end
+
+  private :normalize_variables
 
   # @abstract
   # Returns the type of this template. The type is a symbol which can be used in {.resolve_class} to resolve the type of this template.

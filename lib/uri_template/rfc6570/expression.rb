@@ -73,6 +73,24 @@ class URITemplate::RFC6570
       end
     end
 
+    def expand_partial( vars )
+      result = []
+      defined = false
+      @variable_specs.each do | var, expand , max_length |
+        defined ||= vars.key? var
+        if Utils.def? vars[var]
+          result.push(*expand_one(var, vars[var], expand, max_length))
+        end
+      end
+      if result.any?
+        return [ Literal.new(self.class::PREFIX + result.join(self.class::SEPARATOR)) ]
+      elsif defined
+        return []
+      else
+        return [ self ]
+      end
+    end
+
     def extract(position,matched)
       name, expand, max_length = @variable_specs[position]
       if matched.nil?

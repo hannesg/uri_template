@@ -93,6 +93,29 @@ class URITemplate::ExpansionMatcher
 
 end
 
+class URITemplate::PartialExpansionMatcher
+
+  def initialize( variables, expected = nil )
+    @variables = variables
+    @expected = expected
+  end
+
+  def matches?( actual )
+    @actual = actual
+    s = @actual.expand_partial(@variables)
+    return Array(@expected).any?{|e| e == s }
+  end
+
+  def to(expected)
+    @expected = expected
+    return self
+  end
+
+  def failure_message_for_should
+    return [@actual.to_s, ' should not partially expand to ', @actual.expand_partial(@variables).to_s ,' but ', @expected.map(&:to_s).to_s, ' when given the following variables: ',"\n", @variables.inspect ].join 
+  end
+
+end
 class URITemplate::ExtractionMatcher
 
   def initialize( variables = nil, uri = '', fuzzy = true )
@@ -154,6 +177,10 @@ RSpec::Matchers.class_eval do
 
   def expand(variables = {})
     return URITemplate::ExpansionMatcher.new(variables)
+  end
+
+  def expand_partially(variables = {})
+    return URITemplate::PartialExpansionMatcher.new(variables)
   end
 
   def expand_to( variables,expected )

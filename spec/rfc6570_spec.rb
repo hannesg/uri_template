@@ -61,6 +61,17 @@ describe URITemplate::RFC6570 do
                 t.should expand(variables).to( results )
               end
 
+              it " should partially expand #{template} correctly with variables" do
+                results = Array(results)
+                t = URITemplate::RFC6570.new( template )
+                t.should expand_partially(variables).to( Array(results).map(&URITemplate::RFC6570.method(:new)) )
+              end
+
+              it " should partially expand #{template} correctly without variables" do
+                t = URITemplate::RFC6570.new( template )
+                t.should expand_partially({}).to( t )
+              end
+
               Array(results).each do |result|
 
                 it " should extract the variables from #{result} correctly " do
