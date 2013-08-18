@@ -17,7 +17,9 @@
 
 require 'uri_template/rfc6570'
 
-class URITemplate::RFC6570::Expression::Named < URITemplate::RFC6570::Expression
+class URITemplate::RFC6570
+
+class Expression::Named < Expression
 
   alias self_pair pair
 
@@ -54,6 +56,39 @@ class URITemplate::RFC6570::Expression::Named < URITemplate::RFC6570::Expression
     return source.join
   end
 
+  def expand_partial( vars )
+    result = []
+    rest   = []
+    defined = false
+    @variable_specs.each do | var, expand , max_length |
+      if vars.key? var
+        if Utils.def? vars[var]
+          if result.any? && !self.class::SEPARATOR.empty?
+            result.push( Literal.new(self.class::SEPARATOR) )
+          end
+          one = expand_one(var, vars[var], expand, max_length)
+          result.push( Literal.new(Array(one).join(self.class::SEPARATOR)) )
+        end
+        if expand
+          rest << [var, expand, max_length]
+        else
+          result.push( self.class::FOLLOW_UP.new([[var,expand,max_length]]) )
+        end
+      else
+        rest.push( [var,expand,max_length] )
+      end
+    end
+    if result.any?
+      unless self.class::PREFIX.empty? || empty_literals?( result )
+        result.unshift( Literal.new(self.class::PREFIX) )
+      end
+      result.push( self.class::BULK_FOLLOW_UP.new(rest) ) if rest.size != 0
+      return result
+    else
+      return [ self ]
+    end
+  end
+
 private
 
   def extracted_nil
@@ -69,4 +104,5 @@ private
     end
   end
 
+end
 end

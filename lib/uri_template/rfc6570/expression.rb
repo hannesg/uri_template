@@ -75,20 +75,33 @@ class URITemplate::RFC6570
 
     def expand_partial( vars )
       result = []
-      defined = false
+      follow_up = self.class::FOLLOW_UP
+      var_specs = []
       @variable_specs.each do | var, expand , max_length |
-        defined ||= vars.key? var
-        if Utils.def? vars[var]
-          result.push(*expand_one(var, vars[var], expand, max_length))
+        if vars.key? var
+          unless var_specs.none?
+            result.push( follow_up.new( var_specs ) )
+            var_specs = []
+          end
+          unless result.none?
+            result.push( Literal.new(self.class::SEPARATOR) )
+          end
+          one = Array(expand_one(var, vars[var], expand, max_length))
+          result.push( Literal.new(one.join(self.class::SEPARATOR)))
         end
+        var_specs << [var,expand,max_length]
       end
-      if result.any?
-        return [ Literal.new(self.class::PREFIX + result.join(self.class::SEPARATOR)) ]
-      elsif defined
-        return []
-      else
+      if result.none?
+        # no literal was emitted so far
         return [ self ]
       end
+      unless self.class::PREFIX.empty? || empty_literals?( result )
+        result.unshift( Literal.new(self.class::PREFIX) )
+      end
+      if var_specs.size != 0
+        result.push( follow_up.new( var_specs ) )
+      end
+      return result
     end
 
     def extract(position,matched)
@@ -261,12 +274,18 @@ class URITemplate::RFC6570
         [ self_pair(name, ary, max_length){|value| escape(value) } ]
       end
     end
+
+    def empty_literals?( list )
+      list.none?{|x| x.kind_of?(Literal) && !x.to_s.empty? }
+    end
   end
 
   require 'uri_template/rfc6570/expression/named'
   require 'uri_template/rfc6570/expression/unnamed'
 
   class Expression::Basic < Expression::Unnamed
+    FOLLOW_UP = self
+    BULK_FOLLOW_UP = self
   end
 
   class Expression::Reserved < Expression::Unnamed
@@ -274,6 +293,8 @@ class URITemplate::RFC6570
     CHARACTER_CLASS = CHARACTER_CLASSES[:unreserved_reserved_pct]
     OPERATOR = '+'.freeze
     BASE_LEVEL = 2
+    FOLLOW_UP = self
+    BULK_FOLLOW_UP = self
 
     def escape(x)
       Utils.escape_uri(Utils.object_to_param(x))
@@ -299,6 +320,8 @@ class URITemplate::RFC6570
     PREFIX = '#'.freeze
     OPERATOR = '#'.freeze
     BASE_LEVEL = 2
+    FOLLOW_UP = Expression::Reserved
+    BULK_FOLLOW_UP = Expression::Reserved
 
     def escape(x)
       Utils.escape_uri(Utils.object_to_param(x))
@@ -316,6 +339,8 @@ class URITemplate::RFC6570
     PREFIX = '.'.freeze
     OPERATOR = '.'.freeze
     BASE_LEVEL = 3
+    FOLLOW_UP = self
+    BULK_FOLLOW_UP = self
 
   end
 
@@ -325,6 +350,8 @@ class URITemplate::RFC6570
     PREFIX = '/'.freeze
     OPERATOR = '/'.freeze
     BASE_LEVEL = 3
+    FOLLOW_UP = self
+    BULK_FOLLOW_UP = self
 
     def starts_with_slash?
       true
@@ -339,15 +366,8 @@ class URITemplate::RFC6570
     PAIR_IF_EMPTY = false
     OPERATOR = ';'.freeze
     BASE_LEVEL = 3
-
-  end
-
-  class Expression::FormQuery < Expression::Named
-
-    SEPARATOR = '&'.freeze
-    PREFIX = '?'.freeze
-    OPERATOR = '?'.freeze
-    BASE_LEVEL = 3
+    FOLLOW_UP = self
+    BULK_FOLLOW_UP = self
 
   end
 
@@ -357,8 +377,21 @@ class URITemplate::RFC6570
     PREFIX = '&'.freeze
     OPERATOR = '&'.freeze
     BASE_LEVEL = 3
+    FOLLOW_UP = Expression::Basic
+    BULK_FOLLOW_UP = self
+  end
+
+  class Expression::FormQuery < Expression::Named
+
+    SEPARATOR = '&'.freeze
+    PREFIX = '?'.freeze
+    OPERATOR = '?'.freeze
+    BASE_LEVEL = 3
+    FOLLOW_UP = Expression::Basic
+    BULK_FOLLOW_UP = Expression::FormQueryContinuation
 
   end
+
 
   # @private
   OPERATORS = {

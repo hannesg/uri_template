@@ -61,15 +61,16 @@ describe URITemplate::RFC6570 do
                 t.should expand(variables).to( results )
               end
 
-              it " should partially expand #{template} correctly with variables" do
+              it " should partially expand #{template} correctly with variables", expand: :partially do
                 results = Array(results)
                 t = URITemplate::RFC6570.new( template )
-                t.should expand_partially(variables).to( Array(results).map(&URITemplate::RFC6570.method(:new)) )
+                pt = t.expand_partial(variables)
+                expect( pt ).to expand({}).to( results )
               end
 
-              it " should partially expand #{template} correctly without variables" do
+              it " should partially expand #{template} correctly without variables", expand: :partially do
                 t = URITemplate::RFC6570.new( template )
-                t.should expand_partially({}).to( t )
+                expect( t ).to expand_partially({}).to( t )
               end
 
               Array(results).each do |result|
@@ -146,6 +147,64 @@ describe URITemplate::RFC6570 do
       t.should expand('arr' => []).to("")
     end
 
+  end
+
+  describe "partial expansion", expand: :partially do
+
+    it "expands a simple expression partially without variables" do
+      t = URITemplate::RFC6570.new('{x}')
+      expect( t ).to expand_partially.to( t )
+    end
+
+    it "expands a simple expression partially with variables" do
+      t = URITemplate::RFC6570.new('{x}')
+      expect( t ).to expand_partially('x'=>'a').to( URITemplate::RFC6570.new('a{x}') )
+    end
+
+    it "expands a simple expression with multiple parts partially without variables" do
+      t = URITemplate::RFC6570.new('{x,y}')
+      expect( t ).to expand_partially.to( t )
+    end
+
+    it "expands a simple expression with multiple parts partially with variables" do
+      t = URITemplate::RFC6570.new('{x,y}')
+      expect( t ).to expand_partially('x'=>'a').to( URITemplate::RFC6570.new('a{x,y}') )
+    end
+
+    it "expands a simple expression with multiple parts partially with variables" do
+      t = URITemplate::RFC6570.new('{x,y}')
+      expect( t ).to expand_partially('y'=>'a').to( URITemplate::RFC6570.new('{x},a{y}') )
+    end
+
+    it "expands a fragment expression partially without variables" do
+      t = URITemplate::RFC6570.new('{#x}')
+      expect( t ).to expand_partially.to( t )
+    end
+
+    it "expands a fragment expression partially with variables" do
+      t = URITemplate::RFC6570.new('{#x}')
+      expect( t ).to expand_partially('x'=>'a').to( URITemplate::RFC6570.new('#a{+x}') )
+    end
+
+    it "expands a simple expression with multiple parts partially without variables" do
+      t = URITemplate::RFC6570.new('{#x,y}')
+      expect( t ).to expand_partially.to( t )
+    end
+
+    it "expands a simple expression with multiple parts partially with variables" do
+      t = URITemplate::RFC6570.new('{#x,y}')
+      expect( t ).to expand_partially('x'=>'a').to( URITemplate::RFC6570.new('#a{+x,y}') )
+    end
+
+    it "expands a simple expression with multiple parts partially with variables" do
+      t = URITemplate::RFC6570.new('{#x,y}')
+      expect( t ).to expand_partially('y'=>'a').to( URITemplate::RFC6570.new('#{+x},a{+y}') )
+    end
+
+    it "expands a form query with an explode" do
+      t = URITemplate::RFC6570.new('{?x*}')
+      expect( t ).to expand_partially('x'=>{'a'=>'b','c'=>'d'}).to( URITemplate::RFC6570.new('?a=b&c=d{&x*}') )
+    end
   end
 
   describe "extraction" do

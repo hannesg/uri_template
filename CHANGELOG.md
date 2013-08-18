@@ -1,3 +1,7 @@
+# 0.7.0 - TBD
+
+* [ENHANCEMENT] partial expansion has now more features
+
 # 0.6.0 - 09.08.2013
 
 * [FEATURE] partial expansion

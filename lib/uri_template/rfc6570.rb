@@ -319,7 +319,7 @@ __REGEXP__
   # @method expand_partial(variables = {})
   # Works like expand but keeps missing variables in place.
   # @example
-  #   URITemplate::RFC6570.new('{foo}').expand_partial('foo'=>'bar') #=> URITemplate::RFC6570.new('bar')
+  #   URITemplate::RFC6570.new('{foo}').expand_partial('foo'=>'bar') #=> URITemplate::RFC6570.new('bar{foo}')
   #   URITemplate::RFC6570.new('{undef}').expand_partial() #=> URITemplate::RFC6570.new('{undef}')
   #
   # @param variables [Hash,Array]

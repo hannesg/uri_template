@@ -97,7 +97,7 @@ class URITemplate::PartialExpansionMatcher
 
   def initialize( variables, expected = nil )
     @variables = variables
-    @expected = expected
+    @expected = Array(expected)
   end
 
   def matches?( actual )
@@ -107,12 +107,12 @@ class URITemplate::PartialExpansionMatcher
   end
 
   def to(expected)
-    @expected = expected
+    @expected = Array(expected)
     return self
   end
 
   def failure_message_for_should
-    return [@actual.to_s, ' should not partially expand to ', @actual.expand_partial(@variables).to_s ,' but ', @expected.map(&:to_s).to_s, ' when given the following variables: ',"\n", @variables.inspect ].join 
+    return [@actual.to_s, ' should not partially expand to ', @actual.expand_partial(@variables).to_s.inspect ,' but ', Array(@expected).map(&:to_s).to_s, ' when given the following variables: ',"\n", @variables.inspect ].join 
   end
 
 end
