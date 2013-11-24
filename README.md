@@ -17,7 +17,7 @@ require 'escape_utils'
 gem 'uri_template'
 require 'uri_template'
 
-UriTemplate::Utils.using_escape_utils? #=> true
+URITemplate::Utils.using_escape_utils? #=> true
 ```
 
 ## Examples
