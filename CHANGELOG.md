@@ -1,5 +1,6 @@
-# 0.7.0 - TBD
+# 0.7.0 - 21.03.2014
 
+* [CHANGE] Licence is now MIT
 * [ENHANCEMENT] partial expansion has now more features
 
 # 0.6.0 - 09.08.2013
