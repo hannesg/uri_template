@@ -285,7 +285,7 @@ describe URITemplate::RFC6570 do
 
       expect{
         URITemplate::RFC6570.convert( Object.new )
-      }.to raise_error
+      }.to raise_error(ArgumentError)
 
     end
 
