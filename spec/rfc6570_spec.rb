@@ -234,7 +234,7 @@ describe URITemplate::RFC6570 do
       t = URITemplate::RFC6570.new('{?assoc*}')
       t.extract('?a=b&c=d', URITemplate::RFC6570::CONVERT_RESULT).should == {'assoc' => [['a','b'],['c','d']] }
     end
-    
+
     it "accepts CONVERT_RESULT arg" do
       t = URITemplate::RFC6570.new('{?assoc*}')
       t.extract('?a=b&c=d', URITemplate::RFC6570::CONVERT_VALUES).should == [['assoc', {'a'=>'b','c'=>'d'}]]
@@ -361,25 +361,25 @@ describe URITemplate::RFC6570 do
     end
   end
 
-  describe 'host?' do 
+  describe 'host?' do
 
     it 'should be true if a reserved expansion is present' do
 
       tpl = URITemplate::RFC6570.new("{+foo}")
 
-      tpl.host?.should be_true
+      tpl.host?.should be true
 
     end
 
   end
 
-  describe 'scheme?' do 
+  describe 'scheme?' do
 
     it 'should be true if a reserved expansion is present' do
 
       tpl = URITemplate::RFC6570.new("{+foo}")
 
-      tpl.scheme?.should be_true
+      tpl.scheme?.should be true
 
     end
 

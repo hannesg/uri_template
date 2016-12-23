@@ -96,8 +96,8 @@ describe URITemplate do
       result = URITemplate.coerce('foo','bar')
       result[0].should be_kind_of(URITemplate)
       result[1].should be_kind_of(URITemplate)
-      result[2].should be_true
-      result[3].should be_true
+      result[2].should be true
+      result[3].should be true
 
     end
 
