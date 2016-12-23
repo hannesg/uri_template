@@ -44,7 +44,7 @@ class URITemplate::RFC6570
     include URITemplate::Utils
 
     # Returns true iff the value is `defined` [RFC6570 Section 2.3](http://tools.ietf.org/html/rfc6570#section-2.3)
-    # 
+    #
     # The only undefined things are:
     # - nil
     # - arrays containing no defined value
@@ -338,7 +338,7 @@ __REGEXP__
   #   regex = tpl.to_r
   #   regex === '/foo/baz/' #=> true
   #   regex === '/foz/baz/' #=> false
-  # 
+  #
   # @return Regexp
   def to_r
     @regexp ||= begin
@@ -352,7 +352,7 @@ __REGEXP__
   # Extracts variables from a uri ( given as string ) or an instance of MatchData ( which was matched by the regexp of this template.
   # The actual result depends on the value of post_processing.
   # This argument specifies whether pair arrays should be converted to hashes.
-  # 
+  #
   # @example Default Processing
   #   URITemplate::RFC6570.new('{var}').extract('value') #=> {'var'=>'value'}
   #   URITemplate::RFC6570.new('{&args*}').extract('&a=1&b=2') #=> {'args'=>{'a'=>'1','b'=>'2'}}
@@ -369,7 +369,7 @@ __REGEXP__
   #
   # @param uri_or_match [String,MatchData] Uri_or_MatchData A uri or a matchdata from which the variables should be extracted.
   # @param post_processing [Array] Processing Specifies which processing should be done.
-  # 
+  #
   # @note
   #   Don't expect that an extraction can fully recover the expanded variables. Extract rather generates a variable list which should expand to the uri from which it were extracted. In general the following equation should hold true:
   #     a_tpl.expand( a_tpl.extract( an_uri ) ) == an_uri
@@ -383,7 +383,7 @@ __REGEXP__
   #
   # @note
   #   The current implementation drops duplicated variables instead of checking them.
-  #   
+  #
   def extract(uri_or_match, post_processing = DEFAULT_PROCESSING )
     if uri_or_match.kind_of? String
       m = self.to_r.match(uri_or_match)
@@ -423,7 +423,7 @@ __REGEXP__
   # @method match(uri)
   # Alias for to_r.match . Matches this template against the given uri.
   # @yield MatchData
-  # @return MatchData, Object 
+  # @return MatchData, Object
   def_delegators :to_r, :match
 
   # The type of this template.
@@ -433,14 +433,14 @@ __REGEXP__
   #   tpl2 = URITemplate.new( tpl1.pattern, tpl1.type )
   #   tpl1 == tpl2 #=> true
   #
-  # @see {URITemplate#type}
+  # @see URITemplate#type
   def type
     self.class::TYPE
   end
 
   # Returns the level of this template according to the rfc 6570 ( http://tools.ietf.org/html/rfc6570#section-1.2 ). Higher level means higher complexity.
   # Basically this is defined as:
-  # 
+  #
   # * Level 1: no operators, one variable per expansion, no variable modifiers
   # * Level 2: '+' and '#' operators, one variable per expansion, no variable modifiers
   # * Level 3: all operators, multiple variables per expansion, no variable modifiers
