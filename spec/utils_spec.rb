@@ -13,29 +13,29 @@ describe URITemplate::Utils do
     it_should_behave_like "a string util helper"
 
     it "doesn't say it uses escape_utils" do
-      should_not be_using_escape_utils
+      is_expected.not_to be_using_escape_utils
     end
 
     it "converts to ascii" do
       result = subject.to_ascii("foo".encode(Encoding::UTF_8))
-      result.encoding.should == Encoding::ASCII
-      result.should == "foo".encode(Encoding::ASCII)
+      expect(result.encoding).to eq(Encoding::ASCII)
+      expect(result).to eq("foo".encode(Encoding::ASCII))
     end
 
     it "converts to utf8" do
       result = subject.to_utf8("foo".encode(Encoding::ASCII))
-      result.encoding.should == Encoding::UTF_8
-      result.should == "foo".encode(Encoding::UTF_8)
+      expect(result.encoding).to eq(Encoding::UTF_8)
+      expect(result).to eq("foo".encode(Encoding::UTF_8))
     end
 
     it "unescapes a multibyte pct string correctly" do
-      subject.unescape_uri("%C3%BC").should == "ü"
-      subject.unescape_url("%C3%BC").should == "ü"
+      expect(subject.unescape_uri("%C3%BC")).to eq("ü")
+      expect(subject.unescape_url("%C3%BC")).to eq("ü")
     end
 
     it "ignores case for pct encodes" do
-      subject.unescape_uri("%c3%Bc").should == "ü"
-      subject.unescape_url("%c3%Bc").should == "ü"
+      expect(subject.unescape_uri("%c3%Bc")).to eq("ü")
+      expect(subject.unescape_url("%c3%Bc")).to eq("ü")
     end
   end
 
@@ -51,15 +51,15 @@ describe URITemplate::Utils do
     it_should_behave_like "a string util helper"
 
     it "doesn't say it uses escape_utils" do
-      should_not be_using_escape_utils
+      is_expected.not_to be_using_escape_utils
     end
 
     it "passes thru to_ascii" do
-      subject.to_ascii("foo").should == "foo"
+      expect(subject.to_ascii("foo")).to eq("foo")
     end
 
     it "converts to utf8" do
-      subject.to_utf8("foo").should == "foo"
+      expect(subject.to_utf8("foo")).to eq("foo")
     end
   end
 
@@ -75,29 +75,29 @@ describe URITemplate::Utils do
     it_should_behave_like "a string util helper"
 
     it "says it uses escape_utils" do
-      should be_using_escape_utils
+      is_expected.to be_using_escape_utils
     end
 
     it "converts to ascii" do
       result = subject.to_ascii("foo".encode(Encoding::UTF_8))
-      result.encoding.should == Encoding::ASCII
-      result.should == "foo".encode(Encoding::ASCII)
+      expect(result.encoding).to eq(Encoding::ASCII)
+      expect(result).to eq("foo".encode(Encoding::ASCII))
     end
 
     it "converts to utf8" do
       result = subject.to_utf8("foo".encode(Encoding::ASCII))
-      result.encoding.should == Encoding::UTF_8
-      result.should == "foo".encode(Encoding::UTF_8)
+      expect(result.encoding).to eq(Encoding::UTF_8)
+      expect(result).to eq("foo".encode(Encoding::UTF_8))
     end
 
     it "unescapes a multibyte pct string correctly" do
-      subject.unescape_uri("%C3%BC").should == "ü"
-      subject.unescape_url("%C3%BC").should == "ü"
+      expect(subject.unescape_uri("%C3%BC")).to eq("ü")
+      expect(subject.unescape_url("%C3%BC")).to eq("ü")
     end
 
     it "ignores case for pct encodes" do
-      subject.unescape_uri("%c3%Bc").should == "ü"
-      subject.unescape_url("%c3%Bc").should == "ü"
+      expect(subject.unescape_uri("%c3%Bc")).to eq("ü")
+      expect(subject.unescape_url("%c3%Bc")).to eq("ü")
     end
   end
 
@@ -113,15 +113,15 @@ describe URITemplate::Utils do
     it_should_behave_like "a string util helper"
 
     it "says it uses escape_utils" do
-      should be_using_escape_utils
+      is_expected.to be_using_escape_utils
     end
 
     it "passes thru to_ascii" do
-      subject.to_ascii("foo").should == "foo"
+      expect(subject.to_ascii("foo")).to eq("foo")
     end
 
     it "converts to utf8" do
-      subject.to_utf8("foo").should == "foo"
+      expect(subject.to_utf8("foo")).to eq("foo")
     end
   end
 
@@ -136,7 +136,7 @@ describe URITemplate::Utils do
 
     it "returns an iterator if called without block" do
       enum = subject.new(/b/).each("aba")
-      enum.should be_a(Enumerable)
+      expect(enum).to be_a(Enumerable)
       expect{|b| enum.each(&b) }.to yield_successive_args("a", MatchData, "a")
     end
 

@@ -62,15 +62,15 @@ describe URITemplate do
     describe "at least" do
 
       it "has token size 0" do
-        BadURITemplate::BadToken.new.size.should == 0
+        expect(BadURITemplate::BadToken.new.size).to eq(0)
       end
 
       it "has empty variable array" do
-        BadURITemplate::BadToken.new.variables.should == []
+        expect(BadURITemplate::BadToken.new.variables).to eq([])
       end
 
       it "doesn't start with slash" do
-        BadURITemplate::BadToken.new.should_not be_starts_with_slash
+        expect(BadURITemplate::BadToken.new).not_to be_starts_with_slash
       end
 
     end
@@ -81,58 +81,58 @@ describe URITemplate do
 
     it 'should create templates' do
 
-      URITemplate.new('{x}').should be_kind_of URITemplate
+      expect(URITemplate.new('{x}')).to be_kind_of URITemplate
 
     end
 
     it 'should raise when given an invalid version' do
 
-      lambda{ URITemplate.new(:foo,'{x}') }.should raise_error(ArgumentError)
+      expect{ URITemplate.new(:foo,'{x}') }.to raise_error(ArgumentError)
 
     end
 
     it 'should coerce two strings' do
 
       result = URITemplate.coerce('foo','bar')
-      result[0].should be_kind_of(URITemplate)
-      result[1].should be_kind_of(URITemplate)
-      result[2].should be true
-      result[3].should be true
+      expect(result[0]).to be_kind_of(URITemplate)
+      expect(result[1]).to be_kind_of(URITemplate)
+      expect(result[2]).to be true
+      expect(result[3]).to be true
 
     end
 
     it 'should raise when arguments could not be coerced' do
 
-      lambda{
+      expect{
 
         URITemplate.coerce(Object.new,Object.new)
 
-      }.should raise_error(ArgumentError)
+      }.to raise_error(ArgumentError)
 
     end
 
     it 'should raise when arguments could not be coerced' do
 
-      lambda{
+      expect{
 
         URITemplate.coerce(BadURITemplate.new('x'),URITemplate.new('y'))
 
-      }.should raise_error(ArgumentError)
+      }.to raise_error(ArgumentError)
 
     end
 
     it 'should raise argument errors when convert fails' do
 
-      lambda{
+      expect{
         URITemplate.convert(Object.new)
-      }.should raise_error(ArgumentError)
+      }.to raise_error(ArgumentError)
 
     end
 
     it 'should not raise argument errors when convert succeds' do
 
-      URITemplate.convert('tpl').should be_kind_of(URITemplate)
-      URITemplate.convert(URITemplate.new('foo')).should be_kind_of(URITemplate)
+      expect(URITemplate.convert('tpl')).to be_kind_of(URITemplate)
+      expect(URITemplate.convert(URITemplate.new('foo'))).to be_kind_of(URITemplate)
 
     end
 
@@ -140,8 +140,8 @@ describe URITemplate do
 
       URITemplate::VERSIONS.each do |type|
         tpl = URITemplate.new(type, '/foo')
-        URITemplate.new(tpl.type, tpl.pattern).should == tpl
-        URITemplate.new(tpl.pattern, tpl.type).should == tpl
+        expect(URITemplate.new(tpl.type, tpl.pattern)).to eq(tpl)
+        expect(URITemplate.new(tpl.pattern, tpl.type)).to eq(tpl)
       end
 
     end
@@ -153,19 +153,19 @@ describe URITemplate do
       t = URITemplate.new("/foo{?bar}")
       v = { :bar => 'qux' }
 
-      t.expand(v).should == '/foo?bar=qux'
+      expect(t.expand(v)).to eq('/foo?bar=qux')
     end
 
     it 'should expand variables from a hash with mixed key types' do
       t = URITemplate.new("{/list*}/{?bar}")
       v = { :bar => 'qux', "list" => ['a', :b] }
 
-      t.expand(v).should == '/a/b/?bar=qux'
+      expect(t.expand(v)).to eq('/a/b/?bar=qux')
     end
 
     it 'should expand variables from an array' do
       t = URITemplate.new("/{foo}{/list*}/{?bar}")
-      t.should expand(['bar', ['a', :b], 'qux']).to '/bar/a/b/?bar=qux'
+      expect(t).to expand(['bar', ['a', :b], 'qux']).to '/bar/a/b/?bar=qux'
     end
   end
 
@@ -196,31 +196,31 @@ describe URITemplate do
     describe "path concatenation" do
 
       it 'should be possible between RFC6570("/prefix") and COLON("/suffix")' do
-        (URITemplate.new(:rfc6570, '/prefix') / URITemplate.new(:colon, '/suffix')).pattern.should == '/prefix/suffix'
+        expect((URITemplate.new(:rfc6570, '/prefix') / URITemplate.new(:colon, '/suffix')).pattern).to eq('/prefix/suffix')
       end
 
       it 'should be possible between COLON("/prefix") and RFC6570("/suffix")' do
-        (URITemplate.new(:colon, '/prefix') / URITemplate.new(:rfc6570, '/suffix')).pattern.should == '/prefix/suffix'
+        expect((URITemplate.new(:colon, '/prefix') / URITemplate.new(:rfc6570, '/suffix')).pattern).to eq('/prefix/suffix')
       end
 
       it 'should be possible between RFC6570("/{prefix}") and COLON("/suffix")' do
-        (URITemplate.new(:rfc6570, '/{prefix}') / URITemplate.new(:colon, '/suffix')).pattern.should == '/{prefix}/suffix'
+        expect((URITemplate.new(:rfc6570, '/{prefix}') / URITemplate.new(:colon, '/suffix')).pattern).to eq('/{prefix}/suffix')
       end
 
       it 'should be possible between RFC6570("/prefix") and COLON("/:suffix")' do
-        (URITemplate.new(:rfc6570, '/prefix') / URITemplate.new(:colon, '/:suffix')).pattern.should == '/prefix/{suffix}'
+        expect((URITemplate.new(:rfc6570, '/prefix') / URITemplate.new(:colon, '/:suffix')).pattern).to eq('/prefix/{suffix}')
       end
 
       it 'should be possible between COLON("/:prefix") and RFC6570("/suffix")' do
-        (URITemplate.new(:colon, '/:prefix') / URITemplate.new(:rfc6570, '/suffix')).pattern.should == '/:prefix/suffix'
+        expect((URITemplate.new(:colon, '/:prefix') / URITemplate.new(:rfc6570, '/suffix')).pattern).to eq('/:prefix/suffix')
       end
 
       it 'should be possible between COLON("/:prefix") and RFC6570("/{suffix}")' do
-        (URITemplate.new(:colon, '/:prefix') / URITemplate.new(:rfc6570, '/{suffix}')).pattern.should == '/:prefix/:suffix'
+        expect((URITemplate.new(:colon, '/:prefix') / URITemplate.new(:rfc6570, '/{suffix}')).pattern).to eq('/:prefix/:suffix')
       end
 
       it 'should be possible between COLON("/:prefix") and RFC6570("{/suffix}")' do
-        (URITemplate.new(:colon, '/:prefix') / URITemplate.new(:rfc6570, '{/suffix}')).pattern.should == '/{prefix}{/suffix}'
+        expect((URITemplate.new(:colon, '/:prefix') / URITemplate.new(:rfc6570, '{/suffix}')).pattern).to eq('/{prefix}{/suffix}')
       end
 
     end
@@ -230,11 +230,11 @@ describe URITemplate do
   describe "path concatenation" do
 
     it 'should be possible when the last template is empty' do
-      (URITemplate.new(:rfc6570, '/prefix') / URITemplate.new(:rfc6570, '')).pattern.should == '/prefix'
+      expect((URITemplate.new(:rfc6570, '/prefix') / URITemplate.new(:rfc6570, '')).pattern).to eq('/prefix')
     end
 
     it 'should be possible when the first template is empty' do
-      (URITemplate.new(:rfc6570, '') / URITemplate.new(:rfc6570, '/suffix')).pattern.should == '/suffix'
+      expect((URITemplate.new(:rfc6570, '') / URITemplate.new(:rfc6570, '/suffix')).pattern).to eq('/suffix')
     end
 
     it 'should raise when the last template contains a host' do
@@ -244,7 +244,7 @@ describe URITemplate do
     end
 
     it 'should be possible when a slash has to be removed from the first template' do
-      (URITemplate.new(:rfc6570, '/') / URITemplate.new(:rfc6570, '{/a}')).pattern.should == '{/a}'
+      expect((URITemplate.new(:rfc6570, '/') / URITemplate.new(:rfc6570, '{/a}')).pattern).to eq('{/a}')
     end
 
     it 'should be possible when a slash has to be removed from the last template' do
@@ -253,11 +253,11 @@ describe URITemplate do
       def last_token.ends_with_slash?
         true
       end
-      (tpl / URITemplate.new(:rfc6570, '/')).pattern.should == '{a}'
+      expect((tpl / URITemplate.new(:rfc6570, '/')).pattern).to eq('{a}')
     end
 
     it 'should be possible when a slash has to be inserted' do
-      (URITemplate.new(:rfc6570, 'a') / URITemplate.new(:rfc6570, 'b')).pattern.should == 'a/b'
+      expect((URITemplate.new(:rfc6570, 'a') / URITemplate.new(:rfc6570, 'b')).pattern).to eq('a/b')
     end
 
     it 'should raise when the last template contains a scheme' do
