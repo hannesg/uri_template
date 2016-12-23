@@ -71,8 +71,8 @@ class URITemplate::ExpansionMatcher
     return self
   end
 
-  def failure_message_for_should
-    return [@actual.inspect, ' should not expand to ', @actual.expand(@variables).inspect ,' but ', @expected.inspect, ' when given the following variables: ',"\n", @variables.inspect ].join 
+  def failure_message
+    return [@actual.inspect, ' should not expand to ', @actual.expand(@variables).inspect ,' but ', @expected.inspect, ' when given the following variables: ',"\n", @variables.inspect ].join
   end
 
 end
@@ -95,8 +95,8 @@ class URITemplate::PartialExpansionMatcher
     return self
   end
 
-  def failure_message_for_should
-    return [@actual.to_s, ' should not partially expand to ', @actual.expand_partial(@variables).to_s.inspect ,' but ', Array(@expected).map(&:to_s).to_s, ' when given the following variables: ',"\n", @variables.inspect ].join 
+  def failure_message
+    return [@actual.to_s, ' should not partially expand to ', @actual.expand_partial(@variables).to_s.inspect ,' but ', Array(@expected).map(&:to_s).to_s, ' when given the following variables: ',"\n", @variables.inspect ].join
   end
 
 end
@@ -105,7 +105,7 @@ class URITemplate::ExtractionMatcher
   def initialize( variables = nil, uri = '', fuzzy = true )
     @variables = variables.nil? ? variables : Hash[ variables.map{|k,v| [k.to_s, v]} ]
     @fuzzy = fuzzy
-    @uri = uri 
+    @uri = uri
   end
 
   def from( uri )
@@ -151,7 +151,7 @@ class URITemplate::ExtractionMatcher
     end
   end
 
-  def failure_message_for_should
+  def failure_message
     return @message.join
   end
 
