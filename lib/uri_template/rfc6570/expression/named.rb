@@ -65,7 +65,6 @@ class Expression::Named < Expression
   def expand_partial( vars )
     result = []
     rest   = []
-    defined = false
     @variable_specs.each do | var, expand , max_length |
       if vars.key? var
         if Utils.def? vars[var]
