@@ -50,6 +50,7 @@ RSpec.describe URITemplate::Colon do
     it "should handle optional params" do
 
       tpl = URITemplate.new(:colon, '/?:foo?/?:bar?')
+      expect(tpl).to be_truthy
 
     end
 
