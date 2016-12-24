@@ -1,7 +1,7 @@
 # -*- encoding : utf-8 -*-
 require 'uri_template_shared'
 
-describe URITemplate::Colon do
+RSpec.describe URITemplate::Colon do
 
   it_should_behave_like "a uri template class"
 
@@ -9,7 +9,7 @@ describe URITemplate::Colon do
 
   describe "general" do
     it "says it's of type :colon" do
-      URITemplate.new(:colon, '/foo').type.should == :colon
+      expect(URITemplate.new(:colon, '/foo').type).to eq(:colon)
     end
   end
 
@@ -17,7 +17,7 @@ describe URITemplate::Colon do
 
     it "should support variable names with underscores" do
       tpl = URITemplate.new(:colon, '/foo/:foo_bar/')
-      tpl.variables.should == ['foo_bar']
+      expect(tpl.variables).to eq(['foo_bar'])
     end
 
   end
@@ -28,7 +28,7 @@ describe URITemplate::Colon do
 
       tpl = URITemplate.new(:colon, '/foo/{:bar}a/')
 
-      tpl.should extract('bar' => 'baz').from('/foo/baza/')
+      expect(tpl).to extract('bar' => 'baz').from('/foo/baza/')
 
     end
 
@@ -36,20 +36,21 @@ describe URITemplate::Colon do
 
       tpl = URITemplate.new(:colon, '/föö' )
 
-      tpl.should extract.from('/f%C3%B6%C3%B6')
+      expect(tpl).to extract.from('/f%C3%B6%C3%B6')
 
     end
 
     it "should handle encoded stuff correctly" do
 
       tpl = URITemplate.new(:colon, '/:a' )
-      tpl.should extract('a'=>'foo/bar').from('/foo%2Fbar')
+      expect(tpl).to extract('a'=>'foo/bar').from('/foo%2Fbar')
 
     end
 
     it "should handle optional params" do
 
       tpl = URITemplate.new(:colon, '/?:foo?/?:bar?')
+      expect(tpl).to be_truthy
 
     end
 
@@ -57,7 +58,7 @@ describe URITemplate::Colon do
 
       tpl = URITemplate.new(:colon, '/foo/{:bar}a/')
 
-      tpl.should_not extract.from('/foo/foo/')
+      expect(tpl).not_to extract.from('/foo/foo/')
 
     end
 
@@ -65,8 +66,8 @@ describe URITemplate::Colon do
 
       tpl = URITemplate.new(:colon, '/foo/*')
 
-      tpl.should extract('splat' => ['bar%20z']).from('/foo/bar%20z')
-      tpl.should extract('splat' => ['bar/z']).from('/foo/bar/z')
+      expect(tpl).to extract('splat' => ['bar%20z']).from('/foo/bar%20z')
+      expect(tpl).to extract('splat' => ['bar/z']).from('/foo/bar/z')
 
     end
 
@@ -74,7 +75,7 @@ describe URITemplate::Colon do
 
       tpl = URITemplate.new(:colon, '/*/*.*')
 
-      tpl.should extract('splat' => ['dir','b/c','ext']).from('/dir/b/c.ext')
+      expect(tpl).to extract('splat' => ['dir','b/c','ext']).from('/dir/b/c.ext')
 
     end
 
@@ -82,21 +83,21 @@ describe URITemplate::Colon do
 
       tpl = URITemplate.new(:colon, '/:foo/:bar')
 
-      tpl.should extract('foo'=>'user@example.com','bar'=>'name').from('/user@example.com/name')
+      expect(tpl).to extract('foo'=>'user@example.com','bar'=>'name').from('/user@example.com/name')
 
     end
 
     it "should match dots, parens and pluses in paths" do
 
       tpl = URITemplate.new(:colon, '/+/(foo)/:file.:ext')
-      tpl.should extract('file'=>'pony','ext'=>'jpg').from('/+/(foo)/pony.jpg')
+      expect(tpl).to extract('file'=>'pony','ext'=>'jpg').from('/+/(foo)/pony.jpg')
 
     end
 
     it "should encode literal spaces" do
 
       tpl = URITemplate.new(:colon, ' ')
-      tpl.should extract.from('%20')
+      expect(tpl).to extract.from('%20')
 
     end
 
@@ -108,7 +109,7 @@ describe URITemplate::Colon do
 
       tpl = URITemplate.new(:colon, '/foo/:bar/')
 
-      tpl.should expand('bar'=>'baz').to '/foo/baz/'
+      expect(tpl).to expand('bar'=>'baz').to '/foo/baz/'
 
     end
 
@@ -116,7 +117,7 @@ describe URITemplate::Colon do
 
       tpl = URITemplate.new(:colon, '/foo/{:bar}a/')
 
-      tpl.should expand('bar'=>'baz').to '/foo/baza/'
+      expect(tpl).to expand('bar'=>'baz').to '/foo/baza/'
 
     end
 
@@ -124,7 +125,7 @@ describe URITemplate::Colon do
 
       tpl = URITemplate.new(:colon, '/foo/*')
 
-      tpl.should expand('splat' => ['bar z']).to('/foo/bar%20z')
+      expect(tpl).to expand('splat' => ['bar z']).to('/foo/bar%20z')
 
     end
 
@@ -132,13 +133,13 @@ describe URITemplate::Colon do
 
       tpl = URITemplate.new(:colon, '/*/*.*')
 
-      tpl.should expand('splat' => ['dir','b/c','ext'] ).to('/dir/b/c.ext')
+      expect(tpl).to expand('splat' => ['dir','b/c','ext'] ).to('/dir/b/c.ext')
     end
 
     it 'should support splats using array expansion' do
 
       tpl = URITemplate.new(:colon, '/*/*.*')
-      tpl.should expand([['dir','b/c','ext']] ).to('/dir/b/c.ext')
+      expect(tpl).to expand([['dir','b/c','ext']] ).to('/dir/b/c.ext')
 
     end
 
@@ -152,7 +153,7 @@ describe URITemplate::Colon do
     it "should encode literal spaces" do
 
       tpl = URITemplate.new(:colon, ' ')
-      tpl.should expand.to('%20')
+      expect(tpl).to expand.to('%20')
 
     end
 

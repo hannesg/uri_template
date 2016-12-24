@@ -20,7 +20,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
-require 'uri_template/rfc6570'
+require 'uri_template/rfc6570' unless defined? URITemplate::RFC6570
 
 class URITemplate::RFC6570
 
@@ -253,7 +253,7 @@ class URITemplate::RFC6570
     def pair(key, value, max_length = 0, &block)
       ek = key
       if block
-        ev = value.map(&block).join(self.class::LIST_CONNECTOR) 
+        ev = value.map(&block).join(self.class::LIST_CONNECTOR)
       else
         ev = escape(value)
       end

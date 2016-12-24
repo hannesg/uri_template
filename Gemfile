@@ -1,5 +1,5 @@
 # sigh, same setting everywhere ...
-source "http://rubygems.org"
+source "https://rubygems.org"
 gemspec
 
 group :development do

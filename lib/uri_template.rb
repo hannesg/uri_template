@@ -42,7 +42,7 @@ module URITemplate
     end
 
     # Same as {.try_convert} but raises an ArgumentError when the given argument could not be converted.
-    # 
+    #
     # @raise ArgumentError if the argument is unconvertable
     # @return {URITemplate}
     def convert(x)
@@ -89,12 +89,12 @@ module URITemplate
   # Extracts all symbols from args and looks up the first in {VERSIONS}.
   #
   # @return Array an array of the class to use and the unused parameters.
-  # 
+  #
   # @example
   #   URITemplate.resolve_class() #=> [ URITemplate::RFC6570, [] ]
   #   URITemplate.resolve_class(:colon) #=> [ URITemplate::Colon, [] ]
   #   URITemplate.resolve_class("template",:rfc6570) #=> [ URITemplate::RFC6570, ["template"] ]
-  # 
+  #
   # @raise ArgumentError when no class was found.
   #
   def self.resolve_class(*args)
@@ -114,7 +114,7 @@ module URITemplate
   #
   # @example
   #   tpl = URITemplate.new(:colon,'/:x') # a new template using the colon implementation
-  # 
+  #
   def self.new(*args)
     klass, rest = resolve_class(*args)
     return klass.new(*rest)
@@ -163,7 +163,7 @@ module URITemplate
   #   URITemplate.apply( tpl, :/, 'bar' ).pattern #=> 'foo/bar'
   #   URITemplate.apply( 'baz', :/, tpl ).pattern #=> 'baz/foo'
   #   URITemplate.apply( 'bla', :/, 'blub' ).pattern #=> 'bla/blub'
-  # 
+  #
   def self.apply(a, method, b, *args)
     a,b,_,_ = self.coerce(a,b)
     a.send(method,b,*args)
@@ -216,8 +216,8 @@ RUBY
   #
   #  - the result is a uri template instead of string
   #  - undefined variables are left in the template
-  # 
-  # @see {#expand}
+  #
+  # @see #expand
   # @param variables [#map, Array]
   # @return [URITemplate]
   def expand_partial(variables = {})
@@ -285,7 +285,7 @@ RUBY
 
   # Returns whether this uri-template includes a host name
   #
-  # This method is usefull to check wheter this template will generate 
+  # This method is usefull to check wheter this template will generate
   # or match a uri with a host.
   #
   # @see #scheme?
@@ -303,9 +303,9 @@ RUBY
 
   # Returns whether this uri-template includes a scheme
   #
-  # This method is usefull to check wheter this template will generate 
+  # This method is usefull to check wheter this template will generate
   # or match a uri with a scheme.
-  # 
+  #
   # @see #host?
   #
   # @example
@@ -411,7 +411,7 @@ RUBY
 
   # @api private
   def scheme_and_host
-    return @scheme_and_host if @scheme_and_host
+    return @scheme_and_host if defined?(@scheme_and_host) && @scheme_and_host
     read_chars = ""
     @scheme_and_host = [false,false]
     tokens.each do |token|

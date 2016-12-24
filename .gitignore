@@ -4,3 +4,4 @@
 coverage/assets
 coverage/.resultset.json
 coverage/index.html
+spec/examples.txt

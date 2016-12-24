@@ -2,7 +2,7 @@
 require 'uri_template'
 require 'uri_template_shared'
 
-describe URITemplate::RFC6570 do
+RSpec.describe URITemplate::RFC6570 do
 
   it_should_behave_like "a uri template class"
 
@@ -43,7 +43,7 @@ describe URITemplate::RFC6570 do
               it " should expand #{template} correctly " do
                 results = Array(results)
                 t = URITemplate::RFC6570.new( template )
-                t.should expand(variables).to( results )
+                expect(t).to expand(variables).to( results )
               end
 
               it " should partially expand #{template} correctly with variables", expand: :partially do
@@ -62,8 +62,8 @@ describe URITemplate::RFC6570 do
 
                 it " should extract the variables from #{result} correctly " do
                   t = URITemplate::RFC6570.new( template )
-                  t.should extract.from(result)
-                  t.should expand_to( t.extract(result) , RUBY_VERSION > "1.9" ? result : results )
+                  expect(t).to extract.from(result)
+                  expect(t).to expand_to( t.extract(result) , RUBY_VERSION > "1.9" ? result : results )
                 end
 
               end
@@ -84,8 +84,8 @@ describe URITemplate::RFC6570 do
   describe "syntax" do
 
     it "should refuse variables with terminal dots" do
-      lambda{ URITemplate::RFC6570.new('{var.}') }.should raise_error(URITemplate::Invalid)
-      lambda{ URITemplate::RFC6570.new('{..var.}') }.should raise_error(URITemplate::Invalid)
+      expect{ URITemplate::RFC6570.new('{var.}') }.to raise_error(URITemplate::Invalid)
+      expect{ URITemplate::RFC6570.new('{..var.}') }.to raise_error(URITemplate::Invalid)
     end
 
   end
@@ -95,41 +95,41 @@ describe URITemplate::RFC6570 do
     it "should refuse to expand a complex variable with length limit" do
 
       t = URITemplate::RFC6570.new("{?assoc:1}")
-      t.should expand("assoc"=>{'foo'=>'bar'}).to('?assoc=f')
+      expect(t).to expand("assoc"=>{'foo'=>'bar'}).to('?assoc=f')
 
     end
 
     it "should refuse to expand a array variable with length limit" do
 
       t = URITemplate::RFC6570.new("{?array:1}")
-      t.should expand("array"=>["a","b"]).to('?array=a')
+      expect(t).to expand("array"=>["a","b"]).to('?array=a')
 
     end
 
     it 'should expand assocs with dots' do
 
       t = URITemplate::RFC6570.new("{?assoc*}")
-      t.should expand("assoc" => {'.'=>'dot'}).to('?.=dot')
+      expect(t).to expand("assoc" => {'.'=>'dot'}).to('?.=dot')
 
     end
 
     it 'should expand assocs with minus' do
 
       t = URITemplate::RFC6570.new("{?assoc*}")
-      t.should expand("assoc" => {'-'=>'minus'}).to('?-=minus')
+      expect(t).to expand("assoc" => {'-'=>'minus'}).to('?-=minus')
 
     end
 
     it 'should expand assocs when using array expansion' do
 
       t = URITemplate::RFC6570.new("{?assoc*}")
-      t.should expand([{'.'=>'dot'}]).to('?.=dot')
+      expect(t).to expand([{'.'=>'dot'}]).to('?.=dot')
 
     end
 
     it 'should expand empty arrays' do
       t = URITemplate::RFC6570.new("{arr}")
-      t.should expand('arr' => []).to("")
+      expect(t).to expand('arr' => []).to("")
     end
 
   end
@@ -197,47 +197,47 @@ describe URITemplate::RFC6570 do
     it ' should ignore draf7-style lists' do
 
       t = URITemplate::RFC6570.new("{?list*}")
-      t.extract('?a&b&c').should be_nil
-      t.should extract('list'=>%w{a b c}).from('?list=a&list=b&list=c')
+      expect(t.extract('?a&b&c')).to be_nil
+      expect(t).to extract('list'=>%w{a b c}).from('?list=a&list=b&list=c')
 
     end
 
     it 'should extract multiple reserved lists' do
 
       t = URITemplate::RFC6570.new("{+listA*,listB*}")
-      t.should extract('listA'=>%w{a b c},'listB'=>%w{d}).from('a,b,c,d')
+      expect(t).to extract('listA'=>%w{a b c},'listB'=>%w{d}).from('a,b,c,d')
 
     end
 
     it 'should extract assocs with dots' do
 
       t = URITemplate::RFC6570.new("{?assoc*}")
-      t.should extract("assoc" => {'.'=>'dot'}).from('?.=dot')
+      expect(t).to extract("assoc" => {'.'=>'dot'}).from('?.=dot')
 
     end
 
     it 'should extract assocs with minus' do
 
       t = URITemplate::RFC6570.new("{?assoc*}")
-      t.should extract("assoc" => {'-'=>'minus'}).from('?-=minus')
+      expect(t).to extract("assoc" => {'-'=>'minus'}).from('?-=minus')
 
     end
 
     it 'should extract from it\'s owns regex\' match ' do
 
       t = URITemplate::RFC6570.new("{simple}")
-      t.should extract("simple" => "yes").from(t.to_r.match("yes"))
+      expect(t).to extract("simple" => "yes").from(t.to_r.match("yes"))
 
     end
 
     it "accepts CONVERT_VALUES arg" do
       t = URITemplate::RFC6570.new('{?assoc*}')
-      t.extract('?a=b&c=d', URITemplate::RFC6570::CONVERT_RESULT).should == {'assoc' => [['a','b'],['c','d']] }
+      expect(t.extract('?a=b&c=d', URITemplate::RFC6570::CONVERT_RESULT)).to eq({'assoc' => [['a','b'],['c','d']] })
     end
-    
+
     it "accepts CONVERT_RESULT arg" do
       t = URITemplate::RFC6570.new('{?assoc*}')
-      t.extract('?a=b&c=d', URITemplate::RFC6570::CONVERT_VALUES).should == [['assoc', {'a'=>'b','c'=>'d'}]]
+      expect(t.extract('?a=b&c=d', URITemplate::RFC6570::CONVERT_VALUES)).to eq([['assoc', {'a'=>'b','c'=>'d'}]])
     end
 
     it "correctly refuses wrong MatchData", :if => //.match("").respond_to?(:regexp) do
@@ -259,7 +259,7 @@ describe URITemplate::RFC6570 do
 
     it "extracts without postproccessing" do
       t = URITemplate::RFC6570.new('{?assoc*}')
-      t.extract_simple('?a=b&c=d').should == [['assoc',[['a','b'],['c','d']]]]
+      expect(t.extract_simple('?a=b&c=d')).to eq([['assoc',[['a','b'],['c','d']]]])
     end
 
   end
@@ -268,16 +268,16 @@ describe URITemplate::RFC6570 do
 
     it ' should convert simple colon templates' do
 
-      URITemplate::RFC6570.try_convert( URITemplate::Colon.new(':var') ).should_not be_nil
+      expect(URITemplate::RFC6570.try_convert( URITemplate::Colon.new(':var') )).not_to be_nil
 
     end
 
     it ' should convert colon templates with correct escaping' do
 
       tpl = URITemplate::RFC6570.try_convert( URITemplate::Colon.new('öö') )
-      tpl.should_not be_nil
+      expect(tpl).not_to be_nil
 
-      tpl.should extract.from('%C3%B6%C3%B6')
+      expect(tpl).to extract.from('%C3%B6%C3%B6')
 
     end
 
@@ -285,7 +285,7 @@ describe URITemplate::RFC6570 do
 
       expect{
         URITemplate::RFC6570.convert( Object.new )
-      }.to raise_error
+      }.to raise_error(ArgumentError)
 
     end
 
@@ -300,86 +300,86 @@ describe URITemplate::RFC6570 do
       description do
         "be a template with level #{expected} (according to RFC6570)"
       end
-      failure_message_for_should do |actual|
+      failure_message do |actual|
         "expected that #{actual.inspect} is a template with level #{expected}, but is #{actual.level}(according to RFC6570)"
       end
     end
 
     it "should be correctly determined for {var}" do
-      URITemplate::RFC6570.new("{var}").should have_level(1)
+      expect(URITemplate::RFC6570.new("{var}")).to have_level(1)
     end
     it "should be correctly determined for O{empty}X" do
-      URITemplate::RFC6570.new("O{empty}X").should have_level(1)
+      expect(URITemplate::RFC6570.new("O{empty}X")).to have_level(1)
     end
     it "should be correctly determined for {x,y}" do
-      URITemplate::RFC6570.new("{x,y}").should have_level(3)
+      expect(URITemplate::RFC6570.new("{x,y}")).to have_level(3)
     end
     it "should be correctly determined for {var:3}" do
-      URITemplate::RFC6570.new("{var:3}").should have_level(4)
+      expect(URITemplate::RFC6570.new("{var:3}")).to have_level(4)
     end
     it "should be correctly determined for {list*}" do
-      URITemplate::RFC6570.new("{list*}").should have_level(4)
+      expect(URITemplate::RFC6570.new("{list*}")).to have_level(4)
     end
     it "should be correctly determined for {+var}" do
-      URITemplate::RFC6570.new("{+var}").should have_level(2)
+      expect(URITemplate::RFC6570.new("{+var}")).to have_level(2)
     end
     it "should be correctly determined for {+x,hello,y}" do
-      URITemplate::RFC6570.new("{+x,hello,y}").should have_level(3)
+      expect(URITemplate::RFC6570.new("{+x,hello,y}")).to have_level(3)
     end
     it "should be correctly determined for {+path:6}/here" do
-      URITemplate::RFC6570.new("{+path:6}/here").should have_level(4)
+      expect(URITemplate::RFC6570.new("{+path:6}/here")).to have_level(4)
     end
     it "should be correctly determined for {+list*}" do
-      URITemplate::RFC6570.new("{+list*}").should have_level(4)
+      expect(URITemplate::RFC6570.new("{+list*}")).to have_level(4)
     end
     it "should be correctly determined for {#var}" do
-      URITemplate::RFC6570.new("{#var}").should have_level(2)
+      expect(URITemplate::RFC6570.new("{#var}")).to have_level(2)
     end
     it "should be correctly determined for {#x,hello,y}" do
-      URITemplate::RFC6570.new("{#x,hello,y}").should have_level(3)
+      expect(URITemplate::RFC6570.new("{#x,hello,y}")).to have_level(3)
     end
     it "should be correctly determined for {#path:6}/here" do
-      URITemplate::RFC6570.new("{#path:6}/here").should have_level(4)
+      expect(URITemplate::RFC6570.new("{#path:6}/here")).to have_level(4)
     end
     it "should be correctly determined for {#list*}" do
-      URITemplate::RFC6570.new("{#list*}").should have_level(4)
+      expect(URITemplate::RFC6570.new("{#list*}")).to have_level(4)
     end
     it "should be correctly determined for {.who}" do
-      URITemplate::RFC6570.new("{.who}").should have_level(3)
+      expect(URITemplate::RFC6570.new("{.who}")).to have_level(3)
     end
     it "should be correctly determined for {.who,who}" do
-      URITemplate::RFC6570.new("{.who,who}").should have_level(3)
+      expect(URITemplate::RFC6570.new("{.who,who}")).to have_level(3)
     end
     it "should be correctly determined for X{.list*}" do
-      URITemplate::RFC6570.new("X{.list*}").should have_level(4)
+      expect(URITemplate::RFC6570.new("X{.list*}")).to have_level(4)
     end
     it "should be correctly determined for {/who}" do
-      URITemplate::RFC6570.new("{/who}").should have_level(3)
+      expect(URITemplate::RFC6570.new("{/who}")).to have_level(3)
     end
     it "should be correctly determined for {/who,who}" do
-      URITemplate::RFC6570.new("{/who,who}").should have_level(3)
+      expect(URITemplate::RFC6570.new("{/who,who}")).to have_level(3)
     end
   end
 
-  describe 'host?' do 
+  describe 'host?' do
 
     it 'should be true if a reserved expansion is present' do
 
       tpl = URITemplate::RFC6570.new("{+foo}")
 
-      tpl.host?.should be_true
+      expect(tpl.host?).to be true
 
     end
 
   end
 
-  describe 'scheme?' do 
+  describe 'scheme?' do
 
     it 'should be true if a reserved expansion is present' do
 
       tpl = URITemplate::RFC6570.new("{+foo}")
 
-      tpl.scheme?.should be_true
+      expect(tpl.scheme?).to be true
 
     end
 
