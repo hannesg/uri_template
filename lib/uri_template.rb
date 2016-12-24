@@ -411,7 +411,7 @@ RUBY
 
   # @api private
   def scheme_and_host
-    return @scheme_and_host if @scheme_and_host
+    return @scheme_and_host if defined?(@scheme_and_host) && @scheme_and_host
     read_chars = ""
     @scheme_and_host = [false,false]
     tokens.each do |token|
