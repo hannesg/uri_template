@@ -1,5 +1,5 @@
 # -*- encoding : utf-8 -*-
-describe URITemplate::Utils do
+RSpec.describe URITemplate::Utils do
 
   describe "pure escape + native encoding", :if => "".respond_to?(:encoding) do
 

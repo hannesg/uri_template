@@ -2,7 +2,7 @@
 require 'uri_template'
 require 'uri_template_shared'
 
-describe URITemplate::RFC6570 do
+RSpec.describe URITemplate::RFC6570 do
 
   it_should_behave_like "a uri template class"
 

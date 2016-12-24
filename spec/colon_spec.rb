@@ -1,7 +1,7 @@
 # -*- encoding : utf-8 -*-
 require 'uri_template_shared'
 
-describe URITemplate::Colon do
+RSpec.describe URITemplate::Colon do
 
   it_should_behave_like "a uri template class"
 

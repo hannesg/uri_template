@@ -1,7 +1,7 @@
 # -*- encoding : utf-8 -*-
 require 'uri_template'
 
-describe URITemplate do
+RSpec.describe URITemplate do
 
   class BadURITemplate
 

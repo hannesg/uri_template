@@ -1,5 +1,5 @@
 # -*- encoding : utf-8 -*-
-shared_examples "a uri template class" do
+RSpec.shared_examples "a uri template class" do
 
   it "should include URITemplate" do
     expect(described_class.ancestors).to include(URITemplate)
@@ -112,7 +112,7 @@ shared_examples "a uri template class" do
 end
 
 
-shared_examples "a uri template class with extraction" do
+RSpec.shared_examples "a uri template class with extraction" do
 
   it "should respond to extract" do
     expect(described_class.new("")).to respond_to(:extract)
@@ -155,7 +155,7 @@ shared_examples "a uri template class with extraction" do
 
 end
 
-shared_examples "a string util helper" do
+RSpec.shared_examples "a string util helper" do
 
   it "escapes an empty string correctly" do
     expect(subject.escape_uri("")).to eq("")
