@@ -1,11 +1,10 @@
 # URITemplate - a uri template library
 
-[![Build Status](https://secure.travis-ci.org/hannesg/uri_template.png)](http://travis-ci.org/hannesg/uri_template)
-[![Dependency Status](https://gemnasium.com/hannesg/uri_template.png)](https://gemnasium.com/hannesg/uri_template)
-[![Code Climate](https://codeclimate.com/github/hannesg/uri_template.png)](https://codeclimate.com/github/hannesg/uri_template)
-[![Coverage](https://coveralls.io/repos/hannesg/uri_template/badge.png?branch=master)](https://coveralls.io/r/hannesg/uri_template)
+[![Build Status](https://secure.travis-ci.org/hannesg/uri_template.svg)](http://travis-ci.org/hannesg/uri_template)
+[![Code Climate](https://codeclimate.com/github/hannesg/uri_template.svg)](https://codeclimate.com/github/hannesg/uri_template)
+[![Coverage](https://coveralls.io/repos/hannesg/uri_template/badge.svg?branch=master)](https://coveralls.io/r/hannesg/uri_template)
 
-With URITemplate you can generate URIs based on simple templates and extract variables from URIs using the same templates. There are currently two syntaxes defined. Namely the one defined in [RFC 6570]( http://tools.ietf.org/html/rfc6570 ) and a colon based syntax, similiar to the one used by sinatra.
+With URITemplate you can generate URIs based on simple templates and extract variables from URIs using the same templates. There are currently two syntaxes defined. Namely, the one defined in [RFC 6570]( http://tools.ietf.org/html/rfc6570 ) and a colon based syntax, similar to the one used by sinatra.
 
 From version 0.2.0, it will use escape_utils if available. This will significantly boost uri-escape/unescape performance if more characters need to be escaped ( may be slightly slower in trivial cases. working on that ... ), but does not run everywhere. To enable this, do the following:
 

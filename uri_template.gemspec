@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
 
   s.license = 'MIT'
 
-  s.files = Dir.glob('lib/**/**/*.rb') + ['uri_template.gemspec', 'README.md', 'CHANGELOG.md']
+  s.files = Dir.glob('lib/**/**/*.rb') + ['uri_template.gemspec', 'README.md', 'CHANGELOG.md', 'LICENSE']
 
   s.add_development_dependency 'multi_json'
   s.add_development_dependency 'rspec'
