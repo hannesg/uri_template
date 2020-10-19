@@ -101,7 +101,7 @@ GEM
       equalizer (~> 0.0.7)
       parser (~> 2.1.0)
       procto (~> 0.0.2)
-    yard (0.8.7.3)
+    yard (0.9.25)
 
 PLATFORMS
   java
@@ -120,3 +120,6 @@ DEPENDENCIES
   simplecov-console
   uri_template!
   yard
+
+BUNDLED WITH
+   2.1.4
