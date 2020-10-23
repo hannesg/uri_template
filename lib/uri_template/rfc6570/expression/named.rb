@@ -21,7 +21,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-require 'uri_template/rfc6570'
+require 'uri_template/rfc6570' unless defined? URITemplate::RFC6570
 
 class URITemplate::RFC6570
 
@@ -65,7 +65,6 @@ class Expression::Named < Expression
   def expand_partial( vars )
     result = []
     rest   = []
-    defined = false
     @variable_specs.each do | var, expand , max_length |
       if vars.key? var
         if Utils.def? vars[var]
